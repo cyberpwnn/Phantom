@@ -3,6 +3,7 @@ package org.cyberpwn.phantom.test;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.cyberpwn.phantom.clust.DataCluster;
 import org.cyberpwn.phantom.clust.YAMLDataInput;
@@ -11,8 +12,6 @@ import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
-
-import org.bukkit.ChatColor;
 
 public class TestController extends Controller
 {
@@ -39,7 +38,7 @@ public class TestController extends Controller
 				try
 				{
 					new YAMLDataOutput().save(dc, new File(getPlugin().getDataFolder(), "cluster-test.yml"));
-				} 
+				}
 				
 				catch(IOException e)
 				{
@@ -47,7 +46,7 @@ public class TestController extends Controller
 				}
 			}
 		});
-		
+				
 		tests.put("cluster-overwrite", new Runnable()
 		{
 			@Override
@@ -60,7 +59,7 @@ public class TestController extends Controller
 				try
 				{
 					new YAMLDataOutput().save(dc, new File(getPlugin().getDataFolder(), "cluster-test.yml"));
-				} 
+				}
 				
 				catch(IOException e)
 				{
@@ -68,7 +67,7 @@ public class TestController extends Controller
 				}
 			}
 		});
-		
+				
 		tests.put("cluster-read", new Runnable()
 		{
 			@Override
@@ -84,7 +83,7 @@ public class TestController extends Controller
 					{
 						System.out.println(i + ": " + dc.getAbstract(i));
 					}
-				} 
+				}
 				
 				catch(IOException e)
 				{
@@ -106,7 +105,7 @@ public class TestController extends Controller
 			}
 		}
 	}
-
+	
 	public GMap<String, Runnable> getTests()
 	{
 		return tests;
