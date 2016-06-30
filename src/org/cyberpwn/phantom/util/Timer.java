@@ -1,6 +1,4 @@
-package org.cyberpwn.phantom.sync;
-
-import org.cyberpwn.phantom.util.M;
+package org.cyberpwn.phantom.util;
 
 public class Timer
 {
