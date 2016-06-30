@@ -1,4 +1,4 @@
-package org.cyberpwn.clust;
+package org.cyberpwn.phantom.clust;
 
 import java.util.ArrayList;
 import java.util.HashMap;

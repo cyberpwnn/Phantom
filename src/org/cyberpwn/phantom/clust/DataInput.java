@@ -1,4 +1,4 @@
-package org.cyberpwn.clust;
+package org.cyberpwn.phantom.clust;
 
 import java.io.File;
 import java.io.FileNotFoundException;

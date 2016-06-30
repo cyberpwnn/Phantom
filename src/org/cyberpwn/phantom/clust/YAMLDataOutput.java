@@ -1,4 +1,4 @@
-package org.cyberpwn.clust.ext;
+package org.cyberpwn.phantom.clust;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,6 @@ import java.io.IOException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.cyberpwn.clust.DataCluster;
-import org.cyberpwn.clust.DataOutput;
 
 public class YAMLDataOutput extends DataOutput
 {

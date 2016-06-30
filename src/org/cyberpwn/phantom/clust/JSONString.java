@@ -1,4 +1,4 @@
-package org.cyberpwn.clust;
+package org.cyberpwn.phantom.clust;
 /**
  * The <code>JSONString</code> interface allows a <code>toJSONString()</code>
  * method so that a class can change the behavior of

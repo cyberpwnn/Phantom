@@ -1,4 +1,4 @@
-package org.cyberpwn.clust;
+package org.cyberpwn.phantom.clust;
 
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.
