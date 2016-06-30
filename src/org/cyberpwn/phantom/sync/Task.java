@@ -5,12 +5,14 @@ import org.cyberpwn.phantom.construct.Controllable;
 public class Task implements Runnable
 {
 	private Controllable pl;
-	private int[] task;
+	private Integer[] task;
+	private Boolean running;
 	
 	public Task(Controllable pl, int interval)
 	{
 		this.pl = pl;
-		this.task = new int[]{pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
+		this.running = true;
+		this.task = new Integer[]{pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
 	}
 	
 	@Override
@@ -21,6 +23,12 @@ public class Task implements Runnable
 	
 	public void cancel()
 	{
+		running = false;
 		pl.getPlugin().cancelTask(task[0]);
+	}
+	
+	public boolean isRunning()
+	{
+		return running;
 	}
 }
