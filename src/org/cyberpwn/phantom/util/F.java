@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.util;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class F
 {
@@ -12,8 +13,28 @@ public class F
 	{
 		if(NF == null)
 		{
-			NF = NumberFormat.getInstance();
+			NF = NumberFormat.getInstance(Locale.US);
 		}
+	}
+	
+	public static String color(String msg)
+	{
+		String coloredMsg = "";
+		
+		for(int i = 0; i < msg.length(); i++)
+		{
+			if(msg.charAt(i) == '&')
+			{
+				coloredMsg += '§';
+			}
+			
+			else
+			{
+				coloredMsg += msg.charAt(i);
+			}
+		}
+		
+		return coloredMsg;
 	}
 	
 	public static String trim(String s, int l)
@@ -60,7 +81,32 @@ public class F
 		
 		else
 		{
-			return f(((double)mb / (double)1024), 1) + " GB";
+			return f(((double) mb / (double) 1024), 1) + " GB";
+		}
+	}
+	
+	public static String memx(long kb)
+	{
+		if(kb < 1024)
+		{
+			return fd(kb, 2) + " KB";
+		}
+		
+		else
+		{
+			double mb = (double)kb/1024.0;
+			
+			if(mb < 1024)
+			{
+				return fd(mb, 2) + " MB";
+			}
+			
+			else
+			{
+				double gb = (double)mb/1024.0;
+				
+				return fd(gb, 2) + " GB";
+			}
 		}
 	}
 	
@@ -162,7 +208,7 @@ public class F
 	
 	public static String pc(int i, int of, int p)
 	{
-		return f(100.0 * (((double)i) / ((double)of)), p) + "%";
+		return f(100.0 * (((double) i) / ((double) of)), p) + "%";
 	}
 	
 	public static String pc(int i, int of)
@@ -172,7 +218,7 @@ public class F
 	
 	public static String pc(long i, long of, int p)
 	{
-		return f(100.0 * (((double)i) / ((double)of)), p) + "%";
+		return f(100.0 * (((double) i) / ((double) of)), p) + "%";
 	}
 	
 	public static String pc(long i, long of)
@@ -182,21 +228,21 @@ public class F
 	
 	public static String msSeconds(long ms)
 	{
-		return f((double)ms / 1000.0);
+		return f((double) ms / 1000.0);
 	}
 	
 	public static String msSeconds(long ms, int p)
 	{
-		return f((double)ms / 1000.0, p);
+		return f((double) ms / 1000.0, p);
 	}
 	
 	public static String nsMs(long ns)
 	{
-		return f((double)ns / 1000000.0);
+		return f((double) ns / 1000000.0);
 	}
 	
 	public static String nsMs(long ns, int p)
 	{
-		return f((double)ns / 1000000.0, p);
+		return f((double) ns / 1000000.0, p);
 	}
 }
