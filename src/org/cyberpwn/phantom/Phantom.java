@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.test.TestController;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 public class Phantom extends PhantomPlugin
 {

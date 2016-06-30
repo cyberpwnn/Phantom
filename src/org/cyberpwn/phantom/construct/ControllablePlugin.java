@@ -9,7 +9,7 @@ import org.cyberpwn.phantom.sync.Task;
 import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 public class ControllablePlugin extends JavaPlugin implements Controllable
 {

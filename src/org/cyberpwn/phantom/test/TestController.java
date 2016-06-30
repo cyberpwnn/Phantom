@@ -12,7 +12,7 @@ import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 public class TestController extends Controller
 {

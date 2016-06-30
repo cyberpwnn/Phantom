@@ -5,7 +5,7 @@ import java.util.Collections;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 public class Controller implements Controllable
 {
