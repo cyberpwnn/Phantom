@@ -1,6 +1,7 @@
 package org.cyberpwn.phantom.construct;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 
@@ -60,7 +61,7 @@ public class PhantomPlugin extends ControllablePlugin
 		return null;
 	}
 	
-	public void exportJarResource(String resource, File path) throws Exception
+	public void exportJarResource(String resource, File path) throws IOException
 	{
 		URL inputUrl = getClass().getResource(resource);
 		FileUtils.copyURLToFile(inputUrl, path);
