@@ -10,7 +10,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<local.libs>X:/lib</local.libs>
+		<local.libs>X:/lib/</local.libs>
 		<local.development>X:/servers/dynamic/plugins</local.development>
 	</properties>
 	<build>
