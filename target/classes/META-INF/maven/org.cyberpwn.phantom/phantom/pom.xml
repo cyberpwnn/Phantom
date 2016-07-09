@@ -13,6 +13,33 @@
 		<local.libs>X:/lib</local.libs>
 		<local.development>X:/servers/dynamic/plugins</local.development>
 	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<forkCount>3</forkCount>
+					<reuseForks>true</reuseForks>
+					<includes>
+                        <include>**/*Spec.*</include>
+                        <include>**/*Test.*</include>
+                    </includes>
+					<argLine>-Xmx1G</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.yml</include>
+					<include>**/*.txt</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 	<profiles>
 		<profile>
 			<id>development</id>
