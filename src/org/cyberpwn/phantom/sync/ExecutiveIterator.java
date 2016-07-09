@@ -1,36 +1,37 @@
 package org.cyberpwn.phantom.sync;
 
 import java.util.Iterator;
+import java.util.List;
 
-import org.cyberpwn.phantom.construct.Controllable;
-import org.cyberpwn.phantom.lang.GList;
-import org.cyberpwn.phantom.util.M;
-
-public class ExecutiveIterator<T>
+public class ExecutiveIterator<T> implements Iterator<T>
 {
 	private Iterator<T> it;
+	private ExecutiveRunnable<T> runnable;
 	
-	public ExecutiveIterator(Controllable controller, Long lim, GList<T> data, ExecutiveRunnable<T> runnable, Runnable finish)
+	public ExecutiveIterator(Iterator<T> it, ExecutiveRunnable<T> runnable)
 	{
-		this.it = data.iterator();
+		this.it = it;
+		this.runnable = runnable;
+	}
+	
+	public ExecutiveIterator(List<T> it, ExecutiveRunnable<T> runnable)
+	{
+		this.it = it.iterator();
+		this.runnable = runnable;
+	}
+
+	@Override
+	public boolean hasNext()
+	{
+		return it.hasNext();
+	}
+
+	@Override
+	public T next()
+	{
+		T t = it.next();
+		runnable.run(t);
 		
-		new Task(controller, 0)
-		{
-			public void run()
-			{
-				Long ms = M.ms();
-				
-				while(it.hasNext() && M.ms() - ms < lim)
-				{
-					runnable.run(it.next());
-				}
-				
-				if(!it.hasNext())
-				{
-					finish.run();
-					cancel();
-				}
-			}
-		};
+		return t;
 	}
 }
