@@ -52,6 +52,11 @@ public class ExecutivePool
 	
 	public void cancel()
 	{
+		for(ExecutiveIterator<?> i : tasks)
+		{
+			i.cancel();
+		}
+		
 		task.cancel();
 	}
 	
