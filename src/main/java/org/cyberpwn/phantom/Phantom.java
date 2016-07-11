@@ -1,20 +1,21 @@
 package org.cyberpwn.phantom;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.test.TestController;
 
-import org.bukkit.ChatColor;
-
 public class Phantom extends PhantomPlugin
 {
+	private static Phantom instance;
 	private TestController testController;
 	
 	public void enable()
 	{
 		testController = new TestController(this);
 		register(testController);
+		instance = this;
 	}
 	
 	public void disable()
@@ -45,5 +46,10 @@ public class Phantom extends PhantomPlugin
 		}
 		
 		return false;
+	}
+	
+	public static Phantom instance()
+	{
+		return instance;
 	}
 }
