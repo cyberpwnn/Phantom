@@ -23,18 +23,21 @@ public class ExecutivePool
 				
 				long ns = M.ns();
 				
-				for(ExecutiveIterator<?> i : tasks.copy())
+				while(!tasks.isEmpty() && ((double) (M.ms() - ns) / 1000000.0) < limit)
 				{
-					if(!tasks.isEmpty() && ((double)(M.ms() - ns) / 1000000.0) < limit)
+					for(ExecutiveIterator<?> i : tasks.copy())
 					{
-						if(i.hasNext())
+						if(!tasks.isEmpty() && ((double) (M.ms() - ns) / 1000000.0) < limit)
 						{
-							i.next();
-						}
-						
-						else
-						{
-							tasks.remove(i);
+							if(i.hasNext())
+							{
+								i.next();
+							}
+							
+							else
+							{
+								tasks.remove(i);
+							}
 						}
 					}
 				}
