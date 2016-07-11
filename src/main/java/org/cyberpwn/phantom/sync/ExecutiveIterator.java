@@ -66,4 +66,14 @@ public class ExecutiveIterator<T> implements Iterator<T>
 		
 		return t;
 	}
+	
+	public boolean isCancelled()
+	{
+		return cancelled;
+	}
+	
+	public void cancel()
+	{
+		cancelled = true;
+	}
 }
