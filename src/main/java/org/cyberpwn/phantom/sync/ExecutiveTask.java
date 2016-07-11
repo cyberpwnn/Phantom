@@ -40,6 +40,7 @@ public class ExecutiveTask<T>
 	
 	public void cancel()
 	{
+		it.cancel();
 		task.cancel();
 	}
 	
