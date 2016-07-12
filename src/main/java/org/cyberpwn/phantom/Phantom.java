@@ -4,23 +4,36 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
-import org.cyberpwn.phantom.test.TestController;
+import org.cyberpwn.phantom.sync.ExecutiveIterator;
 
 public class Phantom extends PhantomPlugin
 {
 	private static Phantom instance;
+	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
 	
 	public void enable()
 	{
 		testController = new TestController(this);
+		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		register(testController);
+		register(channeledExecutivePoolController);
 		instance = this;
 	}
 	
 	public void disable()
 	{
 		
+	}
+	
+	public static void schedule(String channel, ExecutiveIterator<?> it)
+	{
+		instance.channeledExecutivePoolController.fire(channel, it);
+	}
+	
+	public static void schedule(ExecutiveIterator<?> it)
+	{
+		instance.channeledExecutivePoolController.fire("default", it);
 	}
 
 	@Override

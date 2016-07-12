@@ -1,7 +1,8 @@
-package org.cyberpwn.phantom.test;
+package org.cyberpwn.phantom;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,8 @@ import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
+import org.cyberpwn.phantom.sync.ExecutiveIterator;
+import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 
 public class TestController extends Controller
 {
@@ -22,6 +25,46 @@ public class TestController extends Controller
 		super(parentController);
 		
 		tests = new GMap<String, Runnable>();
+		
+		tests.put("channel-pool", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				GList<String> k = new GList<String>();
+				GList<String> v = new GList<String>();
+				
+				for(int i = 0; i < 10240008 * Math.random(); i++)
+				{
+					k.add(UUID.randomUUID().toString());
+				}
+				
+				v.qadd("alpha").qadd("beta").qadd("charlie").qadd("delta");
+				
+				Phantom.schedule(new ExecutiveIterator<String>(k.copy(), new ExecutiveRunnable<String>()
+				{
+					public void run()
+					{
+						while(Math.random() < 0.6)
+						{
+							UUID.randomUUID();
+							Math.sqrt(Math.sqrt(Math.random()));
+						}
+						
+						if(Math.random() < 0.001)
+						{
+							Phantom.schedule(v.pickRandom(), new ExecutiveIterator<String>(k.copy(), new ExecutiveRunnable<String>()
+							{
+								public void run()
+								{
+									
+								}
+							}));
+						}
+					}
+				}));
+			}
+		});
 		
 		tests.put("cluster-write", new Runnable()
 		{

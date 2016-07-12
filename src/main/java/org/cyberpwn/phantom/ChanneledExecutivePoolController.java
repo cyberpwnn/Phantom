@@ -42,6 +42,8 @@ public class ChanneledExecutivePoolController extends Controller
 			pools.put(channel, new ExecutivePool((double) 1, 0));
 		}
 		
+		pools.get(channel).add(it);
+		
 		s("Funneled " + C.LIGHT_PURPLE + F.f(it.size()) + C.GREEN + " opterations into " + C.AQUA + channel + C.LIGHT_PURPLE + " " + F.f(pools.get(channel).size()) + C.GREEN + " total.");
 	}
 }

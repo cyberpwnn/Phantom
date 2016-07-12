@@ -3,26 +3,18 @@ package org.cyberpwn.phantom.sync;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.Iterators;
-
 public class ExecutiveIterator<T> implements Iterator<T>
 {
 	private Iterator<T> it;
 	private ExecutiveRunnable<T> runnable;
 	private Boolean cancelled;
 	private T repeated;
-	
-	public ExecutiveIterator(Iterator<T> it, ExecutiveRunnable<T> runnable)
-	{
-		this.it = it;
-		this.runnable = runnable;
-		this.cancelled = false;
-		this.repeated = null;
-	}
+	private Integer size;
 	
 	public ExecutiveIterator(List<T> it, ExecutiveRunnable<T> runnable)
 	{
 		this.it = it.iterator();
+		this.size = it.size();
 		this.runnable = runnable;
 		this.cancelled = false;
 		this.repeated = null;
@@ -71,7 +63,7 @@ public class ExecutiveIterator<T> implements Iterator<T>
 	
 	public int size()
 	{
-		return Iterators.size(it);
+		return size;
 	}
 	
 	public boolean isCancelled()
