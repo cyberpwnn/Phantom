@@ -5,7 +5,7 @@ ADA - Another Damn API
 ``` XML
 <repository>
 	<id>cyberpwn-nexus</id>
-	<url>http://nexus.cyberpwn.org/content/repositories/releases/</url>
+	<url>http://nexus.cyberpwn.org/content/groups/public/</url>
 </repository>
 
 <dependency>
