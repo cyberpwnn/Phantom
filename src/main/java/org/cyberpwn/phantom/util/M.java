@@ -1,6 +1,8 @@
 package org.cyberpwn.phantom.util;
 
+import org.bukkit.Location;
 import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.world.Area;
 
 public class M
 {
@@ -35,12 +37,22 @@ public class M
 		
 		return a / doubles.size();
 	}
-		
+	
 	public static void lim(GList<Double> doubles, int limit)
 	{
 		while(doubles.size() > limit)
 		{
 			doubles.remove(0);
 		}
+	}
+	
+	public static double distance(Location a, Location b)
+	{
+		return Double.longBitsToDouble(((Double.doubleToLongBits(a.distanceSquared(b)) - (1l << 52)) >> 1) + (1l << 61));
+	}
+	
+	public static boolean within(Location center, Location check, Double radius)
+	{
+		return Area.within(center, check, radius);
 	}
 }
