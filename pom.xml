@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>1.0.2</version>
+	<version>1.2</version>
 	<name>Phantom</name>
 	<description>Phantom - Another Damn API</description>
 	<properties>
@@ -76,13 +76,13 @@
 	</profiles>
 	<repositories>
 		<repository>
-			<id>tfsnexus-releases</id>
+			<id>releases</id>
 			<url>http://nexus.cyberpwn.org/content/repositories/releases/</url>
 		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>tfsnexus-releases</id>
+			<id>releases</id>
 			<url>http://nexus.cyberpwn.org/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
