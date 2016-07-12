@@ -4,7 +4,7 @@ ADA - Another Damn API
 ## Maven
 ``` XML
 <repository>
-	<id>tfsnexus-releases</id>
+	<id>cyberpwn-nexus</id>
 	<url>http://nexus.cyberpwn.org/content/repositories/releases/</url>
 </repository>
 
