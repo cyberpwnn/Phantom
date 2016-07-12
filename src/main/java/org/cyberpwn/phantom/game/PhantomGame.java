@@ -1,22 +1,26 @@
 package org.cyberpwn.phantom.game;
 
 import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.construct.Controllable;
+import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
-public class PhantomGame<G, T extends Team<G, P>, P extends GamePlayer<G, T>> implements Game<G, T, P>
+public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, P>> extends Controller implements Game<G, T, P>
 {
 	private GList<T> teams;
 	private GList<P> gamePlayers;
 	private GList<Player> players;
 	
-	public PhantomGame()
+	public PhantomGame(Controllable parentController)
 	{
+		super(parentController);
+		
 		this.teams = new GList<T>();
 		this.players = new GList<Player>();
 		this.gamePlayers = new GList<P>();
 	}
-
+	
 	@Override
 	public GList<T> getTeams()
 	{
