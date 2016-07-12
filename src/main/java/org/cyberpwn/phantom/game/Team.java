@@ -3,7 +3,7 @@ package org.cyberpwn.phantom.game;
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.lang.GList;
 
-public interface Team<G, P> extends Colored
+public interface Team<G, T, P> extends Colored
 {
 	public String getName();
 	public GList<Player> getPlayers();
