@@ -45,9 +45,26 @@ public class ExecutivePool
 		};
 	}
 	
+	public boolean isIdle()
+	{
+		return tasks.isEmpty();
+	}
+	
 	public void add(ExecutiveIterator<?> it)
 	{
 		tasks.add(it);
+	}
+	
+	public int size()
+	{
+		int s = 0;
+		
+		for(ExecutiveIterator<?> i : tasks.copy())
+		{
+			s += i.size();
+		}
+		
+		return s;
 	}
 	
 	public void cancel()

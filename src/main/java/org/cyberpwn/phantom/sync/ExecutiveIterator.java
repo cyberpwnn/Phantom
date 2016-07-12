@@ -3,6 +3,8 @@ package org.cyberpwn.phantom.sync;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.Iterators;
+
 public class ExecutiveIterator<T> implements Iterator<T>
 {
 	private Iterator<T> it;
@@ -65,6 +67,11 @@ public class ExecutiveIterator<T> implements Iterator<T>
 		}
 		
 		return t;
+	}
+	
+	public int size()
+	{
+		return Iterators.size(it);
 	}
 	
 	public boolean isCancelled()
