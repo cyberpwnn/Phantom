@@ -10,6 +10,8 @@ public interface Game<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>,
 {
 	public GList<T> getTeams();
 	
+	public GameEventBus<M, G, T, P> getBus();
+	
 	public UUID getId();
 	
 	public M getMap();

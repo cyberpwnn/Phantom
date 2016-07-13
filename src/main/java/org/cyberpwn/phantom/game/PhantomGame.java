@@ -15,6 +15,7 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 	private GList<Player> players;
 	private M map;
 	private UUID id;
+	private GameEventBus<M, G, T, P> bus;
 	
 	public PhantomGame(Controllable parentController, M map)
 	{
@@ -25,6 +26,7 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 		this.gamePlayers = new GList<P>();
 		this.map = map;
 		this.id = UUID.randomUUID();
+		this.bus = new GameEventBus<M, G, T, P>(this);
 	}
 	
 	@Override
@@ -202,5 +204,11 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 		}
 		
 		return false;
+	}
+
+	@Override
+	public GameEventBus<M, G, T, P> getBus()
+	{
+		return bus;
 	}
 }
