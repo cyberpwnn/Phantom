@@ -1,24 +1,30 @@
 package org.cyberpwn.phantom.game;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
-public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, P>> extends Controller implements Game<G, T, P>
+public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> extends Controller implements Game<M, G, T, P>
 {
 	private GList<T> teams;
 	private GList<P> gamePlayers;
 	private GList<Player> players;
+	private M map;
+	private UUID id;
 	
-	public PhantomGame(Controllable parentController)
+	public PhantomGame(Controllable parentController, M map)
 	{
 		super(parentController);
 		
 		this.teams = new GList<T>();
 		this.players = new GList<Player>();
 		this.gamePlayers = new GList<P>();
+		this.map = map;
+		this.id = UUID.randomUUID();
 	}
 	
 	@Override
@@ -26,55 +32,55 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 	{
 		return teams;
 	}
-
+	
 	@Override
 	public GList<Player> getPlayers()
 	{
 		return players;
 	}
-
+	
 	@Override
 	public GList<P> getGamePlayers()
 	{
 		return gamePlayers;
 	}
-
+	
 	@Override
 	public GList<Player> getPlayers(T t)
 	{
 		return t.getPlayers();
 	}
-
+	
 	@Override
 	public GList<P> getGamePlayers(T t)
 	{
 		return t.getGamePlayers();
 	}
-
+	
 	@Override
 	public Boolean contains(Player p)
 	{
 		return players.contains(p);
 	}
-
+	
 	@Override
 	public Boolean contains(P p)
 	{
 		return gamePlayers.contains(p);
 	}
-
+	
 	@Override
 	public Boolean hasTeam(T t)
 	{
 		return teams.contains(t);
 	}
-
+	
 	@Override
 	public Boolean canJoin()
 	{
 		return true;
 	}
-
+	
 	@Override
 	public T getTeam(String name)
 	{
@@ -88,7 +94,7 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 		
 		return null;
 	}
-
+	
 	@Override
 	public T getTeam(C color)
 	{
@@ -102,7 +108,7 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 		
 		return null;
 	}
-
+	
 	@Override
 	public void addTeam(T t) throws GameInitializationExeption
 	{
@@ -113,7 +119,7 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 		
 		teams.add(t);
 	}
-
+	
 	@Override
 	public void join(P p, T t)
 	{
@@ -124,7 +130,7 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 			getTeam(t.getName()).add(p);
 		}
 	}
-
+	
 	@Override
 	public void join(P p)
 	{
@@ -135,7 +141,7 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 			onSelectTeam().add(p);
 		}
 	}
-
+	
 	@Override
 	public void quit(P p)
 	{
@@ -146,13 +152,13 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 			gamePlayers.remove(p);
 		}
 	}
-
+	
 	@Override
 	public T onSelectTeam()
 	{
 		return teams.pickRandom();
 	}
-
+	
 	@Override
 	public T getTeam(P p)
 	{
@@ -165,5 +171,17 @@ public class PhantomGame<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, 
 		}
 		
 		return null;
+	}
+
+	@Override
+	public M getMap()
+	{
+		return map;
+	}
+
+	@Override
+	public UUID getId()
+	{
+		return id;
 	}
 }
