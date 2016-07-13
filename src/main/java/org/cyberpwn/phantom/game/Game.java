@@ -1,12 +1,18 @@
 package org.cyberpwn.phantom.game;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
-public interface Game<G, T extends Team<G, T, P>, P extends GamePlayer<G, T, P>>
+public interface Game<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>>
 {
 	public GList<T> getTeams();
+	
+	public UUID getId();
+	
+	public M getMap();
 	
 	public GList<Player> getPlayers();
 	
