@@ -184,4 +184,23 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 	{
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o != null)
+		{
+			if(o instanceof Game)
+			{
+				Game<?, ?, ?, ?> g = (Game<?, ?, ?, ?>) o;
+				
+				if(getId().equals(g.getId()))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 }
