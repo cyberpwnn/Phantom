@@ -56,8 +56,10 @@ public class GameEventBus<M extends GameMap<M, G, T, P>, G extends Game<M, G, T,
 		}
 	}
 	
-	public void registerGameListener(Class<?> clazz)
+	public void registerGameListener(GameListener l)
 	{
+		Class<?> clazz = l.getClass();
+		
 		for(Method i : clazz.getMethods())
 		{
 			if(i.isAnnotationPresent(GameEvent.class))
@@ -72,6 +74,20 @@ public class GameEventBus<M extends GameMap<M, G, T, P>, G extends Game<M, G, T,
 					}
 					
 					eventMap.get(evt).add(i);
+				}
+			}
+		}
+	}
+
+	public void unregisterGameListener(GameListener l)
+	{
+		for(Class<?> i : eventMap.k())
+		{
+			for(Method j : eventMap.get(i))
+			{
+				if(j.getDeclaringClass().equals(l.getClass()))
+				{
+					eventMap.get(i).remove(j);
 				}
 			}
 		}
