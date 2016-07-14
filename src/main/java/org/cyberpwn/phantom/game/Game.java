@@ -36,6 +36,8 @@ public interface Game<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>,
 	
 	public T getTeam(C color);
 	
+	public P getGamePlayer(Player p);
+	
 	public T getTeam(P p);
 	
 	public T onSelectTeam();
