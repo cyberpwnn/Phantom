@@ -2,15 +2,18 @@ package org.cyberpwn.phantom.game;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.W;
 
 public class PhantomChunkMap<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> extends PhantomMap<M, G, T, P>
 {
-	private GList<Chunk> chunks;
+	protected GList<Chunk> chunks;
 	
-	public PhantomChunkMap()
+	public PhantomChunkMap(G game, World world)
 	{
+		super(game, world);
+		
 		this.chunks = new GList<Chunk>();
 	}
 	
