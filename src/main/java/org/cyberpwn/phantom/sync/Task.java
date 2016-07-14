@@ -1,5 +1,6 @@
 package org.cyberpwn.phantom.sync;
 
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.construct.Controllable;
 
 public class Task implements Runnable
@@ -11,6 +12,13 @@ public class Task implements Runnable
 	public Task(Controllable pl, int interval)
 	{
 		this.pl = pl;
+		this.running = true;
+		this.task = new Integer[]{pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
+	}
+	
+	public Task(int interval)
+	{
+		this.pl = Phantom.instance();
 		this.running = true;
 		this.task = new Integer[]{pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
 	}
