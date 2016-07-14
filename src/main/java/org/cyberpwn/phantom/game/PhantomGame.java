@@ -211,4 +211,18 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 	{
 		return bus;
 	}
+
+	@Override
+	public P getGamePlayer(Player p)
+	{
+		for(P i : gamePlayers)
+		{
+			if(i.getPlayer().equals(p))
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
 }
