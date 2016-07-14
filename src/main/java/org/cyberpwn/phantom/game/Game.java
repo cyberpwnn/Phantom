@@ -14,6 +14,10 @@ public interface Game<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>,
 	
 	public UUID getId();
 	
+	public void registerGameEventListener(GameListener l);
+	
+	public void unregisterGameEventListener(GameListener l);
+		
 	public M getMap();
 	
 	public GList<Player> getPlayers();
