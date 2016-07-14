@@ -225,4 +225,16 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 		
 		return null;
 	}
+
+	@Override
+	public void registerGameEventListener(GameListener l)
+	{
+		bus.registerGameListener(l);
+	}
+	
+	@Override
+	public void unregisterGameEventListener(GameListener l)
+	{
+		bus.unregisterGameListener(l);
+	}
 }
