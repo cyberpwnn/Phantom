@@ -4,6 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class CitizensPluginConnector extends PluginConnector
 {
 	public CitizensPluginConnector()

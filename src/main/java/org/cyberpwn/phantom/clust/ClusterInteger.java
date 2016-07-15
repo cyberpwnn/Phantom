@@ -2,6 +2,11 @@ package org.cyberpwn.phantom.clust;
 
 import org.cyberpwn.phantom.clust.DataCluster.ClusterDataType;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class ClusterInteger extends Cluster
 {
 	public ClusterInteger(Integer value)

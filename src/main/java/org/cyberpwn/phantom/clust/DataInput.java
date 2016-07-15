@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class DataInput implements DataInputtable
 {
 	@Override

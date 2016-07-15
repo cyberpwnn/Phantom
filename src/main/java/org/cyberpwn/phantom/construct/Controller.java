@@ -10,6 +10,11 @@ import org.cyberpwn.phantom.clust.ConfigurationHandler;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
 
+/**
+ * A controller
+ * @author cyberpwn
+ *
+ */
 public class Controller implements Controllable
 {
 	protected final GList<Controllable> controllers;

@@ -9,6 +9,15 @@ import org.cyberpwn.phantom.lang.Alphabet;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
+/**
+ * A Game helper
+ * @author cyberpwn
+ *
+ * @param <M> The MAP TYPE 
+ * @param <G> The GAME TYPE (this implementation class)
+ * @param <T> The TEAM TYPE
+ * @param <P> The PLAYER OBJECT TYPE
+ */
 public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> extends Controller implements Game<M, G, T, P>
 {
 	private GList<T> teams;

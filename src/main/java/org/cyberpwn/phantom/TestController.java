@@ -16,6 +16,12 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 
+/**
+ * Runs tests on various functions of phantom
+ * 
+ * @author cyberpwn
+ *
+ */
 public class TestController extends Controller
 {
 	private GMap<String, Runnable> tests;

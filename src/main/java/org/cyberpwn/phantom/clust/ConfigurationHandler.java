@@ -3,8 +3,24 @@ package org.cyberpwn.phantom.clust;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class ConfigurationHandler
 {
+	/**
+	 * Handle reading in configs. Also adds new paths that do not exist in the
+	 * file from the onNewConfig(), and adds default values
+	 * 
+	 * @param base
+	 *            the base directory
+	 * @param c
+	 *            the configurable object
+	 * @throws IOException
+	 *             1337
+	 */
 	public static void read(File base, Configurable c) throws IOException
 	{
 		File config = new File(base, c.getCodeName() + ".yml");

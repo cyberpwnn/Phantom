@@ -3,6 +3,11 @@ package org.cyberpwn.phantom.clust;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class DataOutput implements DataOutputtable
 {
 	@Override

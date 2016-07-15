@@ -3,6 +3,15 @@ package org.cyberpwn.phantom.game;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+/**
+ * Game player Object
+ * @author cyberpwn
+ *
+ * @param <M> The MAP TYPE 
+ * @param <G> The GAME TYPE 
+ * @param <T> The TEAM TYPE
+ * @param <P> The PLAYER OBJECT TYPE (this implementation class)
+ */
 public class PhantomGamePlayer<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> implements GamePlayer<M, G, T, P>
 {
 	private Player player;

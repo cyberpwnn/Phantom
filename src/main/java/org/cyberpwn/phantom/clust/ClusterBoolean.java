@@ -2,6 +2,11 @@ package org.cyberpwn.phantom.clust;
 
 import org.cyberpwn.phantom.clust.DataCluster.ClusterDataType;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class ClusterBoolean extends Cluster
 {
 	public ClusterBoolean(boolean value)

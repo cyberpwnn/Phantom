@@ -9,6 +9,13 @@ import org.cyberpwn.phantom.sync.ExecutivePool;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.F;
 
+/**
+ * The Channeled Executive Pool Controller pools ExeutiveIterator<T> objects
+ * through channels. No need to run your own tasks for them.
+ * 
+ * @author cyberpwn
+ *
+ */
 @Ticked(20)
 public class ChanneledExecutivePoolController extends Controller
 {

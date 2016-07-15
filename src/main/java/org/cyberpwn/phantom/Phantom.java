@@ -6,6 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 
+/**
+ * The Phantom Plugin object.
+ * 
+ * @author cyberpwn
+ *
+ */
 public class Phantom extends PhantomPlugin
 {
 	private static Phantom instance;
@@ -35,7 +41,7 @@ public class Phantom extends PhantomPlugin
 	{
 		instance.channeledExecutivePoolController.fire("default", it);
 	}
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
@@ -61,6 +67,11 @@ public class Phantom extends PhantomPlugin
 		return false;
 	}
 	
+	/**
+	 * Grab the instance of Phantom
+	 * 
+	 * @return phantom instance
+	 */
 	public static Phantom instance()
 	{
 		return instance;

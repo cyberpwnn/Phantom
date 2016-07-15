@@ -6,6 +6,20 @@ import org.cyberpwn.phantom.lang.Alphabet;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.TaskLater;
 
+/**
+ * A Game Set for multiple games
+ * 
+ * @author cyberpwn
+ *
+ * @param <M>
+ *            The MAP TYPE
+ * @param <G>
+ *            The GAME TYPE
+ * @param <T>
+ *            The TEAM TYPE
+ * @param <P>
+ *            The PLAYER OBJECT TYPE
+ */
 public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>>
 {
 	private final GList<G> games;
@@ -13,6 +27,16 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 	private final Integer gameLimit;
 	private final GameAdapter<M, G, T, P> gameAdapter;
 	
+	/**
+	 * Define the game set
+	 * 
+	 * @param gameAdapter
+	 *            the adapter
+	 * @param playerLimit
+	 *            the max limit of players PER GAME
+	 * @param gameLimit
+	 *            the max limit of games
+	 */
 	public GameSet(GameAdapter<M, G, T, P> gameAdapter, int playerLimit, int gameLimit)
 	{
 		this.gameAdapter = gameAdapter;
@@ -41,10 +65,16 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 	private void newGame(Alphabet alphabet)
 	{
 		G g = gameAdapter.onGameCreate(alphabet);
-		((Controllable)g).start();
+		((Controllable) g).start();
 		games.add(g);
 	}
 	
+	/**
+	 * Quit a player and handle stopping games if needed
+	 * 
+	 * @param p
+	 *            the player
+	 */
 	public void quit(Player p)
 	{
 		for(G i : games.copy())
@@ -55,7 +85,7 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 				
 				if(i.getPlayers().isEmpty())
 				{
-					((Controllable)i).stop();
+					((Controllable) i).stop();
 					games.remove(i);
 				}
 				
@@ -64,6 +94,13 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 		}
 	}
 	
+	/**
+	 * Join the player to a game creating a new one if needed
+	 * 
+	 * @param p
+	 *            the player
+	 * @return true if success
+	 */
 	public boolean join(Player p)
 	{
 		for(G i : games)
@@ -92,22 +129,42 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 		
 		return false;
 	}
-
+	
+	/**
+	 * Get all games
+	 * 
+	 * @return the list of games
+	 */
 	public GList<G> getGames()
 	{
 		return games;
 	}
-
+	
+	/**
+	 * Get the player limit
+	 * 
+	 * @return the limit
+	 */
 	public Integer getPlayerLimit()
 	{
 		return playerLimit;
 	}
-
+	
+	/**
+	 * Get the game limit
+	 * 
+	 * @return the game limit
+	 */
 	public Integer getGameLimit()
 	{
 		return gameLimit;
 	}
-
+	
+	/**
+	 * Get the game adapter
+	 * 
+	 * @return the adapter
+	 */
 	public GameAdapter<M, G, T, P> getGameAdapter()
 	{
 		return gameAdapter;

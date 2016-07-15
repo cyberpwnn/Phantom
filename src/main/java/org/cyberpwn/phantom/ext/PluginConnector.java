@@ -2,6 +2,11 @@ package org.cyberpwn.phantom.ext;
 
 import org.bukkit.Bukkit;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class PluginConnector implements PluginConnection
 {
 	protected String pluginName;

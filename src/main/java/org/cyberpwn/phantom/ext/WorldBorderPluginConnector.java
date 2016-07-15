@@ -1,5 +1,10 @@
 package org.cyberpwn.phantom.ext;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 public class WorldBorderPluginConnector extends PluginConnector
 {
 	public WorldBorderPluginConnector()

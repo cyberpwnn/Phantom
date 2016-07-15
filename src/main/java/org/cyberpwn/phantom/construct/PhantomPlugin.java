@@ -10,18 +10,46 @@ import org.bukkit.event.Event;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
 
+/**
+ * A Phantom plugin which supports many things
+ * 
+ * @author cyberpwn
+ *
+ */
 public class PhantomPlugin extends ControllablePlugin
 {
+	/**
+	 * Call a bukkit event
+	 * 
+	 * @param event
+	 *            the event
+	 */
 	public void callEvent(Event event)
 	{
 		getServer().getPluginManager().callEvent(event);
 	}
 	
+	/**
+	 * Message a commandsender
+	 * 
+	 * @param sender
+	 *            the sender
+	 * @param msg
+	 *            the message
+	 */
 	public void msg(CommandSender sender, String msg)
 	{
 		sender.sendMessage(msg);
 	}
 	
+	/**
+	 * Message a commandsender
+	 * 
+	 * @param sender
+	 *            the sender
+	 * @param msgs
+	 *            the message list
+	 */
 	public void msg(CommandSender sender, String[] msgs)
 	{
 		for(String i : msgs)
@@ -30,11 +58,19 @@ public class PhantomPlugin extends ControllablePlugin
 		}
 	}
 	
+	/**
+	 * Load a cluster
+	 * @param c the data cluster
+	 */
 	public void loadCluster(Configurable c)
 	{
 		loadCluster(c, null);
 	}
 	
+	/**
+	 * Load a cluster
+	 * @param c the data cluster
+	 */
 	public void loadCluster(Configurable c, String category)
 	{
 		File base = getDataFolder();
@@ -47,7 +83,7 @@ public class PhantomPlugin extends ControllablePlugin
 		try
 		{
 			ConfigurationHandler.read(base, c);
-		} 
+		}
 		
 		catch(IOException e)
 		{
@@ -55,16 +91,30 @@ public class PhantomPlugin extends ControllablePlugin
 		}
 	}
 	
+	/**
+	 * Online players
+	 * @return the player list
+	 */
 	public Collection<? extends Player> onlinePlayers()
 	{
 		return getServer().getOnlinePlayers();
 	}
 	
+	/**
+	 * Could you get a player by searching the keyword
+	 * @param search the keyword
+	 * @return true if that player matches or somewhat matches
+	 */
 	public boolean canFindPlayer(String search)
 	{
 		return findPlayer(search) == null ? false : true;
 	}
 	
+	/**
+	 * Find a player. This can match cyb in cyberpwn
+	 * @param search the search key
+	 * @return a player object or null if none can be found.
+	 */
 	public Player findPlayer(String search)
 	{
 		for(Player i : onlinePlayers())

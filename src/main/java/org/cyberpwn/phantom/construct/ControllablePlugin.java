@@ -11,6 +11,12 @@ import org.cyberpwn.phantom.util.F;
 
 import org.bukkit.ChatColor;
 
+/**
+ * A controllable plugin which can act as a plugin and a controller
+ * 
+ * @author cyberpwn
+ *
+ */
 public class ControllablePlugin extends JavaPlugin implements Controllable
 {
 	protected GList<Controllable> controllers;
@@ -59,7 +65,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 			timings.put(c, v);
 			liveTimings.put(c, v);
-			d.s("Tickable: " + ChatColor.LIGHT_PURPLE + c.toString() + ChatColor.YELLOW + " @" + F.f((20.0 / (double)v), 2) + " tps");
+			d.s("Tickable: " + ChatColor.LIGHT_PURPLE + c.toString() + ChatColor.YELLOW + " @" + F.f((20.0 / (double) v), 2) + " tps");
 		}
 		
 		for(Controllable i : c.getControllers())
