@@ -70,7 +70,7 @@ public class GameSet<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, 
 		{
 			if(i.getPlayers().size() < playerLimit)
 			{
-				P o = gameAdapter.onPlayerObjectCreate(p);
+				P o = gameAdapter.onPlayerObjectCreate(i, p);
 				i.join(o);
 				
 				return true;

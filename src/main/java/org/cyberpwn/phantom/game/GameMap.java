@@ -7,5 +7,4 @@ public interface GameMap<M, G, T, P>
 {
 	public boolean contains(Location location);
 	public World getWorld();
-	public G getGame();
 }

@@ -7,9 +7,9 @@ public class PhantomRegionedMap<R extends Region<R, M, G, T, P>, M extends GameM
 {
 	protected GList<R> regions;
 	
-	public PhantomRegionedMap(G game, World world)
+	public PhantomRegionedMap(World world)
 	{
-		super(game, world);
+		super(world);
 		
 		this.regions = new GList<R>();
 	}

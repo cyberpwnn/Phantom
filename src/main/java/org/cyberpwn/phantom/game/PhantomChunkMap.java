@@ -10,9 +10,9 @@ public class PhantomChunkMap<M extends GameMap<M, G, T, P>, G extends Game<M, G,
 {
 	protected GList<Chunk> chunks;
 	
-	public PhantomChunkMap(G game, World world)
+	public PhantomChunkMap(World world)
 	{
-		super(game, world);
+		super(world);
 		
 		this.chunks = new GList<Chunk>();
 	}
