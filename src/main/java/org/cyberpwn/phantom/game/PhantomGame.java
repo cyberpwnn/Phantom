@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
+import org.cyberpwn.phantom.lang.Alphabet;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
@@ -16,8 +17,9 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 	private M map;
 	private UUID id;
 	private GameEventBus<M, G, T, P> bus;
+	private Alphabet alpha;
 	
-	public PhantomGame(Controllable parentController, M map)
+	public PhantomGame(Controllable parentController, M map, Alphabet alpha)
 	{
 		super(parentController);
 		
@@ -25,6 +27,7 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 		this.players = new GList<Player>();
 		this.gamePlayers = new GList<P>();
 		this.map = map;
+		this.alpha = alpha;
 		this.id = UUID.randomUUID();
 		this.bus = new GameEventBus<M, G, T, P>(this);
 	}
@@ -236,5 +239,11 @@ public class PhantomGame<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, 
 	public void unregisterGameEventListener(GameListener l)
 	{
 		bus.unregisterGameListener(l);
+	}
+
+	@Override
+	public Alphabet getAlpha()
+	{
+		return alpha;
 	}
 }

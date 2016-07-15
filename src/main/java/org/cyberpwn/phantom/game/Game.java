@@ -3,6 +3,7 @@ package org.cyberpwn.phantom.game;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.lang.Alphabet;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
@@ -19,6 +20,8 @@ public interface Game<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>,
 	public void unregisterGameEventListener(GameListener l);
 		
 	public M getMap();
+	
+	public Alphabet getAlpha();
 	
 	public GList<Player> getPlayers();
 	
