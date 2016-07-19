@@ -62,13 +62,12 @@ public class W
 		{
 			for(int j = c.getZ() - rad; j < c.getZ() + rad; j++)
 			{
-				if(c.getWorld().isChunkLoaded(i, j))
-				{
-					cx.add(c.getWorld().getChunkAt(i, j));
-				}
+				cx.add(c.getWorld().getChunkAt(i, j));
 			}
 		}
 		
-		return cx.qadd(c);
+		cx.add(c);
+		
+		return cx;
 	}
 }

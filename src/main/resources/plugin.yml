@@ -1,6 +1,6 @@
 name: Phantom
 main: org.cyberpwn.phantom.Phantom
-version: 1.6
+version: 1.8
 commands:
   phantom:
     aliases: [ph, p, phan, pha]
