@@ -19,6 +19,12 @@ public class TaskLater implements Runnable
 		pl.getPlugin().scheduleSyncTask(0, this);
 	}
 	
+	public TaskLater(Integer delay)
+	{
+		this.pl = Phantom.instance();
+		pl.getPlugin().scheduleSyncTask(delay, this);
+	}
+
 	@Override
 	public void run()
 	{
