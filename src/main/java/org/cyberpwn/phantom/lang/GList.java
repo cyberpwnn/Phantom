@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.cyberpwn.phantom.sync.ExecutiveIterator;
+import org.cyberpwn.phantom.sync.ExecutiveRunnable;
+
 /**
  * GLists are Arraylists with special enhancements
  * 
@@ -91,6 +94,18 @@ public class GList<T> extends ArrayList<T>
 		}
 		
 		add(array);
+	}
+	
+	/**
+	 * Returns a copy of this list in the form of an executive iterator
+	 * 
+	 * @param runnable
+	 *            the runnable to process each item
+	 * @return the iterator
+	 */
+	public ExecutiveIterator<T> iterator(ExecutiveRunnable<T> runnable)
+	{
+		return new ExecutiveIterator<T>(copy(), runnable);
 	}
 	
 	/**
