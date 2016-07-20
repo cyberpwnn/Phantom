@@ -1,5 +1,7 @@
 package org.cyberpwn.phantom.game;
 
+import java.io.File;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -31,5 +33,11 @@ public class PhantomMap<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P
 	public World getWorld()
 	{
 		return world;
+	}
+
+	@Override
+	public void load(File f)
+	{
+		
 	}
 }
