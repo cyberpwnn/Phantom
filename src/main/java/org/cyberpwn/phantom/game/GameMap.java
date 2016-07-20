@@ -1,5 +1,7 @@
 package org.cyberpwn.phantom.game;
 
+import java.io.File;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -34,4 +36,12 @@ public interface GameMap<M, G, T, P>
 	 * @return the world
 	 */
 	public World getWorld();
+	
+	/**
+	 * Load the map from a file
+	 * 
+	 * @param f
+	 *            the file
+	 */
+	public void load(File f);
 }
