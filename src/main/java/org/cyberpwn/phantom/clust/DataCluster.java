@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 /**
  * The data cluster holds keyed values in paths ready to be written to files in
  * different ways
@@ -25,6 +29,7 @@ public class DataCluster
 	}
 	
 	private Map<String, Cluster> data;
+	private Map<String, String> comments;
 	
 	/**
 	 * Initializes a new data cluster
@@ -32,6 +37,155 @@ public class DataCluster
 	public DataCluster()
 	{
 		this.data = new HashMap<String, Cluster>();
+		this.comments = new HashMap<String, String>();
+	}
+	
+	/**
+	 * Add a comment to the key
+	 * 
+	 * @param key
+	 *            the key
+	 * @param comment
+	 *            the comment
+	 */
+	public void comment(String key, String comment)
+	{
+		this.comments.put(key, comment);
+	}
+	
+	/**
+	 * Has Comment?
+	 * 
+	 * @param key
+	 *            the key
+	 * @return true if the comment exists
+	 */
+	public boolean hasComment(String key)
+	{
+		return comments.containsKey(key);
+	}
+	
+	/**
+	 * Get the comment
+	 * 
+	 * @param key
+	 *            the key
+	 * @return the comment, or null
+	 */
+	public String getComment(String key)
+	{
+		return comments.get(key);
+	}
+	
+	/**
+	 * Get the comment in a list split from newline breaks
+	 * 
+	 * @param key
+	 *            the key
+	 * @return the list of comments, or empty if no comments
+	 */
+	public List<String> getComments(String key)
+	{
+		List<String> comments = new ArrayList<String>();
+		
+		if(hasComment(key))
+		{
+			if(getComment(key).contains("\n"))
+			{
+				for(String i : getComment(key).split("\n"))
+				{
+					comments.add(i);
+				}
+			}
+			
+			else
+			{
+				comments.add(getComment(key));
+			}
+		}
+		
+		return comments;
+	}
+	
+	/**
+	 * Get the lines in yml format
+	 * 
+	 * @param comment
+	 *            should we add comments?
+	 * @return the list of lines
+	 */
+	public List<String> toLines(boolean comment)
+	{
+		FileConfiguration fc = toYaml();
+		List<String> lines = new ArrayList<String>();
+		List<String> main = new ArrayList<String>();
+		
+		for(String i : fc.saveToString().split("\n"))
+		{
+			main.add(i);
+		}
+		
+		for(String i : main)
+		{
+			String key = i.split(": ")[0].replaceAll(" ", "");
+			
+			for(String j : fc.getKeys(true))
+			{
+				if(j.endsWith("." + key))
+				{
+					if(comment)
+					{
+						if(hasComment(j))
+						{
+							lines.add(" ");
+							
+							for(String k : getComments(j))
+							{
+								int kx = i.split(": ")[0].split(" ").length - 1;
+								lines.add(StringUtils.repeat(" ", kx) + "# " + k);
+							}
+						}
+					}
+				}
+			}
+			
+			lines.add(i);
+		}
+		
+		return lines;
+	}
+	
+	/**
+	 * Get a FileConfiguration object from this cluster
+	 * 
+	 * @return the yml object
+	 */
+	public FileConfiguration toYaml()
+	{
+		FileConfiguration fc = new YamlConfiguration();
+		
+		for(String i : data.keySet())
+		{
+			fc.set(i, getAbstract(i));
+		}
+		
+		return fc;
+	}
+	
+	/**
+	 * Attempt to set a value to a path. Make sure it is a compatible type
+	 * 
+	 * @param key
+	 *            the path
+	 * @param o
+	 *            the object
+	 * @param comment
+	 *            the comment
+	 */
+	public void trySet(String key, Object o, String comment)
+	{
+		trySet(key, o);
+		comment(key, comment);
 	}
 	
 	/**
@@ -145,6 +299,86 @@ public class DataCluster
 	public void set(String key, List<String> value)
 	{
 		data.put(key, new ClusterStringList(value));
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, int value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, double value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, boolean value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, String value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, List<String> value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
 	}
 	
 	/**

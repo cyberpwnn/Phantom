@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.cyberpwn.phantom.util.D;
 
-import net.md_5.bungee.api.ChatColor;
-
 /**
  * 
  * @author cyberpwn
@@ -74,7 +72,11 @@ public class ConfigurationHandler
 							String key = i.getDeclaredAnnotation(Keyed.class).value();
 							Object value = i.get(c);
 							c.getConfiguration().trySet(key, value);
-							new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).s(key + ChatColor.AQUA + " > " + value);
+							
+							if(i.isAnnotationPresent(Comment.class))
+							{
+								c.getConfiguration().comment(key, i.getDeclaredAnnotation(Comment.class).value());
+							}
 						}
 						
 						catch(IllegalArgumentException e)

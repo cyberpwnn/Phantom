@@ -1,11 +1,9 @@
 package org.cyberpwn.phantom.clust;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import java.io.PrintWriter;
 
 /**
  * 
@@ -19,24 +17,13 @@ public class YAMLDataOutput extends DataOutput
 	{
 		super.save(cluster, file);
 		
-		FileConfiguration fc = new YamlConfiguration();
+		PrintWriter pw = new PrintWriter(new FileWriter(file, false));
 		
-		try
+		for(String i : cluster.toLines(true))
 		{
-			fc.load(file);
+			pw.write(i + "\n");
 		}
 		
-		catch(InvalidConfigurationException e)
-		{
-			file.delete();
-			file.createNewFile();
-		}
-		
-		for(String i : cluster.getData().keySet())
-		{
-			fc.set(i, cluster.getAbstract(i));
-		}
-		
-		fc.save(file);
+		pw.close();
 	}
 }
