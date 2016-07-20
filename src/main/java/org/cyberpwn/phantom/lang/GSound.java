@@ -7,6 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.sfx.Audible;
 
+/**
+ * A GSound can play a sound
+ * 
+ * @author cyberpwn
+ *
+ */
 public class GSound implements Audible
 {
 	private String sound;
@@ -14,6 +20,16 @@ public class GSound implements Audible
 	private Float volume;
 	private Float pitch;
 	
+	/**
+	 * Create a sound object
+	 * 
+	 * @param sound
+	 *            the string path for the sound
+	 * @param volume
+	 *            the volume
+	 * @param pitch
+	 *            the pitch
+	 */
 	public GSound(String sound, Float volume, Float pitch)
 	{
 		this.sound = sound;
@@ -21,6 +37,18 @@ public class GSound implements Audible
 		this.pitch = pitch;
 	}
 	
+	/**
+	 * Create a new sound object
+	 * 
+	 * @param iSound
+	 *            the string path
+	 * @param sound
+	 *            the sound path
+	 * @param volume
+	 *            the volume
+	 * @param pitch
+	 *            the pitch
+	 */
 	public GSound(Sound iSound, String sound, Float volume, Float pitch)
 	{
 		this.iSound = iSound;
@@ -29,6 +57,12 @@ public class GSound implements Audible
 		this.pitch = pitch;
 	}
 	
+	/**
+	 * Create a sound object
+	 * 
+	 * @param sound
+	 *            the sound path
+	 */
 	public GSound(String sound)
 	{
 		this.sound = sound;
@@ -36,6 +70,13 @@ public class GSound implements Audible
 		this.pitch = 1f;
 	}
 	
+	/**
+	 * Create a new sound
+	 * 
+	 * @param iSound
+	 * @param volume
+	 * @param pitch
+	 */
 	public GSound(Sound iSound, Float volume, Float pitch)
 	{
 		this.iSound = iSound;
@@ -43,6 +84,12 @@ public class GSound implements Audible
 		this.pitch = pitch;
 	}
 	
+	/**
+	 * Create a new sound
+	 * 
+	 * @param iSound
+	 *            the sound
+	 */
 	public GSound(Sound iSound)
 	{
 		this.iSound = iSound;
@@ -55,6 +102,14 @@ public class GSound implements Audible
 		
 	}
 	
+	/**
+	 * Play the sound to just one player. No one else can hear it
+	 * 
+	 * @param p
+	 *            the player
+	 * @param l
+	 *            the location
+	 */
 	public void play(Player p, Location l)
 	{
 		prePlay();
@@ -72,16 +127,31 @@ public class GSound implements Audible
 		}
 	}
 	
+	/**
+	 * Play the sound to just one player. No one else can hear it
+	 * 
+	 * @param p
+	 *            the player
+	 */
 	public void play(Player p)
 	{
 		play(p, p.getLocation());
 	}
 	
+	/**
+	 * clone it
+	 */
 	public Audible clone()
 	{
 		return new GSound(iSound, sound, volume, pitch);
 	}
 	
+	/**
+	 * Play the sound globally to all players
+	 * 
+	 * @param l
+	 *            the location
+	 */
 	public void play(Location l)
 	{
 		prePlay();
@@ -99,6 +169,14 @@ public class GSound implements Audible
 		}
 	}
 	
+	/**
+	 * Play the sound to just one player. No one else can hear it
+	 * 
+	 * @param p
+	 *            the player
+	 * @param v
+	 *            the vector related to the players location
+	 */
 	public void play(Player p, Vector v)
 	{
 		prePlay();
@@ -118,41 +196,85 @@ public class GSound implements Audible
 		}
 	}
 	
+	/**
+	 * Get the sound
+	 * 
+	 * @return the sound path
+	 */
 	public String getSound()
 	{
 		return sound;
 	}
 	
+	/**
+	 * Set the sound
+	 * 
+	 * @param sound
+	 *            the sound path
+	 */
 	public void setSound(String sound)
 	{
 		this.sound = sound;
 	}
 	
+	/**
+	 * Get the object sound
+	 * 
+	 * @return the sound
+	 */
 	public Sound getiSound()
 	{
 		return iSound;
 	}
-
+	
+	/**
+	 * Set the object sound
+	 * 
+	 * @param iSound
+	 *            the sound
+	 */
 	public void setiSound(Sound iSound)
 	{
 		this.iSound = iSound;
 	}
-
+	
+	/**
+	 * Get the volume
+	 * 
+	 * @return the volume
+	 */
 	public Float getVolume()
 	{
 		return volume;
 	}
 	
+	/**
+	 * Set the volume
+	 * 
+	 * @param volume
+	 *            the volume
+	 */
 	public void setVolume(Float volume)
 	{
 		this.volume = volume;
 	}
 	
+	/**
+	 * Get the pitch
+	 * 
+	 * @return the pitch
+	 */
 	public Float getPitch()
 	{
 		return pitch;
 	}
 	
+	/**
+	 * Set the pitch
+	 * 
+	 * @param pitch
+	 *            the pitch
+	 */
 	public void setPitch(Float pitch)
 	{
 		this.pitch = pitch;

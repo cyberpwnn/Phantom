@@ -10,6 +10,12 @@ import org.bukkit.DyeColor;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Colors
+ * 
+ * @author cyberpwn
+ *
+ */
 public enum C
 {
 	/**

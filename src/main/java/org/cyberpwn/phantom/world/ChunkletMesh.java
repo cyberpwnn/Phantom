@@ -7,6 +7,12 @@ import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 
+/**
+ * A bunch of chunklets for fast reads
+ * 
+ * @author cyberpwn
+ *
+ */
 public class ChunkletMesh
 {
 	private World world;

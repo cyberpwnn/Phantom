@@ -11,6 +11,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.lang.GList;
 
+/**
+ * 4x4 chunklet area based on the chunk grid
+ * 
+ * @author cyberpwn
+ *
+ */
 public class Chunklet
 {
 	protected int x;

@@ -3,6 +3,12 @@ package org.cyberpwn.phantom.world;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.world.Cuboid.CuboidDirection;
 
+/**
+ * Directions
+ * 
+ * @author cyberpwn
+ *
+ */
 public enum Direction
 {
 	U(0, 1, 0, CuboidDirection.Up), D(0, -1, 0, CuboidDirection.Down), N(0, 0, -1, CuboidDirection.North), S(0, 0, 1, CuboidDirection.South), E(1, 0, 0, CuboidDirection.East), W(-1, 0, 0, CuboidDirection.West);

@@ -3,6 +3,12 @@ package org.cyberpwn.phantom.world;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+/**
+ * World artifact
+ * 
+ * @author cyberpwn
+ *
+ */
 public class WorldArtifact implements Artifact
 {
 	private Location location;

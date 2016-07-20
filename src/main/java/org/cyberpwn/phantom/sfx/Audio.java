@@ -6,16 +6,32 @@ import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.Average;
 
+/**
+ * A collection of audibles which may contain more sub-audibles or actual sound
+ * objects. This allows you to create sounds with mixtures of multiple sounds
+ * and volumes
+ * 
+ * @author cyberpwn
+ *
+ */
 public class Audio implements Audible
 {
 	private GList<Audible> audibles;
 	
+	/**
+	 * Create an audible object
+	 */
 	public Audio()
 	{
 		this.audibles = new GList<Audible>();
 	}
 	
-	
+	/**
+	 * Create an audible entity with multiple sub-audibles
+	 * 
+	 * @param audibles
+	 *            the audibles
+	 */
 	public Audio(GList<Audible> audibles)
 	{
 		this.audibles = audibles;
@@ -26,6 +42,12 @@ public class Audio implements Audible
 		return new Audio(audibles);
 	}
 	
+	/**
+	 * Add an audible object to the sound entity
+	 * 
+	 * @param audible
+	 *            to be played with the others
+	 */
 	public void add(Audible audible)
 	{
 		audibles.add(audible);

@@ -3,16 +3,42 @@ package org.cyberpwn.phantom.lang;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Time object for time
+ * 
+ * @author cyberpwn
+ *
+ */
 public class GTime implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private final long days, hours, minutes, seconds, milliseconds;
 	
+	/**
+	 * Create time
+	 * 
+	 * @param d
+	 *            days
+	 * @param h
+	 *            hours
+	 * @param m
+	 *            minutes
+	 * @param s
+	 *            seconds
+	 * @param ms
+	 *            millis
+	 */
 	public GTime(long d, long h, long m, long s, long ms)
 	{
 		this(ms + (s + m * 60 + h * 3600 + d * 86400) * 1000);
 	}
 	
+	/**
+	 * Create time
+	 * 
+	 * @param duration
+	 *            the duration in MS (use System.ctm for current)
+	 */
 	public GTime(long duration)
 	{
 		if(duration < 0)
@@ -27,6 +53,12 @@ public class GTime implements Serializable
 		milliseconds = duration % 1000;
 	}
 	
+	/**
+	 * Create time
+	 * 
+	 * @param duration
+	 *            string duration of time (from tostring)
+	 */
 	public GTime(String duration)
 	{
 		duration = duration.replaceAll("(\\d)(\\D)", "$1 $2");
@@ -128,6 +160,11 @@ public class GTime implements Serializable
 		return milliseconds + (seconds + minutes * 60 + hours * 3600 + days * 86400) * 1000;
 	}
 	
+	/**
+	 * Describe time
+	 * 
+	 * @return string time
+	 */
 	public String shortDescription()
 	{
 		if(days == 0 && milliseconds == 0)
@@ -151,7 +188,7 @@ public class GTime implements Serializable
 		}
 	}
 	
-	public String s(long x)
+	private String s(long x)
 	{
 		if(x == 1)
 		{
@@ -161,11 +198,23 @@ public class GTime implements Serializable
 		return "s";
 	}
 	
+	/**
+	 * short time rep
+	 * 
+	 * @return string time
+	 */
 	public String to()
 	{
 		return to("");
 	}
 	
+	/**
+	 * Returns time with a suffix
+	 * 
+	 * @param suff
+	 *            the suffix
+	 * @return the time
+	 */
 	public String to(String suff)
 	{
 		if(days > 0)
@@ -191,6 +240,11 @@ public class GTime implements Serializable
 		return "Now";
 	}
 	
+	/**
+	 * Time ago ex(4 hours ago)
+	 * 
+	 * @return time ago
+	 */
 	public String ago()
 	{
 		if(days > 0)

@@ -3,6 +3,12 @@ package org.cyberpwn.phantom.world;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+/**
+ * Material blocks
+ * 
+ * @author cyberpwn
+ *
+ */
 public class MaterialBlock
 {
 	private Material material;

@@ -7,8 +7,21 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.cyberpwn.phantom.lang.GList;
 
+/**
+ * World utils
+ * 
+ * @author cyberpwn
+ *
+ */
 public class W
 {
+	/**
+	 * Chunk faces around a given chunk
+	 * 
+	 * @param c
+	 *            the chunk
+	 * @return the surrounding 4 chunks
+	 */
 	public static GList<Chunk> chunkFaces(Chunk c)
 	{
 		GList<Chunk> cx = new GList<Chunk>();
@@ -21,6 +34,13 @@ public class W
 		return cx;
 	}
 	
+	/**
+	 * Get all 6 blocks touching a given block
+	 * 
+	 * @param b
+	 *            the block
+	 * @return the surrounding 6 blocks
+	 */
 	public static GList<Block> blockFaces(Block b)
 	{
 		GList<Block> blocks = new GList<Block>();
@@ -35,6 +55,13 @@ public class W
 		return blocks;
 	}
 	
+	/**
+	 * simulate a fall from a location
+	 * 
+	 * @param from
+	 *            the location to fall from
+	 * @return the location where it would fall to
+	 */
 	public static Location simulateFall(Location from)
 	{
 		int height = from.getBlockY();
@@ -54,6 +81,15 @@ public class W
 		return null;
 	}
 	
+	/**
+	 * Get a radius area of chunks around a given chunk
+	 * 
+	 * @param c
+	 *            the chunk center
+	 * @param rad
+	 *            the radius
+	 * @return the chunks including the center given chunk
+	 */
 	public static GList<Chunk> chunkRadius(Chunk c, int rad)
 	{
 		GList<Chunk> cx = new GList<Chunk>();

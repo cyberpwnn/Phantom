@@ -3,6 +3,15 @@ package org.cyberpwn.phantom.sync;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.util.M;
 
+/**
+ * An executive task to iterate through each element in an executive iterator as
+ * fast as possible without exeeding the ms limit
+ * 
+ * @author cyberpwn
+ *
+ * @param <T>
+ *            the element type
+ */
 public class ExecutiveTask<T>
 {
 	private ExecutiveIterator<T> it;
@@ -11,6 +20,18 @@ public class ExecutiveTask<T>
 	private Runnable finish;
 	private Task task;
 	
+	/**
+	 * New iterator start
+	 * 
+	 * @param it
+	 *            the executive iterator
+	 * @param limit
+	 *            the millisecond limit per interval
+	 * @param interval
+	 *            the interval in ticks
+	 * @param finish
+	 *            the finish runnable to be called when finished
+	 */
 	public ExecutiveTask(ExecutiveIterator<T> it, Double limit, Integer interval, Runnable finish)
 	{
 		this.it = it;
@@ -23,8 +44,8 @@ public class ExecutiveTask<T>
 			public void run()
 			{
 				long ns = M.ns();
-								
-				while(ExecutiveTask.this.it.hasNext() && ((double)(M.ms() - ns) / 1000000.0) < ExecutiveTask.this.limit)
+				
+				while(ExecutiveTask.this.it.hasNext() && ((double) (M.ms() - ns) / 1000000.0) < ExecutiveTask.this.limit)
 				{
 					ExecutiveTask.this.it.next();
 				}
@@ -38,12 +59,20 @@ public class ExecutiveTask<T>
 		};
 	}
 	
+	/**
+	 * Stop the iterator
+	 */
 	public void cancel()
 	{
 		it.cancel();
 		task.cancel();
 	}
 	
+	/**
+	 * Is it running?
+	 * 
+	 * @return true if running
+	 */
 	public boolean isRunning()
 	{
 		return task.isRunning();

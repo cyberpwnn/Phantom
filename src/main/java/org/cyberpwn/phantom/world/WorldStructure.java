@@ -4,6 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GMap;
 
+/**
+ * Structure of world artifacts
+ * 
+ * @author cyberpwn
+ *
+ */
 public class WorldStructure implements Artifact
 {
 	private GMap<Vector, Artifact> artifacts;
@@ -29,7 +35,7 @@ public class WorldStructure implements Artifact
 		
 		built = true;
 	}
-
+	
 	@Override
 	public void move(Location to)
 	{
@@ -45,7 +51,7 @@ public class WorldStructure implements Artifact
 			i.move(vec);
 		}
 	}
-
+	
 	@Override
 	public void clear()
 	{
@@ -56,25 +62,25 @@ public class WorldStructure implements Artifact
 		
 		built = false;
 	}
-
+	
 	@Override
 	public Location getLocation()
 	{
 		return location;
 	}
-
+	
 	@Override
 	public Location getCenter()
 	{
 		return location;
 	}
-
+	
 	@Override
 	public Cuboid toCuboid()
 	{
 		return cuboid;
 	}
-
+	
 	@Override
 	public Boolean isBuilt()
 	{

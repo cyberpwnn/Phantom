@@ -4,6 +4,12 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * Formatter
+ * 
+ * @author cyberpwn
+ *
+ */
 public class F
 {
 	private static NumberFormat NF;

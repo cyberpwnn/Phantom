@@ -5,6 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.util.M;
 
+/**
+ * Doppler audio effect
+ * 
+ * @author cyberpwn
+ *
+ */
 public class DopplerAudibleEntity extends AudibleEntity
 {
 	public DopplerAudibleEntity(Entity entity, Audible audible, Integer interval)

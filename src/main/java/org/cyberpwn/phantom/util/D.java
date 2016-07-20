@@ -3,6 +3,12 @@ package org.cyberpwn.phantom.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+/**
+ * Dispatcher
+ * 
+ * @author cyberpwn
+ *
+ */
 public class D
 {
 	private String name;
@@ -96,22 +102,22 @@ public class D
 	{
 		overbose(o);
 	}
-
+	
 	public String getName()
 	{
 		return name;
 	}
-
+	
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
+	
 	public Boolean getSilent()
 	{
 		return silent;
 	}
-
+	
 	public void setSilent(Boolean silent)
 	{
 		D.silent = silent;

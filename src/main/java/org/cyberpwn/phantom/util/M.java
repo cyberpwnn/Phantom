@@ -5,6 +5,12 @@ import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.world.Area;
 
+/**
+ * Math
+ * 
+ * @author cyberpwn
+ *
+ */
 public class M
 {
 	public static double tps(long ns, int rad)

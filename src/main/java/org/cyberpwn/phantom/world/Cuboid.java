@@ -15,6 +15,11 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.material.MaterialData;
 
+/**
+ * Cuboids
+ * @author cyberpwn
+ *
+ */
 public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializable
 {
 	protected final String worldName;

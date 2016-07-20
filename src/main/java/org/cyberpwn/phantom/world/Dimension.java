@@ -1,5 +1,11 @@
 package org.cyberpwn.phantom.world;
 
+/**
+ * Dimensions
+ * 
+ * @author cyberpwn
+ *
+ */
 public class Dimension
 {
 	private final int width;

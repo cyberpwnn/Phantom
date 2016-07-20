@@ -7,6 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GList;
 
+/**
+ * Schematics
+ * 
+ * @author cyberpwn
+ *
+ */
 public class Schematic
 {
 	private Dimension dimension;
@@ -105,12 +111,12 @@ public class Schematic
 		schematic[x][y][z].setMaterial(material);
 		schematic[x][y][z].setData(data);
 	}
-
+	
 	public Dimension getDimension()
 	{
 		return dimension;
 	}
-
+	
 	public MaterialBlock[][][] getSchematic()
 	{
 		return schematic;
