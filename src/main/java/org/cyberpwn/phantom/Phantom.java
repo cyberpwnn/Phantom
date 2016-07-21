@@ -17,11 +17,15 @@ public class Phantom extends PhantomPlugin
 	private static Phantom instance;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
+	private DevelopmentController developmentController;
 	
 	public void enable()
 	{
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
+		developmentController = new DevelopmentController(this);
+		
+		register(developmentController);
 		register(testController);
 		register(channeledExecutivePoolController);
 		instance = this;
