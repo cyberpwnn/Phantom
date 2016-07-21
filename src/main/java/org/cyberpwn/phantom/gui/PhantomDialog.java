@@ -1,6 +1,7 @@
 package org.cyberpwn.phantom.gui;
 
 import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.sync.TaskLater;
 
 /**
  * Implementation of the dialog
@@ -40,7 +41,13 @@ public class PhantomDialog extends PhantomWindow implements Dialog
 		
 		else
 		{
-			onCancelled(viewer, this, this);
+			new TaskLater(0)
+			{
+				public void run()
+				{
+					onCancelled(viewer, PhantomDialog.this, PhantomDialog.this);
+				}
+			};
 		}
 		
 		return this;
