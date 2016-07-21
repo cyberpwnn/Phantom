@@ -8,6 +8,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.cyberpwn.phantom.lang.GList;
 
+/**
+ * Element implementation
+ * 
+ * @author cyberpwn
+ *
+ */
 public class PhantomElement implements Element
 {
 	private Material type;
@@ -20,6 +26,14 @@ public class PhantomElement implements Element
 	private ItemStack stack;
 	private final UUID id;
 	
+	/**
+	 * Create an element from an item stack and slot
+	 * 
+	 * @param stack
+	 *            the item stack
+	 * @param slot
+	 *            the slot
+	 */
 	@SuppressWarnings("deprecation")
 	public PhantomElement(ItemStack stack, Slot slot)
 	{
@@ -34,6 +48,24 @@ public class PhantomElement implements Element
 		this.id = UUID.randomUUID();
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param metadata
+	 *            the metadata (sub item id)
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param text
+	 *            the text (lore of this item)
+	 * @param durability
+	 *            the durability
+	 * @param count
+	 *            the count
+	 */
 	@SuppressWarnings("deprecation")
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title, GList<String> text, Short durability, Integer count)
 	{
@@ -55,36 +87,126 @@ public class PhantomElement implements Element
 		this.id = UUID.randomUUID();
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 */
 	public PhantomElement(Material type, Slot slot, String title)
 	{
 		this(type, (byte) 0, slot, title, new GList<String>(), (short) 0, 1);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param metadata
+	 *            the metadata (sub item id)
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 */
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title)
 	{
 		this(type, metadata, slot, title, new GList<String>(), (short) 0, 1);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param count
+	 *            the count
+	 */
 	public PhantomElement(Material type, Slot slot, String title, Integer count)
 	{
 		this(type, (byte) 0, slot, title, new GList<String>(), (short) 0, count);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param durability
+	 *            the durability
+	 */
 	public PhantomElement(Material type, Slot slot, String title, Short durability)
 	{
 		this(type, (byte) 0, slot, title, new GList<String>(), durability, 1);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param metadata
+	 *            the metadata (sub item id)
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param count
+	 *            the count
+	 */
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title, Integer count)
 	{
 		this(type, metadata, slot, title, new GList<String>(), (short) 0, count);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param metadata
+	 *            the metadata (sub item id)
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param durability
+	 *            the durability
+	 */
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title, Short durability)
 	{
 		this(type, metadata, slot, title, new GList<String>(), durability, 1);
 	}
 	
+	/**
+	 * Create a phantom element from all data
+	 * 
+	 * @param type
+	 *            the material type
+	 * @param metadata
+	 *            the metadata (sub item id)
+	 * @param slot
+	 *            the slot
+	 * @param title
+	 *            the title (custom item name)
+	 * @param durability
+	 *            the durability
+	 * @param count
+	 *            the count
+	 */
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title, Short durability, Integer count)
 	{
 		this(type, metadata, slot, title, new GList<String>(), durability, count);
@@ -221,7 +343,7 @@ public class PhantomElement implements Element
 	{
 		if(object instanceof Element)
 		{
-			return ((Element)object).getId().equals(getId());
+			return ((Element) object).getId().equals(getId());
 		}
 		
 		return false;

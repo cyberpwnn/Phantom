@@ -15,6 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 
+/**
+ * A Window implementation
+ * 
+ * @author cyberpwn
+ *
+ */
 public class PhantomWindow implements Window, Listener
 {
 	private Integer viewport;
@@ -26,12 +32,20 @@ public class PhantomWindow implements Window, Listener
 	protected final Player viewer;
 	private final UUID id;
 	
-	public PhantomWindow(String title, GList<Element> elements, Player viewer)
+	/**
+	 * Create a new window instance
+	 * 
+	 * @param title
+	 *            the title
+	 * @param viewer
+	 *            the player
+	 */
+	public PhantomWindow(String title, Player viewer)
 	{
 		this.inventory = null;
 		this.viewport = 6;
 		this.title = title;
-		this.elements = elements;
+		this.elements = new GList<Element>();
 		this.open = false;
 		this.viewer = viewer;
 		this.background = new PhantomElement(Material.AIR, new Slot(0), "");
@@ -208,11 +222,6 @@ public class PhantomWindow implements Window, Listener
 	public boolean isOpen()
 	{
 		return open;
-	}
-	
-	public void setOpen(boolean open)
-	{
-		this.open = open;
 	}
 	
 	@EventHandler

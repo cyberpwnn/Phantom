@@ -2,10 +2,46 @@ package org.cyberpwn.phantom.gui;
 
 import org.bukkit.event.inventory.ClickType;
 
+/**
+ * Click types
+ * 
+ * @author cyberpwn
+ *
+ */
 public enum Click
 {
-	LEFT, RIGHT, MIDDLE, SHIFT_LEFT, SHIFT_RIGHT;
+	/**
+	 * A Left click (pick up item)
+	 */
+	LEFT,
 	
+	/**
+	 * A Right click (cut stack in half)
+	 */
+	RIGHT,
+	
+	/**
+	 * A Middle mouse button click
+	 */
+	MIDDLE,
+	
+	/**
+	 * Shift left click (transfer stack to another inventory)
+	 */
+	SHIFT_LEFT,
+	
+	/**
+	 * Shift right click
+	 */
+	SHIFT_RIGHT;
+	
+	/**
+	 * Transform ClickType into Click
+	 * 
+	 * @param type
+	 *            the ClickType
+	 * @return the Click enum, or null if not supported
+	 */
 	public static Click fromClickType(ClickType type)
 	{
 		switch(type)

@@ -1,20 +1,38 @@
 package org.cyberpwn.phantom.gui;
 
 import org.bukkit.entity.Player;
-import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 
+/**
+ * Bind objects to elements and return the objects via callback methods instead
+ * of the clicked element
+ * 
+ * @author cyberpwn
+ *
+ * @param <T>
+ *            the type of object to bind elements to
+ */
 public class PhantomSelectDialog<T> extends PhantomDialog implements SelectDialog<T>
 {
 	private GMap<Element, T> bindings;
 	
-	public PhantomSelectDialog(String title, GList<Element> elements, Player viewer, boolean cancellable)
+	/**
+	 * Create a selectable dialog
+	 * 
+	 * @param title
+	 *            the title
+	 * @param viewer
+	 *            the player
+	 * @param cancellable
+	 *            can it be cancelled
+	 */
+	public PhantomSelectDialog(String title, Player viewer, boolean cancellable)
 	{
-		super(title, elements, viewer, cancellable);
+		super(title, viewer, cancellable);
 		
 		bindings = new GMap<Element, T>();
 	}
-
+	
 	public SelectDialog<T> bind(Element e, T t)
 	{
 		bindings.put(e, t);
@@ -31,7 +49,7 @@ public class PhantomSelectDialog<T> extends PhantomDialog implements SelectDialo
 		
 		return true;
 	}
-
+	
 	public void onSelected(T clicked, Element e)
 	{
 		
