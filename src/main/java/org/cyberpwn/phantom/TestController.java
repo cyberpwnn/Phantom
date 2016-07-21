@@ -5,16 +5,26 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.clust.DataCluster;
 import org.cyberpwn.phantom.clust.YAMLDataInput;
 import org.cyberpwn.phantom.clust.YAMLDataOutput;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
+import org.cyberpwn.phantom.gui.Click;
+import org.cyberpwn.phantom.gui.Dialog;
+import org.cyberpwn.phantom.gui.PhantomDialog;
+import org.cyberpwn.phantom.gui.PhantomElement;
+import org.cyberpwn.phantom.gui.PhantomWindow;
+import org.cyberpwn.phantom.gui.Slot;
+import org.cyberpwn.phantom.gui.Window;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
+import org.cyberpwn.phantom.util.C;
 
 /**
  * Runs tests on various functions of phantom
@@ -117,6 +127,80 @@ public class TestController extends Controller
 			}
 		});
 				
+		tests.put("gui-test", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Window test = new PhantomWindow("Test", i);
+					Window main = new PhantomWindow(C.AQUA + "Main", i);
+					Window dialog = new PhantomDialog(ChatColor.DARK_RED + "Are you SURE?", i, true)
+					{
+						public void onCancelled(Player p, Window w, Dialog d)
+						{
+							test.open();
+						}
+					};
+					
+					dialog.addElement(new PhantomElement(Material.SLIME_BALL, new Slot(0, 2), C.GREEN + "YES")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							main.open();
+						}
+					});
+					
+					dialog.addElement(new PhantomElement(Material.BARRIER, new Slot(0, 3), C.RED + "NO")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							test.open();
+						}
+					});
+					
+					main.addElement(new PhantomElement(Material.SLIME_BALL, new Slot(0, 2), C.RED + "Colored")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							test.open();
+						}
+					});
+					
+					test.addElement(new PhantomElement(Material.BARRIER, new Slot(-1, 3), C.RED + "Close")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							test.close();
+						}
+					});
+					
+					test.addElement(new PhantomElement(Material.CARROT_STICK, new Slot(0, 3), C.RED + "Do something")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							dialog.open();
+						}
+					});
+					
+					test.addElement(new PhantomElement(Material.MAGMA_CREAM, new Slot(1, 3), C.RED + "Back")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							main.open();
+						}
+					});
+					
+					main.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 1, new Slot(0, 1), " "));
+					test.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 2, new Slot(0, 1), " "));
+					dialog.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 3, new Slot(0, 1), " "));
+					
+					main.open();
+				}
+			}
+		});
+		
 		tests.put("cluster-read", new Runnable()
 		{
 			@Override
