@@ -1,8 +1,9 @@
-package org.cyberpwn.phantom.construct;
+package org.cyberpwn.phantom.construct.test;
 
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.DataCluster;
 import org.cyberpwn.phantom.clust.Keyed;
+import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.lang.GList;
 
 //We define that this class is a PhantomPlugin, because its a plugin.

@@ -45,6 +45,7 @@
 							<goal>javadoc</goal>
 						</goals>
 						<configuration>
+							<stylesheetfile>${basedir}/stylesheet.css</stylesheetfile>
 							<additionalparam>-Xdoclint:none</additionalparam>
 						</configuration>
 					</execution>
