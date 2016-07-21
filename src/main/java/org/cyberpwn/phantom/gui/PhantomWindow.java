@@ -23,14 +23,14 @@ import org.cyberpwn.phantom.lang.GList;
  */
 public class PhantomWindow implements Window, Listener
 {
-	private Integer viewport;
-	private String title;
-	private GList<Element> elements;
-	private Inventory inventory;
-	private Element background;
-	private boolean open;
+	protected Integer viewport;
+	protected String title;
+	protected GList<Element> elements;
+	protected Inventory inventory;
+	protected Element background;
+	protected boolean open;
 	protected final Player viewer;
-	private final UUID id;
+	protected final UUID id;
 	
 	/**
 	 * Create a new window instance

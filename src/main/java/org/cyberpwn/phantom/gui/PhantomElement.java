@@ -16,15 +16,15 @@ import org.cyberpwn.phantom.lang.GList;
  */
 public class PhantomElement implements Element
 {
-	private Material type;
-	private Byte metadata;
-	private String title;
-	private GList<String> text;
-	private Short durability;
-	private Integer count;
-	private Slot slot;
-	private ItemStack stack;
-	private final UUID id;
+	protected Material type;
+	protected Byte metadata;
+	protected String title;
+	protected GList<String> text;
+	protected Short durability;
+	protected Integer count;
+	protected Slot slot;
+	protected ItemStack stack;
+	protected final UUID id;
 	
 	/**
 	 * Create an element from an item stack and slot

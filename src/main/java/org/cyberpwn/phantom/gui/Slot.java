@@ -8,9 +8,9 @@ package org.cyberpwn.phantom.gui;
  */
 public class Slot
 {
-	private Integer x;
-	private Integer y;
-	private Integer s;
+	protected Integer x;
+	protected Integer y;
+	protected Integer s;
 	
 	/**
 	 * Create an item slot based on x and y coordinates

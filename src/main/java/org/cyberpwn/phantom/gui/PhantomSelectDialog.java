@@ -14,7 +14,7 @@ import org.cyberpwn.phantom.lang.GMap;
  */
 public class PhantomSelectDialog<T> extends PhantomDialog implements SelectDialog<T>
 {
-	private GMap<Element, T> bindings;
+	protected GMap<Element, T> bindings;
 	
 	/**
 	 * Create a selectable dialog

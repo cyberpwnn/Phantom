@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
  */
 public class PhantomDialog extends PhantomWindow implements Dialog
 {
-	private boolean cancellable;
+	protected boolean cancellable;
 	
 	/**
 	 * Create a phantomDialog
