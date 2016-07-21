@@ -59,6 +59,7 @@ import java.util.List;
  * @author Chris Eldredge
  * @author Jim Harrington
  * @author Niall Pemberton
+ * @author cyberpwn
  * @author Sandy McArthur
  * @version $Id: FileUtils.java 384037 2006-03-07 22:26:37Z scolebourne $
  */
