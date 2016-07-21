@@ -5,6 +5,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 
 /**
@@ -15,6 +18,22 @@ import org.cyberpwn.phantom.lang.GList;
  */
 public class W
 {
+	/**
+	 * Checks if a given player can modify a given block
+	 * 
+	 * @param p
+	 *            the player
+	 * @param block
+	 *            the block
+	 * @return true if the player can break it
+	 */
+	public static boolean canModify(Player p, Block block)
+	{
+		BlockBreakEvent bbe = new BlockBreakEvent(block, p);
+		Phantom.instance().callEvent(bbe);
+		return !bbe.isCancelled();
+	}
+	
 	/**
 	 * Chunk faces around a given chunk
 	 * 
