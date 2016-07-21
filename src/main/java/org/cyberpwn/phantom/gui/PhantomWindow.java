@@ -23,7 +23,7 @@ public class PhantomWindow implements Window, Listener
 	private Inventory inventory;
 	private Element background;
 	private boolean open;
-	private final Player viewer;
+	protected final Player viewer;
 	private final UUID id;
 	
 	public PhantomWindow(String title, GList<Element> elements, Player viewer)
@@ -246,7 +246,11 @@ public class PhantomWindow implements Window, Listener
 				if(contains(s))
 				{
 					Element element = getElement(s);
-					element.onClick((Player) e.getWhoClicked(), c, this);
+					
+					if(onClick(element, (Player) e.getWhoClicked()))
+					{
+						element.onClick((Player) e.getWhoClicked(), c, this);
+					}
 				}
 			}
 			
@@ -262,5 +266,11 @@ public class PhantomWindow implements Window, Listener
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public boolean onClick(Element element, Player p)
+	{
+		return true;
 	}
 }

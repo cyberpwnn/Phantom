@@ -48,6 +48,8 @@ public interface Window
 	
 	public Window setInventory(Inventory inventory);
 	
+	public boolean onClick(Element element, Player p);
+	
 	public boolean isOpen();
 	
 	public void setOpen(boolean open);
