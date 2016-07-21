@@ -2,13 +2,14 @@ package org.cyberpwn.phantom.construct;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
+import org.cyberpwn.phantom.lang.GList;
 
 /**
  * A Phantom plugin which supports many things
@@ -95,9 +96,11 @@ public class PhantomPlugin extends ControllablePlugin
 	 * Online players
 	 * @return the player list
 	 */
-	public Collection<? extends Player> onlinePlayers()
+	public GList<Player> onlinePlayers()
 	{
-		return getServer().getOnlinePlayers();
+		GList<Player> p = new GList<Player>();
+		p.addAll(Bukkit.getOnlinePlayers());
+		return p;
 	}
 	
 	/**
