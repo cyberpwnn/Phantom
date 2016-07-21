@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.gui;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -78,12 +79,16 @@ public class PhantomElement implements Element
 		this.count = count;
 		
 		ItemStack stack = new ItemStack(type, count, durability, metadata);
-		ItemMeta im = stack.getItemMeta();
-		im.setDisplayName(title);
-		im.setLore(text);
+		ItemMeta im = stack.hasItemMeta() ? stack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(stack.getType());
+		
+		if(im != null)
+		{
+			im.setDisplayName(title);
+			im.setLore(text);
+			stack.setItemMeta(im);
+		}
 		
 		this.stack = stack;
-		
 		this.id = UUID.randomUUID();
 	}
 	
@@ -307,9 +312,14 @@ public class PhantomElement implements Element
 	public ItemStack getStack()
 	{
 		ItemStack stack = new ItemStack(type, count, durability, metadata);
-		ItemMeta im = stack.getItemMeta();
-		im.setDisplayName(title);
-		im.setLore(text);
+		ItemMeta im = Bukkit.getItemFactory().getItemMeta(type);
+		
+		if(im != null)
+		{
+			im.setDisplayName(title);
+			im.setLore(text);
+			stack.setItemMeta(im);
+		}
 		
 		setStack(stack);
 		
