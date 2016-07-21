@@ -12,6 +12,7 @@ import org.cyberpwn.phantom.util.D;
 
 /**
  * A controller
+ * 
  * @author cyberpwn
  *
  */
@@ -81,7 +82,7 @@ public class Controller implements Controllable
 		try
 		{
 			ConfigurationHandler.read(base, c);
-		} 
+		}
 		
 		catch(IOException e)
 		{
@@ -118,7 +119,7 @@ public class Controller implements Controllable
 	{
 		return controllers;
 	}
-
+	
 	@Override
 	public ControllablePlugin getPlugin()
 	{
