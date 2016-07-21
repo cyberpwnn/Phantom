@@ -1,64 +1,59 @@
 package org.cyberpwn.phantom.game;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 /**
- * Game player Object
+ * Game Player implementation
+ * 
  * @author cyberpwn
  *
- * @param <M> The MAP TYPE 
- * @param <G> The GAME TYPE 
- * @param <T> The TEAM TYPE
- * @param <P> The PLAYER OBJECT TYPE (this implementation class)
  */
-public class PhantomGamePlayer<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> implements GamePlayer<M, G, T, P>
+public class PhantomGamePlayer implements GamePlayer
 {
-	private Player player;
-	private G game;
-	private T team;
+	private final Player player;
+	private final Game game;
 	
-	public PhantomGamePlayer(Player player, G game)
+	/**
+	 * Create a game player from a player object
+	 * 
+	 * @param player
+	 *            the player object
+	 * @param game
+	 *            the game
+	 */
+	public PhantomGamePlayer(Player player, Game game)
 	{
 		this.player = player;
 		this.game = game;
-		this.team = null;
 	}
 	
-	@Override
-	public G getGame()
-	{
-		return game;
-	}
-	
-	@Override
-	public T getTeam()
-	{
-		return team;
-	}
-	
-	@Override
 	public Player getPlayer()
 	{
 		return player;
 	}
 	
-	@Override
-	public void setTeam(T team)
+	public Game getGame()
 	{
-		this.team = team;
-	}
-
-	@Override
-	public boolean isInMap()
-	{
-		return getGame().getMap().contains(getLocation());
-	}
-
-	@Override
-	public Location getLocation()
-	{
-		return getPlayer().getLocation();
+		return game;
 	}
 	
+	public Map getMap()
+	{
+		return game.getMap();
+	}
+	
+	public boolean contains(Object o)
+	{
+		if(o instanceof GamePlayer)
+		{
+			return ((GamePlayer) o).getPlayer().equals(getPlayer());
+		}
+		
+		if(o instanceof Player)
+		{
+			return ((Player) o).equals(getPlayer());
+		}
+		
+		return false;
+	}
 }

@@ -5,102 +5,63 @@ import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.C;
 
 /**
- * Game team
+ * Phantom Team implementation
+ * 
  * @author cyberpwn
  *
- * @param <M> The MAP TYPE 
- * @param <G> The GAME TYPE 
- * @param <T> The TEAM TYPE (this)
- * @param <P> The PLAYER OBJECT TYPE 
  */
-public class PhantomTeam<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> implements Team<M, G, T, P>
+public class PhantomTeam implements Team
 {
-	private String name;
 	private C color;
-	private G game;
-	private GList<Player> players;
-	private GList<P> gamePlayers;
+	private String name;
+	private GList<GamePlayer> players;
 	
-	public PhantomTeam(String name, C color, G game)
+	/**
+	 * Create a phantom team
+	 * 
+	 * @param name
+	 *            the name
+	 * @param color
+	 *            the color
+	 */
+	public PhantomTeam(String name, C color)
 	{
-		this.name = name;
 		this.color = color;
-		this.game = game;
-		this.players = new GList<Player>();
-		this.gamePlayers = new GList<P>();
+		this.name = name;
 	}
 	
-	@Override
+	public GList<GamePlayer> getPlayers()
+	{
+		return players;
+	}
+	
 	public C getColor()
 	{
 		return color;
 	}
 	
-	@Override
 	public String getName()
 	{
 		return name;
 	}
 	
-	@Override
-	public GList<Player> getPlayers()
+	public void add(GamePlayer player)
 	{
-		return players;
+		players.add(player);
 	}
 	
-	@Override
-	public GList<P> getGamePlayers()
+	public void remove(GamePlayer player)
 	{
-		return gamePlayers;
+		players.remove(player);
 	}
 	
-	@Override
-	public G getGame()
-	{
-		return game;
-	}
-	
-	@Override
-	public Integer size()
-	{
-		return gamePlayers.size();
-	}
-	
-	@Override
-	public Boolean contains(P p)
-	{
-		return gamePlayers.contains(p);
-	}
-	
-	@Override
-	public Boolean contains(Player p)
+	public boolean contains(GamePlayer p)
 	{
 		return players.contains(p);
 	}
 	
-	@Override
-	public void add(P p)
+	public boolean contains(Player p)
 	{
-		if(!contains(p))
-		{
-			gamePlayers.add(p);
-			players.add(p.getPlayer());
-		}
-	}
-	
-	@Override
-	public void remove(P p)
-	{
-		if(contains(p))
-		{
-			gamePlayers.remove(p);
-			players.remove(p.getPlayer());
-		}
-	}
-	
-	@Override
-	public void setColor(C color)
-	{
-		this.color = color;
+		return players.contains(p);
 	}
 }

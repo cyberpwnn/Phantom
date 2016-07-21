@@ -2,42 +2,53 @@ package org.cyberpwn.phantom.game;
 
 import java.io.File;
 
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.lang.GList;
 
 /**
- * Game Map
+ * Phantom Map implementation
  * @author cyberpwn
  *
- * @param <M> The MAP TYPE (this implementation class)
- * @param <G> The GAME TYPE 
- * @param <T> The TEAM TYPE
- * @param <P> The PLAYER OBJECT TYPE 
  */
-public class PhantomMap<M extends GameMap<M, G, T, P>, G extends Game<M, G, T, P>, T extends Team<M, G, T, P>, P extends GamePlayer<M, G, T, P>> implements GameMap<M, G, T, P>
+public class PhantomMap implements Map
 {
-	protected World world;
+	private Game game;
 	
-	public PhantomMap(World world)
+	/**
+	 * Create a phantom map
+	 */
+	public PhantomMap()
 	{
-		this.world = world;
-	}
-	
-	@Override
-	public boolean contains(Location location)
-	{
-		return false;
+		this.game = null;
 	}
 
-	@Override
-	public World getWorld()
-	{
-		return world;
-	}
-
-	@Override
-	public void load(File f)
+	public void load(File file)
 	{
 		
+	}
+
+	public Game getGame()
+	{
+		return game;
+	}
+	
+	public void setGame(Game game)
+	{
+		this.game = game;
+	}
+
+	public GList<GamePlayer> getPlayers()
+	{
+		return game.getPlayers();
+	}
+
+	public boolean contains(GamePlayer p)
+	{
+		return game.contains(p);
+	}
+
+	public boolean contains(Player p)
+	{
+		return game.contains(p);
 	}
 }

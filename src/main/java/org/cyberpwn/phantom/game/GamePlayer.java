@@ -1,19 +1,33 @@
 package org.cyberpwn.phantom.game;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public interface GamePlayer<M, G, T, P>
+/**
+ * Game player instance
+ * 
+ * @author cyberpwn
+ *
+ */
+public interface GamePlayer
 {
-	public G getGame();
-	
-	public T getTeam();
-	
-	public boolean isInMap();
-	
-	public Location getLocation();
-	
-	public void setTeam(T t);
-	
+	/**
+	 * Get the player instance
+	 * 
+	 * @return the player
+	 */
 	public Player getPlayer();
+	
+	/**
+	 * Get the game
+	 * 
+	 * @return the game
+	 */
+	public Game getGame();
+	
+	/**
+	 * Get the map
+	 * 
+	 * @return the map
+	 */
+	public Map getMap();
 }
