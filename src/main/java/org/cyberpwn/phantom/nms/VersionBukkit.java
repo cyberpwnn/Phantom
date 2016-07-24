@@ -14,6 +14,7 @@ public enum VersionBukkit
 	
 	/**
 	 * Basically, is it not 1.8, and below 1.8
+	 * 
 	 * @return
 	 */
 	public static boolean tc()
@@ -26,6 +27,11 @@ public enum VersionBukkit
 		return true;
 	}
 	
+	/**
+	 * Get the version
+	 * 
+	 * @return the version
+	 */
 	public static VersionBukkit get()
 	{
 		if(Bukkit.getBukkitVersion().startsWith("1.7"))
