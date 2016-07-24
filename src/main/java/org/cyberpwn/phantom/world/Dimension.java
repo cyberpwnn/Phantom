@@ -12,6 +12,12 @@ public class Dimension
 	private final int height;
 	private final int depth;
 	
+	/**
+	 * Make a dimension
+	 * @param width width of this (X) 
+	 * @param height the height (Y)
+	 * @param depth the depth  (Z)
+	 */
 	public Dimension(int width, int height, int depth)
 	{
 		this.width = width;
