@@ -5,7 +5,8 @@ import org.cyberpwn.phantom.lang.GList;
 
 /**
  * A visual effect which may be an actual effect, or a super-effect (multiple
- * sub effects)
+ * sub effects) Allows you to play them simply, even though there could be
+ * hundreds of meta-visual effects within a super visual effect
  * 
  * @author cyberpwn
  *
