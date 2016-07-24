@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
 
 /**
@@ -29,7 +30,24 @@ public class ConfigurationHandler
 						{
 							String key = i.getDeclaredAnnotation(Keyed.class).value();
 							Object value = c.getConfiguration().getAbstract(key);
-							i.set(c, value);
+							
+							if(value instanceof List)
+							{
+								List<?> l = (List<?>) value;
+								GList<String> k = new GList<String>();
+								
+								for(Object j : l)
+								{
+									k.add(j.toString());
+								}
+								
+								i.set(c, k);
+							}
+							
+							else
+							{
+								i.set(c, value);
+							}
 						}
 						
 						catch(IllegalArgumentException e)
@@ -51,7 +69,8 @@ public class ConfigurationHandler
 				
 				else
 				{
-					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");;
+					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");
+					;
 				}
 			}
 		}
@@ -98,7 +117,8 @@ public class ConfigurationHandler
 				
 				else
 				{
-					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");;
+					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");
+					;
 				}
 			}
 		}
@@ -121,6 +141,16 @@ public class ConfigurationHandler
 			return true;
 		}
 		
+		else if(type.equals(Long.class))
+		{
+			return true;
+		}
+		
+		else if(type.equals(long.class))
+		{
+			return true;
+		}
+		
 		else if(type.equals(Double.class))
 		{
 			return true;
@@ -131,7 +161,7 @@ public class ConfigurationHandler
 			return true;
 		}
 		
-		else if(type.equals(List.class))
+		else if(type.equals(GList.class))
 		{
 			return true;
 		}
@@ -188,5 +218,38 @@ public class ConfigurationHandler
 		new YAMLDataOutput().save(c.getConfiguration(), config);
 		toFields(c);
 		c.onReadConfig();
+	}
+	
+	/**
+	 * Handle saving configs
+	 * 
+	 * @param base
+	 *            the base directory
+	 * @param c
+	 *            the configurable object
+	 * @throws IOException
+	 *             1337
+	 */
+	public static void save(File base, Configurable c) throws IOException
+	{
+		File config = new File(base, c.getCodeName() + ".yml");
+		
+		if(!config.getParentFile().exists())
+		{
+			config.getParentFile().mkdirs();
+		}
+		
+		if(!config.exists())
+		{
+			config.createNewFile();
+		}
+		
+		if(config.isDirectory())
+		{
+			throw new IOException("Cannot save config (it's a folder)");
+		}
+		
+		fromFields(c);
+		new YAMLDataOutput().save(c.getConfiguration(), config);
 	}
 }
