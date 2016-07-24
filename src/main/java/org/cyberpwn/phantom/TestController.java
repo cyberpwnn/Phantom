@@ -126,7 +126,7 @@ public class TestController extends Controller
 				}
 			}
 		});
-				
+		
 		tests.put("gui-test", new Runnable()
 		{
 			@Override
