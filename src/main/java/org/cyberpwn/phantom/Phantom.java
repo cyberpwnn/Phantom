@@ -41,21 +41,49 @@ public class Phantom extends PhantomPlugin
 		
 	}
 	
+	/**
+	 * Schedule an iterator to be run
+	 * 
+	 * @param channel
+	 *            the channel executor name
+	 * @param it
+	 *            the iterator
+	 */
 	public static void schedule(String channel, ExecutiveIterator<?> it)
 	{
 		instance.channeledExecutivePoolController.fire(channel, it);
 	}
 	
+	/**
+	 * Schedule an iterator to be run on the default scheduled executor
+	 * 
+	 * @param it
+	 *            the iterator
+	 */
 	public static void schedule(ExecutiveIterator<?> it)
 	{
 		instance.channeledExecutivePoolController.fire("default", it);
 	}
 	
+	/**
+	 * Queue a notification
+	 * 
+	 * @param p
+	 *            the player
+	 * @param n
+	 *            the notification
+	 */
 	public static void queueNotification(Player p, Notification n)
 	{
 		instance.notificationController.queue(p, n);
 	}
 	
+	/**
+	 * Schedule a notificiation to be played to everyone
+	 * 
+	 * @param n
+	 *            the notificiation
+	 */
 	public static void queueNotification(Notification n)
 	{
 		instance.notificationController.queue(n);
