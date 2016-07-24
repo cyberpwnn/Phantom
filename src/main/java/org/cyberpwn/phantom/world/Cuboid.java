@@ -17,6 +17,7 @@ import org.bukkit.material.MaterialData;
 
 /**
  * Cuboids
+ * 
  * @author cyberpwn
  *
  */
@@ -51,6 +52,14 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 		z2 = Math.max(l1.getBlockZ(), l2.getBlockZ());
 	}
 	
+	/**
+	 * Set the locations
+	 * 
+	 * @param l1
+	 *            a
+	 * @param l2
+	 *            b
+	 */
 	public void set(Location l1, Location l2)
 	{
 		x1 = Math.min(l1.getBlockX(), l2.getBlockX());
@@ -708,7 +717,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	 */
 	@Deprecated
 	public void fill(int blockId, byte data)
-	{		
+	{
 		for(Block b : this)
 		{
 			b.setTypeIdAndData(blockId, data, false);
