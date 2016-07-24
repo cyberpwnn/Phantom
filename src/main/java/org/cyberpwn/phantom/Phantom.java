@@ -3,7 +3,9 @@ package org.cyberpwn.phantom;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
+import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 
 /**
@@ -17,6 +19,7 @@ public class Phantom extends PhantomPlugin
 	private static Phantom instance;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
+	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	
 	public void enable()
@@ -24,10 +27,12 @@ public class Phantom extends PhantomPlugin
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		developmentController = new DevelopmentController(this);
+		notificationController = new NotificationController(this);
 		
 		register(developmentController);
 		register(testController);
 		register(channeledExecutivePoolController);
+		register(notificationController);
 		instance = this;
 	}
 	
@@ -44,6 +49,16 @@ public class Phantom extends PhantomPlugin
 	public static void schedule(ExecutiveIterator<?> it)
 	{
 		instance.channeledExecutivePoolController.fire("default", it);
+	}
+	
+	public static void queueNotification(Player p, Notification n)
+	{
+		instance.notificationController.queue(p, n);
+	}
+	
+	public static void queueNotification(Notification n)
+	{
+		instance.notificationController.queue(n);
 	}
 	
 	@Override
