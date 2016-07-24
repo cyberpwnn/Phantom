@@ -43,6 +43,11 @@ public class YAMLDataInput extends DataInput
 				cluster.set(i, fc.getInt(i));
 			}
 			
+			else if(fc.isLong(i))
+			{
+				cluster.set(i, fc.getLong(i));
+			}
+			
 			else if(fc.isDouble(i))
 			{
 				cluster.set(i, fc.getDouble(i));
