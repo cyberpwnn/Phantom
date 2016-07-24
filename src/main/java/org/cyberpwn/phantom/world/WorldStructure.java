@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GMap;
 
 /**
- * Structure of world artifacts
+ * Structure of world artifacts which could internest itself
  * 
  * @author cyberpwn
  *
@@ -17,12 +17,32 @@ public class WorldStructure implements Artifact
 	private Cuboid cuboid;
 	private Boolean built;
 	
+	/**
+	 * The world structure creation
+	 * 
+	 * @param location
+	 *            the location
+	 */
 	public WorldStructure(Location location)
 	{
 		this.location = location;
 		this.cuboid = new Cuboid(location);
 		this.built = false;
 		this.artifacts = new GMap<Vector, Artifact>();
+	}
+	
+	/**
+	 * Add an artifact to this artifact structure, vector determining relative
+	 * position from the super-position
+	 * 
+	 * @param a
+	 *            the artifact
+	 * @param v
+	 *            the vector
+	 */
+	public void add(Artifact a, Vector v)
+	{
+		artifacts.put(v, a);
 	}
 	
 	@Override

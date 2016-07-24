@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 /**
- * World artifact
+ * World artifact 
  * 
  * @author cyberpwn
  *
@@ -18,6 +18,11 @@ public class WorldArtifact implements Artifact
 	private Schematic ghost;
 	private Boolean built;
 	
+	/**
+	 * Make a world artifact at a location
+	 * @param location the location
+	 * @param schematic the schematics
+	 */
 	public WorldArtifact(Location location, Schematic schematic)
 	{
 		this.location = location;
