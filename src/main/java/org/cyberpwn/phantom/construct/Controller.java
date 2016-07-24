@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
+import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
 
@@ -113,6 +116,16 @@ public class Controller implements Controllable
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void queueNotification(Player p, Notification n)
+	{
+		Phantom.queueNotification(p, n);
+	}
+	
+	public void queueNotification(Notification n)
+	{
+		Phantom.queueNotification(n);
 	}
 	
 	@Override
