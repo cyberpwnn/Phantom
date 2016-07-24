@@ -4,6 +4,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+/**
+ * Allows you to wrap either objects or more folders of wrappers into one
+ * audible object allowing multiple sounds at different pitches and volumes be
+ * played with one object
+ * 
+ * @author cyberpwn
+ *
+ */
 public interface Audible
 {
 	/**
