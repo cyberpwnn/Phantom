@@ -90,6 +90,31 @@ public class Controller implements Controllable
 		}
 	}
 	
+	public void saveCluster(Configurable c)
+	{
+		saveCluster(c, null);
+	}
+	
+	public void saveCluster(Configurable c, String category)
+	{
+		File base = getPlugin().getDataFolder();
+		
+		if(category != null)
+		{
+			base = new File(base, category);
+		}
+		
+		try
+		{
+			ConfigurationHandler.save(base, c);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void register(Controller c)
 	{
