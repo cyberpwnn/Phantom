@@ -18,6 +18,12 @@ public class Schematic
 	private Dimension dimension;
 	private MaterialBlock[][][] schematic;
 	
+	/**
+	 * Make a schematic out of a dimension
+	 * 
+	 * @param dimension
+	 *            the dimension
+	 */
 	public Schematic(Dimension dimension)
 	{
 		this.dimension = dimension;
@@ -35,6 +41,11 @@ public class Schematic
 		}
 	}
 	
+	/**
+	 * Get a list of all material blocks within this schematic
+	 * 
+	 * @return the list
+	 */
 	public GList<MaterialBlock> toList()
 	{
 		GList<MaterialBlock> md = new GList<MaterialBlock>();
@@ -53,11 +64,22 @@ public class Schematic
 		return md;
 	}
 	
+	/**
+	 * Iterate through the blocks
+	 * 
+	 * @return
+	 */
 	public Iterator<MaterialBlock> iterator()
 	{
 		return toList().iterator();
 	}
 	
+	/**
+	 * Apply data from this schematic to the world at a given location.
+	 * 
+	 * @param location
+	 *            the location
+	 */
 	@SuppressWarnings("deprecation")
 	public void apply(Location location)
 	{
@@ -76,6 +98,12 @@ public class Schematic
 		}
 	}
 	
+	/**
+	 * Read data into the schematic from the given location.
+	 * 
+	 * @param location
+	 *            the location
+	 */
 	public void read(Location location)
 	{
 		for(int i = 0; i < dimension.getWidth(); i++)
@@ -91,6 +119,12 @@ public class Schematic
 		}
 	}
 	
+	/**
+	 * Clear the schematic
+	 * 
+	 * @param mb
+	 *            give a type of block to clear it with
+	 */
 	public void clear(MaterialBlock mb)
 	{
 		for(int i = 0; i < dimension.getWidth(); i++)
@@ -105,6 +139,22 @@ public class Schematic
 		}
 	}
 	
+	/**
+	 * Set data to the schematic. Make sure the xyz coords are within 0,0,0, and
+	 * your dimension supplied width,height,depth. These arent actual locations
+	 * in a world.
+	 * 
+	 * @param x
+	 *            the x (RELATIVE)
+	 * @param y
+	 *            the y (RELATIVE)
+	 * @param z
+	 *            the z (RELATIVE)
+	 * @param material
+	 *            the type
+	 * @param data
+	 *            the metadata (0)
+	 */
 	public void set(int x, int y, int z, Material material, Byte data)
 	{
 		schematic[x][y][z] = new MaterialBlock();
