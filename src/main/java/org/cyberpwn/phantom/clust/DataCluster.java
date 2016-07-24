@@ -25,7 +25,7 @@ public class DataCluster
 	 */
 	public enum ClusterDataType
 	{
-		INTEGER, DOUBLE, BOOLEAN, STRING, STRING_LIST;
+		INTEGER, DOUBLE, BOOLEAN, STRING, STRING_LIST, LONG;
 	}
 	
 	private Map<String, Cluster> data;
@@ -208,6 +208,11 @@ public class DataCluster
 			set(key, (Integer) o);
 		}
 		
+		if(o instanceof Long)
+		{
+			set(key, (Long) o);
+		}
+		
 		else if(o instanceof String)
 		{
 			set(key, (String) o);
@@ -247,6 +252,19 @@ public class DataCluster
 	public void set(String key, int value)
 	{
 		data.put(key, new ClusterInteger(value));
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 */
+	public void set(String key, long value)
+	{
+		data.put(key, new ClusterLong(value));
 	}
 	
 	/**
@@ -312,6 +330,22 @@ public class DataCluster
 	 *            the comment (multiline supported with the \n symbol)
 	 */
 	public void set(String key, int value, String comment)
+	{
+		set(key, value);
+		comment(key, comment);
+	}
+	
+	/**
+	 * Sets the value to the path key defined
+	 * 
+	 * @param key
+	 *            the key used to access this value
+	 * @param value
+	 *            the value assigned to this key
+	 * @param comment
+	 *            the comment (multiline supported with the \n symbol)
+	 */
+	public void set(String key, long value, String comment)
 	{
 		set(key, value);
 		comment(key, comment);
@@ -393,6 +427,28 @@ public class DataCluster
 		if(contains(key) && getType(key).equals(ClusterDataType.BOOLEAN))
 		{
 			return ((ClusterBoolean) get(key)).get();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Get the object from the given path
+	 * 
+	 * @param key
+	 *            the given path
+	 * @return the object at the given path. Null if no path
+	 */
+	public Long getLong(String key)
+	{
+		if(contains(key) && getType(key).equals(ClusterDataType.LONG))
+		{
+			return ((ClusterLong)get(key)).get();
+		}
+		
+		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER))
+		{
+			return (long) ((ClusterInteger)get(key)).get();
 		}
 		
 		return null;
@@ -506,6 +562,11 @@ public class DataCluster
 		else if(getType(key).equals(ClusterDataType.INTEGER))
 		{
 			return getInt(key);
+		}
+		
+		else if(getType(key).equals(ClusterDataType.LONG))
+		{
+			return getLong(key);
 		}
 		
 		else if(getType(key).equals(ClusterDataType.DOUBLE))
