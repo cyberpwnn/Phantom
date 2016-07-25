@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.util;
 
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.world.Area;
 
@@ -93,21 +92,6 @@ public class M
 		{
 			doubles.remove(0);
 		}
-	}
-	
-	/**
-	 * Get a speed value from a vector (velocity)
-	 * 
-	 * @param v
-	 *            the vector
-	 * @return the speed
-	 */
-	public static double getSpeed(Vector v)
-	{
-		Vector vi = new Vector(0, 0, 0);
-		Vector vt = new Vector(0, 0, 0).add(v);
-		
-		return vi.distance(vt);
 	}
 	
 	/**
