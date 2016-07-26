@@ -3,6 +3,7 @@ package org.cyberpwn.phantom.construct;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
@@ -46,8 +47,30 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		start();
 		
 		registerTicked(this);
-		
+		Phantom.instance().registerPlugin(this);
 		d.s("Started");
+	}
+	
+	public GList<Controllable> getAllControllers()
+	{
+		return getAllControllers(this);
+	}
+	
+	private GList<Controllable> getAllControllers(Controllable cx)
+	{
+		GList<Controllable> c = new GList<Controllable>();
+		
+		for(Controllable i : cx.getControllers())
+		{
+			if(!i.getControllers().isEmpty())
+			{
+				c.add(getAllControllers(i));
+			}
+			
+			c.add(i);
+		}
+		
+		return c;
 	}
 	
 	public void registerTicked(Controllable c)

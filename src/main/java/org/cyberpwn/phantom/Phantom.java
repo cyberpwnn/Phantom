@@ -4,9 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.construct.ControllablePlugin;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.gui.Notification;
+import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
+import org.cyberpwn.phantom.util.C;
 
 /**
  * The Phantom Plugin object.
@@ -21,6 +24,7 @@ public class Phantom extends PhantomPlugin
 	private TestController testController;
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
+	private GList<ControllablePlugin> plugins;
 	
 	public void enable()
 	{
@@ -28,6 +32,7 @@ public class Phantom extends PhantomPlugin
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		developmentController = new DevelopmentController(this);
 		notificationController = new NotificationController(this);
+		plugins = new GList<ControllablePlugin>();
 		
 		register(developmentController);
 		register(testController);
@@ -39,6 +44,11 @@ public class Phantom extends PhantomPlugin
 	public void disable()
 	{
 		
+	}
+	
+	public void registerPlugin(ControllablePlugin c)
+	{
+		plugins.add(c);
 	}
 	
 	/**
@@ -94,20 +104,33 @@ public class Phantom extends PhantomPlugin
 	{
 		if(command.getName().equals("phantom"))
 		{
-			if(args.length > 0)
+			if(sender.hasPermission("phantom.developer"))
 			{
-				if(args[0].equalsIgnoreCase("test") || args[0].equalsIgnoreCase("t"))
+				if(args.length > 0)
 				{
-					if(args.length == 2)
+					if(args[0].equalsIgnoreCase("test") || args[0].equalsIgnoreCase("t"))
 					{
-						testController.execute(sender, args[1]);
-					}
-					
-					else
-					{
-						sender.sendMessage(ChatColor.GREEN + testController.getTests().k().toString(", "));
+						if(args.length == 2)
+						{
+							testController.execute(sender, args[1]);
+						}
+						
+						else
+						{
+							sender.sendMessage(ChatColor.GREEN + testController.getTests().k().toString(", "));
+						}
 					}
 				}
+				
+				else
+				{
+					sender.sendMessage(C.DARK_GRAY + "Phantom " + C.LIGHT_PURPLE + "v" + getDescription().getVersion());
+				}
+			}
+			
+			else
+			{
+				sender.sendMessage(C.DARK_GRAY + "Phantom " + C.LIGHT_PURPLE + "v" + getDescription().getVersion());
 			}
 		}
 		

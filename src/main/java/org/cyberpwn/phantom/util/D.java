@@ -45,7 +45,7 @@ public class D
 			msg = msg + i;
 		}
 		
-		String tmg = ChatColor.AQUA + type.toString() + ": " + ChatColor.GOLD + "/" + name + ": " + ChatColor.WHITE + msg;
+		String tmg = C.DARK_GRAY + "/" + name + ": " + ChatColor.WHITE + msg;
 		Bukkit.getServer().getConsoleSender().sendMessage(tmg);
 	}
 	
