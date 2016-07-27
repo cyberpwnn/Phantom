@@ -35,14 +35,17 @@ import org.cyberpwn.phantom.util.ReflectionUtils.PackageType;
  * <ul>
  * <li>@microgeek (original idea, names and packet parameters)
  * <li>@ShadyPotato (1.8 names, ids and packet parameters)
- * <li>@RingOfStorms (specific particle direction)
+ * <li>@RingOfStorms (particle behavior)
+ * <li>@Cybermaxke (particle behavior)
+ * <li>@JamieSinn (hosting a jenkins server and documentation for
+ * particleeffect)
  * </ul>
  * <p>
  * <i>It would be nice if you provide credit to me if you use this class in a
  * published project</i>
- *
+ * 
  * @author DarkBlade12
- * @version 1.6
+ * @version 1.7
  */
 public enum ParticleEffect
 {
@@ -54,7 +57,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	EXPLOSION_NORMAL("explode", 0, -1),
+	EXPLOSION_NORMAL("explode", 0, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by exploding ghast fireballs and
 	 * wither skulls:
@@ -80,7 +83,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	FIREWORKS_SPARK("fireworksSpark", 3, -1),
+	FIREWORKS_SPARK("fireworksSpark", 3, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by swimming entities and arrows in
 	 * water:
@@ -90,7 +93,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	WATER_BUBBLE("bubble", 4, -1, false, true),
+	WATER_BUBBLE("bubble", 4, -1, ParticleProperty.DIRECTIONAL, ParticleProperty.REQUIRES_WATER),
 	/**
 	 * A particle effect which is displayed by swimming entities and shaking
 	 * wolves:
@@ -99,7 +102,7 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	WATER_SPLASH("splash", 5, -1),
+	WATER_SPLASH("splash", 5, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed on water when fishing:
 	 * <ul>
@@ -108,7 +111,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	WATER_WAKE("wake", 6, 7),
+	WATER_WAKE("wake", 6, 7, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by water:
 	 * <ul>
@@ -116,7 +119,7 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	SUSPENDED("suspended", 7, -1, false, true),
+	SUSPENDED("suspended", 7, -1, ParticleProperty.REQUIRES_WATER),
 	/**
 	 * A particle effect which is displayed by air when close to bedrock and the
 	 * in the void:
@@ -125,7 +128,7 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	SUSPENDED_DEPTH("depthSuspend", 8, -1),
+	SUSPENDED_DEPTH("depthSuspend", 8, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed when landing a critical hit and by
 	 * arrows:
@@ -135,7 +138,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	CRIT("crit", 9, -1),
+	CRIT("crit", 9, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed when landing a hit with an enchanted
 	 * weapon:
@@ -145,7 +148,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	CRIT_MAGIC("magicCrit", 10, -1),
+	CRIT_MAGIC("magicCrit", 10, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by primed tnt, torches, droppers,
 	 * dispensers, end portals, brewing stands and monster spawners:
@@ -155,7 +158,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	SMOKE_NORMAL("smoke", 11, -1),
+	SMOKE_NORMAL("smoke", 11, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by fire, minecarts with furnace and
 	 * blazes:
@@ -165,7 +168,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	SMOKE_LARGE("largesmoke", 12, -1),
+	SMOKE_LARGE("largesmoke", 12, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed when splash potions or bottles o'
 	 * enchanting hit something:
@@ -173,6 +176,8 @@ public enum ParticleEffect
 	 * <li>It looks like a white swirl
 	 * <li>The speed value causes the particle to only move upwards when set to
 	 * 0
+	 * <li>Only the motion on the y-axis can be controlled, the motion on the x-
+	 * and z-axis are multiplied by 0.1 when setting the values to 0
 	 * </ul>
 	 */
 	SPELL("spell", 13, -1),
@@ -183,6 +188,8 @@ public enum ParticleEffect
 	 * <li>It looks like a white cross
 	 * <li>The speed value causes the particle to only move upwards when set to
 	 * 0
+	 * <li>Only the motion on the y-axis can be controlled, the motion on the x-
+	 * and z-axis are multiplied by 0.1 when setting the values to 0
 	 * </ul>
 	 */
 	SPELL_INSTANT("instantSpell", 14, -1),
@@ -196,7 +203,7 @@ public enum ParticleEffect
 	 * when decreasing the speed
 	 * </ul>
 	 */
-	SPELL_MOB("mobSpell", 15, -1),
+	SPELL_MOB("mobSpell", 15, -1, ParticleProperty.COLORABLE),
 	/**
 	 * A particle effect which is displayed by entities with active potion
 	 * effects applied through a beacon:
@@ -208,13 +215,15 @@ public enum ParticleEffect
 	 * when decreasing the speed
 	 * </ul>
 	 */
-	SPELL_MOB_AMBIENT("mobSpellAmbient", 16, -1),
+	SPELL_MOB_AMBIENT("mobSpellAmbient", 16, -1, ParticleProperty.COLORABLE),
 	/**
 	 * A particle effect which is displayed by witches:
 	 * <ul>
 	 * <li>It looks like a purple cross
 	 * <li>The speed value causes the particle to only move upwards when set to
 	 * 0
+	 * <li>Only the motion on the y-axis can be controlled, the motion on the x-
+	 * and z-axis are multiplied by 0.1 when setting the values to 0
 	 * </ul>
 	 */
 	SPELL_WITCH("witchMagic", 17, -1),
@@ -251,7 +260,7 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	VILLAGER_HAPPY("happyVillager", 21, -1),
+	VILLAGER_HAPPY("happyVillager", 21, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by mycelium:
 	 * <ul>
@@ -259,7 +268,7 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	TOWN_AURA("townaura", 22, -1),
+	TOWN_AURA("townaura", 22, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by note blocks:
 	 * <ul>
@@ -267,7 +276,7 @@ public enum ParticleEffect
 	 * <li>The speed value causes the particle to be colored green when set to 0
 	 * </ul>
 	 */
-	NOTE("note", 23, -1),
+	NOTE("note", 23, -1, ParticleProperty.COLORABLE),
 	/**
 	 * A particle effect which is displayed by nether portals, endermen, ender
 	 * pearls, eyes of ender, ender chests and dragon eggs:
@@ -276,7 +285,7 @@ public enum ParticleEffect
 	 * <li>The speed value influences the spread of this particle effect
 	 * </ul>
 	 */
-	PORTAL("portal", 24, -1),
+	PORTAL("portal", 24, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by enchantment tables which are
 	 * nearby bookshelves:
@@ -285,7 +294,7 @@ public enum ParticleEffect
 	 * <li>The speed value influences the spread of this particle effect
 	 * </ul>
 	 */
-	ENCHANTMENT_TABLE("enchantmenttable", 25, -1),
+	ENCHANTMENT_TABLE("enchantmenttable", 25, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by torches, active furnaces, magma
 	 * cubes and monster spawners:
@@ -295,7 +304,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	FLAME("flame", 26, -1),
+	FLAME("flame", 26, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by lava:
 	 * <ul>
@@ -320,7 +329,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	CLOUD("cloud", 29, -1),
+	CLOUD("cloud", 29, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by redstone ore, powered redstone,
 	 * redstone torches and redstone repeaters:
@@ -329,7 +338,7 @@ public enum ParticleEffect
 	 * <li>The speed value causes the particle to be colored red when set to 0
 	 * </ul>
 	 */
-	REDSTONE("reddust", 30, -1),
+	REDSTONE("reddust", 30, -1, ParticleProperty.COLORABLE),
 	/**
 	 * A particle effect which is displayed when snowballs hit a block:
 	 * <ul>
@@ -346,7 +355,7 @@ public enum ParticleEffect
 	 * off
 	 * </ul>
 	 */
-	SNOW_SHOVEL("snowshovel", 32, -1),
+	SNOW_SHOVEL("snowshovel", 32, -1, ParticleProperty.DIRECTIONAL),
 	/**
 	 * A particle effect which is displayed by slimes:
 	 * <ul>
@@ -378,7 +387,7 @@ public enum ParticleEffect
 	 * <li>It looks like a little piece with an item texture
 	 * </ul>
 	 */
-	ITEM_CRACK("iconcrack", 36, -1, true),
+	ITEM_CRACK("iconcrack", 36, -1, ParticleProperty.DIRECTIONAL, ParticleProperty.REQUIRES_DATA),
 	/**
 	 * A particle effect which is displayed when breaking blocks or sprinting:
 	 * <ul>
@@ -386,14 +395,14 @@ public enum ParticleEffect
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	BLOCK_CRACK("blockcrack", 37, -1, true),
+	BLOCK_CRACK("blockcrack", 37, -1, ParticleProperty.REQUIRES_DATA),
 	/**
 	 * A particle effect which is displayed when falling:
 	 * <ul>
 	 * <li>It looks like a little piece with a block texture
 	 * </ul>
 	 */
-	BLOCK_DUST("blockdust", 38, 7, true),
+	BLOCK_DUST("blockdust", 38, 7, ParticleProperty.DIRECTIONAL, ParticleProperty.REQUIRES_DATA),
 	/**
 	 * A particle effect which is displayed when rain hits the ground:
 	 * <ul>
@@ -414,19 +423,17 @@ public enum ParticleEffect
 	 * <ul>
 	 * <li>It looks like the shape of the elder guardian
 	 * <li>The speed value has no influence on this particle effect
+	 * <li>The offset values have no influence on this particle effect
 	 * </ul>
 	 */
 	MOB_APPEARANCE("mobappearance", 41, 8);
 	
-	private static final int LONG_DISTANCE = 16;
-	private static final int LONG_DISTANCE_SQUARED = LONG_DISTANCE * LONG_DISTANCE;
 	private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
 	private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
 	private final String name;
 	private final int id;
 	private final int requiredVersion;
-	private final boolean requiresData;
-	private final boolean requiresWater;
+	private final List<ParticleProperty> properties;
 	
 	// Initialize map for quick name and id lookup
 	static
@@ -440,67 +447,27 @@ public enum ParticleEffect
 	
 	/**
 	 * Construct a new particle effect
-	 *
+	 * 
 	 * @param name
 	 *            Name of this particle effect
 	 * @param id
 	 *            Id of this particle effect
 	 * @param requiredVersion
 	 *            Version which is required (1.x)
-	 * @param requiresData
-	 *            Indicates whether additional data is required for this
-	 *            particle effect
-	 * @param requiresWater
-	 *            Indicates whether water is required for this particle effect
-	 *            to display properly
+	 * @param properties
+	 *            Properties of this particle effect
 	 */
-	private ParticleEffect(String name, int id, int requiredVersion, boolean requiresData, boolean requiresWater)
+	private ParticleEffect(String name, int id, int requiredVersion, ParticleProperty... properties)
 	{
 		this.name = name;
 		this.id = id;
 		this.requiredVersion = requiredVersion;
-		this.requiresData = requiresData;
-		this.requiresWater = requiresWater;
-	}
-	
-	/**
-	 * Construct a new particle effect with {@link #requiresWater} set to
-	 * <code>false</code>
-	 *
-	 * @param name
-	 *            Name of this particle effect
-	 * @param id
-	 *            Id of this particle effect
-	 * @param requiredVersion
-	 *            Version which is required (1.x)
-	 * @param requiresData
-	 *            Indicates whether additional data is required for this
-	 *            particle effect
-	 */
-	private ParticleEffect(String name, int id, int requiredVersion, boolean requiresData)
-	{
-		this(name, id, requiredVersion, requiresData, false);
-	}
-	
-	/**
-	 * Construct a new particle effect with {@link #requiresData} and
-	 * {@link #requiresWater} set to <code>false</code>
-	 *
-	 * @param name
-	 *            Name of this particle effect
-	 * @param id
-	 *            Id of this particle effect
-	 * @param requiredVersion
-	 *            Version which is required (1.x)
-	 */
-	private ParticleEffect(String name, int id, int requiredVersion)
-	{
-		this(name, id, requiredVersion, false);
+		this.properties = Arrays.asList(properties);
 	}
 	
 	/**
 	 * Returns the name of this particle effect
-	 *
+	 * 
 	 * @return The name
 	 */
 	public String getName()
@@ -510,7 +477,7 @@ public enum ParticleEffect
 	
 	/**
 	 * Returns the id of this particle effect
-	 *
+	 * 
 	 * @return The id
 	 */
 	public int getId()
@@ -520,7 +487,7 @@ public enum ParticleEffect
 	
 	/**
 	 * Returns the required version for this particle effect (1.x)
-	 *
+	 * 
 	 * @return The required version
 	 */
 	public int getRequiredVersion()
@@ -529,30 +496,19 @@ public enum ParticleEffect
 	}
 	
 	/**
-	 * Determine if additional data is required for this particle effect
-	 *
-	 * @return Whether additional data is required or not
+	 * Determine if this particle effect has a specific property
+	 * 
+	 * @return Whether it has the property or not
 	 */
-	public boolean getRequiresData()
+	public boolean hasProperty(ParticleProperty property)
 	{
-		return requiresData;
-	}
-	
-	/**
-	 * Determine if water is required for this particle effect to display
-	 * properly
-	 *
-	 * @return Whether water is required or not
-	 */
-	public boolean getRequiresWater()
-	{
-		return requiresWater;
+		return properties.contains(property);
 	}
 	
 	/**
 	 * Determine if this particle effect is supported by your current server
 	 * version
-	 *
+	 * 
 	 * @return Whether the particle effect is supported or not
 	 */
 	public boolean isSupported()
@@ -566,7 +522,7 @@ public enum ParticleEffect
 	
 	/**
 	 * Returns the particle effect with the given name
-	 *
+	 * 
 	 * @param name
 	 *            Name of the particle effect
 	 * @return The particle effect
@@ -586,7 +542,7 @@ public enum ParticleEffect
 	
 	/**
 	 * Returns the particle effect with the given id
-	 *
+	 * 
 	 * @param id
 	 *            Id of the particle effect
 	 * @return The particle effect
@@ -606,7 +562,7 @@ public enum ParticleEffect
 	
 	/**
 	 * Determine if water is at a certain location
-	 *
+	 * 
 	 * @param location
 	 *            Location to check
 	 * @return Whether water is at this location or not
@@ -619,27 +575,30 @@ public enum ParticleEffect
 	
 	/**
 	 * Determine if the distance between @param location and one of the players
-	 * exceeds LONG_DISTANCE
-	 *
+	 * exceeds 256
+	 * 
 	 * @param location
 	 *            Location to check
-	 * @return Whether the distance exceeds 16 or not
+	 * @return Whether the distance exceeds 256 or not
 	 */
 	private static boolean isLongDistance(Location location, List<Player> players)
 	{
+		String world = location.getWorld().getName();
 		for(Player player : players)
 		{
-			if(player.getLocation().distanceSquared(location) > LONG_DISTANCE_SQUARED)
+			Location playerLocation = player.getLocation();
+			if(!world.equals(playerLocation.getWorld().getName()) || playerLocation.distanceSquared(location) < 65536)
 			{
-				return true;
+				continue;
 			}
+			return true;
 		}
 		return false;
 	}
 	
 	/**
 	 * Determine if the data type for a particle effect is correct
-	 *
+	 * 
 	 * @param effect
 	 *            Particle effect
 	 * @param data
@@ -648,13 +607,27 @@ public enum ParticleEffect
 	 */
 	private static boolean isDataCorrect(ParticleEffect effect, ParticleData data)
 	{
-		return ((effect == BLOCK_CRACK || effect == BLOCK_DUST) && data instanceof BlockData) || effect == ITEM_CRACK && data instanceof ItemData;
+		return ((effect == BLOCK_CRACK || effect == BLOCK_DUST) && data instanceof BlockData) || (effect == ITEM_CRACK && data instanceof ItemData);
+	}
+	
+	/**
+	 * Determine if the color type for a particle effect is correct
+	 * 
+	 * @param effect
+	 *            Particle effect
+	 * @param color
+	 *            Particle color
+	 * @return Whether the color type is correct or not
+	 */
+	private static boolean isColorCorrect(ParticleEffect effect, ParticleColor color)
+	{
+		return ((effect == SPELL_MOB || effect == SPELL_MOB_AMBIENT || effect == REDSTONE) && color instanceof OrdinaryColor) || (effect == NOTE && color instanceof NoteColor);
 	}
 	
 	/**
 	 * Displays a particle effect which is only visible for all players within a
 	 * certain range in the world of @param center
-	 *
+	 * 
 	 * @param offsetX
 	 *            Maximum distance particles can fly away from the center on the
 	 *            x-axis
@@ -688,21 +661,21 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(requiresData)
+		if(hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect requires additional data");
 		}
-		if(requiresWater && !isWater(center))
+		if(hasProperty(ParticleProperty.REQUIRES_WATER) && !isWater(center))
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 16, null).sendTo(center, range);
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, null).sendTo(center, range);
 	}
 	
 	/**
 	 * Displays a particle effect which is only visible for the specified
 	 * players
-	 *
+	 * 
 	 * @param offsetX
 	 *            Maximum distance particles can fly away from the center on the
 	 *            x-axis
@@ -736,11 +709,11 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(requiresData)
+		if(hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect requires additional data");
 		}
-		if(requiresWater && !isWater(center))
+		if(hasProperty(ParticleProperty.REQUIRES_WATER) && !isWater(center))
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
@@ -750,7 +723,7 @@ public enum ParticleEffect
 	/**
 	 * Displays a particle effect which is only visible for the specified
 	 * players
-	 *
+	 * 
 	 * @param offsetX
 	 *            Maximum distance particles can fly away from the center on the
 	 *            x-axis
@@ -786,7 +759,7 @@ public enum ParticleEffect
 	 * Displays a single particle which flies into a determined direction and is
 	 * only visible for all players within a certain range in the world
 	 * of @param center
-	 *
+	 * 
 	 * @param direction
 	 *            Direction of the particle
 	 * @param speed
@@ -800,9 +773,10 @@ public enum ParticleEffect
 	 * @throws ParticleDataException
 	 *             If the particle effect requires additional data
 	 * @throws IllegalArgumentException
-	 *             If the particle effect requires water and none is at the
-	 *             center location
-	 * @see ParticlePacket
+	 *             If the particle effect is not directional or if it requires
+	 *             water and none is at the center location
+	 * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float,
+	 *      boolean, ParticleData)
 	 * @see ParticlePacket#sendTo(Location, double)
 	 */
 	public void display(Vector direction, float speed, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
@@ -811,21 +785,25 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(requiresData)
+		if(hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect requires additional data");
 		}
-		if(requiresWater && !isWater(center))
+		if(!hasProperty(ParticleProperty.DIRECTIONAL))
+		{
+			throw new IllegalArgumentException("This particle effect is not directional");
+		}
+		if(hasProperty(ParticleProperty.REQUIRES_WATER) && !isWater(center))
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticlePacket(this, direction, speed, range > LONG_DISTANCE, null).sendTo(center, range);
+		new ParticlePacket(this, direction, speed, range > 256, null).sendTo(center, range);
 	}
 	
 	/**
 	 * Displays a single particle which flies into a determined direction and is
 	 * only visible for the specified players
-	 *
+	 * 
 	 * @param direction
 	 *            Direction of the particle
 	 * @param speed
@@ -839,9 +817,10 @@ public enum ParticleEffect
 	 * @throws ParticleDataException
 	 *             If the particle effect requires additional data
 	 * @throws IllegalArgumentException
-	 *             If the particle effect requires water and none is at the
-	 *             center location
-	 * @see ParticlePacket
+	 *             If the particle effect is not directional or if it requires
+	 *             water and none is at the center location
+	 * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float,
+	 *      boolean, ParticleData)
 	 * @see ParticlePacket#sendTo(Location, List)
 	 */
 	public void display(Vector direction, float speed, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
@@ -850,11 +829,15 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(requiresData)
+		if(hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect requires additional data");
 		}
-		if(requiresWater && !isWater(center))
+		if(!hasProperty(ParticleProperty.DIRECTIONAL))
+		{
+			throw new IllegalArgumentException("This particle effect is not directional");
+		}
+		if(hasProperty(ParticleProperty.REQUIRES_WATER) && !isWater(center))
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
@@ -864,7 +847,7 @@ public enum ParticleEffect
 	/**
 	 * Displays a single particle which flies into a determined direction and is
 	 * only visible for the specified players
-	 *
+	 * 
 	 * @param direction
 	 *            Direction of the particle
 	 * @param speed
@@ -878,8 +861,8 @@ public enum ParticleEffect
 	 * @throws ParticleDataException
 	 *             If the particle effect requires additional data
 	 * @throws IllegalArgumentException
-	 *             If the particle effect requires water and none is at the
-	 *             center location
+	 *             If the particle effect is not directional or if it requires
+	 *             water and none is at the center location
 	 * @see #display(Vector, float, Location, List)
 	 */
 	public void display(Vector direction, float speed, Location center, Player... players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
@@ -888,10 +871,104 @@ public enum ParticleEffect
 	}
 	
 	/**
+	 * Displays a single particle which is colored and only visible for all
+	 * players within a certain range in the world of @param center
+	 * 
+	 * @param color
+	 *            Color of the particle
+	 * @param center
+	 *            Center location of the effect
+	 * @param range
+	 *            Range of the visibility
+	 * @throws ParticleVersionException
+	 *             If the particle effect is not supported by the server version
+	 * @throws ParticleColorException
+	 *             If the particle effect is not colorable or the color type is
+	 *             incorrect
+	 * @see ParticlePacket#ParticlePacket(ParticleEffect, ParticleColor,
+	 *      boolean)
+	 * @see ParticlePacket#sendTo(Location, double)
+	 */
+	public void display(ParticleColor color, Location center, double range) throws ParticleVersionException, ParticleColorException
+	{
+		if(!isSupported())
+		{
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if(!hasProperty(ParticleProperty.COLORABLE))
+		{
+			throw new ParticleColorException("This particle effect is not colorable");
+		}
+		if(!isColorCorrect(this, color))
+		{
+			throw new ParticleColorException("The particle color type is incorrect");
+		}
+		new ParticlePacket(this, color, range > 256).sendTo(center, range);
+	}
+	
+	/**
+	 * Displays a single particle which is colored and only visible for the
+	 * specified players
+	 * 
+	 * @param color
+	 *            Color of the particle
+	 * @param center
+	 *            Center location of the effect
+	 * @param players
+	 *            Receivers of the effect
+	 * @throws ParticleVersionException
+	 *             If the particle effect is not supported by the server version
+	 * @throws ParticleColorException
+	 *             If the particle effect is not colorable or the color type is
+	 *             incorrect
+	 * @see ParticlePacket#ParticlePacket(ParticleEffect, ParticleColor,
+	 *      boolean)
+	 * @see ParticlePacket#sendTo(Location, List)
+	 */
+	public void display(ParticleColor color, Location center, List<Player> players) throws ParticleVersionException, ParticleColorException
+	{
+		if(!isSupported())
+		{
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if(!hasProperty(ParticleProperty.COLORABLE))
+		{
+			throw new ParticleColorException("This particle effect is not colorable");
+		}
+		if(!isColorCorrect(this, color))
+		{
+			throw new ParticleColorException("The particle color type is incorrect");
+		}
+		new ParticlePacket(this, color, isLongDistance(center, players)).sendTo(center, players);
+	}
+	
+	/**
+	 * Displays a single particle which is colored and only visible for the
+	 * specified players
+	 * 
+	 * @param color
+	 *            Color of the particle
+	 * @param center
+	 *            Center location of the effect
+	 * @param players
+	 *            Receivers of the effect
+	 * @throws ParticleVersionException
+	 *             If the particle effect is not supported by the server version
+	 * @throws ParticleColorException
+	 *             If the particle effect is not colorable or the color type is
+	 *             incorrect
+	 * @see #display(ParticleColor, Location, List)
+	 */
+	public void display(ParticleColor color, Location center, Player... players) throws ParticleVersionException, ParticleColorException
+	{
+		display(color, center, Arrays.asList(players));
+	}
+	
+	/**
 	 * Displays a particle effect which requires additional data and is only
 	 * visible for all players within a certain range in the world of @param
 	 * center
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param offsetX
@@ -925,7 +1002,7 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(!requiresData)
+		if(!hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect does not require additional data");
 		}
@@ -933,13 +1010,13 @@ public enum ParticleEffect
 		{
 			throw new ParticleDataException("The particle data type is incorrect");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > LONG_DISTANCE, data).sendTo(center, range);
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, data).sendTo(center, range);
 	}
 	
 	/**
 	 * Displays a particle effect which requires additional data and is only
 	 * visible for the specified players
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param offsetX
@@ -973,7 +1050,7 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(!requiresData)
+		if(!hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect does not require additional data");
 		}
@@ -987,7 +1064,7 @@ public enum ParticleEffect
 	/**
 	 * Displays a particle effect which requires additional data and is only
 	 * visible for the specified players
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param offsetX
@@ -1024,7 +1101,7 @@ public enum ParticleEffect
 	 * Displays a single particle which requires additional data that flies into
 	 * a determined direction and is only visible for all players within a
 	 * certain range in the world of @param center
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param direction
@@ -1049,7 +1126,7 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(!requiresData)
+		if(!hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect does not require additional data");
 		}
@@ -1057,13 +1134,13 @@ public enum ParticleEffect
 		{
 			throw new ParticleDataException("The particle data type is incorrect");
 		}
-		new ParticlePacket(this, direction, speed, range > LONG_DISTANCE, data).sendTo(center, range);
+		new ParticlePacket(this, direction, speed, range > 256, data).sendTo(center, range);
 	}
 	
 	/**
 	 * Displays a single particle which requires additional data that flies into
 	 * a determined direction and is only visible for the specified players
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param direction
@@ -1088,7 +1165,7 @@ public enum ParticleEffect
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		if(!requiresData)
+		if(!hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect does not require additional data");
 		}
@@ -1102,7 +1179,7 @@ public enum ParticleEffect
 	/**
 	 * Displays a single particle which requires additional data that flies into
 	 * a determined direction and is only visible for the specified players
-	 *
+	 * 
 	 * @param data
 	 *            Data of the effect
 	 * @param direction
@@ -1126,13 +1203,42 @@ public enum ParticleEffect
 	}
 	
 	/**
+	 * Represents the property of a particle effect
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the
+	 * same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.7
+	 */
+	public static enum ParticleProperty
+	{
+		/**
+		 * The particle effect requires water to be displayed
+		 */
+		REQUIRES_WATER,
+		/**
+		 * The particle effect requires block or item data to be displayed
+		 */
+		REQUIRES_DATA,
+		/**
+		 * The particle effect uses the offsets as direction values
+		 */
+		DIRECTIONAL,
+		/**
+		 * The particle effect uses the offsets as color values
+		 */
+		COLORABLE;
+	}
+	
+	/**
 	 * Represents the particle data for effects like
 	 * {@link ParticleEffect#ITEM_CRACK}, {@link ParticleEffect#BLOCK_CRACK} and
 	 * {@link ParticleEffect#BLOCK_DUST}
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.6
 	 */
@@ -1144,7 +1250,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Construct a new particle data
-		 *
+		 * 
 		 * @param material
 		 *            Material of the item/block
 		 * @param data
@@ -1155,12 +1261,12 @@ public enum ParticleEffect
 		{
 			this.material = material;
 			this.data = data;
-			this.packetData = new int[] {material.getId(), data};
+			this.packetData = new int[] { material.getId(), data };
 		}
 		
 		/**
 		 * Returns the material of this data
-		 *
+		 * 
 		 * @return The material
 		 */
 		public Material getMaterial()
@@ -1170,7 +1276,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Returns the data value of this data
-		 *
+		 * 
 		 * @return The data value
 		 */
 		public byte getData()
@@ -1180,7 +1286,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Returns the data as an int array for packet construction
-		 *
+		 * 
 		 * @return The data for the packet
 		 */
 		public int[] getPacketData()
@@ -1190,7 +1296,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Returns the data as a string for pre 1.8 versions
-		 *
+		 * 
 		 * @return The data string for the packet
 		 */
 		public String getPacketDataString()
@@ -1204,7 +1310,7 @@ public enum ParticleEffect
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.6
 	 */
@@ -1212,7 +1318,7 @@ public enum ParticleEffect
 	{
 		/**
 		 * Construct a new item data
-		 *
+		 * 
 		 * @param material
 		 *            Material of the item
 		 * @param data
@@ -1231,7 +1337,7 @@ public enum ParticleEffect
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.6
 	 */
@@ -1239,7 +1345,7 @@ public enum ParticleEffect
 	{
 		/**
 		 * Construct a new block data
-		 *
+		 * 
 		 * @param material
 		 *            Material of the block
 		 * @param data
@@ -1259,13 +1365,251 @@ public enum ParticleEffect
 	}
 	
 	/**
-	 * Represents a runtime exception that is thrown either if the displayed
-	 * particle effect requires data and has none or vice-versa or if the data
-	 * type is wrong
+	 * Represents the color for effects like {@link ParticleEffect#SPELL_MOB},
+	 * {@link ParticleEffect#SPELL_MOB_AMBIENT}, {@link ParticleEffect#REDSTONE}
+	 * and {@link ParticleEffect#NOTE}
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.7
+	 */
+	public static abstract class ParticleColor
+	{
+		/**
+		 * Returns the value for the offsetX field
+		 * 
+		 * @return The offsetX value
+		 */
+		public abstract float getValueX();
+		
+		/**
+		 * Returns the value for the offsetY field
+		 * 
+		 * @return The offsetY value
+		 */
+		public abstract float getValueY();
+		
+		/**
+		 * Returns the value for the offsetZ field
+		 * 
+		 * @return The offsetZ value
+		 */
+		public abstract float getValueZ();
+	}
+	
+	/**
+	 * Represents the color for effects like {@link ParticleEffect#SPELL_MOB},
+	 * {@link ParticleEffect#SPELL_MOB_AMBIENT} and {@link ParticleEffect#NOTE}
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the
+	 * same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.7
+	 */
+	public static final class OrdinaryColor extends ParticleColor
+	{
+		private final int red;
+		private final int green;
+		private final int blue;
+		
+		/**
+		 * Construct a new ordinary color
+		 * 
+		 * @param red
+		 *            Red value of the RGB format
+		 * @param green
+		 *            Green value of the RGB format
+		 * @param blue
+		 *            Blue value of the RGB format
+		 * @throws IllegalArgumentException
+		 *             If one of the values is lower than 0 or higher than 255
+		 */
+		public OrdinaryColor(int red, int green, int blue) throws IllegalArgumentException
+		{
+			if(red < 0)
+			{
+				throw new IllegalArgumentException("The red value is lower than 0");
+			}
+			if(red > 255)
+			{
+				throw new IllegalArgumentException("The red value is higher than 255");
+			}
+			this.red = red;
+			if(green < 0)
+			{
+				throw new IllegalArgumentException("The green value is lower than 0");
+			}
+			if(green > 255)
+			{
+				throw new IllegalArgumentException("The green value is higher than 255");
+			}
+			this.green = green;
+			if(blue < 0)
+			{
+				throw new IllegalArgumentException("The blue value is lower than 0");
+			}
+			if(blue > 255)
+			{
+				throw new IllegalArgumentException("The blue value is higher than 255");
+			}
+			this.blue = blue;
+		}
+		
+		/**
+		 * Construct a new ordinary color
+		 * 
+		 * @param color
+		 *            Bukkit color
+		 */
+		public OrdinaryColor(Color color)
+		{
+			this(color.getRed(), color.getGreen(), color.getBlue());
+		}
+		
+		/**
+		 * Returns the red value of the RGB format
+		 * 
+		 * @return The red value
+		 */
+		public int getRed()
+		{
+			return red;
+		}
+		
+		/**
+		 * Returns the green value of the RGB format
+		 * 
+		 * @return The green value
+		 */
+		public int getGreen()
+		{
+			return green;
+		}
+		
+		/**
+		 * Returns the blue value of the RGB format
+		 * 
+		 * @return The blue value
+		 */
+		public int getBlue()
+		{
+			return blue;
+		}
+		
+		/**
+		 * Returns the red value divided by 255
+		 * 
+		 * @return The offsetX value
+		 */
+		@Override
+		public float getValueX()
+		{
+			return (float) red / 255F;
+		}
+		
+		/**
+		 * Returns the green value divided by 255
+		 * 
+		 * @return The offsetY value
+		 */
+		@Override
+		public float getValueY()
+		{
+			return (float) green / 255F;
+		}
+		
+		/**
+		 * Returns the blue value divided by 255
+		 * 
+		 * @return The offsetZ value
+		 */
+		@Override
+		public float getValueZ()
+		{
+			return (float) blue / 255F;
+		}
+	}
+	
+	/**
+	 * Represents the color for the {@link ParticleEffect#NOTE} effect
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the
+	 * same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.7
+	 */
+	public static final class NoteColor extends ParticleColor
+	{
+		private final int note;
+		
+		/**
+		 * Construct a new note color
+		 * 
+		 * @param note
+		 *            Note id which determines color
+		 * @throws IllegalArgumentException
+		 *             If the note value is lower than 0 or higher than 24
+		 */
+		public NoteColor(int note) throws IllegalArgumentException
+		{
+			if(note < 0)
+			{
+				throw new IllegalArgumentException("The note value is lower than 0");
+			}
+			if(note > 24)
+			{
+				throw new IllegalArgumentException("The note value is higher than 24");
+			}
+			this.note = note;
+		}
+		
+		/**
+		 * Returns the note value divided by 24
+		 * 
+		 * @return The offsetX value
+		 */
+		@Override
+		public float getValueX()
+		{
+			return (float) note / 24F;
+		}
+		
+		/**
+		 * Returns zero because the offsetY value is unused
+		 * 
+		 * @return zero
+		 */
+		@Override
+		public float getValueY()
+		{
+			return 0;
+		}
+		
+		/**
+		 * Returns zero because the offsetZ value is unused
+		 * 
+		 * @return zero
+		 */
+		@Override
+		public float getValueZ()
+		{
+			return 0;
+		}
+		
+	}
+	
+	/**
+	 * Represents a runtime exception that is thrown either if the displayed
+	 * particle effect requires data and has none or vice-versa or if the data
+	 * type is incorrect
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the
+	 * same usage conditions
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.6
 	 */
@@ -1275,11 +1619,38 @@ public enum ParticleEffect
 		
 		/**
 		 * Construct a new particle data exception
-		 *
+		 * 
 		 * @param message
 		 *            Message that will be logged
 		 */
 		public ParticleDataException(String message)
+		{
+			super(message);
+		}
+	}
+	
+	/**
+	 * Represents a runtime exception that is thrown either if the displayed
+	 * particle effect is not colorable or if the particle color type is
+	 * incorrect
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the
+	 * same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.7
+	 */
+	private static final class ParticleColorException extends RuntimeException
+	{
+		private static final long serialVersionUID = 3203085387160737484L;
+		
+		/**
+		 * Construct a new particle color exception
+		 * 
+		 * @param message
+		 *            Message that will be logged
+		 */
+		public ParticleColorException(String message)
 		{
 			super(message);
 		}
@@ -1291,7 +1662,7 @@ public enum ParticleEffect
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.6
 	 */
@@ -1301,7 +1672,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Construct a new particle version exception
-		 *
+		 * 
 		 * @param message
 		 *            Message that will be logged
 		 */
@@ -1317,14 +1688,13 @@ public enum ParticleEffect
 	 * <p>
 	 * This class is part of the <b>ParticleEffect Library</b> and follows the
 	 * same usage conditions
-	 *
+	 * 
 	 * @author DarkBlade12
 	 * @since 1.5
 	 */
 	public static final class ParticlePacket
 	{
 		private static int version;
-		private static boolean isKcauldron;
 		private static Class<?> enumParticle;
 		private static Constructor<?> packetConstructor;
 		private static Method getHandle;
@@ -1332,7 +1702,7 @@ public enum ParticleEffect
 		private static Method sendPacket;
 		private static boolean initialized;
 		private final ParticleEffect effect;
-		private final float offsetX;
+		private float offsetX;
 		private final float offsetY;
 		private final float offsetZ;
 		private final float speed;
@@ -1343,7 +1713,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Construct a new particle packet
-		 *
+		 * 
 		 * @param effect
 		 *            Particle effect
 		 * @param offsetX
@@ -1365,8 +1735,7 @@ public enum ParticleEffect
 		 * @param data
 		 *            Data of the effect
 		 * @throws IllegalArgumentException
-		 *             If the speed is lower than 0 or the amount is lower than
-		 *             1
+		 *             If the speed or amount is lower than 0
 		 * @see #initialize()
 		 */
 		public ParticlePacket(ParticleEffect effect, float offsetX, float offsetY, float offsetZ, float speed, int amount, boolean longDistance, ParticleData data) throws IllegalArgumentException
@@ -1393,7 +1762,7 @@ public enum ParticleEffect
 		/**
 		 * Construct a new particle packet of a single particle flying into a
 		 * determined direction
-		 *
+		 * 
 		 * @param effect
 		 *            Particle effect
 		 * @param direction
@@ -1407,23 +1776,34 @@ public enum ParticleEffect
 		 *            Data of the effect
 		 * @throws IllegalArgumentException
 		 *             If the speed is lower than 0
-		 * @see #initialize()
+		 * @see #ParticleEffect(ParticleEffect, float, float, float, float, int,
+		 *      boolean, ParticleData)
 		 */
 		public ParticlePacket(ParticleEffect effect, Vector direction, float speed, boolean longDistance, ParticleData data) throws IllegalArgumentException
 		{
-			initialize();
-			if(speed < 0)
+			this(effect, (float) direction.getX(), (float) direction.getY(), (float) direction.getZ(), speed, 0, longDistance, data);
+		}
+		
+		/**
+		 * Construct a new particle packet of a single colored particle
+		 * 
+		 * @param effect
+		 *            Particle effect
+		 * @param color
+		 *            Color of the particle
+		 * @param longDistance
+		 *            Indicates whether the maximum distance is increased from
+		 *            256 to 65536
+		 * @see #ParticleEffect(ParticleEffect, float, float, float, float, int,
+		 *      boolean, ParticleData)
+		 */
+		public ParticlePacket(ParticleEffect effect, ParticleColor color, boolean longDistance)
+		{
+			this(effect, color.getValueX(), color.getValueY(), color.getValueZ(), 1, 0, longDistance, null);
+			if(effect == ParticleEffect.REDSTONE && color instanceof OrdinaryColor && ((OrdinaryColor) color).getRed() == 0)
 			{
-				throw new IllegalArgumentException("The speed is lower than 0");
+				offsetX = Float.MIN_NORMAL;
 			}
-			this.effect = effect;
-			this.offsetX = (float) direction.getX();
-			this.offsetY = (float) direction.getY();
-			this.offsetZ = (float) direction.getZ();
-			this.speed = speed;
-			this.amount = 0;
-			this.longDistance = longDistance;
-			this.data = data;
 		}
 		
 		/**
@@ -1434,7 +1814,7 @@ public enum ParticleEffect
 		 * <b>Note:</b> These fields only have to be initialized once, so it
 		 * will return if {@link #initialized} is already set to
 		 * <code>true</code>
-		 *
+		 * 
 		 * @throws VersionIncompatibleException
 		 *             if your bukkit version is not supported by this library
 		 */
@@ -1446,8 +1826,6 @@ public enum ParticleEffect
 			}
 			try
 			{
-				// Try and enable effect lib for bukkit
-				isKcauldron = false;
 				version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
 				if(version > 7)
 				{
@@ -1458,42 +1836,31 @@ public enum ParticleEffect
 				getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
 				playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
 				sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
-			}
-			catch(Exception exception)
+			} catch(Exception exception)
 			{
-				try
-				{
-					// If an error occurs try and use KCauldron classes
-					isKcauldron = true;
-					version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
-					Class<?> packetClass = Class.forName("net.minecraft.network.play.server.S2APacketParticles");
-					packetConstructor = ReflectionUtils.getConstructor(packetClass);
-					getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
-					playerConnection = Class.forName("net.minecraft.entity.player.EntityPlayerMP").getDeclaredField("field_71135_a");
-					sendPacket = playerConnection.getType().getDeclaredMethod("func_147359_a", Class.forName("net.minecraft.network.Packet"));
-				}
-				catch(Exception e)
-				{
-					throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
-				}
+				throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
 			}
 			initialized = true;
 		}
 		
 		/**
 		 * Returns the version of your server (1.x)
-		 *
+		 * 
 		 * @return The version number
 		 */
 		public static int getVersion()
 		{
+			if(!initialized)
+			{
+				initialize();
+			}
 			return version;
 		}
 		
 		/**
 		 * Determine if {@link #packetConstructor}, {@link #getHandle},
 		 * {@link #playerConnection} and {@link #sendPacket} are initialized
-		 *
+		 * 
 		 * @return Whether these fields are initialized or not
 		 * @see #initialize()
 		 */
@@ -1503,98 +1870,74 @@ public enum ParticleEffect
 		}
 		
 		/**
+		 * Initializes {@link #packet} with all set values
+		 * 
+		 * @param center
+		 *            Center location of the effect
+		 * @throws PacketInstantiationException
+		 *             If instantion fails due to an unknown error
+		 */
+		private void initializePacket(Location center) throws PacketInstantiationException
+		{
+			if(packet != null)
+			{
+				return;
+			}
+			try
+			{
+				packet = packetConstructor.newInstance();
+				if(version < 8)
+				{
+					String name = effect.getName();
+					if(data != null)
+					{
+						name += data.getPacketDataString();
+					}
+					ReflectionUtils.setValue(packet, true, "a", name);
+				} else
+				{
+					ReflectionUtils.setValue(packet, true, "a", enumParticle.getEnumConstants()[effect.getId()]);
+					ReflectionUtils.setValue(packet, true, "j", longDistance);
+					if(data != null)
+					{
+						int[] packetData = data.getPacketData();
+						ReflectionUtils.setValue(packet, true, "k", effect == ParticleEffect.ITEM_CRACK ? packetData : new int[] { packetData[0] | (packetData[1] << 12) });
+					}
+				}
+				ReflectionUtils.setValue(packet, true, "b", (float) center.getX());
+				ReflectionUtils.setValue(packet, true, "c", (float) center.getY());
+				ReflectionUtils.setValue(packet, true, "d", (float) center.getZ());
+				ReflectionUtils.setValue(packet, true, "e", offsetX);
+				ReflectionUtils.setValue(packet, true, "f", offsetY);
+				ReflectionUtils.setValue(packet, true, "g", offsetZ);
+				ReflectionUtils.setValue(packet, true, "h", speed);
+				ReflectionUtils.setValue(packet, true, "i", amount);
+			} catch(Exception exception)
+			{
+				throw new PacketInstantiationException("Packet instantiation failed", exception);
+			}
+		}
+		
+		/**
 		 * Sends the packet to a single player and caches it
-		 *
+		 * 
 		 * @param center
 		 *            Center location of the effect
 		 * @param player
 		 *            Receiver of the packet
 		 * @throws PacketInstantiationException
-		 *             if instantion fails due to an unknown error
+		 *             If instantion fails due to an unknown error
 		 * @throws PacketSendingException
-		 *             if sending fails due to an unknown error
+		 *             If sending fails due to an unknown error
+		 * @see #initializePacket(Location)
 		 */
 		public void sendTo(Location center, Player player) throws PacketInstantiationException, PacketSendingException
 		{
-			if(isKcauldron)
-				sendToWithKCauldron(center, player);
-			else
-				sendToWithBukkit(center, player);
-		}
-		
-		private void sendToWithKCauldron(Location center, Player player)
-		{
-			if(packet == null)
-			{
-				try
-				{
-					packet = packetConstructor.newInstance();
-					ReflectionUtils.setValue(packet, true, "field_149236_a", effect.getName());
-					ReflectionUtils.setValue(packet, true, "field_149234_b", (float) center.getX());
-					ReflectionUtils.setValue(packet, true, "field_149235_c", (float) center.getY());
-					ReflectionUtils.setValue(packet, true, "field_149232_d", (float) center.getZ());
-					ReflectionUtils.setValue(packet, true, "field_149233_e", offsetX);
-					ReflectionUtils.setValue(packet, true, "field_149230_f", offsetY);
-					ReflectionUtils.setValue(packet, true, "field_149231_g", offsetZ);
-					ReflectionUtils.setValue(packet, true, "field_149237_h", speed);
-					ReflectionUtils.setValue(packet, true, "field_149238_i", amount);
-				}
-				catch(Exception exception)
-				{
-					throw new PacketInstantiationException("Packet instantiation failed", exception);
-				}
-			}
+			initializePacket(center);
 			try
 			{
 				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
-			}
-			catch(Exception exception)
-			{
-				throw new PacketSendingException("Failed to send the packet to player '" + player.getName() + "'", exception);
-			}
-		}
-		
-		private void sendToWithBukkit(Location center, Player player)
-		{
-			if(packet == null)
-			{
-				try
-				{
-					packet = packetConstructor.newInstance();
-					Object id;
-					if(version < 8)
-					{
-						id = effect.getName() + (data == null ? "" : data.getPacketDataString());
-					}
-					else
-					{
-						id = enumParticle.getEnumConstants()[effect.getId()];
-					}
-					ReflectionUtils.setValue(packet, true, "a", id);
-					ReflectionUtils.setValue(packet, true, "b", (float) center.getX());
-					ReflectionUtils.setValue(packet, true, "c", (float) center.getY());
-					ReflectionUtils.setValue(packet, true, "d", (float) center.getZ());
-					ReflectionUtils.setValue(packet, true, "e", offsetX);
-					ReflectionUtils.setValue(packet, true, "f", offsetY);
-					ReflectionUtils.setValue(packet, true, "g", offsetZ);
-					ReflectionUtils.setValue(packet, true, "h", speed);
-					ReflectionUtils.setValue(packet, true, "i", amount);
-					if(version > 7)
-					{
-						ReflectionUtils.setValue(packet, true, "j", longDistance);
-						ReflectionUtils.setValue(packet, true, "k", data == null ? new int[0] : data.getPacketData());
-					}
-				}
-				catch(Exception exception)
-				{
-					throw new PacketInstantiationException("Packet instantiation failed", exception);
-				}
-			}
-			try
-			{
-				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
-			}
-			catch(Exception exception)
+			} catch(Exception exception)
 			{
 				throw new PacketSendingException("Failed to send the packet to player '" + player.getName() + "'", exception);
 			}
@@ -1602,7 +1945,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Sends the packet to all players in the list
-		 *
+		 * 
 		 * @param center
 		 *            Center location of the effect
 		 * @param players
@@ -1625,7 +1968,7 @@ public enum ParticleEffect
 		
 		/**
 		 * Sends the packet to all players in a certain range
-		 *
+		 * 
 		 * @param center
 		 *            Center location of the effect
 		 * @param range
@@ -1660,7 +2003,7 @@ public enum ParticleEffect
 		 * <p>
 		 * This class is part of the <b>ParticleEffect Library</b> and follows
 		 * the same usage conditions
-		 *
+		 * 
 		 * @author DarkBlade12
 		 * @since 1.5
 		 */
@@ -1670,7 +2013,7 @@ public enum ParticleEffect
 			
 			/**
 			 * Construct a new version incompatible exception
-			 *
+			 * 
 			 * @param message
 			 *            Message that will be logged
 			 * @param cause
@@ -1688,7 +2031,7 @@ public enum ParticleEffect
 		 * <p>
 		 * This class is part of the <b>ParticleEffect Library</b> and follows
 		 * the same usage conditions
-		 *
+		 * 
 		 * @author DarkBlade12
 		 * @since 1.4
 		 */
@@ -1698,7 +2041,7 @@ public enum ParticleEffect
 			
 			/**
 			 * Construct a new packet instantiation exception
-			 *
+			 * 
 			 * @param message
 			 *            Message that will be logged
 			 * @param cause
@@ -1715,7 +2058,7 @@ public enum ParticleEffect
 		 * <p>
 		 * This class is part of the <b>ParticleEffect Library</b> and follows
 		 * the same usage conditions
-		 *
+		 * 
 		 * @author DarkBlade12
 		 * @since 1.4
 		 */
@@ -1725,7 +2068,7 @@ public enum ParticleEffect
 			
 			/**
 			 * Construct a new packet sending exception
-			 *
+			 * 
 			 * @param message
 			 *            Message that will be logged
 			 * @param cause
@@ -1735,95 +2078,6 @@ public enum ParticleEffect
 			{
 				super(message, cause);
 			}
-		}
-	}
-	
-	/**
-	 * Helper method to migrate pre-3.0 Effects.
-	 *
-	 * @param center
-	 * @param range
-	 * @param offsetX
-	 * @param offsetY
-	 * @param offsetZ
-	 * @param speed
-	 * @param amount
-	 */
-	@Deprecated
-	public void display(Location center, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount)
-	{
-		display(offsetX, offsetY, offsetZ, speed, amount, center, range);
-	}
-	
-	/**
-	 * Helper method to migrate pre-3.0 Effects.
-	 *
-	 * @param center
-	 * @param range
-	 */
-	@Deprecated
-	public void display(Location center, double range)
-	{
-		display(0, 0, 0, 0, 1, center, range);
-	}
-	
-	/**
-	 * Helper method to migrate pre-3.0 Effects, and bridge parameterized
-	 * effects.
-	 *
-	 * @param data
-	 * @param center
-	 * @param range
-	 * @param offsetX
-	 * @param offsetY
-	 * @param offsetZ
-	 * @param speed
-	 * @param amount
-	 */
-	@Deprecated
-	public void display(ParticleData data, Location center, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount)
-	{
-		if(this.requiresData)
-		{
-			display(data, offsetX, offsetY, offsetZ, speed, amount, center, range);
-		}
-		
-		else
-		{
-			display(offsetX, offsetY, offsetZ, speed, amount, center, range);
-		}
-	}
-	
-	public void display(ParticleData data, Location center, Color color, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount)
-	{
-		// Colorizeable!
-		if(color != null && (this == ParticleEffect.REDSTONE || this == ParticleEffect.SPELL_MOB || this == ParticleEffect.SPELL_MOB_AMBIENT))
-		{
-			amount = 0;
-			// Colored particles can't have a speed of 0.
-			if(speed == 0)
-			{
-				speed = 1;
-			}
-			offsetX = (float) color.getRed() / 255;
-			offsetY = (float) color.getGreen() / 255;
-			offsetZ = (float) color.getBlue() / 255;
-			
-			// The redstone particle reverts to red if R is 0!
-			if(offsetX < Float.MIN_NORMAL)
-			{
-				offsetX = Float.MIN_NORMAL;
-			}
-		}
-		
-		if(this.requiresData)
-		{
-			display(data, offsetX, offsetY, offsetZ, speed, amount, center, range);
-		}
-		
-		else
-		{
-			display(offsetX, offsetY, offsetZ, speed, amount, center, range);
 		}
 	}
 }
