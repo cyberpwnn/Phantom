@@ -15,6 +15,11 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.PluginUtil;
 
+/**
+ * 
+ * @author cyberpwn
+ *
+ */
 @Ticked(5)
 public class DevelopmentController extends Controller implements Configurable
 {

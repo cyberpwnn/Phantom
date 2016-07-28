@@ -11,6 +11,12 @@ import org.cyberpwn.phantom.lang.Priority;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 import org.cyberpwn.phantom.sync.ExecutiveTask;
 
+/**
+ * A Notification controller
+ * 
+ * @author cyberpwn
+ *
+ */
 @Ticked(0)
 public class NotificationController extends Controller
 {
