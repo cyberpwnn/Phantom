@@ -54,6 +54,44 @@ public class DataCluster
 	}
 	
 	/**
+	 * Output all data to a json object
+	 * 
+	 * @return the json object
+	 */
+	public JSONObject toJSON()
+	{
+		JSONObject jso = new JSONObject();
+		
+		for(String i : getData().keySet())
+		{
+			jso.put(i, getAbstract(i));
+		}
+		
+		return jso;
+	}
+	
+	/**
+	 * Add the data within the json object to the datacluster
+	 * 
+	 * @param jso
+	 */
+	public void addJson(JSONObject jso)
+	{
+		for(String i : jso.keySet())
+		{
+			set(i, jso.getString(i));
+		}
+	}
+	
+	/**
+	 * Clears the data in this datacluster
+	 */
+	public void clear()
+	{
+		data.clear();
+	}
+	
+	/**
 	 * Has Comment?
 	 * 
 	 * @param key
@@ -443,12 +481,12 @@ public class DataCluster
 	{
 		if(contains(key) && getType(key).equals(ClusterDataType.LONG))
 		{
-			return ((ClusterLong)get(key)).get();
+			return ((ClusterLong) get(key)).get();
 		}
 		
 		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER))
 		{
-			return (long) ((ClusterInteger)get(key)).get();
+			return (long) ((ClusterInteger) get(key)).get();
 		}
 		
 		return null;
