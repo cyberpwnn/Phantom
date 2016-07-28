@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.construct;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collections;
 
 import org.bukkit.ChatColor;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
+import org.cyberpwn.phantom.clust.DatabaseConnection;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
@@ -27,6 +29,18 @@ public class Controller implements Controllable
 	protected final String name;
 	protected final D d;
 	
+	/**
+	 * Create a controller as a subcontroller from the parent controller. Tick
+	 * rates ARE AFFECTED. For example, if the parent controler tickrate is one
+	 * tick per second (20tps), and your tickrate is 0 or 1, your tick rate will
+	 * actually be 1 tick per second instead of every tick. This is because the
+	 * parent controller ticks your controller. Also, if the parent controller
+	 * is not ticked, then this controller can not tick even with the ticked
+	 * annotation
+	 * 
+	 * @param parentController
+	 *            the parent controller
+	 */
 	public Controller(Controllable parentController)
 	{
 		this.controllers = new GList<Controllable>();
@@ -68,11 +82,27 @@ public class Controller implements Controllable
 		onTick();
 	}
 	
+	/**
+	 * Load a data cluster from file This will also create the file and add in
+	 * default values if it doesnt exist
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
 	public void loadCluster(Configurable c)
 	{
 		loadCluster(c, null);
 	}
 	
+	/**
+	 * Load a data cluster from file This will also create the file and add in
+	 * default values if it doesnt exist
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param category
+	 *            the category
+	 */
 	public void loadCluster(Configurable c, String category)
 	{
 		File base = getPlugin().getDataFolder();
@@ -93,11 +123,103 @@ public class Controller implements Controllable
 		}
 	}
 	
+	/**
+	 * Load data from a mysql database. If it doesnt exists, nothing will be
+	 * added to the cluster, and nothing will be created in the database
+	 * Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param connection
+	 *            the database connection data
+	 */
+	public void loadMysql(Configurable c, DatabaseConnection connection)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			return;
+		}
+		
+		try
+		{
+			ConfigurationHandler.readMySQL(c, connection);
+		}
+		
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Saves data to a mysql database. Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param connection
+	 *            the database connection data
+	 */
+	public void saveMysql(Configurable c, DatabaseConnection connection)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			return;
+		}
+		
+		try
+		{
+			ConfigurationHandler.saveMySQL(c, connection);
+		}
+		
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * save a data cluster to the file This will also create the file and add in
+	 * default values if it doesnt exist. New values will be added in aswell for
+	 * updating configs
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
 	public void saveCluster(Configurable c)
 	{
 		saveCluster(c, null);
 	}
 	
+	/**
+	 * save a data cluster to the file This will also create the file and add in
+	 * default values if it doesnt exist. New values will be added in aswell for
+	 * updating configs
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param category
+	 *            the category
+	 */
 	public void saveCluster(Configurable c, String category)
 	{
 		File base = getPlugin().getDataFolder();
@@ -118,11 +240,25 @@ public class Controller implements Controllable
 		}
 	}
 	
+	/**
+	 * Queue a notification to a given player
+	 * 
+	 * @param p
+	 *            the player
+	 * @param n
+	 *            the notification
+	 */
 	public void queueNotification(Player p, Notification n)
 	{
 		Phantom.queueNotification(p, n);
 	}
 	
+	/**
+	 * Queue a notification to all players
+	 * 
+	 * @param n
+	 *            the notification
+	 */
 	public void queueNotification(Notification n)
 	{
 		Phantom.queueNotification(n);
