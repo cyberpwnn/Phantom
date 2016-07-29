@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @author cyberpwn
  *
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Tabled
 {

@@ -347,6 +347,11 @@ public class ConfigurationHandler
 		return c.getClass().getAnnotation(Tabled.class).value();
 	}
 	
+	public static String grave(String s)
+	{
+		return "`" + s + "`";
+	}
+	
 	/**
 	 * Pull data from mysql into the configurable object
 	 * 
@@ -363,21 +368,18 @@ public class ConfigurationHandler
 	{
 		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
 		Connection conn = db.openConnection();
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `?` (`key` varchar(MAX), `phad` varchar(MAX));");
-		s.setString(1, getTable(c));
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`key` TEXT, `phad` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM `?` WHERE key=?;");
-		st.setString(1, getTable(c));
-		st.setString(2, c.getCodeName());
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE key=?;");
+		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("SELECT `phad` FROM `?` WHERE key=?;");
-			stx.setString(1, getTable(c));
-			stx.setString(2, c.getCodeName());
+			PreparedStatement stx = conn.prepareStatement("SELECT `phad` FROM " + getTable(c) + " WHERE key=?;");
+			stx.setString(1, c.getCodeName());
 			ResultSet resx = stx.executeQuery();
 			JSONObject jso = new JSONObject(resx.getString("phad"));
 			c.getConfiguration().addJson(jso);
@@ -406,32 +408,28 @@ public class ConfigurationHandler
 	{
 		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
 		Connection conn = db.openConnection();
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `?` (`key` varchar(MAX), `phad` varchar(MAX));");
-		s.setString(1, getTable(c));
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`key` TEXT, `phad` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM `?` WHERE key=?;");
-		st.setString(1, getTable(c));
-		st.setString(2, c.getCodeName());
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE key=?;");
+		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("UPDATE `?` SET phad=? WHERE key=?;");
-			stx.setString(1, getTable(c));
-			stx.setString(2, c.getConfiguration().toJSON().toString());
-			stx.setString(3, c.getCodeName());
+			PreparedStatement stx = conn.prepareStatement("UPDATE " + getTable(c) + " SET phad=? WHERE key=?;");
+			stx.setString(1, c.getConfiguration().toJSON().toString());
+			stx.setString(2, c.getCodeName());
 			stx.executeUpdate();
 			stx.close();
 		}
 		
 		else
 		{
-			PreparedStatement stx = conn.prepareStatement("INSERT INTO `?` values(?,?);");
-			stx.setString(1, getTable(c));
-			stx.setString(2, c.getCodeName());
-			stx.setString(3, c.getConfiguration().toJSON().toString());
+			PreparedStatement stx = conn.prepareStatement("INSERT INTO " + getTable(c) + " values(?,?);");
+			stx.setString(1, c.getCodeName());
+			stx.setString(2, c.getConfiguration().toJSON().toString());
 			stx.executeUpdate();
 			stx.close();
 		}

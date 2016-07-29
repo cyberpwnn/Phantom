@@ -137,11 +137,15 @@ public class Controller implements Controllable
 	{
 		if(!ConfigurationHandler.hasTable(c))
 		{
+			f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
 			return;
 		}
 		
+		s(c.getClass().getSimpleName() + "<" + c.getCodeName() + "> TABLE: " + ConfigurationHandler.getTable(c));
+		
 		try
 		{
+			s("Reading SQL...");
 			ConfigurationHandler.readMySQL(c, connection);
 		}
 		
@@ -173,11 +177,15 @@ public class Controller implements Controllable
 	{
 		if(!ConfigurationHandler.hasTable(c))
 		{
+			f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
 			return;
 		}
 		
+		s(c.getClass().getSimpleName() + "<" + c.getCodeName() + "> TABLE: " + ConfigurationHandler.getTable(c));
+		
 		try
 		{
+			s("Writing SQL");
 			ConfigurationHandler.saveMySQL(c, connection);
 		}
 		
