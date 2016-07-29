@@ -13,6 +13,7 @@ import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.construct.Ticked;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GTriset;
+import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.SQLOperation;
 
@@ -57,7 +58,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		try
 		{
 			flush();
-		} 
+		}
 		
 		catch(ClassNotFoundException | SQLException e)
 		{
@@ -71,7 +72,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		{
 			flush();
 			sql.closeConnection();
-		} 
+		}
 		
 		catch(ClassNotFoundException | SQLException e)
 		{
@@ -93,11 +94,35 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		
 		int s = queue.size();
 		
-		for(GTriset<SQLOperation, Configurable, Runnable> i : queue)
+		try
 		{
-			execute(i.getA(), i.getB(), i.getC());
+			Phantom.schedule("mysql", queue.copy().iterator(new ExecutiveRunnable<GTriset<SQLOperation, Configurable, Runnable>>()
+			{
+				public void run()
+				{
+					try
+					{
+						execute(next().getA(), next().getB(), next().getC());
+					}
+					
+					catch(ClassNotFoundException | SQLException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}));
 		}
 		
+		catch(Exception e)
+		{
+			for(GTriset<SQLOperation, Configurable, Runnable> i : queue)
+			{
+				execute(i.getA(), i.getB(), i.getC());
+			}
+			
+			f("Using Shutdown flush method.");
+		}
+			
 		w("Batched " + C.GREEN + s + C.YELLOW + " SQL Operations");
 		
 		queue.clear();
