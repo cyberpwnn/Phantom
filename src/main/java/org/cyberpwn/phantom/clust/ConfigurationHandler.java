@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
 
@@ -288,21 +289,27 @@ public class ConfigurationHandler
 	 * 
 	 * @param c
 	 *            the configurable object
-	 * @throws IOException
-	 *             1337
-	 * @throws SQLException
-	 *             shit happens
-	 * @throws ClassNotFoundException
-	 *             really bad shit happens
 	 */
 	public static void readMySQL(Configurable c, DatabaseConnection connection) throws IOException, ClassNotFoundException, SQLException
 	{
 		fromFields(c);
 		c.onNewConfig();
-		fromMysql(c, connection);
-		toMysql(c, connection);
-		toFields(c);
-		c.onReadConfig();
+		Phantom.instance().loadSql(c, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Phantom.instance().saveSql(c, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						toFields(c);
+						c.onReadConfig();
+					}
+				});
+			}
+		});
 	}
 	
 	/**
@@ -310,17 +317,18 @@ public class ConfigurationHandler
 	 * 
 	 * @param c
 	 *            the configurable object
-	 * @throws IOException
-	 *             1337
-	 * @throws SQLException
-	 *             shit happens
-	 * @throws ClassNotFoundException
-	 *             really bad shit happens
 	 */
-	public static void saveMySQL(Configurable c, DatabaseConnection connection) throws IOException, ClassNotFoundException, SQLException
+	public static void saveMySQL(Configurable c)
 	{
 		fromFields(c);
-		toMysql(c, connection);
+		Phantom.instance().saveSql(c, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				
+			}
+		});
 	}
 	
 	/**
@@ -364,10 +372,20 @@ public class ConfigurationHandler
 	 * @throws ClassNotFoundException
 	 *             really bad shit happens
 	 */
-	public static void fromMysql(Configurable c, DatabaseConnection connection) throws SQLException, ClassNotFoundException
+	public static MySQL fromMysql(Configurable c, MySQL db) throws SQLException, ClassNotFoundException
 	{
-		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
-		Connection conn = db.openConnection();
+		Connection conn = null;
+		
+		if(!db.checkConnection())
+		{
+			conn = db.openConnection();
+		}
+		
+		else
+		{
+			conn = db.getConnection();
+		}
+		
 		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
@@ -390,7 +408,8 @@ public class ConfigurationHandler
 		
 		res.close();
 		st.close();
-		db.closeConnection();
+		
+		return db;
 	}
 	
 	/**
@@ -405,10 +424,20 @@ public class ConfigurationHandler
 	 * @throws ClassNotFoundException
 	 *             really bad shit happens
 	 */
-	public static void toMysql(Configurable c, DatabaseConnection connection) throws SQLException, ClassNotFoundException
+	public static MySQL toMysql(Configurable c, MySQL db) throws SQLException, ClassNotFoundException
 	{
-		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
-		Connection conn = db.openConnection();
+		Connection conn = null;
+		
+		if(!db.checkConnection())
+		{
+			conn = db.openConnection();
+		}
+		
+		else
+		{
+			conn = db.getConnection();
+		}
+		
 		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
@@ -437,6 +466,7 @@ public class ConfigurationHandler
 		
 		res.close();
 		st.close();
-		db.closeConnection();
+		
+		return db;
 	}
 }

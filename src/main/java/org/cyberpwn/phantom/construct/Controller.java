@@ -2,7 +2,6 @@ package org.cyberpwn.phantom.construct;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Collections;
 
 import org.bukkit.ChatColor;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
-import org.cyberpwn.phantom.clust.DatabaseConnection;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.util.D;
@@ -130,10 +128,10 @@ public class Controller implements Controllable
 	 * 
 	 * @param c
 	 *            the configurable object
-	 * @param connection
-	 *            the database connection data
+	 * @param finish
+	 *            the onFinish
 	 */
-	public void loadMysql(Configurable c, DatabaseConnection connection)
+	public void loadMysql(Configurable c, Runnable finish)
 	{
 		if(!ConfigurationHandler.hasTable(c))
 		{
@@ -141,28 +139,33 @@ public class Controller implements Controllable
 			return;
 		}
 		
-		s(c.getClass().getSimpleName() + "<" + c.getCodeName() + "> TABLE: " + ConfigurationHandler.getTable(c));
-		
-		try
+		Phantom.instance().loadSql(c, finish);
+	}
+	
+	/**
+	 * Load data from a mysql database. If it doesnt exists, nothing will be
+	 * added to the cluster, and nothing will be created in the database
+	 * Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public void loadMysql(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
 		{
-			s("Reading SQL...");
-			ConfigurationHandler.readMySQL(c, connection);
+			f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
 		}
 		
-		catch(ClassNotFoundException e)
+		Phantom.instance().loadSql(c, new Runnable()
 		{
-			e.printStackTrace();
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+			@Override
+			public void run()
+			{
+				
+			}
+		});
 	}
 	
 	/**
@@ -173,7 +176,7 @@ public class Controller implements Controllable
 	 * @param connection
 	 *            the database connection data
 	 */
-	public void saveMysql(Configurable c, DatabaseConnection connection)
+	public void saveMysql(Configurable c)
 	{
 		if(!ConfigurationHandler.hasTable(c))
 		{
@@ -181,28 +184,14 @@ public class Controller implements Controllable
 			return;
 		}
 		
-		s(c.getClass().getSimpleName() + "<" + c.getCodeName() + "> TABLE: " + ConfigurationHandler.getTable(c));
-		
-		try
+		Phantom.instance().saveSql(c, new Runnable()
 		{
-			s("Writing SQL");
-			ConfigurationHandler.saveMySQL(c, connection);
-		}
-		
-		catch(ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+			@Override
+			public void run()
+			{
+				
+			}
+		});
 	}
 	
 	/**
