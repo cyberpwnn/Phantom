@@ -1,11 +1,18 @@
 package org.cyberpwn.phantom;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.cyberpwn.phantom.clust.Configurable;
-import org.cyberpwn.phantom.construct.ControllablePlugin;
+import org.cyberpwn.phantom.clust.DataCluster;
+import org.cyberpwn.phantom.clust.JSONDataInput;
+import org.cyberpwn.phantom.clust.JSONDataOutput;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
@@ -22,21 +29,24 @@ import org.cyberpwn.phantom.util.SQLOperation;
 public class Phantom extends PhantomPlugin
 {
 	private static Phantom instance;
+	private DataCluster environment;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
-	private GList<ControllablePlugin> plugins;
+	private GList<Plugin> plugins;
+	private File envFile;
 	
 	public void enable()
 	{
+		environment = new DataCluster();
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		developmentController = new DevelopmentController(this);
 		notificationController = new NotificationController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
-		plugins = new GList<ControllablePlugin>();
+		plugins = new GList<Plugin>();
 		
 		register(developmentController);
 		register(testController);
@@ -44,6 +54,86 @@ public class Phantom extends PhantomPlugin
 		register(notificationController);
 		register(mySQLConnectionController);
 		instance = this;
+		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
+	}
+	
+	public void onStart()
+	{
+		try
+		{
+			new JSONDataInput().load(environment, envFile);
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		GList<String> plx = new GList<String>();
+		GList<String> pln = new GList<String>();
+		
+		for(Plugin i : Bukkit.getPluginManager().getPlugins())
+		{
+			if(i.getDescription().getDepend().contains("Phantom"))
+			{
+				plx.add(i.getName() + " v" + i.getDescription().getVersion());
+				registerPlugin(i);
+			}
+			
+			pln.add(i.getName() + " v" + i.getDescription().getVersion());
+		}
+		
+		setEnvironmentData(this, "depending-plugins", plx);
+		setEnvironmentData(this, "all-plugins", pln);
+		setEnvironmentData(this, "api-revision", getDescription().getVersion());
+		
+		if(!getEnvironmentData().contains("phantom-status-database-failure"))
+		{
+			setEnvironmentData(this, "status-database-failure", false);
+		}
+		
+		if(!getEnvironmentData().contains("phantom-status-data-failure"))
+		{
+			setEnvironmentData(this, "status-data-failure", false);
+		}
+		
+		if(!getEnvironmentData().contains("phantom-status-plugin-failure"))
+		{
+			setEnvironmentData(this, "status-plugin-failure", false);
+		}
+		
+		if(!getEnvironmentData().contains("phantom-status-api-failure"))
+		{
+			setEnvironmentData(this, "status-api-failure", false);
+		}
+		
+		if(!getEnvironmentData().contains("phantom-status-network-failure"))
+		{
+			setEnvironmentData(this, "status-network-failure", false);
+		}
+		
+		try
+		{
+			new JSONDataOutput().save(environment, envFile);
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void onStop()
+	{
+		try
+		{
+			new JSONDataOutput().save(environment, envFile);
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void disable()
@@ -51,9 +141,35 @@ public class Phantom extends PhantomPlugin
 		
 	}
 	
-	public void registerPlugin(ControllablePlugin c)
+	/**
+	 * Get environment data shared by plugins
+	 * 
+	 * @return DataCluster containing variables
+	 */
+	public DataCluster getEnvironmentData()
 	{
-		plugins.add(c);
+		return new DataCluster(environment.getData());
+	}
+	
+	/**
+	 * Set environment variables 
+	 * @param key the key
+	 * @param v the value (make it a primitive, wrapper, string, or List<String>
+	 */
+	public void setEnvironmentData(Plugin source, String key, Object v)
+	{
+		environment.trySet(source.getName().toLowerCase() + "-" + key, v);
+	}
+	
+	/**
+	 * Register a plugin
+	 * 
+	 * @param i
+	 *            the plugin
+	 */
+	public void registerPlugin(Plugin i)
+	{
+		plugins.add(i);
 	}
 	
 	/**
