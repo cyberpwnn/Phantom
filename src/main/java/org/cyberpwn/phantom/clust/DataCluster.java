@@ -79,7 +79,7 @@ public class DataCluster
 	{
 		for(String i : jso.keySet())
 		{
-			set(i, jso.getString(i));
+			trySet(i, jso.get(i));
 		}
 	}
 	
