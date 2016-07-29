@@ -11,6 +11,8 @@ import org.bukkit.util.Vector;
  */
 public class BoundPhysicalObject extends PhysicalObject
 {
+	private Entity e;
+	
 	/**
 	 * Create a physical object bound to an entity (movable)
 	 * 
@@ -22,19 +24,25 @@ public class BoundPhysicalObject extends PhysicalObject
 	public BoundPhysicalObject(Entity e, Vector volume)
 	{
 		super(e.getLocation(), volume);
+		
+		this.e = e;
 	}
 	
-	public void influenceGravity(Physical p)
-	{
-		p.influenceGravity(this);
-		Double distance = p.getLocation().distance(getLocation());
-		Double force = ((mass * p.getMass()) / distance);
-		Vector velocity = p.getLocation().subtract(location).toVector().normalize().multiply(force);
-		influenceForce(velocity);
-	}
-	
+	/**
+	 * Overrides to force the entities velocity instead of an internal value
+	 */
 	public void influenceForce(Vector v)
 	{
-		velocity.add(v);
+		e.setVelocity(e.getVelocity().add(v));
+	}
+	
+	/**
+	 * Get the entity bound to this physical object
+	 * 
+	 * @return the bound entity
+	 */
+	public Entity getEntity()
+	{
+		return e;
 	}
 }
