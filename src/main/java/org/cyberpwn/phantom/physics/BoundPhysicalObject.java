@@ -1,4 +1,4 @@
-package org.cyberpwn.phantom.phy;
+package org.cyberpwn.phantom.physics;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;

@@ -3,7 +3,7 @@ package org.cyberpwn.phantom.sfx;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.cyberpwn.phantom.phy.VectorMath;
+import org.cyberpwn.phantom.physics.VectorMath;
 
 /**
  * Doppler audio effect

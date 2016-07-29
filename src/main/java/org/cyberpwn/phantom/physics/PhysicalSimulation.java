@@ -1,4 +1,4 @@
-package org.cyberpwn.phantom.phy;
+package org.cyberpwn.phantom.physics;
 
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
