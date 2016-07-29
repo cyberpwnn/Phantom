@@ -41,6 +41,15 @@ public class DataCluster
 	}
 	
 	/**
+	 * Initializes a new data cluster
+	 */
+	public DataCluster(Map<String, Cluster> data)
+	{
+		this.data = data;
+		this.comments = new HashMap<String, String>();
+	}
+	
+	/**
 	 * Add a comment to the key
 	 * 
 	 * @param key
