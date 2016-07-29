@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.cyberpwn.phantom.lang.GList;
+
 /**
  * Formatter
  * 
@@ -48,6 +50,49 @@ public class F
 		}
 		
 		return coloredMsg;
+	}
+	
+	/**
+	 * Convert the colored message into a list splitting the colors up into a
+	 * list. This requires the bukkit symbols, not the & symbols. Be sure to
+	 * invoke color(s) first before using this if you are loading from a config
+	 * or anything other than source code
+	 * 
+	 * @param msg
+	 *            the message with codes
+	 * @return the colored message in a list split up by color
+	 */
+	public static GList<String> colorSplit(String msg)
+	{
+		GList<String> data = new GList<String>();
+		String current = "";
+		
+		for(int i = 0; i < msg.length(); i++)
+		{
+			if(msg.charAt(i) == '\u00A7' && i+1 < msg.length())
+			{
+				Character code = msg.charAt(i + 1);
+				C color = C.getByChar(code);
+				
+				if(color != null)
+				{
+					if(current != null && !current.isEmpty())
+					{
+						data.add(current);
+						current = "" + color;
+					}
+					
+					i++;
+				}
+			}
+			
+			else
+			{
+				current = current + msg.charAt(i);
+			}
+		}
+		
+		return current.isEmpty() ? data : data.qadd(current);
 	}
 	
 	/**
