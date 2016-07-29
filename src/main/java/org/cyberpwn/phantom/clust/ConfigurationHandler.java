@@ -368,20 +368,20 @@ public class ConfigurationHandler
 	{
 		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
 		Connection conn = db.openConnection();
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`key` TEXT, `phad` TEXT);");
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE key=?;");
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE k=?;");
 		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("SELECT `phad` FROM " + getTable(c) + " WHERE key=?;");
+			PreparedStatement stx = conn.prepareStatement("SELECT `d` FROM " + getTable(c) + " WHERE k=?;");
 			stx.setString(1, c.getCodeName());
 			ResultSet resx = stx.executeQuery();
-			JSONObject jso = new JSONObject(resx.getString("phad"));
+			JSONObject jso = new JSONObject(resx.getString("d"));
 			c.getConfiguration().addJson(jso);
 			resx.close();
 			stx.close();
@@ -408,17 +408,17 @@ public class ConfigurationHandler
 	{
 		MySQL db = new MySQL(connection.getAddress(), String.valueOf(connection.getPort()), connection.getDatabase(), connection.getUsername(), connection.getPassword());
 		Connection conn = db.openConnection();
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`key` TEXT, `phad` TEXT);");
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE key=?;");
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE k=?;");
 		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("UPDATE " + getTable(c) + " SET phad=? WHERE key=?;");
+			PreparedStatement stx = conn.prepareStatement("UPDATE " + getTable(c) + " SET d=? WHERE k=?;");
 			stx.setString(1, c.getConfiguration().toJSON().toString());
 			stx.setString(2, c.getCodeName());
 			stx.executeUpdate();
