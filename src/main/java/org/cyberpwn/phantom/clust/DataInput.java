@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.clust;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -24,7 +23,7 @@ public class DataInput implements DataInputtable
 		
 		else
 		{
-			throw new FileNotFoundException();
+			file.createNewFile();
 		}
 	}
 }

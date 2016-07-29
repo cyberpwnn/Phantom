@@ -22,7 +22,16 @@ public class JSONDataInput extends DataInput
 		}
 		
 		br.close();
-		js = new JSONObject(sb.toString());
+		
+		try
+		{
+			js = new JSONObject(sb.toString());
+		}
+		
+		catch(Exception e)
+		{
+			js = new JSONObject();
+		}
 		
 		for(String i : js.keySet())
 		{
