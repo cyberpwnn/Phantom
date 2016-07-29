@@ -7,7 +7,6 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutivePool;
 import org.cyberpwn.phantom.util.C;
-import org.cyberpwn.phantom.util.F;
 
 /**
  * The Channeled Executive Pool Controller pools ExeutiveIterator<T> objects
@@ -50,7 +49,5 @@ public class ChanneledExecutivePoolController extends Controller
 		}
 		
 		pools.get(channel).add(it);
-		
-		s("Funneled " + C.LIGHT_PURPLE + F.f(it.size()) + C.GREEN + " opterations into " + C.AQUA + channel + C.LIGHT_PURPLE + " " + F.f(pools.get(channel).size()) + C.GREEN + " total.");
 	}
 }
