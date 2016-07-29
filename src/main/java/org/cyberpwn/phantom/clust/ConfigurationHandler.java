@@ -381,6 +381,7 @@ public class ConfigurationHandler
 			PreparedStatement stx = conn.prepareStatement("SELECT `d` FROM " + getTable(c) + " WHERE k=?;");
 			stx.setString(1, c.getCodeName());
 			ResultSet resx = stx.executeQuery();
+			resx.next();
 			JSONObject jso = new JSONObject(resx.getString("d"));
 			c.getConfiguration().addJson(jso);
 			resx.close();
