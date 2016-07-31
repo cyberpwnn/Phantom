@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.game;
 
 import java.io.File;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.lang.GList;
 
@@ -13,13 +14,15 @@ import org.cyberpwn.phantom.lang.GList;
 public class PhantomMap implements Map
 {
 	private Game game;
+	private World world;
 	
 	/**
 	 * Create a phantom map
 	 */
-	public PhantomMap()
+	public PhantomMap(World world)
 	{
 		this.game = null;
+		this.world = world;
 	}
 
 	public void load(File file)
@@ -50,5 +53,10 @@ public class PhantomMap implements Map
 	public boolean contains(Player p)
 	{
 		return game.contains(p);
+	}
+
+	public World getWorld()
+	{
+		return world;
 	}
 }
