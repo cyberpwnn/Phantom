@@ -1,5 +1,8 @@
 package org.cyberpwn.phantom.game;
 
+import org.bukkit.Location;
+import org.cyberpwn.phantom.world.ChunkletMesh;
+
 /**
  * Region instance
  * 
@@ -14,4 +17,20 @@ public interface Region extends PlayerContainer
 	 * @return the map
 	 */
 	public Map getMap();
+	
+	/**
+	 * Get the mesh of chunklets for this region
+	 * 
+	 * @return the chunklet mesh
+	 */
+	public ChunkletMesh getMesh();
+	
+	/**
+	 * Does the region contain a location?
+	 * 
+	 * @param l
+	 *            the location
+	 * @return true if the region contains the location
+	 */
+	public boolean contains(Location l);
 }
