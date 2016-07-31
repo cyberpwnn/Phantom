@@ -132,6 +132,14 @@ public class GMap<K, V> extends ConcurrentHashMap<K, V>
 	}
 	
 	/**
+	 * Override. Works just like containsKey(Object o)
+	 */
+	public boolean contains(Object o)
+	{
+		return containsKey(o);
+	}
+	
+	/**
 	 * Get a Glist of values from a list of keys
 	 * 
 	 * @param keys
