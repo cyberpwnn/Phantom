@@ -35,12 +35,14 @@ public class Phantom extends PhantomPlugin
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
+	private DMS dms;
 	private GList<Plugin> plugins;
 	private File envFile;
 	
 	public void enable()
-	{
+	{	
 		environment = new DataCluster();
+		dms = new DMS(this);
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		developmentController = new DevelopmentController(this);
@@ -53,6 +55,7 @@ public class Phantom extends PhantomPlugin
 		register(channeledExecutivePoolController);
 		register(notificationController);
 		register(mySQLConnectionController);
+		register(dms);
 		instance = this;
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 	}
@@ -296,5 +299,10 @@ public class Phantom extends PhantomPlugin
 	public void loadSql(Configurable c, Runnable finish)
 	{
 		mySQLConnectionController.queue(SQLOperation.LOAD, c, finish);
+	}
+
+	public MySQLConnectionController getMySQLConnectionController()
+	{
+		return mySQLConnectionController;
 	}
 }
