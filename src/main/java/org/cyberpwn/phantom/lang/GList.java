@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 
@@ -106,6 +107,32 @@ public class GList<T> extends ArrayList<T>
 	public ExecutiveIterator<T> iterator(ExecutiveRunnable<T> runnable)
 	{
 		return new ExecutiveIterator<T>(copy(), runnable);
+	}
+	
+	/**
+	 * Schedule an executive iterator to be executed via the channeled pool
+	 * executor. You can assign an execution channel to avoid bandwidth issues
+	 * 
+	 * @param channel
+	 *            the unique channel to schedule this execution on
+	 * @param runnable
+	 *            the runnable
+	 */
+	public void schedule(String channel, ExecutiveRunnable<T> runnable)
+	{
+		Phantom.schedule(channel, iterator(runnable));
+	}
+	
+	/**
+	 * Schedule an executive iterator to be executed via the channeled pool
+	 * executor.
+	 * 
+	 * @param runnable
+	 *            the runnable
+	 */
+	public void schedule(ExecutiveRunnable<T> runnable)
+	{
+		Phantom.schedule(iterator(runnable));
 	}
 	
 	/**
