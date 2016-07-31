@@ -53,6 +53,45 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		this.sql = null;
 	}
 	
+	public boolean testConnection()
+	{
+		try
+		{
+			sql.openConnection();
+		} 
+		
+		catch(ClassNotFoundException | SQLException e)
+		{
+			Phantom.instance().setEnvironmentData(getPlugin(), "status-database-failure", true);
+			
+			try
+			{
+				sql.closeConnection();
+			}
+			
+			catch(SQLException e1)
+			{
+
+			}
+			
+			return false;
+		}
+		
+		Phantom.instance().setEnvironmentData(getPlugin(), "status-database-failure", false);
+		
+		try
+		{
+			sql.closeConnection();
+		}
+		
+		catch(SQLException e)
+		{
+
+		}
+		
+		return true;
+	}
+	
 	public void onTick()
 	{
 		try
