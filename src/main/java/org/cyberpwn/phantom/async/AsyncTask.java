@@ -29,6 +29,9 @@ public class AsyncTask<T> extends Thread
 	 * Override this to add functionality. This requires that you retrn the
 	 * callback object. Do not call the callback.
 	 * 
+	 * If the callback is null, the runnable will simply be executed, ignoring
+	 * the callback. You may also return null in the execute override.
+	 * 
 	 * @return the object to be called back.
 	 */
 	public T execute()
@@ -38,6 +41,13 @@ public class AsyncTask<T> extends Thread
 	
 	public void run()
 	{
+		if(callback == null)
+		{
+			execute();
+			
+			return;
+		}
+		
 		callback.run(execute());
 	}
 }
