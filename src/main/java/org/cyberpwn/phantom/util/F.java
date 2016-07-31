@@ -69,7 +69,7 @@ public class F
 		
 		for(int i = 0; i < msg.length(); i++)
 		{
-			if(msg.charAt(i) == '\u00A7' && i+1 < msg.length())
+			if(msg.charAt(i) == '\u00A7' && i + 1 < msg.length())
 			{
 				Character code = msg.charAt(i + 1);
 				C color = C.getByChar(code);
@@ -93,6 +93,75 @@ public class F
 		}
 		
 		return current.isEmpty() ? data : data.qadd(current);
+	}
+	
+	/**
+	 * Calculate a fancy string representation of a file size. Adds a suffix of
+	 * B, KB, MB, GB, or TB
+	 * 
+	 * @param s
+	 *            the size (in bytes)
+	 * @return the string
+	 */
+	public static String fileSize(long s)
+	{
+		return ofSize(s, 1000);
+	}
+	
+	/**
+	 * Calculate a fancy string representation of a file size. Adds a suffix of
+	 * B, KB, MB, GB, or TB
+	 * 
+	 * @param s
+	 *            the size (in bytes)
+	 * @return the string
+	 */
+	public static String memSize(long s)
+	{
+		return ofSize(s, 1024);
+	}
+	
+	/**
+	 * Calculate a fancy string representation of a size in B, KB, MB, GB, or TB
+	 * with a special divisor. The divisor decides how much goes up in the
+	 * suffix chain.
+	 * 
+	 * @param s
+	 *            the size (in bytes)
+	 * @param div
+	 *            the divisor
+	 * @return the string
+	 */
+	public static String ofSize(long s, int div)
+	{
+		Double d = (double) s;
+		String sub = "B";
+		
+		if(d > div - 1)
+		{
+			d /= div;
+			sub = "KB";
+			
+			if(d > div - 1)
+			{
+				d /= div;
+				sub = "MB";
+				
+				if(d > div - 1)
+				{
+					d /= div;
+					sub = "GB";
+					
+					if(d > div - 1)
+					{
+						d /= div;
+						sub = "TB";
+					}
+				}
+			}
+		}
+		
+		return F.f(d, 2) + " " + sub;
 	}
 	
 	/**
