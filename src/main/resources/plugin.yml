@@ -1,6 +1,10 @@
 name: Phantom
-main: org.cyberpwn.phantom.Phantom
 version: 3.4
+main: org.cyberpwn.phantom.Phantom
+description: Phantom - Another Damn API
+author: cyberpwn
+authors: [cyberpwn]
+website: http://cyberpwn.org/docs/phantom/
 commands:
   phantom:
     aliases: [ph, p, phan, pha]
