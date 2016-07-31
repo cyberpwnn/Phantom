@@ -12,7 +12,7 @@ import org.cyberpwn.phantom.util.C;
  * Raw Text json wrapper
  * 
  * @author cyberpwn
- *
+ * 
  */
 public class RawText
 {
