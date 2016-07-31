@@ -2,6 +2,8 @@ package org.cyberpwn.phantom.game;
 
 import java.io.File;
 
+import org.bukkit.World;
+
 /**
  * A Map instance
  * 
@@ -32,4 +34,11 @@ public interface Map extends PlayerContainer
 	 *            the game
 	 */
 	public void setGame(Game game);
+	
+	/**
+	 * Get the world this map is in
+	 * 
+	 * @return the world
+	 */
+	public World getWorld();
 }
