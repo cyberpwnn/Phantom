@@ -42,7 +42,10 @@ public class PhantomGamePlayer implements GamePlayer
 		return game.getMap();
 	}
 	
-	public boolean contains(Object o)
+	/**
+	 * Does this player equal another game player or an actual player instance
+	 */
+	public boolean equals(Object o)
 	{
 		if(o instanceof GamePlayer)
 		{
