@@ -19,6 +19,12 @@ public class ChunkletMesh
 	private GMap<Integer, GList<Chunklet>> chunklets;
 	private GList<Chunklet> all;
 	
+	/**
+	 * Create a chunklet mesh for fast reading
+	 * 
+	 * @param world
+	 *            the world
+	 */
 	public ChunkletMesh(World world)
 	{
 		this.world = world;
@@ -26,6 +32,9 @@ public class ChunkletMesh
 		this.all = new GList<Chunklet>();
 	}
 	
+	/**
+	 * Rebuilds the list of chunklets from the map reference
+	 */
 	public void rebuildReferences()
 	{
 		for(Integer i : chunklets.k())
@@ -34,11 +43,23 @@ public class ChunkletMesh
 		}
 	}
 	
+	/**
+	 * Get all chunklets from the rebuilt reference
+	 * 
+	 * @return all chunklets
+	 */
 	public GList<Chunklet> getChunklets()
 	{
 		return all;
 	}
 	
+	/**
+	 * Check if this mesh contains a location
+	 * 
+	 * @param l
+	 *            the location
+	 * @return true if it contains the location l
+	 */
 	public boolean contains(Location l)
 	{
 		for(Chunklet i : all)
@@ -52,16 +73,35 @@ public class ChunkletMesh
 		return false;
 	}
 	
+	/**
+	 * Check if this mesh contains a player based on location
+	 * 
+	 * @param p
+	 *            the player
+	 * @return true if it contains the location of player
+	 */
 	public boolean contains(Player p)
 	{
 		return contains(p.getLocation());
 	}
 	
+	/**
+	 * Check if this mesh contains an entity based on location
+	 * 
+	 * @param e
+	 *            the entity
+	 * @return true if it contains the location of entity
+	 */
 	public boolean contains(Entity e)
 	{
 		return contains(e.getLocation());
 	}
 	
+	/**
+	 * Get a list of all the players in the given chunklet mesh
+	 * 
+	 * @return the list of players
+	 */
 	public GList<Player> getPlayers()
 	{
 		GList<Player> players = new GList<Player>();
@@ -74,6 +114,11 @@ public class ChunkletMesh
 		return players;
 	}
 	
+	/**
+	 * Get a list of all the entities in the given chunklet mesh
+	 * 
+	 * @return the list of entities
+	 */
 	public GList<Entity> getEntities()
 	{
 		GList<Entity> entities = new GList<Entity>();
@@ -86,6 +131,12 @@ public class ChunkletMesh
 		return entities;
 	}
 	
+	/**
+	 * Add a chunklet to the mesh and rebuild the reference list
+	 * 
+	 * @param c
+	 *            the chunklet
+	 */
 	public void add(Chunklet c)
 	{
 		if(c.getWorld().equals(world))
