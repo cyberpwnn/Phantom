@@ -1,7 +1,10 @@
 package org.cyberpwn.phantom.lang;
 
-public class GTriset<A, B, C>
+import java.io.Serializable;
+
+public class GTriset<A, B, C> implements Serializable
 {
+	private static final long serialVersionUID = 1912465707826963942L;
 	private A a;
 	private B b;
 	private C c;

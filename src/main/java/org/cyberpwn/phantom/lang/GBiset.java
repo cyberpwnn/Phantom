@@ -1,5 +1,7 @@
 package org.cyberpwn.phantom.lang;
 
+import java.io.Serializable;
+
 /**
  * A Biset
  * 
@@ -10,8 +12,9 @@ package org.cyberpwn.phantom.lang;
  * @param <B>
  *            the second object type
  */
-public class GBiset<A, B>
+public class GBiset<A, B> implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private A a;
 	private B b;
 	
