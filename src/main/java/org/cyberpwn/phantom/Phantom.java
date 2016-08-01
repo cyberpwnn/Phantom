@@ -35,6 +35,7 @@ public class Phantom extends PhantomPlugin
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
+	private EventRippler eventRippler;
 	private DMS dms;
 	private GList<Plugin> plugins;
 	private File envFile;
@@ -48,6 +49,7 @@ public class Phantom extends PhantomPlugin
 		developmentController = new DevelopmentController(this);
 		notificationController = new NotificationController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
+		eventRippler = new EventRippler(this);
 		plugins = new GList<Plugin>();
 		
 		register(developmentController);
@@ -56,6 +58,7 @@ public class Phantom extends PhantomPlugin
 		register(notificationController);
 		register(mySQLConnectionController);
 		register(dms);
+		register(eventRippler);
 		instance = this;
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 	}
