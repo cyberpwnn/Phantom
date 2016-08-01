@@ -6,6 +6,7 @@ import java.util.Collections;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
@@ -192,6 +193,17 @@ public class Controller implements Controllable
 				
 			}
 		});
+	}
+	
+	/**
+	 * Call an event
+	 * 
+	 * @param evt
+	 *            the event
+	 */
+	public void callEvent(Event evt)
+	{
+		getPlugin().getServer().getPluginManager().callEvent(evt);
 	}
 	
 	/**
