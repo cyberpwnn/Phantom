@@ -199,38 +199,7 @@ public class W
 	 */
 	public static boolean isLookingAt(Entity is, Entity at, double range, double off)
 	{
-		if(off < 1)
-		{
-			off = 1;
-		}
-		
-		if(range < 1)
-		{
-			range = 1;
-		}
-		
-		final Double doff = off;
-		final Entity[] result = new Entity[1];
-		
-		new RayTrace(is.getLocation(), is.getLocation().getDirection(), range, (double) 1)
-		{
-			public void onTrace(Location l)
-			{
-				Area a = new Area(l, doff);
-				
-				for(Entity i : a.getNearbyEntities())
-				{
-					if(!is.equals(i) && i.equals(at))
-					{
-						stop();
-						result[0] = i;
-						return;
-					}
-				}
-			}
-		}.trace();
-		
-		return result[0] != null && result[0].equals(at);
+		return getEntityLookingAt(is, range, off).equals(at);
 	}
 	
 	/**
