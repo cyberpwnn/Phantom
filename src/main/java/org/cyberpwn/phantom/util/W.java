@@ -5,10 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.world.Area;
+import org.cyberpwn.phantom.world.RayTrace;
 
 /**
  * World utils
@@ -124,5 +128,122 @@ public class W
 		cx.add(c);
 		
 		return cx;
+	}
+	
+	/**
+	 * Get an entity that the supplied entity (e) is looking at with a specific
+	 * range and offset
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param range
+	 *            the max range to check for. If this is less than 1, 1 will be
+	 *            used instead.
+	 * @param off
+	 *            the offeset. For example, if this is set to 2, then you cannot
+	 *            be looking at an entity if it is at least 3 or more blocks
+	 *            away from your target. If the offset is less than 1, 1 will be
+	 *            used instead
+	 * @return an entity that the supplied entity (e) is looking at. If the
+	 *         supplied entity is not looking at an entity, or it does not meet
+	 *         the given ranges and offsets, null will be returned instead
+	 */
+	public static Entity getEntityLookingAt(Entity e, double range, double off)
+	{
+		if(off < 1)
+		{
+			off = 1;
+		}
+		
+		if(range < 1)
+		{
+			range = 1;
+		}
+		
+		final Double doff = off;
+		final Entity[] result = new Entity[1];
+		
+		new RayTrace(e.getLocation(), e.getLocation().getDirection(), range, (double) 1)
+		{
+			public void onTrace(Location l)
+			{
+				Area a = new Area(l, doff);
+				
+				for(Entity i : a.getNearbyEntities())
+				{
+					if(!e.equals(i))
+					{
+						stop();
+						result[0] = i;
+						return;
+					}
+				}
+			}
+		}.trace();
+		
+		return result[0];
+	}
+	
+	/**
+	 * Check if the given entity IS is looking at the given entity AT.
+	 * 
+	 * @param is
+	 *            the entity
+	 * @param at
+	 *            the entity that IS should be looking at to return true
+	 * @param range
+	 *            the max range to check
+	 * @param off
+	 *            the max offset
+	 * @return true if the entity IS is looking at the given entity AT
+	 */
+	public static boolean isLookingAt(Entity is, Entity at, double range, double off)
+	{
+		if(off < 1)
+		{
+			off = 1;
+		}
+		
+		if(range < 1)
+		{
+			range = 1;
+		}
+		
+		final Double doff = off;
+		final Entity[] result = new Entity[1];
+		
+		new RayTrace(is.getLocation(), is.getLocation().getDirection(), range, (double) 1)
+		{
+			public void onTrace(Location l)
+			{
+				Area a = new Area(l, doff);
+				
+				for(Entity i : a.getNearbyEntities())
+				{
+					if(!is.equals(i) && i.equals(at))
+					{
+						stop();
+						result[0] = i;
+						return;
+					}
+				}
+			}
+		}.trace();
+		
+		return result[0] != null && result[0].equals(at);
+	}
+	
+	/**
+	 * Get the difference between two vectors (squared)
+	 * 
+	 * @param a
+	 *            the first vector
+	 * @param b
+	 *            the second vector
+	 * @return the difference
+	 */
+	public static double differenceOfVectors(Vector a, Vector b)
+	{
+		return a.distanceSquared(b);
 	}
 }
