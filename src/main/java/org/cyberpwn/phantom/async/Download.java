@@ -16,7 +16,7 @@ public class Download extends Thread
 {
 	private URL url;
 	private File path;
-	private Runnable callback;
+	private Callback<File> callback;
 	
 	/**
 	 * Async download a file
@@ -28,7 +28,7 @@ public class Download extends Thread
 	 * @param callback
 	 *            the callback
 	 */
-	public Download(URL url, File path, Runnable callback)
+	public Download(URL url, File path, Callback<File> callback)
 	{
 		this.url = url;
 		this.path = path;
@@ -40,7 +40,7 @@ public class Download extends Thread
 		try
 		{
 			FU.copyURLToFile(url, path);
-			callback.run();
+			callback.run(path);
 		}
 		
 		catch(IOException e)
