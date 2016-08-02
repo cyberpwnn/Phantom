@@ -54,6 +54,12 @@ public class RayTrace
 			Vector stepper = direction.clone().normalize().multiply(step);
 			current.add(stepper);
 			onTrace(current.clone());
+			distanceCovered += step;
+			
+			if(distanceCovered >= maxDistance)
+			{
+				break;
+			}
 		}
 	}
 	
