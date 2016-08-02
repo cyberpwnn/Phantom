@@ -105,6 +105,15 @@ public class Area
 	}
 	
 	/**
+	 * But does it have any entities?
+	 * @return
+	 */
+	public boolean hasEntities()
+	{
+		return getNearbyEntities().length > 0;
+	}
+	
+	/**
 	 * Get ALL entities within the area. <STRONG>NOTE: This is EVERY entity, not
 	 * just LivingEntities. Drops, Particles, Mobs, Players, Everything</STRONG>
 	 * 
