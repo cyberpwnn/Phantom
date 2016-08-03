@@ -17,6 +17,6 @@ ADA - Another Damn API
 <dependency>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>3.5</version>
+	<version>4</version>
 </dependency>
 ```
