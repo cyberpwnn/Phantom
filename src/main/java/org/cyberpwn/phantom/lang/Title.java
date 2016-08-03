@@ -122,9 +122,11 @@ public class Title
 		return title;
 	}
 	
-	public void setTitle(String title)
+	public Title setTitle(String title)
 	{
 		this.title = title;
+		
+		return this;
 	}
 	
 	public String getSubTitle()
@@ -132,9 +134,11 @@ public class Title
 		return subTitle;
 	}
 	
-	public void setSubTitle(String subTitle)
+	public Title setSubTitle(String subTitle)
 	{
 		this.subTitle = subTitle;
+		
+		return this;
 	}
 	
 	public String getAction()
@@ -142,9 +146,11 @@ public class Title
 		return action;
 	}
 	
-	public void setAction(String action)
+	public Title setAction(String action)
 	{
 		this.action = action;
+		
+		return this;
 	}
 	
 	public Integer getFadeIn()
