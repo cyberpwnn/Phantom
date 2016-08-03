@@ -196,6 +196,27 @@ public class Controller implements Controllable
 	}
 	
 	/**
+	 * Saves data to a mysql database. Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param connection
+	 *            the database connection data
+	 * @param finish
+	 *            called when the data was saved
+	 */
+	public void saveMysql(Configurable c, Runnable finish)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		Phantom.instance().saveSql(c, finish);
+	}
+	
+	/**
 	 * Call an event
 	 * 
 	 * @param evt
