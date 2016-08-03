@@ -1,5 +1,7 @@
 package org.cyberpwn.phantom.util;
 
+import java.util.Collection;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,6 +10,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
@@ -36,6 +40,33 @@ public class W
 		BlockBreakEvent bbe = new BlockBreakEvent(block, p);
 		Phantom.instance().callEvent(bbe);
 		return !bbe.isCancelled();
+	}
+	
+	/**
+	 * Gets the highest level of a type of potion from a list of potion effect
+	 * objects
+	 * 
+	 * @param type
+	 *            the potion effect type
+	 * @param pots
+	 *            the potions collection
+	 * @return the level. This is one added to the amplifier. So if there are NO
+	 *         potion effects of that type, 0 is returned. However if the
+	 *         highest amplifier is 0, then 1 will be returned and so on.
+	 */
+	public static int getHighestPotionLevel(PotionEffectType type, Collection<PotionEffect> pots)
+	{
+		int highest = 0;
+		
+		for(PotionEffect i : pots)
+		{
+			if(i.getType().equals(type) && i.getAmplifier() + 1 > highest)
+			{
+				highest = i.getAmplifier() + 1;
+			}
+		}
+		
+		return highest;
 	}
 	
 	/**
