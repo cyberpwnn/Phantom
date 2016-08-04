@@ -1,5 +1,4 @@
-# Phantom
-ADA - Another Damn API
+[![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
 
 [![CircleCI](https://circleci.com/gh/cyberpwnn/Phantom.svg?style=svg)](https://circleci.com/gh/cyberpwnn/Phantom)
 
