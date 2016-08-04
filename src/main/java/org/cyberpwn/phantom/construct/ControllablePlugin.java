@@ -1,5 +1,6 @@
 package org.cyberpwn.phantom.construct;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,8 +10,6 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
 import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
-
-import org.bukkit.ChatColor;
 
 /**
  * A controllable plugin which can act as a plugin and a controller

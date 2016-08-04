@@ -1,5 +1,9 @@
 package org.cyberpwn.phantom.util;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.bukkit.Location;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.world.Area;
@@ -12,6 +16,56 @@ import org.cyberpwn.phantom.world.Area;
  */
 public class M
 {
+	/**
+	 * Evaluates an expression using javascript engine and returns the double
+	 * 
+	 * @param expression
+	 *            the mathimatical expression
+	 * @return the double result
+	 * @throws ScriptException
+	 *             dont fuck up.
+	 */
+	public static double evaluate(String expression) throws ScriptException
+	{
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine scriptEngine = mgr.getEngineByName("JavaScript");
+		
+		return Double.valueOf(scriptEngine.eval(expression).toString());
+	}
+	
+	/**
+	 * Evaluates an expression using javascript engine and returns the double
+	 * result. This can take variable parameters, so you need to define them.
+	 * 
+	 * Parameters are defined as $[0-9]. For example evaluate("4$0/$1", 1, 2);
+	 * This makes the expression (4x1)/2 == 2. Keep note that you must use 0-9,
+	 * you cannot skip, or start at a number other than 0.
+	 * 
+	 * @param expression
+	 *            the expression with variables
+	 * @param args
+	 *            the arguments/variables
+	 * @return the resulting double value
+	 * @throws ScriptException
+	 *             dont fuck up
+	 * @throws IndexOutOfBoundsException
+	 *             learn to count
+	 */
+	public static double evaluate(String expression, Double... args) throws ScriptException, IndexOutOfBoundsException
+	{
+		for(int i = 0; i < args.length; i++)
+		{
+			String current = "$" + i;
+			
+			if(expression.contains(current))
+			{
+				expression.replaceAll(current, args[i] + "");
+			}
+		}
+		
+		return evaluate(expression);
+	}
+	
 	/**
 	 * Get the ticks per second from a time in nanoseconds, the rad can be used
 	 * for multiple ticks
