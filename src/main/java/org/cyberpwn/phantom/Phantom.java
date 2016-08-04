@@ -3,6 +3,7 @@ package org.cyberpwn.phantom;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,11 +14,13 @@ import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.DataCluster;
 import org.cyberpwn.phantom.clust.JSONDataInput;
 import org.cyberpwn.phantom.clust.JSONDataOutput;
+import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.util.C;
+import org.cyberpwn.phantom.util.F;
 import org.cyberpwn.phantom.util.SQLOperation;
 
 /**
@@ -37,11 +40,14 @@ public class Phantom extends PhantomPlugin
 	private MySQLConnectionController mySQLConnectionController;
 	private EventRippler eventRippler;
 	private DMS dms;
+	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
 	
 	public void enable()
-	{	
+	{
+		instance = this;
+		
 		environment = new DataCluster();
 		dms = new DMS(this);
 		testController = new TestController(this);
@@ -51,6 +57,7 @@ public class Phantom extends PhantomPlugin
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
 		plugins = new GList<Plugin>();
+		bindings = new GList<Controllable>();
 		
 		register(developmentController);
 		register(testController);
@@ -59,7 +66,6 @@ public class Phantom extends PhantomPlugin
 		register(mySQLConnectionController);
 		register(dms);
 		register(eventRippler);
-		instance = this;
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 	}
 	
@@ -68,7 +74,7 @@ public class Phantom extends PhantomPlugin
 		try
 		{
 			new JSONDataInput().load(environment, envFile);
-		} 
+		}
 		
 		catch(IOException e)
 		{
@@ -121,7 +127,7 @@ public class Phantom extends PhantomPlugin
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
-		} 
+		}
 		
 		catch(IOException e)
 		{
@@ -134,7 +140,7 @@ public class Phantom extends PhantomPlugin
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
-		} 
+		}
 		
 		catch(IOException e)
 		{
@@ -158,9 +164,13 @@ public class Phantom extends PhantomPlugin
 	}
 	
 	/**
-	 * Set environment variables 
-	 * @param key the key
-	 * @param v the value (make it a primitive, wrapper, string, or List<String>
+	 * Set environment variables
+	 * 
+	 * @param key
+	 *            the key
+	 * @param v
+	 *            the value (make it a primitive, wrapper, string, or
+	 *            List<String>
 	 */
 	public void setEnvironmentData(Plugin source, String key, Object v)
 	{
@@ -247,6 +257,28 @@ public class Phantom extends PhantomPlugin
 							sender.sendMessage(ChatColor.GREEN + testController.getTests().k().toString(", "));
 						}
 					}
+					
+					if(args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("s"))
+					{
+						printBindings(sender);
+						
+						sender.sendMessage(C.RED + "How's it look doc?");
+						sender.sendMessage(C.AQUA + "Controllers: " + C.GREEN + F.f(getBindings().size()));
+						
+						double highest = 0;
+						Controllable ccc = null;
+						
+						for(Controllable i : bindings.copy().qdel(this))
+						{
+							if(i.getTime() > highest)
+							{
+								highest = i.getTime();
+								ccc = i;
+							}
+						}
+						
+						sender.sendMessage(C.AQUA + "Highest: " + C.GREEN + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
+					}
 				}
 				
 				else
@@ -262,6 +294,27 @@ public class Phantom extends PhantomPlugin
 		}
 		
 		return false;
+	}
+	
+	private void printBindings(CommandSender sender)
+	{
+		for(Controllable i : bindings)
+		{
+			if(i.getParentController() == null)
+			{
+				printBindings(sender, i, 0);
+			}
+		}
+	}
+	
+	private void printBindings(CommandSender sender, Controllable c, int ind)
+	{
+		sender.sendMessage(StringUtils.repeat(" ", ind) + C.GREEN + c.getClass().getSimpleName() + ": " + C.AQUA + F.nsMs((long) c.getTime(), 2) + "ms");
+		
+		for(Controllable i : c.getControllers())
+		{
+			printBindings(sender, i, ind + 1);
+		}
 	}
 	
 	/**
@@ -303,9 +356,69 @@ public class Phantom extends PhantomPlugin
 	{
 		mySQLConnectionController.queue(SQLOperation.LOAD, c, finish);
 	}
-
+	
 	public MySQLConnectionController getMySQLConnectionController()
 	{
 		return mySQLConnectionController;
+	}
+	
+	public void bindController(Controllable c)
+	{
+		bindings.add(c);
+	}
+	
+	public static Phantom getInstance()
+	{
+		return instance;
+	}
+	
+	public DataCluster getEnvironment()
+	{
+		return environment;
+	}
+	
+	public ChanneledExecutivePoolController getChanneledExecutivePoolController()
+	{
+		return channeledExecutivePoolController;
+	}
+	
+	public TestController getTestController()
+	{
+		return testController;
+	}
+	
+	public NotificationController getNotificationController()
+	{
+		return notificationController;
+	}
+	
+	public DevelopmentController getDevelopmentController()
+	{
+		return developmentController;
+	}
+	
+	public EventRippler getEventRippler()
+	{
+		return eventRippler;
+	}
+	
+	public DMS getDms()
+	{
+		return dms;
+	}
+	
+	public GList<Controllable> getBindings()
+	{
+		return bindings;
+	}
+	
+	public GList<Plugin> getPlugins()
+	{
+		return plugins;
+	}
+	
+	public File getEnvFile()
+	{
+		return envFile;
 	}
 }

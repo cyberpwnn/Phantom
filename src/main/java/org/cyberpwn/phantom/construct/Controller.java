@@ -12,7 +12,9 @@ import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.util.Average;
 import org.cyberpwn.phantom.util.D;
+import org.cyberpwn.phantom.util.Timer;
 
 /**
  * A controller
@@ -27,6 +29,7 @@ public class Controller implements Controllable
 	protected final ControllablePlugin instance;
 	protected final String name;
 	protected final D d;
+	private final Average time;
 	
 	/**
 	 * Create a controller as a subcontroller from the parent controller. Tick
@@ -47,6 +50,7 @@ public class Controller implements Controllable
 		this.name = getClass().getSimpleName();
 		this.instance = parentController.getPlugin();
 		this.d = new D(toString());
+		this.time = new Average(8);
 	}
 	
 	@Override
@@ -78,7 +82,11 @@ public class Controller implements Controllable
 	@Override
 	public void tick()
 	{
+		Timer t = new Timer();
+		t.start();
 		onTick();
+		t.stop();
+		time.put(t.getTime());
 	}
 	
 	/**
@@ -388,5 +396,10 @@ public class Controller implements Controllable
 	public void o(String... o)
 	{
 		d.o(o);
+	}
+
+	public double getTime()
+	{
+		return time.getAverage();
 	}
 }

@@ -17,6 +17,13 @@ public interface Controllable extends Listener
 	public void start();
 	
 	/**
+	 * Get MS time on cpu
+	 * 
+	 * @return time on cpu.
+	 */
+	public double getTime();
+	
+	/**
 	 * Stop the controller
 	 */
 	public void stop();
@@ -46,30 +53,35 @@ public interface Controllable extends Listener
 	 * subcontroller to this controller THIS controller will start/stop the
 	 * registrant when THIS controller start/stops
 	 * 
-	 * @param c the registrant
+	 * @param c
+	 *            the registrant
 	 */
 	public void register(Controller c);
 	
 	/**
 	 * Get the root controller plugin
+	 * 
 	 * @return the plugin
 	 */
 	public ControllablePlugin getPlugin();
 	
 	/**
 	 * Get the parent controller
+	 * 
 	 * @return the parent controller
 	 */
 	public Controllable getParentController();
 	
 	/**
 	 * The name of this controller
+	 * 
 	 * @return the name
 	 */
 	public String getName();
 	
 	/**
 	 * Get all subcontrollers of this controller
+	 * 
 	 * @return a list of controllers
 	 */
 	public GList<Controllable> getControllers();

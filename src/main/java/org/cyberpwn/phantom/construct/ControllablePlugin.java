@@ -8,8 +8,10 @@ import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
+import org.cyberpwn.phantom.util.Average;
 import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
+import org.cyberpwn.phantom.util.Timer;
 
 /**
  * A controllable plugin which can act as a plugin and a controller
@@ -24,6 +26,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	protected GMap<Controllable, Integer> liveTimings;
 	protected D d;
 	protected Task task;
+	private Average time;
 	
 	public void enable()
 	{
@@ -42,11 +45,13 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		controllers = new GList<Controllable>();
 		timings = new GMap<Controllable, Integer>();
 		liveTimings = new GMap<Controllable, Integer>();
+		time = new Average(12);
 		enable();
 		start();
 		
 		registerTicked(this);
 		Phantom.instance().registerPlugin(this);
+		Phantom.instance().bindController(this);
 		d.s("Started");
 	}
 	
@@ -118,6 +123,9 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		{
 			public void run()
 			{
+				Timer t = new Timer();
+				t.start();
+				
 				for(Controllable i : liveTimings.k())
 				{
 					liveTimings.put(i, liveTimings.get(i) - 1);
@@ -128,6 +136,9 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 						liveTimings.put(i, timings.get(i));
 					}
 				}
+				
+				t.stop();
+				time.put(t.getTime());
 			}
 		};
 	}
@@ -191,6 +202,16 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	public void register(Controller c)
 	{
 		controllers.add(c);
+		
+		try
+		{
+			Phantom.instance().bindController(c);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
 	}
 	
 	public void registerListener(Listener listener)
@@ -216,5 +237,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	public void cancelTask(int tid)
 	{
 		getServer().getScheduler().cancelTask(tid);
+	}
+
+	@Override
+	public double getTime()
+	{
+		return time.getAverage();
 	}
 }

@@ -48,6 +48,11 @@ public class DevelopmentController extends Controller implements Configurable
 	
 	public void onTick()
 	{
+		if(!(reloadOnChanged || reloadEverything))
+		{
+			return;
+		}
+		
 		for(Plugin i : getPlugin().getServer().getPluginManager().getPlugins())
 		{
 			try
