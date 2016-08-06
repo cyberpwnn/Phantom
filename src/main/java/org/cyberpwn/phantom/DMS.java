@@ -6,27 +6,39 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.cyberpwn.phantom.async.AsyncTask;
 import org.cyberpwn.phantom.async.Callback;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
+import org.cyberpwn.phantom.construct.Ticked;
+import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.network.PluginMessage;
 import org.cyberpwn.phantom.sync.TaskLater;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.F;
 import org.cyberpwn.phantom.util.ServerState;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
+
 /**
  * Startup environment tests
+ * 
  * @author cyberpwn
  *
  */
-public class DMS extends Controller
+@Ticked(1200)
+public class DMS extends Controller implements PluginMessageListener
 {
 	private String address;
 	private Boolean hasInternet;
+	private String name;
+	private GList<String> servers;
 	private static ServerState state;
 	
 	public DMS(Controllable parentController)
@@ -35,6 +47,8 @@ public class DMS extends Controller
 		
 		address = null;
 		hasInternet = null;
+		name = "Unknown";
+		servers = new GList<String>();
 		
 		if(Bukkit.getOnlinePlayers().isEmpty())
 		{
@@ -45,6 +59,9 @@ public class DMS extends Controller
 		{
 			state = ServerState.ENABLE;
 		}
+		
+		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
+		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
 	}
 	
 	@EventHandler
@@ -68,6 +85,39 @@ public class DMS extends Controller
 		}
 	}
 	
+	public void onTick()
+	{
+		requestServerNaming();
+	}
+	
+	public void requestServerNaming()
+	{
+		new PluginMessage(getPlugin(), "GetServer").send();
+		new PluginMessage(getPlugin(), "GetServers").send();
+	}
+	
+	@Override
+	public void onPluginMessageReceived(String channel, Player player, byte[] message)
+	{
+		if(!channel.equals("BungeeCord"))
+		{
+			return;
+		}
+		
+		ByteArrayDataInput in = ByteStreams.newDataInput(message);
+		String subchannel = in.readUTF();
+		
+		if(subchannel.equals("GetServer"))
+		{
+			name = in.readUTF();
+		}
+		
+		if(subchannel.equals("GetServers"))
+		{
+			servers = new GList<String>(in.readUTF().split(", "));
+		}
+	}
+	
 	public void onStop()
 	{
 		if(state.equals(ServerState.RUNNING))
@@ -78,14 +128,23 @@ public class DMS extends Controller
 	
 	public void onStart()
 	{
-		new TaskLater(5)
+		requestServerNaming();
+		
+		new TaskLater(20)
 		{
 			public void run()
 			{
 				s("-------- Environment --------");
+				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
+				Phantom.instance().logBindings(d);
 				testInternetConnection();
-				//TODO ASYNC testMySqlConnection();
 				showDiskSpace();
+				s("> " + C.AQUA + "Bungee Server: " + C.GREEN + name);
+				
+				for(String i : servers)
+				{
+					s("  > " + C.AQUA + C.GREEN + i);
+				}
 			}
 		};
 		
@@ -112,7 +171,7 @@ public class DMS extends Controller
 	{
 		w("> " + C.AQUA + "Testing MySQL Connection...");
 		
-		if(((Phantom)getPlugin()).getMySQLConnectionController().testConnection())
+		if(((Phantom) getPlugin()).getMySQLConnectionController().testConnection())
 		{
 			s("> " + C.AQUA + "Connected: " + C.GREEN + "MySQL");
 		}
@@ -191,5 +250,10 @@ public class DMS extends Controller
 	public static ServerState getState()
 	{
 		return state;
+	}
+	
+	public String getServerName()
+	{
+		return name;
 	}
 }
