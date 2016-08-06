@@ -22,6 +22,7 @@ import org.cyberpwn.phantom.gui.Slot;
 import org.cyberpwn.phantom.gui.Window;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
+import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 import org.cyberpwn.phantom.util.C;
@@ -127,7 +128,19 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("gui-test", new Runnable()
+		tests.put("credits", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("gui", new Runnable()
 		{
 			@Override
 			public void run()
