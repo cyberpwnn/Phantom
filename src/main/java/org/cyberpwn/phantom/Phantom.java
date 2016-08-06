@@ -20,6 +20,7 @@ import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.util.C;
+import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
 import org.cyberpwn.phantom.util.SQLOperation;
 
@@ -38,6 +39,7 @@ public class Phantom extends PhantomPlugin
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
+	private ProtocolController protocolController;
 	private EventRippler eventRippler;
 	private DMS dms;
 	private GList<Controllable> bindings;
@@ -54,6 +56,7 @@ public class Phantom extends PhantomPlugin
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		developmentController = new DevelopmentController(this);
 		notificationController = new NotificationController(this);
+		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
 		plugins = new GList<Plugin>();
@@ -66,6 +69,7 @@ public class Phantom extends PhantomPlugin
 		register(mySQLConnectionController);
 		register(dms);
 		register(eventRippler);
+		register(protocolController);
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 	}
 	
@@ -296,7 +300,13 @@ public class Phantom extends PhantomPlugin
 		return false;
 	}
 	
-	private void printBindings(CommandSender sender)
+	/**
+	 * Print all bindings
+	 * 
+	 * @param sender
+	 *            the sender
+	 */
+	public void printBindings(CommandSender sender)
 	{
 		for(Controllable i : bindings)
 		{
@@ -314,6 +324,33 @@ public class Phantom extends PhantomPlugin
 		for(Controllable i : c.getControllers())
 		{
 			printBindings(sender, i, ind + 1);
+		}
+	}
+	
+	/**
+	 * Log all bound controllers
+	 * 
+	 * @param c
+	 *            the controller dispatcher
+	 */
+	public void logBindings(D c)
+	{
+		for(Controllable i : bindings)
+		{
+			if(i.getParentController() == null)
+			{
+				printBindings(c, i, 0);
+			}
+		}
+	}
+	
+	private void printBindings(D cx, Controllable c, int ind)
+	{
+		cx.s(StringUtils.repeat(" ", ind) + C.GREEN + c.getClass().getSimpleName() + ": " + C.AQUA + F.nsMs((long) c.getTime(), 2) + "ms");
+		
+		for(Controllable i : c.getControllers())
+		{
+			printBindings(cx, i, ind + 1);
 		}
 	}
 	
@@ -420,5 +457,10 @@ public class Phantom extends PhantomPlugin
 	public File getEnvFile()
 	{
 		return envFile;
+	}
+
+	public ProtocolController getProtocolController()
+	{
+		return protocolController;
 	}
 }
