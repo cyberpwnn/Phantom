@@ -31,41 +31,65 @@ public class EventRippler extends Controller
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(EntityDamageByEntityEvent e)
 	{
-		if(e.getDamager().getType().equals(EntityType.PLAYER))
+		try
 		{
-			if(e.getEntity().getType().equals(EntityType.PLAYER))
+			if(e.getDamager().getType().equals(EntityType.PLAYER))
 			{
-				PlayerDamagePlayerEvent ev = new PlayerDamagePlayerEvent((Player) e.getDamager(), (Player) e.getEntity(), (Double) e.getDamage());
-				callEvent(ev);
-				e.setCancelled(ev.isCancelled());
+				if(e.getEntity().getType().equals(EntityType.PLAYER))
+				{
+					PlayerDamagePlayerEvent ev = new PlayerDamagePlayerEvent((Player) e.getDamager(), (Player) e.getEntity(), (Double) e.getDamage());
+					callEvent(ev);
+					e.setCancelled(ev.isCancelled());
+				}
 			}
+		}
+		
+		catch(Exception ex)
+		{
+			
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(EntityDeathEvent e)
 	{
-		if(e.getEntity().getType().equals(EntityType.PLAYER))
+		try
 		{
-			if(e.getEntity().getKiller().getType().equals(EntityType.PLAYER))
+			if(e.getEntity().getType().equals(EntityType.PLAYER))
 			{
-				PlayerKillPlayerEvent ev = new PlayerKillPlayerEvent((Player) e.getEntity().getKiller(), (Player) e.getEntity());
-				callEvent(ev);
+				if(e.getEntity().getKiller().getType().equals(EntityType.PLAYER))
+				{
+					PlayerKillPlayerEvent ev = new PlayerKillPlayerEvent((Player) e.getEntity().getKiller(), (Player) e.getEntity());
+					callEvent(ev);
+				}
 			}
+		}
+		
+		catch(Exception ex)
+		{
+			
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(PlayerMoveEvent e)
 	{
-		if(!e.getPlayer().isFlying() && e.getTo().clone().subtract(e.getFrom().clone()).toVector().getY() > 0.419999986)
+		try
 		{
-			if(!e.getFrom().getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getType().equals(Material.AIR))
+			if(!e.getPlayer().isFlying() && e.getTo().clone().subtract(e.getFrom().clone()).toVector().getY() > 0.419999986)
 			{
-				PlayerJumpEvent ev = new PlayerJumpEvent(e.getPlayer());
-				callEvent(ev);
-				e.setCancelled(ev.isCancelled());
+				if(!e.getFrom().getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getType().equals(Material.AIR) || !e.getFrom().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getType().equals(Material.AIR))
+				{
+					PlayerJumpEvent ev = new PlayerJumpEvent(e.getPlayer());
+					callEvent(ev);
+					e.setCancelled(ev.isCancelled());
+				}
 			}
+		}
+		
+		catch(Exception ex)
+		{
+			
 		}
 	}
 }
