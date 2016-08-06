@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>4.1</version>
+	<version>5</version>
 	<name>Phantom</name>
 	<description>Phantom - Another Damn API</description>
 	<properties>
@@ -101,6 +101,10 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/content/groups/public/</url>
+		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
@@ -118,6 +122,11 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib-API</artifactId>
+			<version>4.0</version>
 		</dependency>
 	</dependencies>
 </project>
