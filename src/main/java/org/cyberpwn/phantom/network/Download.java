@@ -1,9 +1,10 @@
-package org.cyberpwn.phantom.async;
+package org.cyberpwn.phantom.network;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.cyberpwn.phantom.async.Callback;
 import org.cyberpwn.phantom.util.FU;
 
 /**
