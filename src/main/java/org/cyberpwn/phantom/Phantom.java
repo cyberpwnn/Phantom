@@ -42,6 +42,7 @@ public class Phantom extends PhantomPlugin
 	private ProtocolController protocolController;
 	private EventRippler eventRippler;
 	private DMS dms;
+	private TransmissionController transmissionController;
 	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
@@ -59,6 +60,7 @@ public class Phantom extends PhantomPlugin
 		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
+		transmissionController = new TransmissionController(this);
 		plugins = new GList<Plugin>();
 		bindings = new GList<Controllable>();
 		
@@ -70,6 +72,7 @@ public class Phantom extends PhantomPlugin
 		register(dms);
 		register(eventRippler);
 		register(protocolController);
+		register(transmissionController);
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 	}
 	
@@ -462,5 +465,10 @@ public class Phantom extends PhantomPlugin
 	public ProtocolController getProtocolController()
 	{
 		return protocolController;
+	}
+
+	public TransmissionController getTransmissionController()
+	{
+		return transmissionController;
 	}
 }
