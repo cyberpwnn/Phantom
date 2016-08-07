@@ -130,7 +130,7 @@ public class DMS extends Controller implements PluginMessageListener
 	{
 		requestServerNaming();
 		
-		new TaskLater(20)
+		new TaskLater(0)
 		{
 			public void run()
 			{
