@@ -3,15 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>5</version>
+	<version>5.2</version>
 	<name>Phantom</name>
 	<description>Phantom - Another Damn API</description>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<local.development>X:/servers/dynamic/plugins</local.development>
-		<local.release>X:/release/phantom</local.release>
+		<local.development>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</local.development>
+		<local.release>C:/Users/cyberpwn/Documents/development/release/phantom</local.release>
 	</properties>
 	<build>
 		<plugins>
