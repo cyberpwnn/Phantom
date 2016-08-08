@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.cyberpwn.phantom.async.AsyncTask;
 import org.cyberpwn.phantom.async.Callback;
@@ -21,8 +21,8 @@ import org.cyberpwn.phantom.network.PluginMessage;
 import org.cyberpwn.phantom.sync.TaskLater;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.F;
+import org.cyberpwn.phantom.util.PluginUtil;
 import org.cyberpwn.phantom.util.ServerState;
-
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
@@ -30,7 +30,6 @@ import com.google.common.io.ByteStreams;
  * Startup environment tests
  * 
  * @author cyberpwn
- *
  */
 @Ticked(1200)
 public class DMS extends Controller implements PluginMessageListener
@@ -38,6 +37,8 @@ public class DMS extends Controller implements PluginMessageListener
 	private String address;
 	private Boolean hasInternet;
 	private String name;
+	private Boolean sqlt;
+	private GList<Plugin> pql;
 	private GList<String> servers;
 	private static ServerState state;
 	
@@ -48,7 +49,9 @@ public class DMS extends Controller implements PluginMessageListener
 		address = null;
 		hasInternet = null;
 		name = "Unknown";
+		pql = new GList<Plugin>();
 		servers = new GList<String>();
+		sqlt = false;
 		
 		if(Bukkit.getOnlinePlayers().isEmpty())
 		{
@@ -138,12 +141,26 @@ public class DMS extends Controller implements PluginMessageListener
 				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
 				Phantom.instance().logBindings(d);
 				testInternetConnection();
+				
 				showDiskSpace();
 				s("> " + C.AQUA + "Bungee Server: " + C.GREEN + name);
 				
 				for(String i : servers)
 				{
 					s("  > " + C.AQUA + C.GREEN + i);
+				}
+				
+				if(sqlt)
+				{
+					w("SQL Test Required due to " + pql.size() + " plugin(s) depending on sql.");
+					if(!testMySqlConnection())
+					{
+						for(Plugin i : pql)
+						{
+							f(i.getName() + " cannot function without sql.");
+							PluginUtil.disable(i);
+						}
+					}
 				}
 			}
 		};
@@ -167,19 +184,27 @@ public class DMS extends Controller implements PluginMessageListener
 		s(C.YELLOW + "! " + C.AQUA + "Total Space: " + C.GREEN + F.fileSize(new File("/").getTotalSpace()));
 	}
 	
-	public void testMySqlConnection()
+	public boolean testMySqlConnection()
 	{
 		w("> " + C.AQUA + "Testing MySQL Connection...");
 		
 		if(((Phantom) getPlugin()).getMySQLConnectionController().testConnection())
 		{
 			s("> " + C.AQUA + "Connected: " + C.GREEN + "MySQL");
+			return true;
 		}
 		
 		else
 		{
 			f("> " + C.YELLOW + "NETWORK FAILURE. NOT CONNECTED");
+			return false;
 		}
+	}
+	
+	public void needsSQL(Plugin pl)
+	{
+		sqlt = true;
+		pql.add(pl);
 	}
 	
 	public void testInternetConnection()
