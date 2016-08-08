@@ -2,7 +2,6 @@ package org.cyberpwn.phantom;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,6 +18,8 @@ import org.cyberpwn.phantom.construct.PhantomPlugin;
 import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
+import org.cyberpwn.phantom.transmit.Transmission;
+import org.cyberpwn.phantom.transmit.TransmissionListener;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
@@ -28,7 +29,6 @@ import org.cyberpwn.phantom.util.SQLOperation;
  * The Phantom Plugin object.
  * 
  * @author cyberpwn
- *
  */
 public class Phantom extends PhantomPlugin
 {
@@ -368,6 +368,28 @@ public class Phantom extends PhantomPlugin
 	}
 	
 	/**
+	 * Register a transmission listener
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public void registerTransmitter(TransmissionListener listener)
+	{
+		transmissionController.registerListener(listener);
+	}
+	
+	/**
+	 * Transmit a packet
+	 * 
+	 * @param packet
+	 *            the packet
+	 */
+	public void transmitPacket(Transmission packet)
+	{
+		transmissionController.transmitPacket(packet);
+	}
+	
+	/**
 	 * Request to save data from the cluster into the defined database. If the
 	 * database is not defined, data wont be saved.
 	 * 
@@ -461,12 +483,12 @@ public class Phantom extends PhantomPlugin
 	{
 		return envFile;
 	}
-
+	
 	public ProtocolController getProtocolController()
 	{
 		return protocolController;
 	}
-
+	
 	public TransmissionController getTransmissionController()
 	{
 		return transmissionController;
