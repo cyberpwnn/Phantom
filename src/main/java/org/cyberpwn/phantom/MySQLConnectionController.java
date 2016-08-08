@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom;
 
 import java.sql.SQLException;
-
 import org.cyberpwn.phantom.clust.Comment;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
@@ -10,14 +9,10 @@ import org.cyberpwn.phantom.clust.Keyed;
 import org.cyberpwn.phantom.clust.MySQL;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
-import org.cyberpwn.phantom.construct.Ticked;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GTriset;
-import org.cyberpwn.phantom.sync.ExecutiveRunnable;
-import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.SQLOperation;
 
-@Ticked(0)
 public class MySQLConnectionController extends Controller implements Configurable
 {
 	private DataCluster cc;
@@ -58,7 +53,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		try
 		{
 			sql.openConnection();
-		} 
+		}
 		
 		catch(ClassNotFoundException | SQLException e)
 		{
@@ -71,7 +66,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 			
 			catch(SQLException e1)
 			{
-
+				
 			}
 			
 			return false;
@@ -86,7 +81,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		
 		catch(SQLException e)
 		{
-
+			
 		}
 		
 		return true;
@@ -94,15 +89,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	
 	public void onTick()
 	{
-		try
-		{
-			flush();
-		}
 		
-		catch(ClassNotFoundException | SQLException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public void onStop()
@@ -122,6 +109,16 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	public void queue(SQLOperation o, Configurable c, Runnable finish)
 	{
 		queue.add(new GTriset<SQLOperation, Configurable, Runnable>(o, c, finish));
+		
+		try
+		{
+			flush();
+		}
+		
+		catch(ClassNotFoundException | SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void flush() throws ClassNotFoundException, SQLException
@@ -130,40 +127,12 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		{
 			return;
 		}
-		
-		int s = queue.size();
-		
-		try
+				
+		for(GTriset<SQLOperation, Configurable, Runnable> i : queue)
 		{
-			Phantom.schedule("mysql", queue.copy().iterator(new ExecutiveRunnable<GTriset<SQLOperation, Configurable, Runnable>>()
-			{
-				public void run()
-				{
-					try
-					{
-						execute(next().getA(), next().getB(), next().getC());
-					}
-					
-					catch(ClassNotFoundException | SQLException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}));
+			execute(i.getA(), i.getB(), i.getC());
 		}
-		
-		catch(Exception e)
-		{
-			for(GTriset<SQLOperation, Configurable, Runnable> i : queue)
-			{
-				execute(i.getA(), i.getB(), i.getC());
-			}
-			
-			f("Using Shutdown flush method.");
-		}
-			
-		w("Batched " + C.GREEN + s + C.YELLOW + " SQL Operations");
-		
+				
 		queue.clear();
 	}
 	

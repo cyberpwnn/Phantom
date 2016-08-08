@@ -85,8 +85,7 @@ public class ConfigurationHandler
 				
 				else
 				{
-					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");
-					;
+					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");;
 				}
 			}
 		}
@@ -374,6 +373,9 @@ public class ConfigurationHandler
 	 */
 	public static MySQL fromMysql(Configurable c, MySQL db) throws SQLException, ClassNotFoundException
 	{
+		c.onNewConfig();
+		fromFields(c);
+		
 		Connection conn = null;
 		
 		if(!db.checkConnection())
@@ -408,6 +410,8 @@ public class ConfigurationHandler
 		
 		res.close();
 		st.close();
+		toFields(c);
+		c.onReadConfig();
 		
 		return db;
 	}

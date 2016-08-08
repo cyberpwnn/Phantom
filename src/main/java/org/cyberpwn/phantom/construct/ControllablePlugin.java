@@ -10,6 +10,8 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
 import org.cyberpwn.phantom.util.Average;
 import org.cyberpwn.phantom.util.D;
+import org.cyberpwn.phantom.util.DMSRequire;
+import org.cyberpwn.phantom.util.DMSRequirement;
 import org.cyberpwn.phantom.util.F;
 import org.cyberpwn.phantom.util.Timer;
 
@@ -46,12 +48,24 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		timings = new GMap<Controllable, Integer>();
 		liveTimings = new GMap<Controllable, Integer>();
 		time = new Average(12);
+		
+		if(getClass().isAnnotationPresent(DMSRequire.class))
+		{
+			DMSRequire dms = getClass().getAnnotation(DMSRequire.class);
+			
+			if(dms.value().equals(DMSRequirement.SQL))
+			{
+				Phantom.instance().getDms().needsSQL(this);
+			}
+		}
+		
 		enable();
 		start();
 		
 		registerTicked(this);
 		Phantom.instance().registerPlugin(this);
 		Phantom.instance().bindController(this);
+		
 		d.s("Started");
 	}
 	
@@ -146,14 +160,30 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void stop()
 	{
-		task.cancel();
-		
-		for(Controllable i : controllers)
+		try
 		{
-			i.stop();
+			task.cancel();
+			
+			for(Controllable i : controllers)
+			{
+				try
+				{
+					i.stop();
+				}
+				
+				catch(Exception e)
+				{
+					
+				}
+			}
+			
+			onStop();
 		}
 		
-		onStop();
+		catch(Exception e)
+		{
+			
+		}
 	}
 	
 	@Override
