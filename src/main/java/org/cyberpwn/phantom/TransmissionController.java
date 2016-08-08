@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom;
 
 import java.util.UUID;
-
 import org.cyberpwn.phantom.clust.Comment;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.DataCluster;
@@ -119,11 +118,23 @@ public class TransmissionController extends Controller implements Configurable
 		return listeners;
 	}
 	
+	/**
+	 * Register a transmission listener
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
 	public void registerListener(TransmissionListener listener)
 	{
 		listeners.add(listener);
 	}
 	
+	/**
+	 * Transmit a packet
+	 * 
+	 * @param packet
+	 *            the packet
+	 */
 	public void transmitPacket(Transmission packet)
 	{
 		transmissionOBuffer.add(packet);
@@ -162,7 +173,7 @@ public class TransmissionController extends Controller implements Configurable
 	{
 		return "transmission";
 	}
-
+	
 	public static void fail(String string)
 	{
 		Phantom.instance().getTransmissionController().f("Network Failure: " + string);
