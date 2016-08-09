@@ -39,7 +39,6 @@ import org.cyberpwn.phantom.world.WorldStructure;
  * Runs tests on various functions of phantom
  * 
  * @author cyberpwn
- *
  */
 public class TestController extends Controller
 {
@@ -114,7 +113,7 @@ public class TestController extends Controller
 				}
 			}
 		});
-				
+		
 		tests.put("cluster-overwrite", new Runnable()
 		{
 			@Override
@@ -252,9 +251,27 @@ public class TestController extends Controller
 						}
 					});
 					
-					main.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 1, new Slot(0, 1), " "));
-					test.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 2, new Slot(0, 1), " "));
-					dialog.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 3, new Slot(0, 1), " "));
+					main.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 1, new Slot(0, 1), " ")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							
+						}
+					});
+					test.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 2, new Slot(0, 1), " ")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							
+						}
+					});
+					dialog.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 3, new Slot(0, 1), " ")
+					{
+						public void onClick(Player p, Click c, Window w)
+						{
+							
+						}
+					});
 					
 					main.open();
 				}
