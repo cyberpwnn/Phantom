@@ -13,7 +13,7 @@ import org.cyberpwn.phantom.lang.GList;
  * 
  * @author cyberpwn
  */
-public abstract class PhantomElement implements Element
+public class PhantomElement implements Element
 {
 	protected Material type;
 	protected Byte metadata;
@@ -348,7 +348,10 @@ public abstract class PhantomElement implements Element
 	}
 	
 	@Override
-	public abstract void onClick(Player p, Click c, Window w);
+	public void onClick(Player p, Click c, Window w)
+	{
+		
+	}
 	
 	public boolean equals(Object object)
 	{
