@@ -3,11 +3,11 @@ package org.cyberpwn.phantom;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.clust.DataCluster;
 import org.cyberpwn.phantom.clust.YAMLDataInput;
 import org.cyberpwn.phantom.clust.YAMLDataOutput;
@@ -26,6 +26,14 @@ import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 import org.cyberpwn.phantom.util.C;
+import org.cyberpwn.phantom.world.Artifact;
+import org.cyberpwn.phantom.world.Dimension;
+import org.cyberpwn.phantom.world.Direction;
+import org.cyberpwn.phantom.world.EdgeDistortion;
+import org.cyberpwn.phantom.world.MaterialBlock;
+import org.cyberpwn.phantom.world.Schematic;
+import org.cyberpwn.phantom.world.WorldArtifact;
+import org.cyberpwn.phantom.world.WorldStructure;
 
 /**
  * Runs tests on various functions of phantom
@@ -136,6 +144,45 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("artifact", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Schematic s = new Schematic(new Dimension(9, 9, 9));
+					s.fill(new MaterialBlock(Material.AIR));
+					s.setFaces(new MaterialBlock(Material.THIN_GLASS));
+					s.setFace(new MaterialBlock(Material.ENDER_PORTAL), Direction.U);
+					s.setFace(new MaterialBlock(Material.GLASS), Direction.D);
+					s.distort(new EdgeDistortion(new MaterialBlock(Material.GLOWSTONE)));
+					
+					Schematic s2 = new Schematic(new Dimension(3, 9, 3));
+					s2.fill(new MaterialBlock(Material.AIR));
+					s2.setFaces(new MaterialBlock(Material.THIN_GLASS));
+					s2.setFace(new MaterialBlock(Material.ENDER_PORTAL), Direction.U);
+					s2.setFace(new MaterialBlock(Material.GLASS), Direction.D);
+					s2.distort(new EdgeDistortion(new MaterialBlock(Material.GLOWSTONE)));
+					
+					Artifact a = new WorldArtifact(i.getLocation().add(-3, 6, -3), s);
+					Artifact a1 = new WorldArtifact(i.getLocation().add(12, 6, -12), s2);
+					Artifact a2 = new WorldArtifact(i.getLocation().add(12, 6, 12), s2);
+					Artifact a3 = new WorldArtifact(i.getLocation().add(-12, 6, -12), s2);
+					Artifact a4 = new WorldArtifact(i.getLocation().add(-12, 6, 12), s2);
+					
+					Artifact structure = new WorldStructure(i.getLocation().add(0, 6, 0));
+					((WorldStructure) structure).add(a, new Vector(0, 0, 0));
+					((WorldStructure) structure).add(a1, new Vector(12, 0, -12));
+					((WorldStructure) structure).add(a2, new Vector(12, 0, 12));
+					((WorldStructure) structure).add(a3, new Vector(-12, 0, -12));
+					((WorldStructure) structure).add(a4, new Vector(-12, 0, 12));
+					
+					structure.build();
 				}
 			}
 		});
