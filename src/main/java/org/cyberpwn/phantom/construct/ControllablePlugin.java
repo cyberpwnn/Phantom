@@ -5,6 +5,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.cyberpwn.phantom.Phantom;
+import org.cyberpwn.phantom.clust.Configurable;
+import org.cyberpwn.phantom.clust.ConfigurationHandler;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
@@ -89,6 +91,100 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		}
 		
 		return c;
+	}
+	
+	/**
+	 * Load data from a mysql database. If it doesnt exists, nothing will be
+	 * added to the cluster, and nothing will be created in the database
+	 * Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param finish
+	 *            the onFinish
+	 */
+	public void loadMysql(Configurable c, Runnable finish)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		Phantom.instance().loadSql(c, finish);
+	}
+	
+	/**
+	 * Load data from a mysql database. If it doesnt exists, nothing will be
+	 * added to the cluster, and nothing will be created in the database
+	 * Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public void loadMysql(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		Phantom.instance().loadSql(c, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				
+			}
+		});
+	}
+	
+	/**
+	 * Saves data to a mysql database. Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param connection
+	 *            the database connection data
+	 */
+	public void saveMysql(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		Phantom.instance().saveSql(c, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				
+			}
+		});
+	}
+	
+	/**
+	 * Saves data to a mysql database. Requires the Tabled annotation
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param connection
+	 *            the database connection data
+	 * @param finish
+	 *            called when the data was saved
+	 */
+	public void saveMysql(Configurable c, Runnable finish)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		Phantom.instance().saveSql(c, finish);
 	}
 	
 	public void registerTicked(Controllable c)
