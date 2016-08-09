@@ -1,17 +1,17 @@
 package org.cyberpwn.phantom.world;
 
 import java.util.Iterator;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
+import org.cyberpwn.phantom.lang.GBiset;
 import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 
 /**
  * Schematics
  * 
  * @author cyberpwn
- *
  */
 public class Schematic
 {
@@ -39,6 +39,138 @@ public class Schematic
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Set all faces to a block
+	 * 
+	 * @param mb
+	 *            the type
+	 */
+	public void setFaces(MaterialBlock mb)
+	{
+		for(Direction i : Direction.values())
+		{
+			setFace(mb, i);
+		}
+	}
+	
+	/**
+	 * Set the outer face of the block
+	 * 
+	 * @param mb
+	 *            the block type
+	 * @param d
+	 *            the face
+	 */
+	public void setFace(MaterialBlock mb, Direction d)
+	{
+		if(d.equals(Direction.U))
+		{
+			for(int i = 0; i < mx(); i++)
+			{
+				for(int j = 0; j < mz(); j++)
+				{
+					set(i, my(), j, mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+		
+		else if(d.equals(Direction.D))
+		{
+			for(int i = 0; i < mx(); i++)
+			{
+				for(int j = 0; j < mz(); j++)
+				{
+					set(i, 0, j, mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+		
+		else if(d.equals(Direction.N))
+		{
+			for(int i = 0; i < mx(); i++)
+			{
+				for(int j = 0; j < my(); j++)
+				{
+					set(i, j, 0, mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+		
+		else if(d.equals(Direction.S))
+		{
+			for(int i = 0; i < mx(); i++)
+			{
+				for(int j = 0; j < my(); j++)
+				{
+					set(i, j, mz(), mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+		
+		else if(d.equals(Direction.E))
+		{
+			for(int i = 0; i < mz(); i++)
+			{
+				for(int j = 0; j < my(); j++)
+				{
+					set(mx(), j, i, mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+		
+		else if(d.equals(Direction.W))
+		{
+			for(int i = 0; i < mz(); i++)
+			{
+				for(int j = 0; j < my(); j++)
+				{
+					set(0, j, i, mb.getMaterial(), mb.getData());
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Distort a schematic with a distortion
+	 * 
+	 * @param d
+	 *            the distortion instance
+	 */
+	public void distort(Distortion d)
+	{
+		d.onDistort(this);
+	}
+	
+	/**
+	 * Get the max x
+	 * 
+	 * @return x
+	 */
+	public int mx()
+	{
+		return dimension.getWidth() - 1;
+	}
+	
+	/**
+	 * Get the max y
+	 * 
+	 * @return the y
+	 */
+	public int my()
+	{
+		return dimension.getHeight() - 1;
+	}
+	
+	/**
+	 * Get the max z
+	 * 
+	 * @return z
+	 */
+	public int mz()
+	{
+		return dimension.getDepth() - 1;
 	}
 	
 	/**
@@ -75,6 +207,105 @@ public class Schematic
 	}
 	
 	/**
+	 * Fill the schematic with material blocks
+	 * 
+	 * @param mb
+	 *            the data
+	 */
+	public void fill(MaterialBlock mb)
+	{
+		clear(mb);
+	}
+	
+	/**
+	 * Strip down the y axis
+	 * 
+	 * @param mb
+	 *            the type
+	 * @param x
+	 *            the x
+	 * @param z
+	 *            the z
+	 */
+	public void setStripY(MaterialBlock mb, int x, int z)
+	{
+		if(x < dimension.getWidth() && z < dimension.getDepth() && x >= 0 && z >= 0)
+		{
+			for(int i = 0; i < dimension.getHeight(); i++)
+			{
+				set(x, i, z, mb.getMaterial(), mb.getData());
+			}
+		}
+	}
+	
+	/**
+	 * Strip down the x axis
+	 * 
+	 * @param mb
+	 *            the type
+	 * @param y
+	 *            the y
+	 * @param z
+	 *            the z
+	 */
+	public void setStripX(MaterialBlock mb, int z, int y)
+	{
+		if(y < dimension.getHeight() && z < dimension.getDepth() && y >= 0 && z >= 0)
+		{
+			for(int i = 0; i < dimension.getWidth(); i++)
+			{
+				set(i, y, z, mb.getMaterial(), mb.getData());
+			}
+		}
+	}
+	
+	/**
+	 * Strip down the z axis
+	 * 
+	 * @param mb
+	 *            the type
+	 * @param x
+	 *            the x
+	 * @param y
+	 *            the y
+	 */
+	public void setStripZ(MaterialBlock mb, int x, int y)
+	{
+		if(x < dimension.getWidth() && y < dimension.getHeight() && x >= 0 && y >= 0)
+		{
+			for(int i = 0; i < dimension.getDepth(); i++)
+			{
+				set(x, y, i, mb.getMaterial(), mb.getData());
+			}
+		}
+	}
+	
+	/**
+	 * Replace all blocks from a type to another
+	 * 
+	 * @param from
+	 *            this
+	 * @param to
+	 *            that
+	 */
+	public void replace(MaterialBlock from, MaterialBlock to)
+	{
+		for(int i = 0; i < dimension.getWidth(); i++)
+		{
+			for(int j = 0; j < dimension.getHeight(); j++)
+			{
+				for(int k = 0; k < dimension.getDepth(); k++)
+				{
+					if(schematic[i][j][k] != null && schematic[i][j][k].equals(from))
+					{
+						schematic[i][j][k] = to;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Apply data from this schematic to the world at a given location.
 	 * 
 	 * @param location
@@ -83,19 +314,29 @@ public class Schematic
 	@SuppressWarnings("deprecation")
 	public void apply(Location location)
 	{
+		GList<GBiset<MaterialBlock, Location>> lx = new GList<GBiset<MaterialBlock, Location>>();
+		
 		for(int i = 0; i < dimension.getWidth(); i++)
 		{
 			for(int j = 0; j < dimension.getHeight(); j++)
 			{
 				for(int k = 0; k < dimension.getDepth(); k++)
 				{
-					if(!schematic[i][j][k].getMaterial().equals(location.clone().add(i, j, j).getBlock().getType()) || schematic[i][j][k].getData() != location.clone().add(i, j, j).getBlock().getData())
+					if(!schematic[i][j][k].getMaterial().equals(location.clone().add(i, j, k).getBlock().getType()) || schematic[i][j][k].getData() != location.clone().add(i, j, k).getBlock().getData())
 					{
-						schematic[i][j][k].apply(location.clone().add(i, j, j));
+						lx.add(new GBiset<MaterialBlock, Location>(schematic[i][j][k], location.clone().add(i, j, k)));
 					}
 				}
 			}
 		}
+		
+		lx.schedule(new ExecutiveRunnable<GBiset<MaterialBlock, Location>>()
+		{
+			public void run()
+			{
+				next().getA().apply(next().getB());
+			}
+		});
 	}
 	
 	/**
@@ -134,6 +375,27 @@ public class Schematic
 				for(int k = 0; k < dimension.getDepth(); k++)
 				{
 					schematic[i][j][k] = mb;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * set the schematic
+	 * 
+	 * @param mbx
+	 *            the iterator
+	 */
+	public void set(SchematicIterator mbx)
+	{
+		for(int i = 0; i < dimension.getWidth(); i++)
+		{
+			for(int j = 0; j < dimension.getHeight(); j++)
+			{
+				for(int k = 0; k < dimension.getDepth(); k++)
+				{
+					mbx.run(schematic[i][j][k], i, j, k);
+					schematic[i][j][k] = mbx.getB();
 				}
 			}
 		}
