@@ -75,4 +75,10 @@ public class PhantomDialog extends PhantomWindow implements Dialog
 	{
 		
 	}
+
+	@Override
+	public boolean onClick(Element element, Player p)
+	{
+		return true;
+	}
 }
