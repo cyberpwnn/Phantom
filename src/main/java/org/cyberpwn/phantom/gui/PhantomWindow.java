@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.gui;
 
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ import org.cyberpwn.phantom.lang.GList;
  * A Window implementation
  * 
  * @author cyberpwn
- *
  */
 public class PhantomWindow implements Window, Listener
 {
@@ -48,7 +46,13 @@ public class PhantomWindow implements Window, Listener
 		this.elements = new GList<Element>();
 		this.open = false;
 		this.viewer = viewer;
-		this.background = new PhantomElement(Material.AIR, new Slot(0), "");
+		this.background = new PhantomElement(Material.AIR, new Slot(0), "")
+		{
+			public void onClick(Player p, Click c, Window w)
+			{
+				
+			}
+		};
 		this.id = UUID.randomUUID();
 	}
 	
