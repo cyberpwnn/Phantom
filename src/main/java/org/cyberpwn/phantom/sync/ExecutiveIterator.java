@@ -12,10 +12,9 @@ import java.util.List;
  * @param <T>
  *            the type of element to iterate through
  */
-public class ExecutiveIterator<T> implements Iterator<T>
+public abstract class ExecutiveIterator<T> implements Iterator<T>
 {
 	private Iterator<T> it;
-	private ExecutiveRunnable<T> runnable;
 	private Boolean cancelled;
 	private T repeated;
 	private Integer size;
@@ -28,14 +27,15 @@ public class ExecutiveIterator<T> implements Iterator<T>
 	 * @param runnable
 	 *            the executive runnable to iterate through the elements
 	 */
-	public ExecutiveIterator(List<T> it, ExecutiveRunnable<T> runnable)
+	public ExecutiveIterator(List<T> it)
 	{
 		this.it = it.iterator();
 		this.size = it.size();
-		this.runnable = runnable;
 		this.cancelled = false;
 		this.repeated = null;
 	}
+	
+	public abstract void onIterate(T next);
 	
 	@Override
 	public boolean hasNext()
@@ -58,22 +58,7 @@ public class ExecutiveIterator<T> implements Iterator<T>
 			t = it.next();
 		}
 		
-		runnable.run(t);
-		
-		if(runnable.isCancelled())
-		{
-			cancelled = true;
-		}
-		
-		if(runnable.isRepeated())
-		{
-			repeated = t;
-		}
-		
-		else
-		{
-			repeated = null;
-		}
+		onIterate(t);
 		
 		return t;
 	}
