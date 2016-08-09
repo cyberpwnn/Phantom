@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.gui;
 
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,9 +12,8 @@ import org.cyberpwn.phantom.lang.GList;
  * Element implementation
  * 
  * @author cyberpwn
- *
  */
-public class PhantomElement implements Element
+public abstract class PhantomElement implements Element
 {
 	protected Material type;
 	protected Byte metadata;
@@ -335,7 +333,13 @@ public class PhantomElement implements Element
 	
 	public Element copy()
 	{
-		return new PhantomElement(type, metadata, slot, title, text, durability, count);
+		return new PhantomElement(type, metadata, slot, title, text, durability, count)
+		{
+			public void onClick(Player p, Click c, Window w)
+			{
+				
+			}
+		};
 	}
 	
 	public UUID getId()
@@ -344,10 +348,7 @@ public class PhantomElement implements Element
 	}
 	
 	@Override
-	public void onClick(Player p, Click c, Window w)
-	{
-		
-	}
+	public abstract void onClick(Player p, Click c, Window w);
 	
 	public boolean equals(Object object)
 	{
