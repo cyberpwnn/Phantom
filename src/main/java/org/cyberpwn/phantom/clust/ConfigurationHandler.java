@@ -404,14 +404,14 @@ public class ConfigurationHandler
 			resx.next();
 			JSONObject jso = new JSONObject(resx.getString("d"));
 			c.getConfiguration().addJson(jso);
+			toFields(c);
+			c.onReadConfig();
 			resx.close();
 			stx.close();
 		}
 		
 		res.close();
 		st.close();
-		toFields(c);
-		c.onReadConfig();
 		
 		return db;
 	}
@@ -430,6 +430,7 @@ public class ConfigurationHandler
 	 */
 	public static MySQL toMysql(Configurable c, MySQL db) throws SQLException, ClassNotFoundException
 	{
+		fromFields(c);
 		Connection conn = null;
 		
 		if(!db.checkConnection())

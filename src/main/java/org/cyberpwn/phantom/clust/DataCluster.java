@@ -286,6 +286,18 @@ public class DataCluster
 			
 			set(key, l);
 		}
+		
+		else if(o instanceof JSONArray)
+		{
+			List<String> l = new ArrayList<String>();
+			
+			for(Object i : ((JSONArray)o))
+			{
+				l.add(i.toString());
+			}
+			
+			set(key, l);
+		}
 	}
 	
 	/**

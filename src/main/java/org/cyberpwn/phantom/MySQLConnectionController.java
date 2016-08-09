@@ -185,5 +185,4 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	{
 		return "mysql";
 	}
-	
 }
