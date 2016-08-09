@@ -5,4 +5,3 @@
 # Get Started
 * [Get Started on the Wiki](https://github.com/cyberpwnn/Phantom/wiki/Get-Started)
 * [Dive into the Docs](http://cyberpwn.org/docs/phantom/)
-```
