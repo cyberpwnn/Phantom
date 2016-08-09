@@ -16,6 +16,6 @@
 <dependency>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>5.2</version>
+	<version>6</version>
 </dependency>
 ```
