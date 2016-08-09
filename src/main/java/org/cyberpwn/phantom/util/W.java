@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.util;
 
 import java.util.Collection;
-
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -22,7 +22,6 @@ import org.cyberpwn.phantom.world.RayTrace;
  * World utils
  * 
  * @author cyberpwn
- *
  */
 public class W
 {
@@ -40,6 +39,178 @@ public class W
 		BlockBreakEvent bbe = new BlockBreakEvent(block, p);
 		Phantom.instance().callEvent(bbe);
 		return !bbe.isCancelled();
+	}
+	
+	/**
+	 * Calculates the so-called 'Manhatten Distance' between two locations<br>
+	 * This is the distance between two points without going diagonally
+	 * 
+	 * @param b1
+	 *            location
+	 * @param b2
+	 *            location
+	 * @param checkY
+	 *            state, True to include the y distance, False to exclude it
+	 * @return The manhattan distance
+	 */
+	public static int getManhattanDistance(Location b1, Location b2, boolean checkY)
+	{
+		int d = Math.abs(b1.getBlockX() - b2.getBlockX());
+		d += Math.abs(b1.getBlockZ() - b2.getBlockZ());
+		
+		if(checkY)
+		{
+			d += Math.abs(b1.getBlockY() - b2.getBlockY());
+		}
+		
+		return d;
+	}
+	
+	/**
+	 * Calculates the so-called 'Manhatten Distance' between two blocks<br>
+	 * This is the distance between two points without going diagonally
+	 * 
+	 * @param b1
+	 *            block
+	 * @param b2
+	 *            block
+	 * @param checkY
+	 *            state, True to include the y distance, False to exclude it
+	 * @return The Manhattan distance
+	 */
+	public static int getManhattanDistance(Block b1, Block b2, boolean checkY)
+	{
+		int d = Math.abs(b1.getX() - b2.getX());
+		d += Math.abs(b1.getZ() - b2.getZ());
+		
+		if(checkY)
+		{
+			d += Math.abs(b1.getY() - b2.getY());
+		}
+		
+		return d;
+	}
+	
+	/**
+	 * Gets all the Blocks relative to a main block using multiple Block Faces
+	 * 
+	 * @param main
+	 *            block
+	 * @param faces
+	 *            to get the blocks relative to the main of
+	 * @return An array of relative blocks to the main based on the input faces
+	 */
+	public static Block[] getRelative(Block main, BlockFace... faces)
+	{
+		if(main == null)
+		{
+			return new Block[0];
+		}
+		
+		Block[] rval = new Block[faces.length];
+		
+		for(int i = 0; i < rval.length; i++)
+		{
+			rval[i] = main.getRelative(faces[i]);
+		}
+		
+		return rval;
+	}
+	
+	/**
+	 * Sets the Block type and data at once, then performs physics
+	 * 
+	 * @param block
+	 *            to set the type and data of
+	 * @param type
+	 *            to set to
+	 * @param data
+	 *            to set to
+	 */
+	public static void setTypeAndData(Block block, Material type, MaterialData data)
+	{
+		setTypeAndData(block, type, data, true);
+	}
+	
+	/**
+	 * Sets the Block type and data at once
+	 * 
+	 * @param block
+	 *            to set the type and data of
+	 * @param type
+	 *            to set to
+	 * @param data
+	 *            to set to
+	 * @param update
+	 *            - whether to perform physics afterwards
+	 */
+	@SuppressWarnings("deprecation")
+	public static void setTypeAndData(Block block, Material type, MaterialData data, boolean update)
+	{
+		block.setTypeIdAndData(type.getId(), data.getData(), update);
+	}
+	
+	/**
+	 * Sets the Block type and data at once, then performs physics
+	 * 
+	 * @param block
+	 *            to set the type and data of
+	 * @param type
+	 *            to set to
+	 * @param data
+	 *            to set to
+	 */
+	public static void setTypeAndRawData(Block block, Material type, int data)
+	{
+		setTypeAndRawData(block, type, data, true);
+	}
+	
+	/**
+	 * Sets the Block type and data at once
+	 * 
+	 * @param block
+	 *            to set the type and data of
+	 * @param type
+	 *            to set to
+	 * @param data
+	 *            to set to
+	 * @param update
+	 *            - whether to perform physics afterwards
+	 */
+	@SuppressWarnings("deprecation")
+	public static void setTypeAndRawData(Block block, Material type, int data, boolean update)
+	{
+		block.setTypeIdAndData(type.getId(), (byte) data, update);
+	}
+	
+	/**
+	 * Sets the Material Data for a Block
+	 * 
+	 * @param block
+	 *            to set it for
+	 * @param materialData
+	 *            to set to
+	 */
+	@SuppressWarnings("deprecation")
+	public static void setData(Block block, MaterialData materialData)
+	{
+		block.setData(materialData.getData());
+	}
+	
+	/**
+	 * Sets the Material Data for a Block
+	 * 
+	 * @param block
+	 *            to set it for
+	 * @param materialData
+	 *            to set to
+	 * @param doPhysics
+	 *            - True to perform physics, False for 'silent'
+	 */
+	@SuppressWarnings("deprecation")
+	public static void setData(Block block, MaterialData materialData, boolean doPhysics)
+	{
+		block.setData(materialData.getData(), doPhysics);
 	}
 	
 	/**
