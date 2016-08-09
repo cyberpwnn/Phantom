@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.cyberpwn.phantom.Phantom;
 
 /**
  * Dispatcher
@@ -33,7 +34,7 @@ public class D
 	
 	private void log(DispatchType type, String s, String... o)
 	{
-		if(silent)
+		if(silent || Phantom.isSilenced(this))
 		{
 			return;
 		}

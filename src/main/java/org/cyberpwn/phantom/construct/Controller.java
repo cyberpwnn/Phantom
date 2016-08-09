@@ -62,6 +62,7 @@ public class Controller implements Controllable
 		}
 		
 		getPlugin().registerListener(this);
+		Phantom.registerSilenced(d);
 		s("Started");
 		onStart();
 	}

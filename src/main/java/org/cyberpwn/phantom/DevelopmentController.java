@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom;
 
 import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.cyberpwn.phantom.clust.Comment;
@@ -11,7 +10,9 @@ import org.cyberpwn.phantom.clust.Keyed;
 import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.construct.Ticked;
+import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
+import org.cyberpwn.phantom.sync.TaskLater;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.PluginUtil;
 
@@ -26,6 +27,8 @@ public class DevelopmentController extends Controller implements Configurable
 	private DataCluster cc;
 	private GMap<Plugin, Long> modifications;
 	private GMap<Plugin, Long> sizes;
+	private GList<String> silence = new GList<String>();
+	private GList<String> registered = new GList<String>();
 
 	@Comment("This will reload the desired plugin when it is modified")
 	@Keyed("development.reload.on-plugin-change")
@@ -43,7 +46,14 @@ public class DevelopmentController extends Controller implements Configurable
 		this.modifications = new GMap<Plugin, Long>();
 		this.sizes = new GMap<Plugin, Long>();
 		
-		loadCluster(this);
+		new TaskLater(1)
+		{
+			@Override
+			public void run()
+			{
+				loadCluster(DevelopmentController.this);
+			}
+		};
 	}
 	
 	public void onTick()
@@ -103,13 +113,37 @@ public class DevelopmentController extends Controller implements Configurable
 	@Override
 	public void onNewConfig()
 	{
-		
+		cc.set("dispatcher.silence", false, "Should all dispatchers be silenced?");
+
+		for(String i : registered)
+		{
+			cc.set("dispatcher.nodes." + i.replaceAll(" > ", "."), false);
+		}
 	}
 	
 	@Override
 	public void onReadConfig()
 	{
-		
+		for(String i : registered)
+		{
+			if(cc.contains("dispatcher.nodes." + i.replaceAll(" > ", ".")))
+			{
+				if(cc.getBoolean("dispatcher.nodes." + i.replaceAll(" > ", ".")))
+				{
+					silence.add(i);
+				}
+			}
+		}
+	}
+	
+	public boolean isQuiet(String s)
+	{
+		return silence.contains(s) && !cc.getBoolean("dispathcer.silence");
+	}
+	
+	public void registerSilencable(String s)
+	{
+		registered.add(s);
 	}
 	
 	@Override

@@ -43,11 +43,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void onEnable()
 	{
-		d = new D(getName());
 		controllers = new GList<Controllable>();
 		timings = new GMap<Controllable, Integer>();
 		liveTimings = new GMap<Controllable, Integer>();
 		time = new Average(12);
+		d = new D(getName());
 		
 		if(getClass().isAnnotationPresent(DMSRequire.class))
 		{

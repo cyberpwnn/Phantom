@@ -51,11 +51,11 @@ public class Phantom extends PhantomPlugin
 	{
 		instance = this;
 		
+		developmentController = new DevelopmentController(this);		
 		environment = new DataCluster();
 		dms = new DMS(this);
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
-		developmentController = new DevelopmentController(this);
 		notificationController = new NotificationController(this);
 		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
@@ -241,6 +241,16 @@ public class Phantom extends PhantomPlugin
 	public static void queueNotification(Notification n)
 	{
 		instance.notificationController.queue(n);
+	}
+	
+	public static void registerSilenced(D d)
+	{
+		instance.developmentController.registerSilencable(d.getName());
+	}
+	
+	public static boolean isSilenced(D d)
+	{
+		return instance.developmentController.isQuiet(d.getName());
 	}
 	
 	@Override
