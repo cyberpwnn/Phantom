@@ -9,7 +9,7 @@ import org.cyberpwn.phantom.construct.Controllable;
  * @author cyberpwn
  *
  */
-public class TaskLater implements Runnable
+public abstract class TaskLater implements Runnable
 {
 	private Controllable pl;
 	
@@ -47,8 +47,5 @@ public class TaskLater implements Runnable
 	}
 	
 	@Override
-	public void run()
-	{
-		
-	}
+	public abstract void run();
 }

@@ -9,7 +9,7 @@ import org.cyberpwn.phantom.construct.Controllable;
  * @author cyberpwn
  *
  */
-public class Task implements Runnable
+public abstract class Task implements Runnable
 {
 	private Controllable pl;
 	private Integer[] task;
@@ -44,10 +44,7 @@ public class Task implements Runnable
 	}
 	
 	@Override
-	public void run()
-	{
-		
-	}
+	public abstract void run();
 	
 	/**
 	 * Cancel the task
