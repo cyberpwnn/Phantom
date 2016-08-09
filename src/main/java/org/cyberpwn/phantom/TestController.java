@@ -24,7 +24,6 @@ import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
-import org.cyberpwn.phantom.sync.ExecutiveRunnable;
 import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.world.Artifact;
 import org.cyberpwn.phantom.world.Dimension;
@@ -65,9 +64,9 @@ public class TestController extends Controller
 				
 				v.qadd("alpha").qadd("beta").qadd("charlie").qadd("delta");
 				
-				Phantom.schedule(new ExecutiveIterator<String>(k.copy(), new ExecutiveRunnable<String>()
+				Phantom.schedule(new ExecutiveIterator<String>(k.copy())
 				{
-					public void run()
+					public void onIterate(String next)
 					{
 						while(Math.random() < 0.6)
 						{
@@ -77,16 +76,17 @@ public class TestController extends Controller
 						
 						if(Math.random() < 0.001)
 						{
-							Phantom.schedule(v.pickRandom(), new ExecutiveIterator<String>(k.copy(), new ExecutiveRunnable<String>()
+							Phantom.schedule(v.pickRandom(), new ExecutiveIterator<String>(v)
 							{
-								public void run()
+								@Override
+								public void onIterate(String next)
 								{
 									
 								}
-							}));
+							});
 						}
 					}
-				}));
+				});
 			}
 		});
 		

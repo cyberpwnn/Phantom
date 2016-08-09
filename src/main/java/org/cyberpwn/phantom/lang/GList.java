@@ -9,7 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
@@ -18,7 +17,6 @@ import org.cyberpwn.phantom.sync.ExecutiveRunnable;
  * GLists are Arraylists with special enhancements
  * 
  * @author cyberpwn
- *
  * @param <T>
  *            the type of list T
  */
@@ -106,7 +104,13 @@ public class GList<T> extends ArrayList<T>
 	 */
 	public ExecutiveIterator<T> iterator(ExecutiveRunnable<T> runnable)
 	{
-		return new ExecutiveIterator<T>(copy(), runnable);
+		return new ExecutiveIterator<T>(copy())
+		{
+			public void onIterate(T next)
+			{
+				runnable.run(next);
+			}
+		};
 	}
 	
 	/**
@@ -194,31 +198,18 @@ public class GList<T> extends ArrayList<T>
 	
 	/**
 	 * Cuts this list in half, returns a list of this list type, Basically
-	 * 
 	 * List
-	 * 
 	 * - 1
-	 * 
 	 * - 2
-	 * 
 	 * - 3
-	 * 
 	 * - 4
-	 * 
 	 * Would return
-	 * 
 	 * List
-	 * 
 	 * - List
-	 * 
 	 * - - 1
-	 * 
 	 * - - 2
-	 * 
 	 * - List
-	 * 
 	 * - - 3
-	 * 
 	 * - - 4
 	 * 
 	 * @return a split set of lists
