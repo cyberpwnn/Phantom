@@ -9,7 +9,7 @@ import org.bukkit.Location;
  * @author cyberpwn
  *
  */
-public class LineParticleManipulator extends ParticleManipulator
+public abstract class LineParticleManipulator extends ParticleManipulator
 {
 	/**
 	 * Runs play(Location l) across a line between a and b with ppa particles

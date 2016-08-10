@@ -6,7 +6,7 @@ package org.cyberpwn.phantom.vfx;
  * @author cyberpwn
  *
  */
-public class ParticleManipulator extends PhantomEffect
+public abstract class ParticleManipulator extends PhantomEffect
 {
 	
 }
