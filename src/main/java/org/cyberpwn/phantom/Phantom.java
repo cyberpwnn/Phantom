@@ -24,6 +24,8 @@ import org.cyberpwn.phantom.util.C;
 import org.cyberpwn.phantom.util.D;
 import org.cyberpwn.phantom.util.F;
 import org.cyberpwn.phantom.util.SQLOperation;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 
 /**
  * The Phantom Plugin object.
@@ -502,5 +504,10 @@ public class Phantom extends PhantomPlugin
 	public TransmissionController getTransmissionController()
 	{
 		return transmissionController;
+	}
+
+	public ProtocolManager getProtocolLib()
+	{
+		return ProtocolLibrary.getProtocolManager();
 	}
 }
