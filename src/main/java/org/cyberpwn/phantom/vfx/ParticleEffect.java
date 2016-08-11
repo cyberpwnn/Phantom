@@ -998,21 +998,24 @@ public enum ParticleEffect
 	 * @see ParticlePacket
 	 * @see ParticlePacket#sendTo(Location, double)
 	 */
-	public void display(ParticleData data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException
+	public void display(ParticleData data, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException
 	{
 		if(!isSupported())
 		{
 			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
+		
 		if(!hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect does not require additional data");
 		}
+		
 		if(!isDataCorrect(this, data))
 		{
 			throw new ParticleDataException("The particle data type is incorrect");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, data).sendTo(center, range);
+		
+		new ParticlePacket(this, 0, 0, 0, speed, amount, range > 256, data).sendTo(center, range);
 	}
 	
 	/**
