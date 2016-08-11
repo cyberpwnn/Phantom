@@ -152,18 +152,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("death-aura", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					ParticleEffect.phantom(i.getLocation(), 32);
-				}
-			}
-		});
-		
 		tests.put("particle-sphere", new Runnable()
 		{
 			@Override
