@@ -43,6 +43,7 @@ public class Phantom extends PhantomPlugin
 	private MySQLConnectionController mySQLConnectionController;
 	private ProtocolController protocolController;
 	private EventRippler eventRippler;
+	private CommandRegistryController commandRegistryController;
 	private DMS dms;
 	private TransmissionController transmissionController;
 	private GList<Controllable> bindings;
@@ -56,6 +57,7 @@ public class Phantom extends PhantomPlugin
 		developmentController = new DevelopmentController(this);		
 		environment = new DataCluster();
 		dms = new DMS(this);
+		commandRegistryController = new CommandRegistryController(this);
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		notificationController = new NotificationController(this);
@@ -67,6 +69,7 @@ public class Phantom extends PhantomPlugin
 		bindings = new GList<Controllable>();
 		
 		register(developmentController);
+		register(commandRegistryController);
 		register(testController);
 		register(channeledExecutivePoolController);
 		register(notificationController);
@@ -509,5 +512,15 @@ public class Phantom extends PhantomPlugin
 	public ProtocolManager getProtocolLib()
 	{
 		return ProtocolLibrary.getProtocolManager();
+	}
+
+	public CommandRegistryController getCommandRegistryController()
+	{
+		return commandRegistryController;
+	}
+
+	public void unbindController(Controllable c)
+	{
+		bindings.remove(c);
 	}
 }
