@@ -8,13 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.cyberpwn.phantom.sync.Task;
 import org.cyberpwn.phantom.util.ReflectionUtils;
 import org.cyberpwn.phantom.util.ReflectionUtils.PackageType;
 
@@ -1261,7 +1263,7 @@ public enum ParticleEffect
 		{
 			this.material = material;
 			this.data = data;
-			this.packetData = new int[] { material.getId(), data };
+			this.packetData = new int[] {material.getId(), data};
 		}
 		
 		/**
@@ -1836,7 +1838,8 @@ public enum ParticleEffect
 				getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
 				playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
 				sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
-			} catch(Exception exception)
+			}
+			catch(Exception exception)
 			{
 				throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
 			}
@@ -1894,14 +1897,15 @@ public enum ParticleEffect
 						name += data.getPacketDataString();
 					}
 					ReflectionUtils.setValue(packet, true, "a", name);
-				} else
+				}
+				else
 				{
 					ReflectionUtils.setValue(packet, true, "a", enumParticle.getEnumConstants()[effect.getId()]);
 					ReflectionUtils.setValue(packet, true, "j", longDistance);
 					if(data != null)
 					{
 						int[] packetData = data.getPacketData();
-						ReflectionUtils.setValue(packet, true, "k", effect == ParticleEffect.ITEM_CRACK ? packetData : new int[] { packetData[0] | (packetData[1] << 12) });
+						ReflectionUtils.setValue(packet, true, "k", effect == ParticleEffect.ITEM_CRACK ? packetData : new int[] {packetData[0] | (packetData[1] << 12)});
 					}
 				}
 				ReflectionUtils.setValue(packet, true, "b", (float) center.getX());
@@ -1912,7 +1916,8 @@ public enum ParticleEffect
 				ReflectionUtils.setValue(packet, true, "g", offsetZ);
 				ReflectionUtils.setValue(packet, true, "h", speed);
 				ReflectionUtils.setValue(packet, true, "i", amount);
-			} catch(Exception exception)
+			}
+			catch(Exception exception)
 			{
 				throw new PacketInstantiationException("Packet instantiation failed", exception);
 			}
@@ -1937,7 +1942,8 @@ public enum ParticleEffect
 			try
 			{
 				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
-			} catch(Exception exception)
+			}
+			catch(Exception exception)
 			{
 				throw new PacketSendingException("Failed to send the packet to player '" + player.getName() + "'", exception);
 			}
@@ -2079,5 +2085,30 @@ public enum ParticleEffect
 				super(message, cause);
 			}
 		}
+	}
+	
+	public static void phantom(Location l, int intervals)
+	{
+		int[] in = new int[] {intervals};
+		
+		new Task(0)
+		{
+			@Override
+			public void run()
+			{
+				in[0]--;
+				
+				if(in[0] >= 0)
+				{
+					LivingEntity e = (LivingEntity) l.getWorld().spawnEntity(l, EntityType.ENDER_DRAGON);
+					e.setHealth(0.0);
+				}
+				
+				else
+				{
+					cancel();
+				}
+			}
+		};
 	}
 }
