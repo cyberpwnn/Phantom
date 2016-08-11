@@ -401,7 +401,14 @@ public class W
 	 */
 	public static boolean isLookingAt(Entity is, Entity at, double range, double off)
 	{
-		return getEntityLookingAt(is, range, off).equals(at);
+		Entity e = getEntityLookingAt(is, range, off);
+		
+		if(e == null)
+		{
+			return false;
+		}
+		
+		return e.equals(at);
 	}
 	
 	/**
