@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.clust.Configurable;
 import org.cyberpwn.phantom.clust.ConfigurationHandler;
+import org.cyberpwn.phantom.command.CommandListener;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.sync.Task;
@@ -21,7 +22,6 @@ import org.cyberpwn.phantom.util.Timer;
  * A controllable plugin which can act as a plugin and a controller
  * 
  * @author cyberpwn
- *
  */
 public class ControllablePlugin extends JavaPlugin implements Controllable
 {
@@ -325,6 +325,27 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	}
 	
 	@Override
+	public void unregister(Controllable c)
+	{
+		controllers.remove(c);
+		
+		try
+		{
+			Phantom.instance().unbindController(c);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		if(c instanceof CommandListener)
+		{
+			Phantom.instance().getCommandRegistryController().unregister((CommandListener) c);
+		}
+	}
+	
+	@Override
 	public void register(Controller c)
 	{
 		controllers.add(c);
@@ -337,6 +358,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		catch(Exception e)
 		{
 			
+		}
+		
+		if(c instanceof CommandListener)
+		{
+			Phantom.instance().getCommandRegistryController().register((CommandListener) c);
 		}
 	}
 	
@@ -364,10 +390,25 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	{
 		getServer().getScheduler().cancelTask(tid);
 	}
-
+	
 	@Override
 	public double getTime()
 	{
 		return time.getAverage();
 	}
+	
+	@Override
+	public void reload()
+	{
+		onReload();
+		stop();
+		start();
+	}
+	
+	@Override
+	public void onReload()
+	{
+		
+	}
+	
 }
