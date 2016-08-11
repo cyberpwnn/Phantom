@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>6.3</version>
+	<version>6.4</version>
 	<name>Phantom</name>
 	<description>Phantom - Another Damn API</description>
 	<properties>
