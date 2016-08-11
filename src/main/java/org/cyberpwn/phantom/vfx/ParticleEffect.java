@@ -1046,7 +1046,7 @@ public enum ParticleEffect
 	 * @see ParticlePacket
 	 * @see ParticlePacket#sendTo(Location, List)
 	 */
-	public void display(ParticleData data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException
+	public void display(ParticleData data, float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException
 	{
 		if(!isSupported())
 		{
@@ -1060,7 +1060,7 @@ public enum ParticleEffect
 		{
 			throw new ParticleDataException("The particle data type is incorrect");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, isLongDistance(center, players), data).sendTo(center, players);
+		new ParticlePacket(this, 0, 0, 0, speed, amount, isLongDistance(center, players), data).sendTo(center, players);
 	}
 	
 	/**
@@ -1094,9 +1094,9 @@ public enum ParticleEffect
 	 * @see #display(ParticleData, float, float, float, float, int, Location,
 	 *      List)
 	 */
-	public void display(ParticleData data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, Player... players) throws ParticleVersionException, ParticleDataException
+	public void display(ParticleData data, float speed, int amount, Location center, Player... players) throws ParticleVersionException, ParticleDataException
 	{
-		display(data, offsetX, offsetY, offsetZ, speed, amount, center, Arrays.asList(players));
+		display(data, speed, amount, center, Arrays.asList(players));
 	}
 	
 	/**
