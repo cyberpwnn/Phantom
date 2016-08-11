@@ -657,7 +657,7 @@ public enum ParticleEffect
 	 * @see ParticlePacket
 	 * @see ParticlePacket#sendTo(Location, double)
 	 */
-	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
+	public void display(float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
 	{
 		if(!isSupported())
 		{
@@ -671,7 +671,7 @@ public enum ParticleEffect
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, null).sendTo(center, range);
+		new ParticlePacket(this, 0, 0, 0, speed, amount, range > 256, null).sendTo(center, range);
 	}
 	
 	/**
@@ -705,7 +705,7 @@ public enum ParticleEffect
 	 * @see ParticlePacket
 	 * @see ParticlePacket#sendTo(Location, List)
 	 */
-	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
+	public void display(float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
 	{
 		if(!isSupported())
 		{
@@ -719,7 +719,7 @@ public enum ParticleEffect
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, isLongDistance(center, players), null).sendTo(center, players);
+		new ParticlePacket(this, 0, 0, 0, speed, amount, isLongDistance(center, players), null).sendTo(center, players);
 	}
 	
 	/**
@@ -752,9 +752,9 @@ public enum ParticleEffect
 	 *             center location
 	 * @see #display(float, float, float, float, int, Location, List)
 	 */
-	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, Player... players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
+	public void display(float speed, int amount, Location center, Player... players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException
 	{
-		display(offsetX, offsetY, offsetZ, speed, amount, center, Arrays.asList(players));
+		display(speed, amount, center, Arrays.asList(players));
 	}
 	
 	/**
