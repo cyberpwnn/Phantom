@@ -38,6 +38,7 @@ public class RayTrace
 		this.start = start;
 		this.direction = direction;
 		this.maxDistance = maxDistance;
+		this.distanceCovered = 0.0;
 		this.step = step;
 		this.stop = false;
 	}
