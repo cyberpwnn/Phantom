@@ -164,7 +164,7 @@ public class TestController extends Controller
 						@Override
 						public void play(Location l)
 						{
-							ParticleEffect.FIREWORKS_SPARK.display(0, 0, 0, 0, 1, l, 32);
+							ParticleEffect.FIREWORKS_SPARK.display(0, 1, l, 32);
 						}
 					};
 					
