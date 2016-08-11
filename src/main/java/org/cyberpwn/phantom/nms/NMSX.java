@@ -5,13 +5,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
@@ -30,7 +29,6 @@ import com.comphenix.protocol.events.PacketContainer;
  * yourself reflected
  * 
  * @author cyberpwn
- *
  */
 public class NMSX
 {
@@ -595,6 +593,21 @@ public class NMSX
 		for(Player i : Phantom.instance().onlinePlayers())
 		{
 			hideEntity(i, e);
+		}
+	}
+	
+	/**
+	 * Forces all audio channels to stop playing by forcing new fast sounds in
+	 * there instead
+	 * 
+	 * @param l
+	 *            the location to ear-rape
+	 */
+	public static void stopAudio(Location l)
+	{
+		for(int i = 0; i < 64; i++)
+		{
+			l.getWorld().playSound(l, Sound.ANVIL_LAND, 12f, 1.0f);
 		}
 	}
 	
