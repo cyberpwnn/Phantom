@@ -3,7 +3,6 @@ package org.cyberpwn.phantom.util;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
 import org.bukkit.Location;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.world.Area;
@@ -12,7 +11,6 @@ import org.cyberpwn.phantom.world.Area;
  * Math
  * 
  * @author cyberpwn
- *
  */
 public class M
 {
@@ -36,7 +34,6 @@ public class M
 	/**
 	 * Evaluates an expression using javascript engine and returns the double
 	 * result. This can take variable parameters, so you need to define them.
-	 * 
 	 * Parameters are defined as $[0-9]. For example evaluate("4$0/$1", 1, 2);
 	 * This makes the expression (4x1)/2 == 2. Keep note that you must use 0-9,
 	 * you cannot skip, or start at a number other than 0.
@@ -178,5 +175,65 @@ public class M
 	public static boolean within(Location center, Location check, Double radius)
 	{
 		return Area.within(center, check, radius);
+	}
+	
+	/**
+	 * Biggest number
+	 * 
+	 * @param ints
+	 *            the numbers
+	 * @return the biggest one
+	 */
+	public static int max(int... ints)
+	{
+		int max = Integer.MIN_VALUE;
+		
+		for(int i : ints)
+		{
+			if(i > max)
+			{
+				max = i;
+			}
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * Smallest number
+	 * 
+	 * @param ints
+	 *            the numbers
+	 * @return the smallest one
+	 */
+	public static int min(int... ints)
+	{
+		int min = Integer.MAX_VALUE;
+		
+		for(int i : ints)
+		{
+			if(i < min)
+			{
+				min = i;
+			}
+		}
+		
+		return min;
+	}
+	
+	/**
+	 * is the number "is" within from-to
+	 * 
+	 * @param from
+	 *            the lower end
+	 * @param to
+	 *            the upper end
+	 * @param is
+	 *            the check
+	 * @return true if its within
+	 */
+	public static boolean within(int from, int to, int is)
+	{
+		return is >= from && is <= to;
 	}
 }
