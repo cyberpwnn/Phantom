@@ -1,5 +1,6 @@
 package org.cyberpwn.phantom.physics;
 
+import org.bukkit.util.Vector;
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.sync.ExecutiveRunnable;
@@ -15,6 +16,7 @@ public class PhysicalSimulation
 {
 	private GList<Physical> objects;
 	private Task task;
+	private Boolean gravity;
 	
 	/**
 	 * Create a new simulation. This initializes empty holders for new objects
@@ -24,6 +26,7 @@ public class PhysicalSimulation
 	{
 		this.objects = new GList<Physical>();
 		this.task = null;
+		this.gravity = false;
 	}
 	
 	/**
@@ -63,6 +66,12 @@ public class PhysicalSimulation
 					onPrePhysics(next());
 					onPostPhysics(i);
 					i.influenceGravity(next());
+					
+					if(getGravity())
+					{
+						i.influenceForce(new Vector(0, -0.1, 0));
+					}
+					
 					onPostPhysics(next());
 					onPostPhysics(i);
 				}
@@ -162,5 +171,35 @@ public class PhysicalSimulation
 		{
 			task.cancel();
 		}
+	}
+
+	public GList<Physical> getObjects()
+	{
+		return objects;
+	}
+
+	public void setObjects(GList<Physical> objects)
+	{
+		this.objects = objects;
+	}
+
+	public Task getTask()
+	{
+		return task;
+	}
+
+	public void setTask(Task task)
+	{
+		this.task = task;
+	}
+
+	public Boolean getGravity()
+	{
+		return gravity;
+	}
+
+	public void setGravity(Boolean gravity)
+	{
+		this.gravity = gravity;
 	}
 }
