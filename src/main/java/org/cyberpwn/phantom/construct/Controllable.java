@@ -7,7 +7,6 @@ import org.cyberpwn.phantom.lang.GList;
  * Controllable object
  * 
  * @author cyberpwn
- *
  */
 public interface Controllable extends Listener
 {
@@ -27,6 +26,24 @@ public interface Controllable extends Listener
 	 * Stop the controller
 	 */
 	public void stop();
+	
+	/**
+	 * Reload the controller and all subcontrollers
+	 */
+	public void reload();
+	
+	/**
+	 * Unregister the controller
+	 * 
+	 * @param c
+	 *            the controller
+	 */
+	public void unregister(Controllable c);
+	
+	/**
+	 * Called BEFORE the controller is reloaded
+	 */
+	public void onReload();
 	
 	/**
 	 * Tick the controler
