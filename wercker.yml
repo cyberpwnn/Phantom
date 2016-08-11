@@ -1,8 +1,0 @@
-box: java
-build:
-  steps:
-    - script:
-      name: Run mvn
-      code: |
-        mvn package
-        mvn test
