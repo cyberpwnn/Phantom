@@ -2,13 +2,6 @@ box: java
 build:
   steps:
     - script:
-      name: Show base information
-      code: |
-        mvn -v
-        echo $JAVA_HOME
-        java -version
-        javac -version
-    - script:
       name: Run mvn
       code: |
         mvn package
