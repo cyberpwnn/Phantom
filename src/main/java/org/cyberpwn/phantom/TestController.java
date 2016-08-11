@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,6 +26,10 @@ import org.cyberpwn.phantom.lang.GMap;
 import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.util.C;
+import org.cyberpwn.phantom.vfx.ParticleEffect;
+import org.cyberpwn.phantom.vfx.PhantomEffect;
+import org.cyberpwn.phantom.vfx.SphereParticleManipulator;
+import org.cyberpwn.phantom.vfx.VisualEffect;
 import org.cyberpwn.phantom.world.Artifact;
 import org.cyberpwn.phantom.world.Dimension;
 import org.cyberpwn.phantom.world.Direction;
@@ -147,8 +152,60 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("death-aura", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					ParticleEffect.phantom(i.getLocation(), 32);
+				}
+			}
+		});
+		
+		tests.put("particle-sphere", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					VisualEffect e = new PhantomEffect()
+					{
+						@Override
+						public void play(Location l)
+						{
+							ParticleEffect.FIREWORKS_SPARK.display(0, 0, 0, 0, 1, l, 32);
+						}
+					};
+					
+					SphereParticleManipulator s = new SphereParticleManipulator()
+					{
+						@Override
+						public void play(Location l)
+						{
+							e.play(l);
+						}
+					};
+					
+					VisualEffect ex = new PhantomEffect()
+					{
+						@Override
+						public void play(Location l)
+						{
+							s.play(l, 1 + 5.0, 300.0);
+						}
+					};
+					
+					ex.play(i.getLocation());
+				}
+			}
+		});
+		
 		tests.put("artifact", new Runnable()
 		{
+			
 			@Override
 			public void run()
 			{
