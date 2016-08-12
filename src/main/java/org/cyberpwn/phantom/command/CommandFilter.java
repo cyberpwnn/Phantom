@@ -26,8 +26,8 @@ public @interface CommandFilter
 	
 	/**
 	 * Define sub commands that must be filled to fire this command
+	 * 
 	 * @author cyberpwn
-	 *
 	 */
 	@Retention(RUNTIME)
 	@Target(METHOD)
@@ -68,8 +68,8 @@ public @interface CommandFilter
 	
 	/**
 	 * Filter based on a required permission
+	 * 
 	 * @author cyberpwn
-	 *
 	 */
 	@Retention(RUNTIME)
 	@Target(METHOD)
@@ -80,8 +80,8 @@ public @interface CommandFilter
 	
 	/**
 	 * Filter based on multiple required permissions
+	 * 
 	 * @author cyberpwn
-	 *
 	 */
 	@Retention(RUNTIME)
 	@Target(METHOD)
