@@ -22,12 +22,14 @@ import org.cyberpwn.phantom.util.C;
 public class CommandRegistryController extends Controller
 {
 	private final GMap<String, GList<CommandListener>> registry;
+	private final GList<CommandListener> registrants;
 	
 	public CommandRegistryController(Controllable parentController)
 	{
 		super(parentController);
 		
 		registry = new GMap<String, GList<CommandListener>>();
+		registrants = new GList<CommandListener>();
 	}
 	
 	public void register(CommandListener listener)
@@ -48,6 +50,12 @@ public class CommandRegistryController extends Controller
 		}
 		
 		registry.get(node.toLowerCase()).add(listener);
+		
+		if(!registrants.contains(listener))
+		{
+			registrants.add(listener);
+		}
+		
 		o("Registered Command: " + C.GREEN + listener.getClass().getSimpleName() + " <> " + "/" + node);
 	}
 	
@@ -59,7 +67,14 @@ public class CommandRegistryController extends Controller
 			getRegistry().get(i).remove(c);
 		}
 		
+		registrants.removeAll(c);
+		
 		o(C.RED + "Unregistered all commands for " + C.YELLOW + c.getClass().getSimpleName());
+	}
+	
+	public GList<CommandListener> getRegistrants()
+	{
+		return registrants;
 	}
 	
 	public GMap<String, GList<CommandListener>> getRegistry()
