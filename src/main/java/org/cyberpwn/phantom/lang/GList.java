@@ -303,6 +303,18 @@ public class GList<T> extends ArrayList<T>
 	}
 	
 	/**
+	 * Remove all of the given object in the list.
+	 * @param t the given object
+	 */
+	public void removeAll(T t)
+	{
+		while(contains(t))
+		{
+			remove(t);
+		}
+	}
+	
+	/**
 	 * Does this list have duplicates?
 	 * 
 	 * @return true if there is at least one duplicate element
@@ -399,6 +411,11 @@ public class GList<T> extends ArrayList<T>
 	public String toString(String split)
 	{
 		String s = "";
+		
+		if(split == null)
+		{
+			split = "";
+		}
 		
 		for(Object i : this)
 		{
