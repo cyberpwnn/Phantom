@@ -7,7 +7,6 @@ import org.cyberpwn.phantom.util.F;
  * RawText Wrapper
  * 
  * @author cyberpwn
- *
  */
 public class GText
 {
@@ -34,6 +33,7 @@ public class GText
 	{
 		for(String i : F.colorSplit(s))
 		{
+			System.out.println(i);
 			String colors = C.getLastColors(i);
 			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
 			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
@@ -46,7 +46,7 @@ public class GText
 				colors = colors.substring(1, 2);
 			}
 			
-			t.addText(C.stripColor(i), C.getByChar(colors).toString(), bold, italics, underline, strike, magic);
+			t.addText(C.stripColor(i), C.getByChar(colors).name(), bold, italics, underline, strike, magic);
 		}
 	}
 	
@@ -62,10 +62,11 @@ public class GText
 	 */
 	public void addWithHover(String s, String hover)
 	{
+		String colorsh = C.getLastColors(hover);
+		
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			String colorsh = C.getLastColors(hover);
 			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
 			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
 			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
@@ -82,7 +83,7 @@ public class GText
 				colorsh = colorsh.substring(1, 2);
 			}
 			
-			t.addTextWithHover(C.stripColor(i), C.getByChar(colors).toString(), C.stripColor(hover), C.getByChar(colorsh).toString(), bold, italics, underline, strike, magic);
+			t.addTextWithHover(C.stripColor(i), C.getByChar(colors).name(), C.stripColor(hover), C.getByChar(colorsh).name(), bold, italics, underline, strike, magic);
 		}
 	}
 	
@@ -100,10 +101,11 @@ public class GText
 	 */
 	public void addWithHoverCommand(String s, String hover, String command)
 	{
+		String colorsh = C.getLastColors(hover);
+		
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			String colorsh = C.getLastColors(hover);
 			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
 			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
 			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
@@ -120,7 +122,7 @@ public class GText
 				colorsh = colorsh.substring(1, 2);
 			}
 			
-			t.addTextWithHoverCommand(C.stripColor(i), C.getByChar(colors).toString(), command, C.stripColor(hover), C.getByChar(colorsh).toString(), bold, italics, underline, strike, magic);
+			t.addTextWithHoverCommand(C.stripColor(i), C.getByChar(colors).name(), command, C.stripColor(hover), C.getByChar(colorsh).name(), bold, italics, underline, strike, magic);
 		}
 	}
 	
