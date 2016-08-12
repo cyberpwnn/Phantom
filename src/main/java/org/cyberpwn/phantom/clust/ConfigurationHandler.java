@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.cyberpwn.phantom.Phantom;
 import org.cyberpwn.phantom.lang.GList;
+import org.cyberpwn.phantom.sync.TaskLater;
 import org.cyberpwn.phantom.util.D;
 
 /**
@@ -247,6 +248,15 @@ public class ConfigurationHandler
 		new YAMLDataOutput().save(c.getConfiguration(), config);
 		toFields(c);
 		c.onReadConfig();
+
+		new TaskLater(3)
+		{
+			@Override
+			public void run()
+			{
+				Phantom.instance().getDms().getHotLoadController().registerHotLoad(config, c);
+			}
+		};
 	}
 	
 	/**
