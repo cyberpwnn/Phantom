@@ -1,7 +1,6 @@
 package org.cyberpwn.phantom.text;
 
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.cyberpwn.phantom.clust.JSONException;
@@ -12,7 +11,6 @@ import org.cyberpwn.phantom.util.C;
  * Raw Text json wrapper
  * 
  * @author cyberpwn
- * 
  */
 public class RawText
 {
@@ -50,7 +48,7 @@ public class RawText
 	 */
 	public RawText addText(String text)
 	{
-		return addText(text, C.WHITE.toString());
+		return addText(text, C.WHITE.name());
 	}
 	
 	/**
@@ -94,10 +92,7 @@ public class RawText
 			
 			object.put(HEAD_TEXT, text);
 			
-			if(!color.equals(C.WHITE.toString()))
-			{
-				object.put(HEAD_COLOR, color);
-			}
+			object.put(HEAD_COLOR, color.toLowerCase());
 			
 			if(bold)
 			{
@@ -180,10 +175,7 @@ public class RawText
 			
 			object.put(HEAD_TEXT, text);
 			
-			if(!color.equals(C.WHITE.toString()))
-			{
-				object.put(HEAD_COLOR, color);
-			}
+			object.put(HEAD_COLOR, color.toLowerCase());
 			
 			if(bold)
 			{
@@ -272,10 +264,7 @@ public class RawText
 			
 			object.put(HEAD_TEXT, text);
 			
-			if(!color.equals(C.WHITE.toString()))
-			{
-				object.put(HEAD_COLOR, color);
-			}
+			object.put(HEAD_COLOR, color.toLowerCase());
 			
 			if(bold)
 			{
@@ -303,18 +292,8 @@ public class RawText
 			}
 			
 			JSONObject[] dummy = new JSONObject[1];
-			
-			if(!hoverColor.equals(C.WHITE.toString()))
-			{
-				dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText).put(HEAD_COLOR, hoverColor);
-				object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
-			}
-			
-			else
-			{
-				dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText);
-				object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
-			}
+			dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText).put(HEAD_COLOR, hoverColor.toLowerCase());
+			object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
 			
 			components.add(object);
 		}
@@ -380,10 +359,7 @@ public class RawText
 			
 			object.put(HEAD_TEXT, text);
 			
-			if(!color.equals(C.WHITE.toString()))
-			{
-				object.put(HEAD_COLOR, color);
-			}
+			object.put(HEAD_COLOR, color.toLowerCase());
 			
 			if(bold)
 			{
@@ -414,17 +390,8 @@ public class RawText
 			
 			JSONObject[] dummy = new JSONObject[1];
 			
-			if(!hoverColor.equals(C.WHITE.toString()))
-			{
-				dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText).put(HEAD_COLOR, hoverColor);
-				object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
-			}
-			
-			else
-			{
-				dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText);
-				object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
-			}
+			dummy[0] = new JSONObject().put(HEAD_TEXT, hoverText).put(HEAD_COLOR, hoverColor.toLowerCase());
+			object.put(HEAD_HOVER_EVENT, new JSONObject().put(HEAD_ACTION, HEAD_ACTION_SHOW_TEXT).put(HEAD_VALUE, new JSONObject().put(HEAD_TEXT, "").put(HEAD_EXTRA, dummy)));
 			
 			components.add(object);
 		}
