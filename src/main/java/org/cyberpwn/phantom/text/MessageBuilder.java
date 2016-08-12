@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.text;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.cyberpwn.phantom.util.C;
 
 /**
  * Message Builder with formatting tags
@@ -58,7 +59,7 @@ public class MessageBuilder
 				t.add(tag);
 			}
 			
-			t.add(text);
+			t.add(C.getLastColors(tag) + text);
 			
 			t.pack().tellRawTo((Player) sender);
 		}
