@@ -16,6 +16,7 @@ import org.cyberpwn.phantom.construct.Controllable;
 import org.cyberpwn.phantom.construct.Controller;
 import org.cyberpwn.phantom.gui.Click;
 import org.cyberpwn.phantom.gui.Dialog;
+import org.cyberpwn.phantom.gui.Notification;
 import org.cyberpwn.phantom.gui.PhantomDialog;
 import org.cyberpwn.phantom.gui.PhantomElement;
 import org.cyberpwn.phantom.gui.PhantomWindow;
@@ -23,6 +24,8 @@ import org.cyberpwn.phantom.gui.Slot;
 import org.cyberpwn.phantom.gui.Window;
 import org.cyberpwn.phantom.lang.GList;
 import org.cyberpwn.phantom.lang.GMap;
+import org.cyberpwn.phantom.lang.Priority;
+import org.cyberpwn.phantom.lang.Title;
 import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.util.C;
@@ -148,6 +151,55 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("title", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 30, 5);
+					t.send(i);
+				}
+			}
+		});
+		
+		tests.put("notification", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 30, 5);
+					Notification n = new Notification(t, Priority.HIGH);
+					Phantom.queueNotification(i, n);
+				}
+			}
+		});
+		
+		tests.put("notification-multiple", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 10, 5);
+					Notification n = new Notification(t, Priority.HIGH);
+					Phantom.queueNotification(i, n);
+					
+					Title tt = new Title(C.GREEN + "TITLE 2", C.RED + "SUBTITLE 2", C.BLUE + "ACTION 2", 5, 100, 5);
+					Notification nt = new Notification(tt, Priority.HIGH);
+					Phantom.queueNotification(i, nt);
+					
+					Title ttt = new Title(C.RED + "TITLE 3", C.BLUE + "SUBTITLE 3", C.BLUE + "ACTION 3", 5, 30, 5);
+					Notification ntt = new Notification(ttt, Priority.HIGH);
+					Phantom.queueNotification(i, ntt);
 				}
 			}
 		});
