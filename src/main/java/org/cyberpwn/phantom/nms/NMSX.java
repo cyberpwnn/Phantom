@@ -635,6 +635,7 @@ public class NMSX
 			useOldMethods = true;
 		}
 		
+		colors = new GList<Color>();
 		colors.add(Color.AQUA);
 		colors.add(Color.BLACK);
 		colors.add(Color.BLUE);
