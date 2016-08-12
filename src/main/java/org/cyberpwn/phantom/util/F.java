@@ -3,7 +3,6 @@ package org.cyberpwn.phantom.util;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import org.cyberpwn.phantom.lang.GList;
 
 /**
@@ -65,34 +64,21 @@ public class F
 	public static GList<String> colorSplit(String msg)
 	{
 		GList<String> data = new GList<String>();
-		String current = "";
 		
-		for(int i = 0; i < msg.length(); i++)
+		if(!msg.startsWith('\u00A7' + ""))
 		{
-			if(msg.charAt(i) == '\u00A7' && i + 1 < msg.length())
+			msg = '\u00A7' + "f" + msg;
+		}
+		
+		for(String i : msg.split("" + '\u00A7'))
+		{
+			if(i.length() > 0)
 			{
-				Character code = msg.charAt(i + 1);
-				C color = C.getByChar(code);
-				
-				if(color != null)
-				{
-					if(current != null && !current.isEmpty())
-					{
-						data.add(current);
-						current = "" + color;
-					}
-					
-					i++;
-				}
-			}
-			
-			else
-			{
-				current = current + msg.charAt(i);
+				data.add('\u00A7' + i);
 			}
 		}
 		
-		return current.isEmpty() ? data : data.qadd(current);
+		return data;
 	}
 	
 	/**
