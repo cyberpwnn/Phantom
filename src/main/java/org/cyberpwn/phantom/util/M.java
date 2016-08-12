@@ -1,5 +1,7 @@
 package org.cyberpwn.phantom.util;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -88,6 +90,145 @@ public class M
 	public static double ticksFromNS(long ns)
 	{
 		return (ns / 50000000.0);
+	}
+	
+	/**
+	 * Get roman numeral representation of the int
+	 * 
+	 * @param num
+	 *            the int
+	 * @return the numerals
+	 */
+	public static String toRoman(int num)
+	{
+		LinkedHashMap<String, Integer> roman_numerals = new LinkedHashMap<String, Integer>();
+		
+		roman_numerals.put("M", 1000);
+		roman_numerals.put("CM", 900);
+		roman_numerals.put("D", 500);
+		roman_numerals.put("CD", 400);
+		roman_numerals.put("C", 100);
+		roman_numerals.put("XC", 90);
+		roman_numerals.put("L", 50);
+		roman_numerals.put("XL", 40);
+		roman_numerals.put("X", 10);
+		roman_numerals.put("IX", 9);
+		roman_numerals.put("V", 5);
+		roman_numerals.put("IV", 4);
+		roman_numerals.put("I", 1);
+		
+		String res = "";
+		
+		for(Map.Entry<String, Integer> entry : roman_numerals.entrySet())
+		{
+			int matches = num / entry.getValue();
+			
+			res += repeat(entry.getKey(), matches);
+			num = num % entry.getValue();
+		}
+		
+		return res;
+	}
+	
+	private static String repeat(String s, int n)
+	{
+		if(s == null)
+		{
+			return null;
+		}
+		
+		final StringBuilder sb = new StringBuilder();
+		
+		for(int i = 0; i < n; i++)
+		{
+			sb.append(s);
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * Get the number representation from roman numerals.
+	 * 
+	 * @param number
+	 *            the roman number
+	 * @return the int representation
+	 */
+	public static int fromRoman(String number)
+	{
+		if(number.isEmpty())
+		{
+			return 0;
+		}
+		
+		number = number.toUpperCase();
+		
+		if(number.startsWith("M"))
+		{
+			return 1000 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("CM"))
+		{
+			return 900 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("D"))
+		{
+			return 500 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("CD"))
+		{
+			return 400 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("C"))
+		{
+			return 100 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("XC"))
+		{
+			return 90 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("L"))
+		{
+			return 50 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("XL"))
+		{
+			return 40 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("X"))
+		{
+			return 10 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("IX"))
+		{
+			return 9 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("V"))
+		{
+			return 5 + fromRoman(number.substring(1));
+		}
+		
+		if(number.startsWith("IV"))
+		{
+			return 4 + fromRoman(number.substring(2));
+		}
+		
+		if(number.startsWith("I"))
+		{
+			return 1 + fromRoman(number.substring(1));
+		}
+		
+		return 0;
 	}
 	
 	/**
