@@ -36,10 +36,11 @@ public class DMS extends Controller implements PluginMessageListener
 {
 	private String address;
 	private Boolean hasInternet;
-	private String name;
+	private String sname;
 	private Boolean sqlt;
 	private GList<Plugin> pql;
 	private GList<String> servers;
+	private HotLoadController hotLoadController;
 	private static ServerState state;
 	
 	public DMS(Controllable parentController)
@@ -48,10 +49,13 @@ public class DMS extends Controller implements PluginMessageListener
 		
 		address = null;
 		hasInternet = null;
-		name = "Unknown";
+		sname = "Unknown";
 		pql = new GList<Plugin>();
 		servers = new GList<String>();
 		sqlt = false;
+		hotLoadController = new HotLoadController(this);
+		
+		register(hotLoadController);
 		
 		if(Bukkit.getOnlinePlayers().isEmpty())
 		{
@@ -112,7 +116,7 @@ public class DMS extends Controller implements PluginMessageListener
 		
 		if(subchannel.equals("GetServer"))
 		{
-			name = in.readUTF();
+			sname = in.readUTF();
 		}
 		
 		if(subchannel.equals("GetServers"))
@@ -143,7 +147,7 @@ public class DMS extends Controller implements PluginMessageListener
 				testInternetConnection();
 				
 				showDiskSpace();
-				s("> " + C.AQUA + "Bungee Server: " + C.GREEN + name);
+				s("> " + C.AQUA + "Bungee Server: " + C.GREEN + sname);
 				
 				for(String i : servers)
 				{
@@ -279,6 +283,31 @@ public class DMS extends Controller implements PluginMessageListener
 	
 	public String getServerName()
 	{
-		return name;
+		return sname;
+	}
+
+	public String getSname()
+	{
+		return sname;
+	}
+
+	public Boolean getSqlt()
+	{
+		return sqlt;
+	}
+
+	public GList<Plugin> getPql()
+	{
+		return pql;
+	}
+
+	public GList<String> getServers()
+	{
+		return servers;
+	}
+
+	public HotLoadController getHotLoadController()
+	{
+		return hotLoadController;
 	}
 }
