@@ -17,8 +17,12 @@ import org.cyberpwn.phantom.lang.GList;
  * @author cyberpwn
  *
  */
-public class PhantomPlugin extends ControllablePlugin
+public abstract class PhantomPlugin extends ControllablePlugin
 {
+	public abstract void enable();
+	
+	public abstract void disable();
+	
 	/**
 	 * Call a bukkit event
 	 * 
