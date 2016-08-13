@@ -66,6 +66,34 @@ public interface Controllable extends Listener
 	public void onTick();
 	
 	/**
+	 * Should this controller be ticking
+	 * 
+	 * @return true if its ticked
+	 */
+	public boolean isTicked();
+	
+	/**
+	 * Called before onstart
+	 */
+	public void onPreStart();
+	
+	/**
+	 * Called after onstart
+	 */
+	public void onPostStop();
+	
+	/**
+	 * Called after all controllers in and under phantom have loaded. This is
+	 * invoked by phantom
+	 */
+	public void onLoadComplete();
+	
+	/**
+	 * Called after all plugins have started
+	 */
+	public void onPluginsComplete();
+	
+	/**
 	 * Register a subcontroller of this controller By registering a
 	 * subcontroller to this controller THIS controller will start/stop the
 	 * registrant when THIS controller start/stops
