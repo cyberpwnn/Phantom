@@ -2,6 +2,7 @@ package org.cyberpwn.phantom.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -58,7 +59,7 @@ public class M
 			
 			if(expression.contains(current))
 			{
-				expression.replaceAll(current, args[i] + "");
+				expression = expression.replaceAll(Matcher.quoteReplacement(current), args[i] + "");
 			}
 		}
 		
