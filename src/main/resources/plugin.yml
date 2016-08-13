@@ -1,5 +1,5 @@
 name: Phantom
-version: 8
+version: 8.1
 main: org.cyberpwn.phantom.Phantom
 description: Phantom - Another Damn API
 author: cyberpwn
