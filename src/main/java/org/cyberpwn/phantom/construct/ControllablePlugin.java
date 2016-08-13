@@ -411,4 +411,33 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		
 	}
 	
+	@Override
+	public boolean isTicked()
+	{
+		return getClass().isAnnotationPresent(Ticked.class);
+	}
+
+	@Override
+	public void onPreStart()
+	{
+		
+	}
+
+	@Override
+	public void onPostStop()
+	{
+		
+	}
+
+	@Override
+	public void onLoadComplete()
+	{
+		
+	}
+
+	@Override
+	public void onPluginsComplete()
+	{
+		
+	}
 }

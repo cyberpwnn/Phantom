@@ -21,7 +21,7 @@ import org.cyberpwn.phantom.util.Timer;
  * 
  * @author cyberpwn
  */
-public class Controller implements Controllable
+public abstract class Controller implements Controllable
 {
 	protected final GList<Controllable> controllers;
 	protected final Controllable parentController;
@@ -345,16 +345,10 @@ public class Controller implements Controllable
 	}
 	
 	@Override
-	public void onStart()
-	{
-		
-	}
+	public abstract void onStart();
 	
 	@Override
-	public void onStop()
-	{
-		
-	}
+	public abstract void onStop();
 	
 	@Override
 	public void onTick()
@@ -449,6 +443,36 @@ public class Controller implements Controllable
 
 	@Override
 	public void onReload()
+	{
+		
+	}
+
+	@Override
+	public boolean isTicked()
+	{
+		return getClass().isAnnotationPresent(Ticked.class);
+	}
+
+	@Override
+	public void onPreStart()
+	{
+		
+	}
+
+	@Override
+	public void onPostStop()
+	{
+		
+	}
+
+	@Override
+	public void onLoadComplete()
+	{
+		
+	}
+
+	@Override
+	public void onPluginsComplete()
 	{
 		
 	}
