@@ -2,19 +2,16 @@ package org.cyberpwn.phantom.util;
 
 import java.util.Map;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-
 import com.google.common.collect.Maps;
 
 /**
  * Colors
  * 
  * @author cyberpwn
- *
  */
 public enum C
 {
@@ -341,7 +338,7 @@ public enum C
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
-		this.toString = new String(new char[] { COLOR_CHAR, code });
+		this.toString = new String(new char[] {COLOR_CHAR, code});
 	}
 	
 	public net.md_5.bungee.api.ChatColor asBungee()
@@ -410,7 +407,15 @@ public enum C
 	 */
 	public static C getByChar(char code)
 	{
-		return BY_CHAR.get(code);
+		try
+		{
+			return BY_CHAR.get(code);
+		}
+		
+		catch(Exception e)
+		{
+			return C.WHITE;
+		}
 	}
 	
 	/**
@@ -423,10 +428,18 @@ public enum C
 	 */
 	public static C getByChar(String code)
 	{
-		Validate.notNull(code, "Code cannot be null");
-		Validate.isTrue(code.length() > 0, "Code must have at least one char");
+		try
+		{
+			Validate.notNull(code, "Code cannot be null");
+			Validate.isTrue(code.length() > 0, "Code must have at least one char");
+			
+			return BY_CHAR.get(code.charAt(0));
+		}
 		
-		return BY_CHAR.get(code.charAt(0));
+		catch(Exception e)
+		{
+			return C.WHITE;
+		}
 	}
 	
 	/**
