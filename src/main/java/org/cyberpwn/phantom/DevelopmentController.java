@@ -157,4 +157,16 @@ public class DevelopmentController extends Controller implements Configurable
 	{
 		return "config";
 	}
+
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
