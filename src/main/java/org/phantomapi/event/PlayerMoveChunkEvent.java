@@ -3,7 +3,6 @@ package org.phantomapi.event;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.phantomapi.event.structure.MovementEvent;
 
 /**
  * A player has changed chunks by movement

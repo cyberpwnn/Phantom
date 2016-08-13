@@ -1,7 +1,6 @@
 package org.phantomapi.event;
 
 import org.bukkit.entity.Player;
-import org.phantomapi.event.structure.KillEvent;
 
 /**
  * Called when a player kills another player

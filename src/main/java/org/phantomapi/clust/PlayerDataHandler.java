@@ -1,8 +1,6 @@
-package org.phantomapi.clust.extras;
+package org.phantomapi.clust;
 
 import org.bukkit.entity.Player;
-import org.phantomapi.clust.Configurable;
-import org.phantomapi.clust.DataController;
 import org.phantomapi.construct.Controllable;
 
 /**

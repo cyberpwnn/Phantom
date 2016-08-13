@@ -1,7 +1,6 @@
 package org.phantomapi.event;
 
 import org.bukkit.entity.Player;
-import org.phantomapi.event.structure.PlayerEvent;
 
 /**
  * Represents a player jump event. Called when a player jumps. However, keep in

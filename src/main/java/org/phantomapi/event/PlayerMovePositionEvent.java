@@ -2,7 +2,6 @@ package org.phantomapi.event;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.phantomapi.event.structure.MovementEvent;
 
 /**
  * A Player has changed their position

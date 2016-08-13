@@ -1,7 +1,6 @@
 package org.phantomapi.event;
 
 import org.bukkit.entity.Player;
-import org.phantomapi.event.structure.CombatEvent;
 
 /**
  * Player Damage Player. This fires when a player has damaged another player.

@@ -1,4 +1,4 @@
-package org.phantomapi.event.structure;
+package org.phantomapi.event;
 
 /**
  * Kill event
