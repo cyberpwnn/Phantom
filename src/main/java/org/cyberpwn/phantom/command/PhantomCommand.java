@@ -7,7 +7,7 @@ package org.cyberpwn.phantom.command;
  */
 public class PhantomCommand
 {
-	private final String name;
+	private String name;
 	private final String[] args;
 	
 	/**
@@ -42,5 +42,13 @@ public class PhantomCommand
 	public String[] getArgs()
 	{
 		return args;
+	}
+	
+	/**
+	 * Used for really nasty command situations
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }
