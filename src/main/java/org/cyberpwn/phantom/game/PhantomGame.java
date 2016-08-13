@@ -67,4 +67,16 @@ public class PhantomGame extends Controller implements Game
 		
 		return null;
 	}
+
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
