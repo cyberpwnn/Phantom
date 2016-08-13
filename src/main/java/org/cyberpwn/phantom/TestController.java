@@ -29,6 +29,7 @@ import org.cyberpwn.phantom.lang.Title;
 import org.cyberpwn.phantom.nms.NMSX;
 import org.cyberpwn.phantom.sync.ExecutiveIterator;
 import org.cyberpwn.phantom.util.C;
+import org.cyberpwn.phantom.util.Formula;
 import org.cyberpwn.phantom.vfx.ParticleEffect;
 import org.cyberpwn.phantom.vfx.PhantomEffect;
 import org.cyberpwn.phantom.vfx.SphereParticleManipulator;
@@ -178,6 +179,31 @@ public class TestController extends Controller
 					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 30, 5);
 					Notification n = new Notification(t, Priority.HIGH);
 					Phantom.queueNotification(i, n);
+				}
+			}
+		});
+		
+		tests.put("formula", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Formula f = new Formula("Math.sin($0) / Math.cos($1)");
+				
+				for(int i = 0; i < 4; i++)
+				{
+					double d = Math.random();
+					double k = Math.random();
+					
+					try
+					{
+						s("Math.sin(" + d + ") / Math.cos(" + k + ") = " + f.evaluate(d, k));
+					}
+					
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		});
