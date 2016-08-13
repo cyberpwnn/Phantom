@@ -115,4 +115,16 @@ public class CommandRegistryController extends Controller
 		
 		return false;
 	}
+
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
