@@ -15,7 +15,7 @@ import org.cyberpwn.phantom.lang.GMap;
  */
 public abstract class DataController<T extends Configurable, V> extends Controller implements MultiDataHandler<T, V>
 {
-	private GMap<V, T> cache;
+	protected GMap<V, T> cache;
 	
 	public DataController(Controllable parentController)
 	{
