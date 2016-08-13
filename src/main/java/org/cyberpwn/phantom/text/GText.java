@@ -33,7 +33,6 @@ public class GText
 	{
 		for(String i : F.colorSplit(s))
 		{
-			System.out.println(i);
 			String colors = C.getLastColors(i);
 			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
 			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
@@ -66,7 +65,18 @@ public class GText
 		
 		for(String i : F.colorSplit(s))
 		{
-			String colors = C.getLastColors(i);
+			String colors = C.WHITE.toString();
+			
+			try
+			{
+				colors = C.getLastColors(i);
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
+			
 			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
 			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
 			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
