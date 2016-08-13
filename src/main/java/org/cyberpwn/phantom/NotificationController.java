@@ -126,4 +126,16 @@ public class NotificationController extends Controller
 			}
 		});
 	}
+	
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
