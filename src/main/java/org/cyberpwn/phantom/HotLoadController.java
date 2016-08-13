@@ -155,4 +155,10 @@ public class HotLoadController extends Controller implements Configurable
 		fileRegistry.put(file, c);
 		overChanges(file);
 	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
