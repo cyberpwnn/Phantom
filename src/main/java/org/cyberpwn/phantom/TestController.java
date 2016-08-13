@@ -443,4 +443,16 @@ public class TestController extends Controller
 	{
 		return tests;
 	}
+	
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
