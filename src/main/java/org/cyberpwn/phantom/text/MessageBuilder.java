@@ -59,7 +59,15 @@ public class MessageBuilder
 				t.add(tag);
 			}
 			
-			t.add(C.getLastColors(tag) + text);
+			try
+			{
+				t.add(C.getLastColors(tag) + text);
+			}
+			
+			catch(Exception e)
+			{
+				t.add(C.WHITE + text);
+			}
 			
 			t.pack().tellRawTo((Player) sender);
 		}
