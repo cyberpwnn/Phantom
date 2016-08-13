@@ -50,4 +50,16 @@ public class ChanneledExecutivePoolController extends Controller
 		
 		pools.get(channel).add(it);
 	}
+
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
