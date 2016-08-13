@@ -127,4 +127,16 @@ public class EventRippler extends Controller
 			
 		}
 	}
+	
+	@Override
+	public void onStart()
+	{
+		
+	}
+
+	@Override
+	public void onStop()
+	{
+		
+	}
 }
