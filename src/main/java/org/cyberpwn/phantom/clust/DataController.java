@@ -32,7 +32,7 @@ public abstract class DataController<T extends Configurable, V> extends Controll
 			load(identifier);
 		}
 		
-		return get(identifier);
+		return cache.get(identifier);
 	}
 	
 	@Override
