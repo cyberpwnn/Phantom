@@ -1,11 +1,11 @@
 name: Phantom
-version: 8.2
+version: 9
 main: org.cyberpwn.phantom.Phantom
 description: Phantom - Another Damn API
 author: cyberpwn
 authors: [cyberpwn]
 depend: [ProtocolLib]
-website: http://cyberpwn.org/docs/phantom/
+website: http://phantomapi.org/
 commands:
   phantom:
     aliases: [ph, p, phan, pha]
