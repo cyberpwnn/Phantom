@@ -13,6 +13,7 @@ import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;
+import org.phantomapi.command.CommandListener;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
@@ -54,7 +55,7 @@ public class Phantom extends PhantomPlugin
 	{
 		instance = this;
 		
-		developmentController = new DevelopmentController(this);		
+		developmentController = new DevelopmentController(this);
 		environment = new DataCluster();
 		dms = new DMS(this);
 		commandRegistryController = new CommandRegistryController(this);
@@ -281,9 +282,7 @@ public class Phantom extends PhantomPlugin
 					}
 					
 					if(args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("s"))
-					{
-						printBindings(sender);
-						
+					{						
 						sender.sendMessage(C.RED + "How's it look doc?");
 						sender.sendMessage(C.AQUA + "Controllers: " + C.GREEN + F.f(getBindings().size()));
 						
@@ -300,6 +299,7 @@ public class Phantom extends PhantomPlugin
 						}
 						
 						sender.sendMessage(C.AQUA + "Highest: " + C.GREEN + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
+						sender.sendMessage(C.RED + "All: " + C.YELLOW + status().paste() + ".js");
 					}
 				}
 				
@@ -316,6 +316,40 @@ public class Phantom extends PhantomPlugin
 		}
 		
 		return false;
+	}
+	
+	public DataCluster status()
+	{
+		DataCluster cc = new DataCluster();
+		
+		for(Controllable i : getBindings())
+		{
+			String key = "controller." + i.toString().replaceAll(" > ", ".");
+			
+			if(i.isTicked())
+			{
+				cc.set(key + ".ms", i.getTime());
+			}
+			
+			if((i instanceof CommandListener) && getCommandRegistryController().getRegistrants().contains((CommandListener) i))
+			{
+				CommandListener l = (CommandListener) i;
+				GList<String> regi = new GList<String>(l.getCommandAliases()).qadd(l.getCommandName());
+				
+				cc.set(key + "command-listener.bound", regi);
+				cc.set(key + "command-listener.tag-provider.tag", C.stripColor(l.getChatTag()));
+				cc.set(key + "command-listener.tag-provider.hover", C.stripColor(l.getChatTagHover()));
+			}
+		}
+		
+		for(Plugin i : getServer().getPluginManager().getPlugins())
+		{
+			cc.set("plugin." + i.getName(), i.getDescription().getVersion());
+		}
+		
+		cc.set("phantom.api-version", getDescription().getVersion());
+		
+		return cc;
 	}
 	
 	/**
@@ -508,17 +542,17 @@ public class Phantom extends PhantomPlugin
 	{
 		return transmissionController;
 	}
-
+	
 	public ProtocolManager getProtocolLib()
 	{
 		return ProtocolLibrary.getProtocolManager();
 	}
-
+	
 	public CommandRegistryController getCommandRegistryController()
 	{
 		return commandRegistryController;
 	}
-
+	
 	public void unbindController(Controllable c)
 	{
 		bindings.remove(c);
