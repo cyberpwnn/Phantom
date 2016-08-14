@@ -4,24 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.phantomapi.util.Paste;
 
 /**
  * The data cluster holds keyed values in paths ready to be written to files in
  * different ways
  * 
  * @author cyberpwn
- *
  */
 public class DataCluster
 {
 	/**
-	 * 
 	 * @author cyberpwn
-	 *
 	 */
 	public enum ClusterDataType
 	{
@@ -38,6 +35,26 @@ public class DataCluster
 	{
 		this.data = new HashMap<String, Cluster>();
 		this.comments = new HashMap<String, String>();
+	}
+	
+	/**
+	 * Pastes the yml to paste.phantomapi.org/
+	 * 
+	 * @return the url to access it
+	 */
+	public String paste()
+	{
+		try
+		{
+			return Paste.paste(toYaml().saveToString());
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -291,7 +308,7 @@ public class DataCluster
 		{
 			List<String> l = new ArrayList<String>();
 			
-			for(Object i : ((JSONArray)o))
+			for(Object i : ((JSONArray) o))
 			{
 				l.add(i.toString());
 			}
