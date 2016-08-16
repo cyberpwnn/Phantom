@@ -61,6 +61,17 @@ public abstract class DataController<T extends Configurable, V> extends Controll
 	public abstract void onSave(V identifier);
 	
 	@Override
+	public void saveAll()
+	{
+		for(V i : cache.k())
+		{
+			save(i);
+		}
+		
+		cache.clear();
+	}
+	
+	@Override
 	public boolean contains(V identifier)
 	{
 		return cache.contains(identifier);
