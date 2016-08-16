@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.Area;
+import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
 
 /**
@@ -89,6 +90,68 @@ public class W
 		}
 		
 		return d;
+	}
+	
+	/**
+	 * Tries to get a material from a string including meta (excluding it
+	 * implies 0)
+	 * </br>
+	 * </br>
+	 * 1, STONE, stone, 1:0 all would return STONE (byte = 0)
+	 * 
+	 * @param s
+	 *            the input string
+	 * @return the MaterialBlock, NULL if it cannot parse.
+	 */
+	@SuppressWarnings("deprecation")
+	public static MaterialBlock getMaterialBlock(String s)
+	{
+		Material material = null;
+		Byte meta = (byte) 0;
+		String m;
+		String b;
+		
+		if(s.contains(":"))
+		{
+			m = s.split(":")[0];
+			b = s.split(":")[0];
+		}
+		
+		else
+		{
+			m = s;
+			b = "0";
+		}
+		
+		try
+		{
+			Material.getMaterial(Integer.valueOf(m));
+		}
+		
+		catch(NumberFormatException e)
+		{
+			try
+			{
+				material = Material.valueOf(m.toUpperCase());
+			}
+			
+			catch(Exception ex)
+			{
+				return null;
+			}
+		}
+		
+		try
+		{
+			meta = Integer.valueOf(b).byteValue();
+		}
+		
+		catch(NumberFormatException e)
+		{
+			meta = 0;
+		}
+		
+		return new MaterialBlock(material, meta);
 	}
 	
 	/**
