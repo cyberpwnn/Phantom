@@ -2,6 +2,7 @@ package org.phantomapi.util;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import org.phantomapi.lang.GList;
 
@@ -561,5 +562,22 @@ public class F
 	public static String nsMs(long ns, int p)
 	{
 		return f((double) ns / 1000000.0, p);
+	}
+
+	/**
+	 * Colors a list of strings with & symbols
+	 * @param stringList the string list
+	 * @return the list of Strings
+	 */
+	public static GList<String> color(List<String> stringList)
+	{
+		GList<String> strings = new GList<String>();
+		
+		for(String i : stringList)
+		{
+			strings.add(color(i));
+		}
+		
+		return strings;
 	}
 }
