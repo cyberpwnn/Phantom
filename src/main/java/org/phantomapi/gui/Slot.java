@@ -4,7 +4,6 @@ package org.phantomapi.gui;
  * A Slot instance for holding an item slot number
  * 
  * @author cyberpwn
- *
  */
 public class Slot
 {
@@ -160,5 +159,15 @@ public class Slot
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Clone the slot
+	 * 
+	 * @return the new cloned slot
+	 */
+	public Slot copy()
+	{
+		return new Slot(getSlot());
 	}
 }

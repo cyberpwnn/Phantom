@@ -69,7 +69,7 @@ public class PhantomElement implements Element
 	public PhantomElement(Material type, Byte metadata, Slot slot, String title, GList<String> text, Short durability, Integer count)
 	{
 		this.type = type;
-		this.slot = slot;
+		this.slot = slot.copy();
 		this.metadata = metadata;
 		this.title = title;
 		this.text = text;
