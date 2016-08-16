@@ -71,4 +71,9 @@ public interface MultiDataHandler<T extends Configurable, V>
 	 * @return the cached data
 	 */
 	public GMap<V, T> getCache();
+	
+	/**
+	 * Saves everything in the cache to the respective onsave functions
+	 */
+	public void saveAll();
 }
