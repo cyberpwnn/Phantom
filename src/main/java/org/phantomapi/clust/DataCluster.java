@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.util.Paste;
 
 /**
@@ -169,6 +170,63 @@ public class DataCluster
 		}
 		
 		return comments;
+	}
+	
+	/**
+	 * Crop the current data cluster with a copied cluster with the cropped
+	 * information. For example if you have
+	 * <br/>
+	 * <br/>
+	 * foo:
+	 * <br/>
+	 * . bar:
+	 * <br/>
+	 * . . foobar: 5
+	 * <br/>
+	 * . . foobar2:
+	 * <br/>
+	 * . . . foo:
+	 * <br/>
+	 * . . . . bard: 5
+	 * <br/>
+	 * <br/>
+	 * and invoke DataCluster.crop("foo.bar"); it will return
+	 * <br/>
+	 * <br/>
+	 * foobar: 5
+	 * <br/>
+	 * foobar2:
+	 * <br/>
+	 * . foo:
+	 * <br/>
+	 * . . bard: 5
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public DataCluster crop(String root)
+	{
+		DataCluster cc = new DataCluster();
+		GMap<String, Cluster> data = new GMap<String, Cluster>();
+		
+		for(String i : getData().keySet())
+		{
+			if(i.startsWith(root))
+			{
+				String key = i.replaceFirst(root, "");
+				
+				if(key.startsWith("."))
+				{
+					key = key.substring(1);
+				}
+				
+				data.put(key, getData().get(i));
+			}
+		}
+		
+		cc.setData(data);
+		
+		return cc;
 	}
 	
 	/**
