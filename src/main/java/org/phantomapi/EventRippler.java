@@ -32,7 +32,7 @@ public class EventRippler extends Controller
 		super(parentController);
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EntityDamageByEntityEvent e)
 	{
 		try
@@ -43,7 +43,7 @@ public class EventRippler extends Controller
 				{
 					PlayerDamagePlayerEvent ev = new PlayerDamagePlayerEvent((Player) e.getDamager(), (Player) e.getEntity(), (Double) e.getDamage());
 					callEvent(ev);
-					e.setCancelled(ev.isCancelled());
+					e.setCancelled(ev.isCancelled() ? true : e.isCancelled());
 				}
 			}
 		}
@@ -54,7 +54,7 @@ public class EventRippler extends Controller
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EntityDeathEvent e)
 	{
 		try
@@ -75,7 +75,7 @@ public class EventRippler extends Controller
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerMoveEvent e)
 	{
 		try
@@ -86,7 +86,7 @@ public class EventRippler extends Controller
 				{
 					PlayerJumpEvent ev = new PlayerJumpEvent(e.getPlayer());
 					callEvent(ev);
-					e.setCancelled(ev.isCancelled());
+					e.setCancelled(ev.isCancelled() ? true : e.isCancelled());
 				}
 			}
 			
@@ -97,19 +97,19 @@ public class EventRippler extends Controller
 			{
 				PlayerMovePositionEvent pmpe = new PlayerMovePositionEvent(e.getPlayer(), e.getFrom(), e.getTo());
 				callEvent(pmpe);
-				e.setCancelled(pmpe.isCancelled());
+				e.setCancelled(pmpe.isCancelled() ? true : e.isCancelled());
 				
 				if(!t.getBlock().equals(f.getBlock()) && !e.isCancelled())
 				{
 					PlayerMoveBlockEvent pmbe = new PlayerMoveBlockEvent(e.getPlayer(), e.getFrom(), e.getTo());
 					callEvent(pmbe);
-					e.setCancelled(pmbe.isCancelled());
+					e.setCancelled(pmbe.isCancelled() ? true : e.isCancelled());
 					
 					if(!t.getChunk().equals(f.getChunk()) && !e.isCancelled())
 					{
 						PlayerMoveChunkEvent pmce = new PlayerMoveChunkEvent(e.getPlayer(), e.getFrom(), e.getTo());
 						callEvent(pmce);
-						e.setCancelled(pmce.isCancelled());
+						e.setCancelled(pmce.isCancelled() ? true : e.isCancelled());
 					}
 				}
 			}
@@ -118,7 +118,7 @@ public class EventRippler extends Controller
 			{
 				PlayerMoveLookEvent pmle = new PlayerMoveLookEvent(e.getPlayer(), e.getFrom(), e.getTo());
 				callEvent(pmle);
-				e.setCancelled(pmle.isCancelled());
+				e.setCancelled(pmle.isCancelled() ? true : e.isCancelled());
 			}
 		}
 		
