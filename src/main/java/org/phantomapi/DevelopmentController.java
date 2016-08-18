@@ -3,6 +3,7 @@ package org.phantomapi;
 import java.io.File;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
@@ -13,16 +14,17 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.sync.ExecutiveRunnable;
+import org.phantomapi.sync.ExecutiveTask;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.PluginUtil;
 
 /**
- * 
  * @author cyberpwn
- *
  */
-@Ticked(5)
+@Ticked(20)
 public class DevelopmentController extends Controller implements Configurable
 {
 	private DataCluster cc;
@@ -30,11 +32,12 @@ public class DevelopmentController extends Controller implements Configurable
 	private GMap<Plugin, Long> sizes;
 	private GList<String> silence = new GList<String>();
 	private GList<String> registered = new GList<String>();
+	private ExecutiveTask<Plugin> task;
 	
 	@Comment("Used for identifying this server TYPE.\nIf you have multiple servers of the same type, name it the same")
 	@Keyed("server-identifier")
 	public String id = "CHANGE-ME-" + UUID.randomUUID() + "!!!!!!!!!!!!";
-
+	
 	@Comment("This will reload the desired plugin when it is modified")
 	@Keyed("development.reload.on-plugin-change")
 	public Boolean reloadOnChanged = false;
@@ -50,6 +53,7 @@ public class DevelopmentController extends Controller implements Configurable
 		this.cc = new DataCluster();
 		this.modifications = new GMap<Plugin, Long>();
 		this.sizes = new GMap<Plugin, Long>();
+		this.task = null;
 		
 		new TaskLater(1)
 		{
@@ -70,50 +74,83 @@ public class DevelopmentController extends Controller implements Configurable
 			return;
 		}
 		
-		for(Plugin i : getPlugin().getServer().getPluginManager().getPlugins())
+		if(task == null || !task.isRunning())
 		{
-			try
+			task = new ExecutiveTask<Plugin>(new GList<Plugin>(getPlugin().getServer().getPluginManager().getPlugins()).iterator(new ExecutiveRunnable<Plugin>()
 			{
-				File file = new File(getPlugin().getDataFolder().getParentFile(), PluginUtil.getPluginFileName(i.getName()));
-			
-				if(!modifications.containsKey(i))
+				@Override
+				public void run()
 				{
-					modifications.put(i, file.lastModified());
-				}
-				
-				if(!sizes.containsKey(i))
-				{
-					sizes.put(i, file.length());
-				}
-				
-				if(modifications.get(i) != file.lastModified() || sizes.get(i) != file.length())
-				{
-					modifications.put(i, file.lastModified());
-					sizes.put(i, file.length());
-					
-					if(reloadOnChanged)
+					Plugin i = next();
+										
+					try
 					{
-						s("Plugin " + C.LIGHT_PURPLE + " " + i.getName() + " " + C.GREEN + "MODIFIED");
+						File file = new File(getPlugin().getDataFolder().getParentFile(), PluginUtil.getPluginFileName(i.getName()));
 						
-						if(reloadEverything)
+						if(!modifications.containsKey(i))
 						{
-							s("Reloading All Plugins");
-							Bukkit.reload();
+							modifications.put(i, file.lastModified());
 						}
 						
-						else
+						if(!sizes.containsKey(i))
 						{
-							s("Reloading " + C.LIGHT_PURPLE + i.getName());
-							PluginUtil.reload(i);
+							sizes.put(i, file.length());
+						}
+						
+						if(modifications.get(i) != file.lastModified() || sizes.get(i) != file.length())
+						{
+							modifications.put(i, file.lastModified());
+							sizes.put(i, file.length());
+							
+							if(reloadOnChanged)
+							{
+								s("Plugin " + C.LIGHT_PURPLE + " " + i.getName() + " " + C.GREEN + "MODIFIED");
+								
+								MessageBuilder mb = new MessageBuilder(Phantom.instance());
+								
+								for(Player p : Phantom.instance().onlinePlayers())
+								{
+									mb.message(p, C.GRAY + "Hotload Detected: " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
+								}
+								
+								if(reloadEverything)
+								{
+									s("Reloading All Plugins");
+									
+									Bukkit.reload();
+									
+									for(Player p : Phantom.instance().onlinePlayers())
+									{
+										mb.message(p, C.GRAY + "Reloaded All Plugins");
+									}
+								}
+								
+								else
+								{
+									s("Reloading " + C.LIGHT_PURPLE + i.getName());
+									PluginUtil.reload(i);
+									
+									for(Player p : Phantom.instance().onlinePlayers())
+									{
+										mb.message(p, C.GRAY + "Reloaded " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
+									}
+								}
+							}
 						}
 					}
+					
+					catch(Exception e)
+					{
+						
+					}
 				}
-			}
-			
-			catch(Exception e)
+			}), 0.1, 0, new Runnable()
 			{
-				continue;
-			}
+				public void run()
+				{
+					
+				}
+			});
 		}
 	}
 	
@@ -121,7 +158,7 @@ public class DevelopmentController extends Controller implements Configurable
 	public void onNewConfig()
 	{
 		cc.set("dispatcher.silence", false, "Should all dispatchers be silenced?");
-
+		
 		for(String i : registered)
 		{
 			cc.set("dispatcher.nodes." + i.replaceAll(" > ", "."), false);
@@ -164,13 +201,13 @@ public class DevelopmentController extends Controller implements Configurable
 	{
 		return "config";
 	}
-
+	
 	@Override
 	public void onStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{

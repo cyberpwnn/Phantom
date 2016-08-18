@@ -28,8 +28,11 @@ import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.sync.ExecutiveIterator;
+import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
+import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
@@ -432,8 +435,11 @@ public class TestController extends Controller
 		{
 			if(i.toLowerCase().contains(test.toLowerCase()))
 			{
-				sender.sendMessage(ChatColor.GREEN + "Running Test " + i);
+				Timer t = new Timer();
+				t.start();
 				tests.get(i).run();
+				t.stop();
+				new MessageBuilder(Phantom.instance()).message(sender, C.GRAY + "Ran Test: " + C.UNDERLINE + C.WHITE + test + C.GRAY + ". Took " + C.WHITE + F.nsMs(t.getTime(), 2));
 				break;
 			}
 		}

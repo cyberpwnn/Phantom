@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,6 +18,8 @@ import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.ExecutiveIterator;
+import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.TransmissionListener;
 import org.phantomapi.util.C;
@@ -33,7 +34,7 @@ import com.comphenix.protocol.ProtocolManager;
  * 
  * @author cyberpwn
  */
-public class Phantom extends PhantomPlugin
+public class Phantom extends PhantomPlugin implements TagProvider
 {
 	private static Phantom instance;
 	private DataCluster environment;
@@ -50,6 +51,7 @@ public class Phantom extends PhantomPlugin
 	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
+	private GList<String> msgx = new GList<String>();
 	
 	public void enable()
 	{
@@ -68,6 +70,7 @@ public class Phantom extends PhantomPlugin
 		transmissionController = new TransmissionController(this);
 		plugins = new GList<Plugin>();
 		bindings = new GList<Controllable>();
+		msgx = new GList<String>();
 		
 		register(developmentController);
 		register(commandRegistryController);
@@ -80,6 +83,49 @@ public class Phantom extends PhantomPlugin
 		register(protocolController);
 		register(transmissionController);
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
+		
+		msgx.add("Dammit, let's do something already.");
+		msgx.add("Pump'd up and ready to fight.");
+		msgx.add("Good to go. Lets do this.");
+		msgx.add("What do you have in mind?");
+		msgx.add("I'm ready. Are you?");
+		msgx.add("Get on my level.");
+		msgx.add("Hurry up already");
+		msgx.add("How can i assist?");
+		msgx.add("Need something?");
+		msgx.add("Stop doing that. I'm buisy.");
+		msgx.add("No one isn't salty.");
+		msgx.add("Caff'd up and ready to fight.");
+		msgx.add("Caff'd up and ready to brawl bukkit.");
+		msgx.add("Caff'd up with a hint of salt.");
+		msgx.add("Check my insides. Seriously. WTFPL");
+		msgx.add("Im Open source. REALLY Open source");
+		msgx.add("Get lost.");
+		msgx.add("Got something on your mind?");
+		msgx.add("Lets do this.");
+		msgx.add("Get it done.");
+		msgx.add("I Boo the Swift");
+		msgx.add("I only listen to cyberpwn");
+		msgx.add("You probobly dont even know.");
+		msgx.add("What are you doing...");
+		msgx.add("Seriously...");
+		msgx.add("You are doing it wrong man.");
+		msgx.add("That Word... I dont think you know the meaning.");
+		msgx.add("Stop bothering me.");
+		msgx.add("It'd be a real shame if i broke events.");
+		msgx.add("Who knows what power i have.");
+		msgx.add("So... What are you trying to do?");
+		msgx.add("Enjoy an empty help message to piss you off.");
+		msgx.add("I'm enjoying your confusion");
+		msgx.add("You know, you should listen more often.");
+		msgx.add("Put an X on it. Makes it cool");
+		msgx.add("Will you quit it.");
+		msgx.add("What is wrong with you?");
+		msgx.add("You need to be fixed. I clearly dont.");
+		msgx.add("Dont ask.");
+		msgx.add("You cant stop can you.");
+		msgx.add("That was the wrong command buddy.");
+		msgx.add("Welcome to hell.");
 	}
 	
 	public void onStart()
@@ -284,6 +330,8 @@ public class Phantom extends PhantomPlugin
 	{
 		if(command.getName().equals("phantom"))
 		{
+			MessageBuilder mb = new MessageBuilder(this);
+			
 			if(sender.hasPermission("phantom.developer"))
 			{
 				if(args.length > 0)
@@ -297,14 +345,14 @@ public class Phantom extends PhantomPlugin
 						
 						else
 						{
-							sender.sendMessage(ChatColor.GREEN + testController.getTests().k().toString(", "));
+							mb.message(sender, C.GRAY + testController.getTests().k().toString(", "));
+							mb.message(sender, C.GRAY + "");
 						}
 					}
 					
-					if(args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("s"))
-					{						
-						sender.sendMessage(C.RED + "How's it look doc?");
-						sender.sendMessage(C.AQUA + "Controllers: " + C.GREEN + F.f(getBindings().size()));
+					else if(args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("s"))
+					{
+						mb.message(sender, C.GRAY + "How's it look doc?");
 						
 						double highest = 0;
 						Controllable ccc = null;
@@ -318,20 +366,67 @@ public class Phantom extends PhantomPlugin
 							}
 						}
 						
-						sender.sendMessage(C.AQUA + "Highest: " + C.GREEN + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
-						sender.sendMessage(C.RED + "All: " + C.YELLOW + status().paste() + ".js");
+						mb.message(sender, C.GRAY + "Highest: " + C.WHITE + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
+						mb.message(sender, C.GRAY + "Status: " + C.WHITE + status().paste() + ".js");
+					}
+					
+					else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))
+					{
+						GList<String> msg = new GList<String>();
+						msg.add("Hmmmmmmm.... No");
+						msg.add("Nope.");
+						msg.add("Perhaps... Perhaps Not?");
+						msg.add("Are you sure you know the implications of that?");
+						msg.add("You really dont have any idea what your doing.");
+						msg.add("Are you going to keep bothering me?");
+						msg.add("Seriously, stop asking.");
+						msg.add("You Annoy me, therefore i wont reload for you.");
+						msg.add("Do it yourself. See what happens.");
+						msg.add("I'd love to see you try and fail horribly.");
+						msg.add("That's a terrible idea.");
+						
+						mb.message(sender, C.GRAY + msg.pickRandom());
+					}
+					
+					else
+					{
+						GList<String> msg = new GList<String>();
+						msg.add("Yeah... Suuuurrreee... Ok...");
+						msg.add("Nope. You are terrible.");
+						msg.add(C.GREEN + "Success!" + C.GRAY + "Just kidding. Wrong again.");
+						msg.add("No. Stop it.");
+						msg.add("You are failing terribly.");
+						msg.add("You are interrupting my ability to tick controllers.");
+						msg.add("Will you quit doing that?");
+						msg.add("What is wrong with you?");
+						msg.add("That's disgusting. Stop that at once.");
+						msg.add("Hell no. Im not doing that.");
+						msg.add("What are you talking about.");
+						msg.add("Go to bed.");
+						msg.add("The typo you just created almost killed me");
+						msg.add("Are you trying to create exceptions?");
+						msg.add("For the love of all that exists...");
+						msg.add("Wh... But.... Stop.");
+						msg.add("Bam! Wrong again.");
+						msg.add("Go back to school");
+						msg.add("SPEAK ENGLISH");
+						
+						mb.message(sender, C.GRAY + msg.pickRandom());
 					}
 				}
 				
 				else
 				{
-					sender.sendMessage(C.DARK_GRAY + "Phantom " + C.LIGHT_PURPLE + "v" + getDescription().getVersion());
+					mb.message(sender, C.GRAY + msgx.pickRandom());
+					mb.message(sender, C.WHITE + "/p,pha,phantom" + C.GRAY + " - The Beginning");
+					mb.message(sender, C.WHITE + "/phantom test,t" + C.GRAY + " - Run Tests");
+					mb.message(sender, C.WHITE + "/phantom status,s" + C.GRAY + " - How's it look doc?");
 				}
 			}
 			
 			else
 			{
-				sender.sendMessage(C.DARK_GRAY + "Phantom " + C.LIGHT_PURPLE + "v" + getDescription().getVersion());
+				mb.message(sender, C.GRAY + msgx.pickRandom());
 			}
 		}
 		
@@ -576,5 +671,17 @@ public class Phantom extends PhantomPlugin
 	public void unbindController(Controllable c)
 	{
 		bindings.remove(c);
+	}
+	
+	@Override
+	public String getChatTag()
+	{
+		return C.LIGHT_PURPLE + "[" + C.DARK_GRAY + "Phantom" + C.LIGHT_PURPLE + "]: " + C.GRAY;
+	}
+	
+	@Override
+	public String getChatTagHover()
+	{
+		return C.LIGHT_PURPLE + "Phantom " + getDescription().getVersion();
 	}
 }
