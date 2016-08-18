@@ -412,9 +412,9 @@ public class ConfigurationHandler
 			ResultSet resx = stx.executeQuery();
 			resx.next();
 			JSONObject jso = new JSONObject(resx.getString("d"));
-			c.getConfiguration().addJson(jso);
-			toFields(c);
-			c.onReadConfig();
+			c.getConfiguration().addJson(jso);			
+			toFields(c);			
+			c.onReadConfig();			
 			resx.close();
 			stx.close();
 		}

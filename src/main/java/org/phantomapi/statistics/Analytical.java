@@ -46,7 +46,7 @@ public abstract class Analytical implements Configurable
 	 */
 	public void set(String s, Double d)
 	{
-		cc.set(s, d);
+		cc.set(s, (Double) d);
 	}
 	
 	/**
@@ -63,7 +63,17 @@ public abstract class Analytical implements Configurable
 			return 0.0;
 		}
 		
-		return cc.getDouble(s);
+		if(cc.getType(s).equals(ClusterDataType.DOUBLE))
+		{
+			return cc.getDouble(s);
+		}
+		
+		if(cc.getType(s).equals(ClusterDataType.INTEGER))
+		{
+			return cc.getInt(s).doubleValue();
+		}
+		
+		return 0.0;
 	}
 	
 	/**
@@ -75,7 +85,7 @@ public abstract class Analytical implements Configurable
 	 */
 	public Boolean has(String s)
 	{
-		return cc.contains(s) && cc.getType(s).equals(ClusterDataType.DOUBLE);
+		return cc.contains(s);
 	}
 	
 	/**
@@ -86,7 +96,7 @@ public abstract class Analytical implements Configurable
 	 * @param inc
 	 *            the increment
 	 */
-	public void add(String s, double inc)
+	public void add(String s, Double inc)
 	{
 		if(!has(s))
 		{
