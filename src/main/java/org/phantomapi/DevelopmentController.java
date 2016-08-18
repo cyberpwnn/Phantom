@@ -1,6 +1,7 @@
 package org.phantomapi;
 
 import java.io.File;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.phantomapi.clust.Comment;
@@ -29,6 +30,10 @@ public class DevelopmentController extends Controller implements Configurable
 	private GMap<Plugin, Long> sizes;
 	private GList<String> silence = new GList<String>();
 	private GList<String> registered = new GList<String>();
+	
+	@Comment("Used for identifying this server TYPE.\nIf you have multiple servers of the same type, name it the same")
+	@Keyed("server-identifier")
+	public String id = "CHANGE-ME-" + UUID.randomUUID() + "!!!!!!!!!!!!";
 
 	@Comment("This will reload the desired plugin when it is modified")
 	@Keyed("development.reload.on-plugin-change")
@@ -52,6 +57,8 @@ public class DevelopmentController extends Controller implements Configurable
 			public void run()
 			{
 				loadCluster(DevelopmentController.this);
+				Phantom.instance().setEnvironmentData(Phantom.instance(), "identify-server", id);
+				Phantom.instance().saveEnvironment();
 			}
 		};
 	}
