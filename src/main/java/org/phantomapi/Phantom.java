@@ -137,6 +137,8 @@ public class Phantom extends PhantomPlugin
 			setEnvironmentData(this, "status-network-failure", false);
 		}
 		
+		setEnvironmentData(this, "identify-server", developmentController.id);
+		
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
@@ -161,9 +163,27 @@ public class Phantom extends PhantomPlugin
 		}
 	}
 	
+	public void saveEnvironment()
+	{
+		try
+		{
+			new JSONDataOutput().save(environment, envFile);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void disable()
 	{
 		
+	}
+	
+	public static String getServerName()
+	{
+		return Phantom.instance.getEnvironmentData().getString(instance.getName().toLowerCase() + "-" + "identify-server");
 	}
 	
 	/**
