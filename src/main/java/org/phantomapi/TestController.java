@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -24,10 +25,15 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nms.NMSX;
+import org.phantomapi.sfx.Audible;
+import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.sync.ExecutiveIterator;
+import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -156,6 +162,120 @@ public class TestController extends Controller
 				{
 					NMSX.showEnd(i);
 				}
+			}
+		});
+		
+		tests.put("mfa-cannon", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Audible a = new GSound(Sound.EXPLODE);
+				a.setPitch(0.3f);
+				a = new MFADistortion(4, 1.8f).distort(a);
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					a.play(i);
+				}
+			}
+		});
+		
+		tests.put("mfa-flush", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Audible a = new GSound(Sound.SPLASH);
+				a.setPitch(0.3f);
+				a = new MFADistortion(8, 1.4f).distort(a);
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					a.play(i);
+				}
+			}
+		});
+		
+		tests.put("mfa-twang", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Audible a = new GSound(Sound.ANVIL_LAND);
+				a.setPitch(0.6f);
+				a.setVolume(0.4f);
+				a = new MFADistortion(18, 1.4f).distort(a);
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					a.play(i);
+				}
+			}
+		});
+		
+		tests.put("mfa-gush", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Audible a = new GSound(Sound.SLIME_WALK2);
+				a.setPitch(0.2f);
+				a = new MFADistortion(12, 0.8f).distort(a);
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					a.play(i);
+				}
+			}
+		});
+		
+		tests.put("mfa-beast", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				float[] ix = new float[]{0};
+				
+				new Task(1)
+				{
+					@Override
+					public void run()
+					{
+						Audible a = new GSound(Sound.FIREWORK_LARGE_BLAST2);
+						a.setPitch(0.1f + ix[0]);
+						a.setVolume(ix[0]);
+						a = new MFADistortion(12, 1.0f).distort(a);
+						
+						for(Player i : Phantom.instance().onlinePlayers())
+						{
+							a.play(i);
+						}
+						
+						ix[0] += 0.04f;
+						
+						if(ix[0] >= 1.0f)
+						{
+							cancel();
+							
+							new TaskLater(2)
+							{
+								@Override
+								public void run()
+								{
+									Audible a = new GSound(Sound.WITHER_DEATH);
+									a.setPitch(0.7f);
+									a = new MFADistortion(4, 1.8f).distort(a);
+									
+									for(Player i : Phantom.instance().onlinePlayers())
+									{
+										a.play(i);
+									}
+								}
+							};
+						}
+					}
+				};
 			}
 		});
 		
@@ -455,7 +575,7 @@ public class TestController extends Controller
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
