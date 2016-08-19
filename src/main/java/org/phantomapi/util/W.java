@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -40,6 +41,73 @@ public class W
 		BlockBreakEvent bbe = new BlockBreakEvent(block, p);
 		Phantom.instance().callEvent(bbe);
 		return !bbe.isCancelled();
+	}
+	
+	/**
+	 * Get the amount of the given item a player has
+	 * 
+	 * @param p
+	 *            the player
+	 * @param mb
+	 *            the materialblock
+	 * @return the amount they have
+	 */
+	@SuppressWarnings("deprecation")
+	public static int count(Player p, MaterialBlock mb)
+	{
+		int has = 0;
+		
+		for(ItemStack i : p.getInventory().getContents())
+		{
+			if(i != null)
+			{
+				if(i.getType().equals(mb.getMaterial()) && (i.getData().getData() == -1 ? 0 : i.getData().getData()) == mb.getData())
+				{
+					has += i.getAmount();
+				}
+			}
+		}
+		
+		return has;
+	}
+	
+	/**
+	 * Check if the player has a certain amount of items in their inventory (or
+	 * more)
+	 * 
+	 * @param p
+	 *            the player
+	 * @param mb
+	 *            the material block
+	 * @param amt
+	 *            the amount they need at least
+	 * @return true if they have enough
+	 */
+	public static boolean has(Player p, MaterialBlock mb, int amt)
+	{
+		return count(p, mb) >= amt;
+	}
+	
+	/**
+	 * Take items from the player's inventory
+	 * 
+	 * @param p
+	 *            the player
+	 * @param mb
+	 *            the type
+	 * @param amt
+	 *            the amount
+	 */
+	@SuppressWarnings("deprecation")
+	public static void take(Player p, MaterialBlock mb, int amt)
+	{
+		if(has(p, mb, amt))
+		{
+			for(int i = 0; i < amt; i++)
+			{
+				p.getInventory().removeItem(new ItemStack(mb.getMaterial(), 1, (short) 0, mb.getData()));
+			}
+		}
 	}
 	
 	/**
@@ -170,7 +238,7 @@ public class W
 		
 		catch(Exception e)
 		{
-			meta = (byte)0;
+			meta = (byte) 0;
 		}
 		
 		return new MaterialBlock(material, meta);
