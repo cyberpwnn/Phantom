@@ -2,6 +2,7 @@ package org.phantomapi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.TagProvider;
@@ -52,6 +54,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private GList<Plugin> plugins;
 	private File envFile;
 	private GList<String> msgx = new GList<String>();
+	private GlobalRegistry globalRegistry;
+	private DefaultController defaultController;
+	private BungeeController bungeeController;
 	
 	public void enable()
 	{
@@ -68,7 +73,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
 		transmissionController = new TransmissionController(this);
+		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
+		bungeeController = new BungeeController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		
@@ -82,7 +89,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(eventRippler);
 		register(protocolController);
 		register(transmissionController);
+		register(defaultController);
+		register(bungeeController);
+		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
+		globalRegistry = new GlobalRegistry();
 		
 		msgx.add("Dammit, let's do something already.");
 		msgx.add("Pump'd up and ready to fight.");
@@ -281,6 +292,67 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
+	 * Get the bungeecord server name
+	 * 
+	 * @return the name or null if not bungeecord
+	 */
+	public static String getBungeeNameName()
+	{
+		return instance.bungeeController.get().getString("this");
+	}
+	
+	/**
+	 * Get the list of servers on this network
+	 * 
+	 * @return returns null if not a network
+	 */
+	public static List<String> getServers()
+	{
+		return instance.bungeeController.get().getStringList("servers");
+	}
+	
+	/**
+	 * Get the count of the network
+	 * 
+	 * @return returns 0 if not a network
+	 */
+	public static int getNetworkCount()
+	{
+		int c = 0;
+		
+		for(String i : instance.bungeeController.get().getStringList("servers"))
+		{
+			c += getNetworkCount(i);
+		}
+		
+		return c;
+	}
+	
+	/**
+	 * Get the count of a server on the network
+	 * 
+	 * @param server
+	 *            the server name
+	 * @return returns 0 if not a server, not a network, or the number count
+	 */
+	public static int getNetworkCount(String server)
+	{
+		int c = 0;
+		
+		try
+		{
+			c += instance.bungeeController.get().getInt("server." + server + ".count");
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		return c;
+	}
+	
+	/**
 	 * Schedule an iterator to be run on the default scheduled executor
 	 * 
 	 * @param it
@@ -367,7 +439,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						}
 						
 						mb.message(sender, C.GRAY + "Highest: " + C.WHITE + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
-						mb.message(sender, C.GRAY + "Status: " + C.WHITE + status().paste() + ".js");
+						sender.sendMessage(getChatTag() + C.GRAY + "Status: " + C.WHITE + status().paste() + ".js");
+						sender.sendMessage(getChatTag() + C.GRAY + "Network: " + C.WHITE + getBungeeController().get().paste() + ".js");
 					}
 					
 					else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))
@@ -683,5 +756,30 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public String getChatTagHover()
 	{
 		return C.LIGHT_PURPLE + "Phantom " + getDescription().getVersion();
+	}
+	
+	/**
+	 * Shortcut for global registry
+	 * 
+	 * @return global registry
+	 */
+	public static GlobalRegistry r()
+	{
+		return getRegistry();
+	}
+	
+	/**
+	 * Get the global registry
+	 * 
+	 * @return the registry
+	 */
+	public static GlobalRegistry getRegistry()
+	{
+		return instance.globalRegistry;
+	}
+	
+	public BungeeController getBungeeController()
+	{
+		return bungeeController;
 	}
 }
