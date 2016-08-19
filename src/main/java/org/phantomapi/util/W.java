@@ -108,31 +108,53 @@ public class W
 	{
 		Material material = null;
 		Byte meta = (byte) 0;
-		String m;
-		String b;
+		String m = "0";
+		String b = "0";
 		
 		if(s.contains(":"))
 		{
 			m = s.split(":")[0];
-			b = s.split(":")[0];
+			b = s.split(":")[1];
 		}
 		
 		else
 		{
 			m = s;
-			b = "0";
 		}
 		
 		try
 		{
-			Material.getMaterial(Integer.valueOf(m));
+			material = Material.getMaterial(Integer.valueOf(m));
+			
+			if(material == null)
+			{
+				try
+				{
+					material = Material.valueOf(m.toUpperCase());
+					
+					if(material == null)
+					{
+						return null;
+					}
+				}
+				
+				catch(Exception e)
+				{
+					return null;
+				}
+			}
 		}
 		
-		catch(NumberFormatException e)
+		catch(Exception e)
 		{
 			try
 			{
 				material = Material.valueOf(m.toUpperCase());
+				
+				if(material == null)
+				{
+					return null;
+				}
 			}
 			
 			catch(Exception ex)
@@ -146,9 +168,9 @@ public class W
 			meta = Integer.valueOf(b).byteValue();
 		}
 		
-		catch(NumberFormatException e)
+		catch(Exception e)
 		{
-			meta = 0;
+			meta = (byte)0;
 		}
 		
 		return new MaterialBlock(material, meta);
