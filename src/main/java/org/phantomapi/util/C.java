@@ -613,6 +613,72 @@ public enum C
 		return new String(b);
 	}
 	
+	public static C fromItemMeta(byte c)
+	{
+		for(C i : C.values())
+		{
+			if(i.getItemMeta() == c)
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
+	
+	public byte getItemMeta()
+	{
+		switch(this)
+		{
+			case AQUA:
+				return 9;
+			case BLACK:
+				return 15;
+			case BLUE:
+				return 3;
+			case BOLD:
+				return -1;
+			case DARK_AQUA:
+				return 9;
+			case DARK_BLUE:
+				return 11;
+			case DARK_GRAY:
+				return 7;
+			case DARK_GREEN:
+				return 13;
+			case DARK_PURPLE:
+				return 10;
+			case DARK_RED:
+				return 14;
+			case GOLD:
+				return 4;
+			case GRAY:
+				return 8;
+			case GREEN:
+				return 5;
+			case ITALIC:
+				return -1;
+			case LIGHT_PURPLE:
+				return 2;
+			case MAGIC:
+				return -1;
+			case RED:
+				return 14;
+			case RESET:
+				return -1;
+			case STRIKETHROUGH:
+				return -1;
+			case UNDERLINE:
+				return -1;
+			case WHITE:
+				return 0;
+			case YELLOW:
+				return 4;
+			default:
+				return -1;
+		}
+	}
+	
 	/**
 	 * Gets the ChatColors used at the end of the given input string.
 	 *
