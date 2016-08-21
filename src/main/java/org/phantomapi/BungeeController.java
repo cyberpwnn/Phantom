@@ -1,5 +1,6 @@
 package org.phantomapi;
 
+import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.phantomapi.clust.DataCluster;
@@ -9,6 +10,8 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.PluginMessage;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.transmit.Transmission;
+import org.phantomapi.transmit.Transmitter;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
@@ -16,15 +19,27 @@ import com.google.common.io.ByteStreams;
 public class BungeeController extends Controller implements PluginMessageListener
 {
 	private DataCluster cc;
+	private GList<Transmitter> transmitters;
 	
 	public BungeeController(Controllable parentController)
 	{
 		super(parentController);
 		
 		cc = new DataCluster();
+		transmitters = new GList<Transmitter>();
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);	
+	}
+	
+	public void registerTransmitter(Transmitter t)
+	{
+		transmitters.add(t);
+	}
+	
+	public void urRegisterTransmitter(Transmitter t)
+	{
+		transmitters.remove(t);
 	}
 	
 	public void onTick()
@@ -102,6 +117,28 @@ public class BungeeController extends Controller implements PluginMessageListene
 			String server = in.readUTF();
 			
 			cc.set("this", server);
+		}
+		
+		else if(subchannel.equals("Forward"))
+		{
+			short len = in.readShort();
+			byte[] msgbytes = new byte[len];
+			in.readFully(msgbytes);
+
+			try
+			{
+				Transmission t = new Transmission(msgbytes);
+				
+				for(Transmitter i : transmitters)
+				{
+					i.onTransmissionReceived(t);
+				}
+			}
+			
+			catch(IOException e)
+			{
+				
+			}
 		}
 	}
 	
