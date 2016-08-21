@@ -22,6 +22,7 @@ import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.TagProvider;
+import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
@@ -237,7 +238,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public static String getServerName()
 	{
-		return Phantom.instance.getEnvironmentData().getString(instance.getName().toLowerCase() + "-" + "identify-server");
+		return instance.bungeeController.getServerName();
 	}
 	
 	/**
@@ -296,6 +297,38 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static String getBungeeNameName()
 	{
 		return instance.bungeeController.get().getString("this");
+	}
+	
+	/**
+	 * Register transmitter
+	 * 
+	 * @param t
+	 *            the transmitter
+	 */
+	public static void registerTransmitter(Transmitter t)
+	{
+		instance.bungeeController.registerTransmitter(t);
+	}
+	
+	/**
+	 * Unregister transmitter
+	 * 
+	 * @param t
+	 *            the transmitter
+	 */
+	public static void unregisterTransmitter(Transmitter t)
+	{
+		instance.bungeeController.unregisterTransmitter(t);
+	}
+	
+	/**
+	 * Is phantom connected on a bungeecord network?
+	 * 
+	 * @return true if bungee is detected
+	 */
+	public boolean isBungeecord()
+	{
+		return getServerName() != null && getBungeeController().connected();
 	}
 	
 	/**
