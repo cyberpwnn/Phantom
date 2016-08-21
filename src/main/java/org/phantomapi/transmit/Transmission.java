@@ -73,7 +73,7 @@ public class Transmission extends DataCluster
 	{
 		ByteArrayOutputStream boas = new ByteArrayOutputStream();
 		boas.write(compress());
-		new ForwardedPluginMessage(Phantom.instance(), getType(), getDestination(), boas).send();
+		new ForwardedPluginMessage(Phantom.instance(), "PhantomTransmission", getDestination(), boas).send();
 	}
 	
 	/**
