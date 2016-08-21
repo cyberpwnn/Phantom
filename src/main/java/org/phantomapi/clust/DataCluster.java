@@ -1,9 +1,16 @@
 package org.phantomapi.clust;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,6 +43,61 @@ public class DataCluster
 	{
 		this.data = new HashMap<String, Cluster>();
 		this.comments = new HashMap<String, String>();
+	}
+	
+	/**
+	 * Creates a new datacluster representing the json
+	 * 
+	 * @param js
+	 *            the json object
+	 */
+	public DataCluster(JSONObject js)
+	{
+		this();
+		
+		addJson(js);
+	}
+	
+	/**
+	 * Creates a new data cluster representing the yaml
+	 * 
+	 * @param fc
+	 *            the file configuration object
+	 */
+	public DataCluster(FileConfiguration fc)
+	{
+		this();
+		
+		addYaml(fc);
+	}
+	
+	/**
+	 * Convert compressed data into the cluster
+	 * 
+	 * @param data
+	 *            the data
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public DataCluster(byte[] data) throws IOException
+	{
+		this();
+		
+		addCompressed(data);
+	}
+	
+	/**
+	 * Put yaml keys on the data cluster
+	 * 
+	 * @param fc
+	 *            the file configuration
+	 */
+	public void addYaml(FileConfiguration fc)
+	{
+		for(String i : fc.getKeys(true))
+		{
+			trySet(i, fc.get(i));
+		}
 	}
 	
 	/**
@@ -78,6 +140,44 @@ public class DataCluster
 	public void comment(String key, String comment)
 	{
 		this.comments.put(key, comment);
+	}
+	
+	/**
+	 * Compress the data cluster into gz bytes
+	 * 
+	 * @return the bytes
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public byte[] compress() throws IOException
+	{
+		String data = toJSON().toString();
+		ByteArrayOutputStream boas = new ByteArrayOutputStream();
+		GZIPOutputStream gzo = new GZIPOutputStream(boas);
+		DataOutputStream dos = new DataOutputStream(gzo);
+		dos.writeUTF(data);
+		dos.close();
+		
+		return boas.toByteArray();
+	}
+	
+	/**
+	 * Adds compressed byte data to the data cluster
+	 * 
+	 * @param data
+	 *            the compressed data
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public void addCompressed(byte[] data) throws IOException
+	{
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
+		GZIPInputStream gzi = new GZIPInputStream(bais);
+		DataInputStream dis = new DataInputStream(gzi);
+		JSONObject js = new JSONObject(dis.readUTF());
+		dis.close();
+		
+		addJson(js);
 	}
 	
 	/**
