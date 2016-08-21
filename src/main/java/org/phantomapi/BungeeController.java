@@ -87,7 +87,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public void onPluginMessageReceived(String channel, Player player, byte[] message)
 	{
 		if(!channel.equals("BungeeCord"))
-		{
+		{	
 			return;
 		}
 		
@@ -125,7 +125,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 			connected = true;
 		}
 		
-		else if(subchannel.equals("Forward"))
+		else if(subchannel.equals("PhantomTransmission"))
 		{
 			short len = in.readShort();
 			byte[] msgbytes = new byte[len];
