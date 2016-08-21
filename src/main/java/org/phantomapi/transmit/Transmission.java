@@ -1,84 +1,108 @@
 package org.phantomapi.transmit;
 
-import org.phantomapi.clust.JSONObject;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import org.phantomapi.Phantom;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.network.ForwardedPluginMessage;
 
 /**
- * Transmit packet structure
+ * A Transmission packet
  * 
  * @author cyberpwn
- *
  */
-public class Transmission
+public class Transmission extends DataCluster
 {
-	private String source;
-	private String destination;
-	private String channel;
-	private JSONObject data;
-	
-	public Transmission(JSONObject jso)
+	/**
+	 * Create a transmission packet
+	 * 
+	 * @param type
+	 *            the type (id)
+	 * @param destination
+	 *            the destination
+	 */
+	public Transmission(String type, String destination)
 	{
-		this.source = jso.getString("source");
-		this.destination = jso.getString("destination");
-		this.channel = jso.getString("channel");
-		this.data = jso.getJSONObject("data");
+		set("t.t", type);
+		set("t.d", destination);
+		set("t.s", Phantom.getServerName());
 	}
 	
-	public Transmission(String destination, String channel, JSONObject data)
+	/**
+	 * Create a packet wrapper from recieved data
+	 * 
+	 * @param data
+	 *            the data
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public Transmission(byte[] data) throws IOException
 	{
-		this.source = "this";
-		this.destination = destination;
-		this.channel = channel;
-		this.data = data;
+		super(data);
 	}
 	
-	public String toString()
+	/**
+	 * Create a transmission packet which the destination is set to all servers
+	 * 
+	 * @param type
+	 *            the type (id)
+	 */
+	public Transmission(String type)
 	{
-		JSONObject jso = new JSONObject();
-		jso.put("data", data);
-		jso.put("source", source);
-		jso.put("destination", destination);
-		jso.put(channel, channel);
+		this(type, "ALL");
+	}
+	
+	/**
+	 * Clone the transmission
+	 */
+	public Transmission clone()
+	{
+		Transmission t = new Transmission(getType());
+		t.setData(getData());
 		
-		return jso.toString();
+		return t;
 	}
-
-	public String getSource()
+	
+	/**
+	 * Transmit the packet
+	 * 
+	 * @throws IOException
+	 *             something fucked up
+	 */
+	public void transmit() throws IOException
 	{
-		return source;
+		ByteArrayOutputStream boas = new ByteArrayOutputStream();
+		boas.write(compress());
+		new ForwardedPluginMessage(Phantom.instance(), getType(), getDestination(), boas).send();
 	}
-
-	public void setSource(String source)
+	
+	/**
+	 * Get the type of this packet (id)
+	 * 
+	 * @return the type of the packet (id)
+	 */
+	public String getType()
 	{
-		this.source = source;
+		return getString("t.t");
 	}
-
+	
+	/**
+	 * Get the destination of the packet (where it needs to go or has gone)
+	 * 
+	 * @return the server destination or "ALL"
+	 */
 	public String getDestination()
 	{
-		return destination;
+		return getString("t.d");
 	}
-
-	public void setDestination(String destination)
+	
+	/**
+	 * Get the source of the packet (where it came from)
+	 * 
+	 * @return the source of the packet
+	 */
+	public String getSource()
 	{
-		this.destination = destination;
-	}
-
-	public String getChannel()
-	{
-		return channel;
-	}
-
-	public void setChannel(String channel)
-	{
-		this.channel = channel;
-	}
-
-	public JSONObject getData()
-	{
-		return data;
-	}
-
-	public void setData(JSONObject data)
-	{
-		this.data = data;
+		return getString("t.s");
 	}
 }
