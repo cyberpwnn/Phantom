@@ -20,6 +20,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 {
 	private DataCluster cc;
 	private GList<Transmitter> transmitters;
+	private Boolean connected;
+	private String sname;
 	
 	public BungeeController(Controllable parentController)
 	{
@@ -27,6 +29,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 		
 		cc = new DataCluster();
 		transmitters = new GList<Transmitter>();
+		connected = false;
+		sname = null;
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);	
@@ -37,7 +41,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		transmitters.add(t);
 	}
 	
-	public void urRegisterTransmitter(Transmitter t)
+	public void unregisterTransmitter(Transmitter t)
 	{
 		transmitters.remove(t);
 	}
@@ -117,6 +121,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 			String server = in.readUTF();
 			
 			cc.set("this", server);
+			sname = server;
+			connected = true;
 		}
 		
 		else if(subchannel.equals("Forward"))
@@ -145,5 +151,15 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public DataCluster get()
 	{
 		return cc;
+	}
+
+	public boolean connected()
+	{
+		return connected;
+	}
+
+	public String getServerName()
+	{
+		return sname;
 	}
 }
