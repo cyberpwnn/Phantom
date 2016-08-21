@@ -551,6 +551,11 @@ public class TestController extends Controller
 	
 	public void execute(final CommandSender sender, String test)
 	{
+		if(!Phantom.instance().getDevelopmentController().tests)
+		{
+			new MessageBuilder(Phantom.instance()).message(sender, C.GRAY + "Tests Disabled");
+		}
+		
 		for(String i : tests.k())
 		{
 			if(i.toLowerCase().contains(test.toLowerCase()))

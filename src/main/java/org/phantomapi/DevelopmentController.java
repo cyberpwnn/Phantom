@@ -46,6 +46,10 @@ public class DevelopmentController extends Controller implements Configurable
 	@Keyed("development.reload.everything")
 	public Boolean reloadEverything = false;
 	
+	@Comment("Disable Tests")
+	@Keyed("tests.enabled")
+	public boolean tests = true;
+	
 	public DevelopmentController(Controllable parentController)
 	{
 		super(parentController);
