@@ -22,8 +22,6 @@ import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.TagProvider;
-import org.phantomapi.transmit.Transmission;
-import org.phantomapi.transmit.TransmissionListener;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
@@ -49,7 +47,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private EventRippler eventRippler;
 	private CommandRegistryController commandRegistryController;
 	private DMS dms;
-	private TransmissionController transmissionController;
 	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
@@ -72,12 +69,13 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
-		transmissionController = new TransmissionController(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
 		bungeeController = new BungeeController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
+		
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
 		register(developmentController);
 		register(commandRegistryController);
@@ -88,7 +86,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(dms);
 		register(eventRippler);
 		register(protocolController);
-		register(transmissionController);
 		register(defaultController);
 		register(bungeeController);
 		
@@ -605,28 +602,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
-	 * Register a transmission listener
-	 * 
-	 * @param listener
-	 *            the listener
-	 */
-	public void registerTransmitter(TransmissionListener listener)
-	{
-		transmissionController.registerListener(listener);
-	}
-	
-	/**
-	 * Transmit a packet
-	 * 
-	 * @param packet
-	 *            the packet
-	 */
-	public void transmitPacket(Transmission packet)
-	{
-		transmissionController.transmitPacket(packet);
-	}
-	
-	/**
 	 * Request to save data from the cluster into the defined database. If the
 	 * database is not defined, data wont be saved.
 	 * 
@@ -724,11 +699,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public ProtocolController getProtocolController()
 	{
 		return protocolController;
-	}
-	
-	public TransmissionController getTransmissionController()
-	{
-		return transmissionController;
 	}
 	
 	public ProtocolManager getProtocolLib()
