@@ -31,6 +31,8 @@ import org.phantomapi.lang.Title;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.sfx.Audible;
 import org.phantomapi.sfx.MFADistortion;
+import org.phantomapi.slate.PhantomSlate;
+import org.phantomapi.slate.Slate;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
@@ -162,6 +164,64 @@ public class TestController extends Controller
 				{
 					NMSX.showEnd(i);
 				}
+			}
+		});
+		
+		tests.put("slate", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Slate s = new PhantomSlate(C.LIGHT_PURPLE + "Phantom");
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					s.addViewer(i);
+				}
+				
+				s.update();
+				
+				new TaskLater(5)
+				{
+					@Override
+					public void run()
+					{
+						s.addLine(C.RED + "RED");
+						s.update();
+					}
+				};
+				
+				new TaskLater(10)
+				{
+					@Override
+					public void run()
+					{
+						s.addLine(C.GREEN + "GREEN");
+						s.update();
+					}
+				};
+				
+				new TaskLater(15)
+				{
+					@Override
+					public void run()
+					{
+						s.addLine(C.AQUA + "BLUE");
+						s.update();
+					}
+				};
+				
+				new TaskLater(30)
+				{
+					@Override
+					public void run()
+					{
+						for(Player i : Phantom.instance().onlinePlayers())
+						{
+							s.removeViewer(i);
+						}
+					}
+				};
 			}
 		});
 		
