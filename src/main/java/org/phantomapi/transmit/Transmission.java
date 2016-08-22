@@ -1,10 +1,9 @@
 package org.phantomapi.transmit;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
-import org.phantomapi.network.ForwardedPluginMessage;
+import org.phantomapi.util.M;
 
 /**
  * A Transmission packet
@@ -26,6 +25,7 @@ public class Transmission extends DataCluster
 		set("t.t", type);
 		set("t.d", destination);
 		set("t.s", Phantom.getServerName());
+		set("t.m", M.ms());
 	}
 	
 	/**
@@ -71,9 +71,7 @@ public class Transmission extends DataCluster
 	 */
 	public void transmit() throws IOException
 	{
-		ByteArrayOutputStream boas = new ByteArrayOutputStream();
-		boas.write(compress());
-		new ForwardedPluginMessage(Phantom.instance(), "PhantomTransmission", getDestination(), boas).send();
+		Phantom.instance().getBungeeController().transmit(clone());
 	}
 	
 	/**
@@ -104,5 +102,25 @@ public class Transmission extends DataCluster
 	public String getSource()
 	{
 		return getString("t.s");
+	}
+	
+	public Long getTimeStamp()
+	{
+		return getLong("t.m");
+	}
+	
+	public boolean equals(Object o)
+	{
+		if(o instanceof Transmission)
+		{
+			Transmission t = (Transmission)o;
+			
+			if(t.getData().equals(getData()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

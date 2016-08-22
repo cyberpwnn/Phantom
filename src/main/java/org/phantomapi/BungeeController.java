@@ -1,5 +1,6 @@
 package org.phantomapi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -8,6 +9,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
+import org.phantomapi.network.ForwardedPluginMessage;
 import org.phantomapi.network.PluginMessage;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
@@ -20,6 +22,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 {
 	private DataCluster cc;
 	private GList<Transmitter> transmitters;
+	private GList<Transmission> queue;
 	private Boolean connected;
 	private String sname;
 	
@@ -31,9 +34,10 @@ public class BungeeController extends Controller implements PluginMessageListene
 		transmitters = new GList<Transmitter>();
 		connected = false;
 		sname = null;
+		queue = new GList<Transmission>();
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
-		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);	
+		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
 	}
 	
 	public void registerTransmitter(Transmitter t)
@@ -48,7 +52,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void onTick()
 	{
-		new TaskLater((int)(Math.random() * 10))
+		new TaskLater((int) (Math.random() * 10))
 		{
 			@Override
 			public void run()
@@ -71,6 +75,48 @@ public class BungeeController extends Controller implements PluginMessageListene
 		};
 	}
 	
+	public boolean canFire(Transmission t)
+	{
+		return Phantom.instance().isBungeecord() && Phantom.getServers().contains(t.getDestination()) && Phantom.getNetworkCount(t.getDestination()) > 0 && Phantom.getNetworkCount(t.getSource()) > 0;
+	}
+	
+	public void fire(Transmission t) throws IOException
+	{
+		ByteArrayOutputStream boas = new ByteArrayOutputStream();
+		boas.write(t.compress());
+		new ForwardedPluginMessage(Phantom.instance(), "PhantomTransmission", t.getDestination(), boas).send();
+	}
+	
+	public void transmit(Transmission t) throws IOException
+	{
+		if(t.getDestination().equals("ALL"))
+		{
+			for(String i : Phantom.getServers())
+			{
+				if(i.equals(Phantom.getServerName()))
+				{
+					continue;
+				}
+				
+				Transmission meta = t.clone();
+				meta.set("t.d", i);
+				meta.transmit();
+			}
+			
+			return;
+		}
+		
+		if(canFire(t))
+		{
+			fire(t);
+		}
+		
+		else
+		{
+			queue.add(t);
+		}
+	}
+	
 	@Override
 	public void onStart()
 	{
@@ -87,7 +133,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public void onPluginMessageReceived(String channel, Player player, byte[] message)
 	{
 		if(!channel.equals("BungeeCord"))
-		{	
+		{
 			return;
 		}
 		
@@ -98,6 +144,24 @@ public class BungeeController extends Controller implements PluginMessageListene
 		{
 			GList<String> servers = new GList<String>(in.readUTF().split(", "));
 			cc.set("servers", servers);
+			
+			for(Transmission i : queue.copy())
+			{
+				if(canFire(i))
+				{
+					try
+					{
+						fire(i);
+					}
+					
+					catch(IOException e)
+					{
+						
+					}
+					
+					queue.remove(i);
+				}
+			}
 		}
 		
 		else if(subchannel.equals("PlayerCount"))
@@ -130,11 +194,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 			short len = in.readShort();
 			byte[] msgbytes = new byte[len];
 			in.readFully(msgbytes);
-
+			
 			try
 			{
 				Transmission t = new Transmission(msgbytes);
-				
+
 				for(Transmitter i : transmitters)
 				{
 					i.onTransmissionReceived(t);
@@ -152,12 +216,12 @@ public class BungeeController extends Controller implements PluginMessageListene
 	{
 		return cc;
 	}
-
+	
 	public boolean connected()
 	{
 		return connected;
 	}
-
+	
 	public String getServerName()
 	{
 		return sname;

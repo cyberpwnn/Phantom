@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -256,7 +255,8 @@ public class PluginUtil
 									plugins.add(plugin.getName());
 									continue;
 								}
-							} else
+							}
+							else
 							{
 								
 								// Cast to a List of Strings.
@@ -340,18 +340,18 @@ public class PluginUtil
 	 *
 	 * @param name
 	 *            plugin's name
+	 * @return 
 	 * @return status message
 	 */
-	public static void load(String name)
+	public static boolean load(String name)
 	{
-		
 		Plugin target = null;
 		
 		File pluginDir = new File("plugins");
 		
 		if(!pluginDir.isDirectory())
 		{
-			return;
+			return false;
 		}
 		
 		File pluginFile = new File(pluginDir, name + ".jar");
@@ -370,9 +370,10 @@ public class PluginUtil
 							pluginFile = f;
 							break;
 						}
-					} catch(InvalidDescriptionException e)
+					}
+					catch(InvalidDescriptionException e)
 					{
-						return;
+						return false;
 					}
 				}
 			}
@@ -381,20 +382,22 @@ public class PluginUtil
 		try
 		{
 			target = Bukkit.getPluginManager().loadPlugin(pluginFile);
-		} catch(InvalidDescriptionException e)
+		}
+		catch(InvalidDescriptionException e)
 		{
 			e.printStackTrace();
-			return;
-		} catch(InvalidPluginException e)
+			return false;
+		}
+		catch(InvalidPluginException e)
 		{
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		
 		target.onLoad();
 		Bukkit.getPluginManager().enablePlugin(target);
 		
-		return;
+		return true;
 		
 	}
 	
@@ -469,7 +472,8 @@ public class PluginUtil
 					Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
 					listenersField.setAccessible(true);
 					listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-				} catch(Exception e)
+				}
+				catch(Exception e)
 				{
 					reloadlisteners = false;
 				}
@@ -482,11 +486,13 @@ public class PluginUtil
 				knownCommandsField.setAccessible(true);
 				commands = (Map<String, Command>) knownCommandsField.get(commandMap);
 				
-			} catch(NoSuchFieldException e)
+			}
+			catch(NoSuchFieldException e)
 			{
 				e.printStackTrace();
 				return;
-			} catch(IllegalAccessException e)
+			}
+			catch(IllegalAccessException e)
 			{
 				e.printStackTrace();
 				return;
@@ -543,7 +549,8 @@ public class PluginUtil
 			try
 			{
 				((URLClassLoader) cl).close();
-			} catch(IOException ex)
+			}
+			catch(IOException ex)
 			{
 				Logger.getLogger(PluginUtil.class.getName()).log(Level.SEVERE, null, ex);
 			}

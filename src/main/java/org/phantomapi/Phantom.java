@@ -26,6 +26,7 @@ import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
+import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.SQLOperation;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -359,6 +360,43 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
+	 * Reload a controller
+	 * 
+	 * @param s
+	 *            the controller
+	 */
+	public void reloadController(String s)
+	{
+		for(Controllable i : roots())
+		{
+			if(i.getName().equalsIgnoreCase(s))
+			{
+				i.reload();
+			}
+		}
+	}
+	
+	/**
+	 * Get all root controllers
+	 * 
+	 * @return the roots
+	 */
+	public GList<Controllable> roots()
+	{
+		GList<Controllable> c = new GList<Controllable>();
+		
+		for(Controllable i : bindings)
+		{
+			if(i.getParentController() == null)
+			{
+				c.add(i);
+			}
+		}
+		
+		return c;
+	}
+	
+	/**
 	 * Get the count of a server on the network
 	 * 
 	 * @param server
@@ -427,6 +465,21 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return instance.developmentController.isQuiet(d.getName());
 	}
 	
+	public Controllable getController(Plugin p)
+	{
+		if(isPhantomPlugin(p))
+		{
+			return (Controllable)p;
+		}
+		
+		return null;
+	}
+	
+	public boolean isPhantomPlugin(Plugin p)
+	{
+		return p instanceof PhantomPlugin;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
@@ -449,6 +502,44 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						{
 							mb.message(sender, C.GRAY + testController.getTests().k().toString(", "));
 							mb.message(sender, C.GRAY + "");
+						}
+					}
+					
+					else if(args[0].equalsIgnoreCase("unload") || args[0].equalsIgnoreCase("disable"))
+					{
+						if(args.length == 2)
+						{
+							for(Plugin i : Bukkit.getPluginManager().getPlugins())
+							{
+								if(i.getName().equalsIgnoreCase(args[1]))
+								{
+									if(isPhantomPlugin(i))
+									{
+										sender.sendMessage(getChatTag() + C.BOLD + C.WHITE + i.getName() + C.GRAY + " Stopping");
+									}
+									
+									PluginUtil.unload(i);
+									sender.sendMessage(getChatTag() + C.BOLD + C.WHITE + i.getName() + C.GRAY + " Unloading");
+									
+									return true;
+								}
+							}
+							
+							sender.sendMessage(getChatTag() + C.GRAY + "WHAT?");
+						}
+					}
+					
+					else if(args[0].equalsIgnoreCase("load") || args[0].equalsIgnoreCase("enable"))
+					{
+						if(args.length == 2)
+						{
+							if(PluginUtil.load(args[1]))
+							{
+								sender.sendMessage(getChatTag() + C.BOLD + C.WHITE + args[1] + C.GRAY + " Loaded");
+								return true;
+							}
+							
+							sender.sendMessage(getChatTag() + C.GRAY + "WHAT?");
 						}
 					}
 					
@@ -475,6 +566,20 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					
 					else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))
 					{
+						if(args.length > 1)
+						{
+							for(Controllable i : roots())
+							{
+								if(i.getName().equalsIgnoreCase(args[1]))
+								{
+									sender.sendMessage(getChatTag() + C.GRAY + "Reloading " + C.WHITE + i.getName());
+									i.reload();
+									sender.sendMessage(getChatTag() + C.GRAY + "Reloaded " + C.WHITE + i.getName());
+									return true;
+								}
+							}
+						}
+						
 						GList<String> msg = new GList<String>();
 						msg.add("Hmmmmmmm.... No");
 						msg.add("Nope.");
