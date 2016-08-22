@@ -7,7 +7,6 @@ import org.bukkit.Material;
  * Material blocks
  * 
  * @author cyberpwn
- *
  */
 public class MaterialBlock
 {
@@ -64,5 +63,17 @@ public class MaterialBlock
 	public void setData(Byte data)
 	{
 		this.data = data;
+	}
+	
+	public boolean equals(Object o)
+	{
+		if(o instanceof MaterialBlock)
+		{
+			MaterialBlock mb = (MaterialBlock) o;
+			
+			return mb.getData() == getData() && mb.getMaterial().equals(getMaterial());
+		}
+		
+		return false;
 	}
 }
