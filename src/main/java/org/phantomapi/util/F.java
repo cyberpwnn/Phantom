@@ -4,13 +4,14 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
+import org.phantomapi.placeholder.PlaceholderUtil;
 
 /**
  * Formatter
  * 
  * @author cyberpwn
- *
  */
 public class F
 {
@@ -26,7 +27,22 @@ public class F
 	}
 	
 	/**
-	 * Convert the color symboled message to a ChatColored message
+	 * Formats the message with color codes
+	 * Formats the message with placeholders
+	 * 
+	 * @param p
+	 *            the player
+	 * @param s
+	 *            the string
+	 * @return the formatted message
+	 */
+	public static String p(Player p, String s)
+	{
+		return F.color(PlaceholderUtil.handle(p, s));
+	}
+	
+	/**
+	 * Convert the color symboled message to a ChatColored message.
 	 * 
 	 * @param msg
 	 *            the message with codes
@@ -34,22 +50,7 @@ public class F
 	 */
 	public static String color(String msg)
 	{
-		String coloredMsg = "";
-		
-		for(int i = 0; i < msg.length(); i++)
-		{
-			if(msg.charAt(i) == '&')
-			{
-				coloredMsg += '\u00A7';
-			}
-			
-			else
-			{
-				coloredMsg += msg.charAt(i);
-			}
-		}
-		
-		return coloredMsg;
+		return C.translateAlternateColorCodes('&', msg);
 	}
 	
 	/**
@@ -563,10 +564,12 @@ public class F
 	{
 		return f((double) ns / 1000000.0, p);
 	}
-
+	
 	/**
 	 * Colors a list of strings with & symbols
-	 * @param stringList the string list
+	 * 
+	 * @param stringList
+	 *            the string list
 	 * @return the list of Strings
 	 */
 	public static GList<String> color(List<String> stringList)

@@ -606,7 +606,7 @@ public enum C
 		{
 			if(b[i] == altColorChar && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[i + 1]) > -1)
 			{
-				b[i] = ChatColor.COLOR_CHAR;
+				b[i] = C.COLOR_CHAR;
 				b[i + 1] = Character.toLowerCase(b[i + 1]);
 			}
 		}
