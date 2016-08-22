@@ -1,7 +1,6 @@
 package org.phantomapi.gui;
 
 import java.util.UUID;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.phantomapi.lang.GList;
@@ -10,7 +9,6 @@ import org.phantomapi.lang.GList;
  * A Window which holds element objects.
  * 
  * @author cyberpwn
- *
  */
 public interface Window
 {
@@ -27,6 +25,16 @@ public interface Window
 	 * @return this
 	 */
 	public Window close();
+	
+	/**
+	 * The viewer closed the window
+	 * 
+	 * @param w
+	 *            the window
+	 * @param p
+	 *            the player
+	 */
+	public void onClose(Window w, Player p);
 	
 	/**
 	 * Build all the elements into an actual inventory object and prepare it for
@@ -192,6 +200,7 @@ public interface Window
 	
 	/**
 	 * Is the inventory open?
+	 * 
 	 * @return true if it is
 	 */
 	public boolean isOpen();
