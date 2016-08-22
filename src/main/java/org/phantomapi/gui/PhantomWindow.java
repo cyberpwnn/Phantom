@@ -234,6 +234,7 @@ public class PhantomWindow implements Window, Listener
 		if(e.getPlayer().equals(viewer) && e.getInventory().equals(getInventory()))
 		{
 			close();
+			onClose(this, (Player) e.getPlayer());
 		}
 	}
 	
@@ -285,5 +286,11 @@ public class PhantomWindow implements Window, Listener
 	public boolean onClick(Element element, Player p)
 	{
 		return true;
+	}
+
+	@Override
+	public void onClose(Window w, Player p)
+	{
+		
 	}
 }
