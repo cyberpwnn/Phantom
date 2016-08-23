@@ -18,6 +18,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.placeholder.PlaceholderHook;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
@@ -76,6 +77,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bungeeController = new BungeeController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
+		new PlaceholderHook(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
