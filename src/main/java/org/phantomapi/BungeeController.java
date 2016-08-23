@@ -14,6 +14,7 @@ import org.phantomapi.network.PluginMessage;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
+import org.phantomapi.util.C;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
@@ -23,6 +24,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	private DataCluster cc;
 	private GList<Transmitter> transmitters;
 	private GList<Transmission> queue;
+	private GList<Transmission> responders;
 	private Boolean connected;
 	private String sname;
 	
@@ -31,6 +33,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		super(parentController);
 		
 		cc = new DataCluster();
+		responders = new GList<Transmission>();
 		transmitters = new GList<Transmitter>();
 		connected = false;
 		sname = null;
@@ -82,9 +85,16 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void fire(Transmission t) throws IOException
 	{
+		if(t.hasPayload())
+		{
+			s(responders.size() + "+1");
+			responders.add(t);
+		}
+		
 		ByteArrayOutputStream boas = new ByteArrayOutputStream();
 		boas.write(t.compress());
 		new ForwardedPluginMessage(Phantom.instance(), "PhantomTransmission", t.getDestination(), boas).send();
+		s(C.GREEN + sname + " -> " + t.getDestination() + C.YELLOW + " [" + t.getType() + "]");
 	}
 	
 	public void transmit(Transmission t) throws IOException
@@ -114,6 +124,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		else
 		{
 			queue.add(t);
+			s(C.YELLOW + sname + " |> " + t.getDestination() + C.YELLOW + " [" + t.getType() + "]");
 		}
 	}
 	
@@ -198,10 +209,34 @@ public class BungeeController extends Controller implements PluginMessageListene
 			try
 			{
 				Transmission t = new Transmission(msgbytes);
-
+				s(C.AQUA + sname + " <- " + t.getSource() + C.YELLOW + " [" + t.getType() + "]");
+				
 				for(Transmitter i : transmitters)
 				{
 					i.onTransmissionReceived(t);
+				}
+				
+				if(t.hasPayload())
+				{
+					Transmission tt = new Transmission(t.getType() + "-response", t.getSource());
+					tt.set("t.k", t.getString("t.r"));
+					tt.transmit();
+				}
+				
+				
+				if(t.contains("t.k"))
+				{
+					s(responders.size() + "s");
+					
+					for(Transmission i : responders.copy())
+					{
+						if(i.getString("t.r").equals(t.getString("t.k")))
+						{
+							i.onResponse(t);
+							responders.remove(i);
+							s("Kff:" + t.getString("t.r"));
+						}
+					}
 				}
 			}
 			

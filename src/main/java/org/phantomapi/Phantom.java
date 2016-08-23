@@ -14,6 +14,8 @@ import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.command.CommandListener;
+import org.phantomapi.command.PhantomCommandSender;
+import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
@@ -23,12 +25,14 @@ import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.TagProvider;
+import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.SQLOperation;
+import org.phantomapi.util.Timer;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
@@ -231,6 +235,32 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		catch(IOException e)
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	public static void pingServer(String server, PhantomCommandSender s)
+	{
+		Timer ti = new Timer();
+		
+		Transmission t = new Transmission("ping", server)
+		{
+			@Override
+			public void onResponse(Transmission response)
+			{
+				ti.stop();
+				s.sendMessage(C.GREEN + getServerName() + " <" + F.nsMs(ti.getTime(), 6) + "> " + response.getSource());
+			}
+		};
+		
+		try
+		{
+			ti.start();
+			t.transmit();
+		}
+		
+		catch(IOException e)
+		{
+			s.sendMessage(C.RED + e.getMessage());
 		}
 	}
 	
@@ -564,6 +594,30 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						mb.message(sender, C.GRAY + "Highest: " + C.WHITE + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
 						sender.sendMessage(getChatTag() + C.GRAY + "Status: " + C.WHITE + status().paste() + ".js");
 						sender.sendMessage(getChatTag() + C.GRAY + "Network: " + C.WHITE + getBungeeController().get().paste() + ".js");
+					}
+					
+					else if(args[0].equalsIgnoreCase("network") || args[0].equalsIgnoreCase("n"))
+					{
+						PhantomSender s = new PhantomSender(sender);
+						s.setMessageBuilder(new MessageBuilder(this));
+						
+						if(getServers() == null)
+						{
+							s.sendMessage(C.RED + "No Servers");
+							return true;
+						}
+						
+						for(String i : getServers())
+						{
+							if(i.equals(getServerName()))
+							{
+								continue;
+							}
+							
+							pingServer(i, s);
+						}
+						
+						return true;
 					}
 					
 					else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))

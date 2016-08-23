@@ -28,6 +28,26 @@ public class Transmission extends DataCluster
 		set("t.m", M.ms());
 	}
 	
+	public void setPayload(String s)
+	{
+		set("t.r", s);
+	}
+	
+	public String getPayload()
+	{
+		return getString("t.r");
+	}
+	
+	public boolean hasPayload()
+	{
+		return getPayload() != null;
+	}
+	
+	public void onResponse(Transmission response)
+	{
+		
+	}
+	
 	/**
 	 * Create a packet wrapper from recieved data
 	 * 
