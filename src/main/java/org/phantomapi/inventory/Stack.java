@@ -137,30 +137,64 @@ public class Stack
 	@SuppressWarnings("deprecation")
 	public Stack(ItemStack is)
 	{
-		this.materialBlock = new MaterialBlock(is.getType(), is.getData().getData());
-		this.durability = is.getDurability();
-		this.enchantmentSet = new EnchantmentSet();
-		this.amount = is.getAmount();
-		
-		if(is.hasItemMeta())
+		if(is == null)
 		{
-			ItemMeta im = is.getItemMeta();
-			this.name = im.getDisplayName();
-			this.lore = new GList<String>(im.getLore());
-			this.flags = new GList<ItemFlag>(im.getItemFlags());
+			this.materialBlock = new MaterialBlock(Material.AIR);
+			this.name = null;
+			this.lore = new GList<String>();
+			this.durability = (short) 0;
+			this.enchantmentSet = new EnchantmentSet();
+			this.flags = new GList<ItemFlag>();
+			this.amount = 1;
 		}
 		
 		else
 		{
-			this.name = null;
-			this.lore = new GList<String>();
-			this.flags = new GList<ItemFlag>();
+			this.materialBlock = new MaterialBlock(is.getType(), is.getData().getData());
+			this.durability = is.getDurability();
+			this.enchantmentSet = new EnchantmentSet();
+			this.amount = is.getAmount();
+			
+			if(is.hasItemMeta())
+			{
+				ItemMeta im = is.getItemMeta();
+				this.name = im.getDisplayName();
+				this.lore = new GList<String>(im.getLore());
+				this.flags = new GList<ItemFlag>(im.getItemFlags());
+			}
+			
+			else
+			{
+				this.name = null;
+				this.lore = new GList<String>();
+				this.flags = new GList<ItemFlag>();
+			}
+			
+			for(Enchantment i : is.getEnchantments().keySet())
+			{
+				enchantmentSet.addEnchantment(i, is.getEnchantments().get(i));
+			}
+		}
+	}
+	
+	public boolean equals(Object o)
+	{
+		if(o instanceof Stack)
+		{
+			Stack s = (Stack) o;
+			
+			if(s.getAmount() == getAmount() && s.getName().equals(getName()) && s.getMaterialBlock().equals(getMaterialBlock()) && s.getLore().equals(getLore()) && s.getFlags().equals(getFlags()) && s.getDurability() == getDurability())
+			{
+				return true;
+			}
 		}
 		
-		for(Enchantment i : is.getEnchantments().keySet())
-		{
-			enchantmentSet.addEnchantment(i, is.getEnchantments().get(i));
-		}
+		return false;
+	}
+	
+	public Stack clone()
+	{
+		return new Stack(getMaterialBlock(), getName(), getLore(), getDurability(), getEnchantmentSet(), getFlags(), getAmount());
 	}
 	
 	/**
