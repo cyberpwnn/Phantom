@@ -641,7 +641,7 @@ public class NMSX
 	 * @param asleep
 	 *            the player to broadcast asleep
 	 */
-	public void playSleepAnimation(Player asleep)
+	public static void playSleepAnimation(Player asleep)
 	{
 		final PacketContainer bedPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.BED, false);
 		final Location loc = asleep.getLocation();
@@ -659,7 +659,7 @@ public class NMSX
 	 * @param sleeping
 	 *            the player to broadcast no longer asleep
 	 */
-	public void stopSleepAnimation(Player sleeping)
+	public static void stopSleepAnimation(Player sleeping)
 	{
 		final PacketContainer animation = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.ANIMATION, false);
 		
@@ -669,7 +669,7 @@ public class NMSX
 		broadcastNearby(sleeping, animation);
 	}
 	
-	private void broadcastNearby(Player asleep, PacketContainer bedPacket)
+	private static void broadcastNearby(Player asleep, PacketContainer bedPacket)
 	{
 		for(Player observer : ProtocolLibrary.getProtocolManager().getEntityTrackers(asleep))
 		{
