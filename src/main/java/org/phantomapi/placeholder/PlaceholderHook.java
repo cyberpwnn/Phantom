@@ -1,44 +1,27 @@
 package org.phantomapi.placeholder;
 
+import java.util.UUID;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.phantomapi.Phantom;
-import org.phantomapi.nms.NMSX;
-import me.clip.placeholderapi.external.EZPlaceholderHook;
 
-public class PlaceholderHook extends EZPlaceholderHook
+public abstract class PlaceholderHook
 {
-	public PlaceholderHook(Plugin plugin, String placeholderName)
+	private UUID hook;
+	
+	public PlaceholderHook()
 	{
-		super(plugin, placeholderName);
+		hook = UUID.randomUUID();
 	}
-
-	@Override
-	public String onPlaceholderRequest(Player p, String q)
+	
+	public void hook()
 	{
-		if(q.equalsIgnoreCase("server_count"))
-		{
-			return Phantom.instance().onlinePlayers().size() + "";
-		}
-		
-		if(q.equalsIgnoreCase("network_count"))
-		{
-			return Phantom.getNetworkCount() + "";
-		}
-		
-		for(String i : Phantom.getServers())
-		{
-			if(q.equalsIgnoreCase("server_" + i.toLowerCase() + "_count"))
-			{
-				return Phantom.getNetworkCount(i) + "";
-			}
-		}
-		
-		if(q.equalsIgnoreCase("ping"))
-		{
-			return NMSX.ping(p) + "ms";
-		}
-		
-		return null;
+		Phantom.instance().getPlaceholderController().hook(hook, this);
 	}
+	
+	public void unhook()
+	{
+		Phantom.instance().getPlaceholderController().unhook(hook);
+	}
+	
+	public abstract String onPlaceholderRequest(Player p, String q);
 }
