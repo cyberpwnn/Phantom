@@ -2,6 +2,7 @@ package org.phantomapi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -504,7 +505,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		if(isPhantomPlugin(p))
 		{
-			return (Controllable)p;
+			return (Controllable) p;
 		}
 		
 		return null;
@@ -540,6 +541,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						}
 					}
 					
+					else if(args[0].equalsIgnoreCase("thrash"))
+					{
+						thrash(sender);
+					}
+					
 					else if(args[0].equalsIgnoreCase("unload") || args[0].equalsIgnoreCase("disable"))
 					{
 						if(args.length == 2)
@@ -554,7 +560,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 									}
 									
 									PluginUtil.unload(i);
-									sender.sendMessage(getChatTag() + C.BOLD + C.WHITE + i.getName() + C.GRAY + " Unloading");
+									sender.sendMessage(getChatTag() + C.BOLD + C.WHITE + i.getName() + C.GRAY + " Unloaded");
 									
 									return true;
 								}
@@ -684,10 +690,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				
 				else
 				{
-					mb.message(sender, C.GRAY + msgx.pickRandom());
-					mb.message(sender, C.WHITE + "/p,pha,phantom" + C.GRAY + " - The Beginning");
-					mb.message(sender, C.WHITE + "/phantom test,t" + C.GRAY + " - Run Tests");
-					mb.message(sender, C.WHITE + "/phantom status,s" + C.GRAY + " - How's it look doc?");
+					mb.message(sender, C.WHITE + msgx.pickRandom());
+					mb.message(sender, C.GRAY + "/p,pha,phantom" + C.GRAY + " - The Beginning");
+					mb.message(sender, C.GRAY + "/phantom test,t" + C.GRAY + " - Run Tests");
+					mb.message(sender, C.GRAY + "/phantom status,s" + C.GRAY + " - How's it look doc?");
+					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
 				}
 			}
 			
@@ -698,6 +705,68 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 		
 		return false;
+	}
+	
+	public static void thrash(final CommandSender sender)
+	{
+		final String t = C.LIGHT_PURPLE + "[" + C.DARK_GRAY + "Phantom" + C.LIGHT_PURPLE + "]: " + C.GRAY;
+		sender.sendMessage(t + "Preparing Thrashrel");
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Phantom.instance, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				sender.sendMessage(t + "Checking Plugins");
+				List<String> thrashable = new ArrayList<String>();
+				
+				for(Plugin i : Bukkit.getPluginManager().getPlugins())
+				{
+					if(i instanceof PhantomPlugin && !i.getName().equals(Phantom.instance.getName()))
+					{
+						thrashable.add(i.getName());
+						sender.sendMessage(t + "> " + i.getName() + " " + i.getDescription().getVersion() + " (Thrashable)");
+					}
+				}
+				
+				if(thrashable.isEmpty())
+				{
+					sender.sendMessage(t + C.RED + "No Thrashable Plugins found.");
+				}
+				
+				else
+				{
+					sender.sendMessage(t + C.BOLD + "BEGINNING THRASH");
+					
+					int ic = 0;
+					int imax = (thrashable.size() * 2) + 2;
+					
+					for(String i : thrashable)
+					{
+						PluginUtil.unload(Bukkit.getPluginManager().getPlugin(i));
+						ic++;
+						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+					}
+					
+					PluginUtil.unload(Bukkit.getPluginManager().getPlugin("Phantom"));
+					ic++;
+					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+					
+					PluginUtil.load("Phantom");
+					ic++;
+					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+					
+					for(String i : thrashable)
+					{
+						PluginUtil.load(i);
+						ic++;
+						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+					}
+					
+					sender.sendMessage(t + C.BOLD + "THRASH COMPLETE");
+				}
+			}
+		}, 10);
 	}
 	
 	public DataCluster status()
@@ -949,22 +1018,22 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return bungeeController;
 	}
-
+	
 	public GList<String> getMsgx()
 	{
 		return msgx;
 	}
-
+	
 	public GlobalRegistry getGlobalRegistry()
 	{
 		return globalRegistry;
 	}
-
+	
 	public DefaultController getDefaultController()
 	{
 		return defaultController;
 	}
-
+	
 	public PlaceholderController getPlaceholderController()
 	{
 		return placeholderController;
