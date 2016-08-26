@@ -39,6 +39,6 @@ public class PlaceholderHooker extends EZPlaceholderHook
 			return NMSX.ping(p) + "ms";
 		}
 		
-		return null;
+		return Phantom.instance().getPlaceholderController().handle(p, q);
 	}
 }
