@@ -130,7 +130,11 @@ public class TestController extends Controller
 						testStack.setLore(new GList<String>().qadd(new GList<C>(C.values()).pickRandom() + "Lore " + UUID.randomUUID()));
 						testStack.setName(new GList<C>(C.values()).pickRandom() + "Test Name slot " + s);
 						testStack.getEnchantmentSet().addEnchantment(new EnchantmentLevel(Enchantment.DURABILITY, (int) (1 + (Math.random() * 15))));
-						testStack.setData(testStack.getData() > 14 ? (byte) (testStack.getData() % 15) : testStack.getData());
+						
+						if(testStack.getData() > 15)
+						{
+							testStack.setData((byte) (testStack.getData() % 15));
+						}
 						
 						inv.setStack(s, testStack);
 						inv.thrash();
@@ -143,9 +147,16 @@ public class TestController extends Controller
 						{
 							for(int i : inv.getStacks().k())
 							{
-								inv.getStacks().get(i).setData((byte) (inv.getStacks().get(i).getData() > 14 ? 0 : inv.getStacks().get(i).getData() + 1));
-								inv.getStacks().get(i).setAmount(1);
+								int next = inv.getStacks().get(i).getData() + 1;
+								
+								if(next > 15)
+								{
+									next = 0;
+								}
+								
+								inv.getStacks().get(i).setAmount((int) (Math.random() * 63));
 								inv.getStacks().get(i).setLore(new GList<String>().qadd(new GList<C>(C.values()).pickRandom() + "Lore " + UUID.randomUUID()));
+								inv.getStacks().get(i).setData((byte) next);
 							}
 						}
 					};
