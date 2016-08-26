@@ -20,7 +20,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
-import org.phantomapi.placeholder.PlaceholderHook;
+import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.text.MessageBuilder;
@@ -61,6 +61,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private GlobalRegistry globalRegistry;
 	private DefaultController defaultController;
 	private BungeeController bungeeController;
+	private PlaceholderController placeholderController;
 	
 	public void enable()
 	{
@@ -78,10 +79,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		eventRippler = new EventRippler(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
+		placeholderController = new PlaceholderController(this);
 		bungeeController = new BungeeController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
-		new PlaceholderHook(this, "phantom").hook();
+		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
@@ -96,6 +98,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(protocolController);
 		register(defaultController);
 		register(bungeeController);
+		register(placeholderController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -945,5 +948,25 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public BungeeController getBungeeController()
 	{
 		return bungeeController;
+	}
+
+	public GList<String> getMsgx()
+	{
+		return msgx;
+	}
+
+	public GlobalRegistry getGlobalRegistry()
+	{
+		return globalRegistry;
+	}
+
+	public DefaultController getDefaultController()
+	{
+		return defaultController;
+	}
+
+	public PlaceholderController getPlaceholderController()
+	{
+		return placeholderController;
 	}
 }
