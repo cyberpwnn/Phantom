@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
@@ -707,6 +709,34 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return false;
 	}
 	
+	@SuppressWarnings("deprecation")
+	private static void thrashUpdate(String s)
+	{
+		for(Player i : instance.onlinePlayers())
+		{
+			i.sendTitle(C.LIGHT_PURPLE + " ", ChatColor.DARK_GRAY.toString() + ChatColor.BOLD + "Patching: " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + s);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static void thrashStart()
+	{
+		for(Player i : instance.onlinePlayers())
+		{
+			NMSX.clearTitle(i);
+			i.sendTitle(C.LIGHT_PURPLE + " ", ChatColor.DARK_GRAY.toString() + ChatColor.BOLD + "Please Wait");
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static void thrashComplete()
+	{
+		for(Player i : instance.onlinePlayers())
+		{
+			i.sendTitle(C.LIGHT_PURPLE + " ", ChatColor.DARK_GRAY.toString() + ChatColor.BOLD + "UPDATE COMPLETE");
+		}
+	}
+	
 	public static void thrash(final CommandSender sender)
 	{
 		final String t = C.LIGHT_PURPLE + "[" + C.DARK_GRAY + "Phantom" + C.LIGHT_PURPLE + "]: " + C.GRAY;
@@ -717,6 +747,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			@Override
 			public void run()
 			{
+				thrashStart();
 				sender.sendMessage(t + "Checking Plugins");
 				List<String> thrashable = new ArrayList<String>();
 				
@@ -743,27 +774,30 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					
 					for(String i : thrashable)
 					{
-						PluginUtil.unload(Bukkit.getPluginManager().getPlugin(i));
+						PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin(i));
 						ic++;
 						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					}
 					
-					PluginUtil.unload(Bukkit.getPluginManager().getPlugin("Phantom"));
+					PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin("Phantom"));
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-					
+					thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					PluginUtil.load("Phantom");
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-					
+					thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					for(String i : thrashable)
 					{
 						PluginUtil.load(i);
 						ic++;
 						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
+						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					}
 					
 					sender.sendMessage(t + C.BOLD + "THRASH COMPLETE");
+					thrashComplete();
 				}
 			}
 		}, 10);
