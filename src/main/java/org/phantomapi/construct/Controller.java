@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.AsyncWorker;
+import org.phantomapi.clust.AsyncConfig;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.command.CommandListener;
@@ -121,7 +123,45 @@ public abstract class Controller implements Controllable
 		
 		try
 		{
-			ConfigurationHandler.read(base, c);
+			if(c.getClass().isAnnotationPresent(AsyncConfig.class))
+			{
+				final File abase = base;
+				v("@Async Loading " + c.getCodeName());
+				
+				new AsyncWorker()
+				{
+					@Override
+					public void prepare()
+					{
+						
+					}
+					
+					@Override
+					public void finish()
+					{
+						v("Finished loading " + c.getCodeName());
+					}
+					
+					@Override
+					public void doWork()
+					{
+						try
+						{
+							ConfigurationHandler.read(abase, c);
+						}
+						
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
+			}
+			
+			else
+			{
+				ConfigurationHandler.read(base, c);
+			}
 		}
 		
 		catch(IOException e)
@@ -432,7 +472,7 @@ public abstract class Controller implements Controllable
 	{
 		return time.getAverage();
 	}
-
+	
 	@Override
 	public void reload()
 	{
@@ -440,37 +480,37 @@ public abstract class Controller implements Controllable
 		onStop();
 		onStart();
 	}
-
+	
 	@Override
 	public void onReload()
 	{
 		
 	}
-
+	
 	@Override
 	public boolean isTicked()
 	{
 		return getClass().isAnnotationPresent(Ticked.class);
 	}
-
+	
 	@Override
 	public void onPreStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onPostStop()
 	{
 		
 	}
-
+	
 	@Override
 	public void onLoadComplete()
 	{
 		
 	}
-
+	
 	@Override
 	public void onPluginsComplete()
 	{
