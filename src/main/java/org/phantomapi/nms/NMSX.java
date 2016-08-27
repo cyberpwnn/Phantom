@@ -463,7 +463,7 @@ public class NMSX
 	 */
 	public static void clearTitle(Player player)
 	{
-		NMSX.sendTitle(player, 0, 0, 0, "", "");
+		NMSX.sendTitle(player, 0, 30, 50, "", "");
 	}
 	
 	/**
