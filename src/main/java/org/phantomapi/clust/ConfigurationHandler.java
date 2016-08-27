@@ -246,7 +246,15 @@ public class ConfigurationHandler
 		new YAMLDataInput().load(c.getConfiguration(), config);
 		new YAMLDataOutput().save(c.getConfiguration(), config);
 		toFields(c);
-		c.onReadConfig();
+		
+		new TaskLater()
+		{
+			@Override
+			public void run()
+			{
+				c.onReadConfig();
+			}
+		};
 
 		new TaskLater(3)
 		{
