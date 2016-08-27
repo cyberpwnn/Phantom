@@ -155,7 +155,7 @@ public abstract class Controller implements Controllable
 							e.printStackTrace();
 						}
 					}
-				};
+				}.start();
 			}
 			
 			else
