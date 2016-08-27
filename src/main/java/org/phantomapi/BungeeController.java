@@ -1,10 +1,15 @@
 package org.phantomapi;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.JSONDataInput;
+import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -60,22 +65,36 @@ public class BungeeController extends Controller implements PluginMessageListene
 			@Override
 			public void run()
 			{
-				new PluginMessage(getPlugin(), "GetServers").send();
-				
-				if(cc.contains("servers"))
-				{
-					for(String i : cc.getStringList("servers"))
-					{
-						new PluginMessage(getPlugin(), "PlayerCount", i).send();
-						new PluginMessage(getPlugin(), "PlayerList", i).send();
-					}
-					
-					new PluginMessage(getPlugin(), "PlayerCount", "ALL").send();
-					new PluginMessage(getPlugin(), "PlayerList", "ALL").send();
-					new PluginMessage(getPlugin(), "GetServer").send();
-				}
+				hit();
 			}
 		};
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		if(Phantom.getServerName() == null)
+		{
+			hit();
+		}
+	}
+	
+	public void hit()
+	{
+		new PluginMessage(getPlugin(), "GetServers").send();
+		
+		if(cc.contains("servers"))
+		{
+			for(String i : cc.getStringList("servers"))
+			{
+				new PluginMessage(getPlugin(), "PlayerCount", i).send();
+				new PluginMessage(getPlugin(), "PlayerList", i).send();
+			}
+			
+			new PluginMessage(getPlugin(), "PlayerCount", "ALL").send();
+			new PluginMessage(getPlugin(), "PlayerList", "ALL").send();
+			new PluginMessage(getPlugin(), "GetServer").send();
+		}
 	}
 	
 	public boolean canFire(Transmission t)
@@ -131,13 +150,67 @@ public class BungeeController extends Controller implements PluginMessageListene
 	@Override
 	public void onStart()
 	{
+		File df = new File(Phantom.instance().getDataFolder(), "transmission-queue");
 		
+		if(df.exists())
+		{
+			v("Loaded " + df.listFiles().length + " cached transmissions");
+			
+			for(File i : df.listFiles())
+			{
+				Transmission t = new Transmission("");
+				
+				try
+				{
+					new JSONDataInput().load(t, i);
+					queue.add(t);
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				i.delete();
+			}
+		}
+		
+		df.delete();
 	}
 	
 	@Override
 	public void onStop()
 	{
+		File df = new File(Phantom.instance().getDataFolder(), "transmission-queue");
 		
+		if(!queue.isEmpty())
+		{
+			v("Saving " + queue.size() + " pending transmissions...");
+			
+			df.mkdirs();
+			
+			for(Transmission i : queue)
+			{
+				File file = new File(df, i.getSource() + "- -" + i.getDestination() + " [" + i.getTimeStamp() + "]");
+				
+				if(i.getSource() == null || i.getSource().equals("null"))
+				{
+					continue;
+				}
+				
+				try
+				{
+					new JSONDataOutput().save(i, file);
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		queue.clear();
 	}
 	
 	@Override
