@@ -78,6 +78,22 @@ public abstract class Controller implements Controllable
 		
 		getPlugin().unRegisterListener(this);
 		s(ChatColor.RED + "Stopped");
+		
+		try
+		{
+			Phantom.instance().unbindController(this);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		if(this instanceof CommandListener)
+		{
+			Phantom.instance().getCommandRegistryController().unregister((CommandListener) this);
+		}
+		
 		onStop();
 	}
 	
@@ -367,21 +383,6 @@ public abstract class Controller implements Controllable
 	public void unregister(Controllable c)
 	{
 		controllers.remove(c);
-		
-		try
-		{
-			Phantom.instance().unbindController(c);
-		}
-		
-		catch(Exception e)
-		{
-			
-		}
-		
-		if(c instanceof CommandListener)
-		{
-			Phantom.instance().getCommandRegistryController().unregister((CommandListener) c);
-		}
 	}
 	
 	@Override
