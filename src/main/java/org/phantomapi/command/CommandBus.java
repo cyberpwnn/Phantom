@@ -153,7 +153,7 @@ public class CommandBus
 			
 			catch(Exception e)
 			{
-				result = CommandResult.EXCEPTION;
+				result = CommandResult.HANDLED;
 				e.printStackTrace();
 				sender.sendMessage(C.RED + "#Boo" + e.getClass().getSimpleName() + "s");
 			}
