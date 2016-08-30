@@ -1,6 +1,7 @@
 package org.phantomapi.transmit;
 
 import java.io.IOException;
+import java.util.UUID;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.util.M;
@@ -10,7 +11,7 @@ import org.phantomapi.util.M;
  * 
  * @author cyberpwn
  */
-public class Transmission extends DataCluster
+public abstract class Transmission extends DataCluster
 {
 	/**
 	 * Create a transmission packet
@@ -26,6 +27,8 @@ public class Transmission extends DataCluster
 		set("t.d", destination);
 		set("t.s", Phantom.getServerName());
 		set("t.m", M.ms());
+		
+		setPayload(UUID.randomUUID().toString());
 	}
 	
 	public void setPayload(String s)
@@ -43,10 +46,7 @@ public class Transmission extends DataCluster
 		return getPayload() != null;
 	}
 	
-	public void onResponse(Transmission response)
-	{
-		
-	}
+	public abstract void onResponse(Transmission response);
 	
 	/**
 	 * Create a packet wrapper from recieved data
@@ -59,6 +59,8 @@ public class Transmission extends DataCluster
 	public Transmission(byte[] data) throws IOException
 	{
 		super(data);
+		
+		setPayload(UUID.randomUUID().toString());
 	}
 	
 	/**
@@ -70,6 +72,8 @@ public class Transmission extends DataCluster
 	public Transmission(String type)
 	{
 		this(type, "ALL");
+		
+		setPayload(UUID.randomUUID().toString());
 	}
 	
 	/**
@@ -77,7 +81,15 @@ public class Transmission extends DataCluster
 	 */
 	public Transmission clone()
 	{
-		Transmission t = new Transmission(getType());
+		Transmission th = this;
+		Transmission t = new Transmission(getType())
+		{
+			public void onResponse(Transmission t)
+			{
+				th.onResponse(t);
+			}
+		};
+		
 		t.setData(getData());
 		
 		return t;
@@ -124,6 +136,11 @@ public class Transmission extends DataCluster
 		return getString("t.s");
 	}
 	
+	/**
+	 * Get the timestamp of the packet when it was sent
+	 * 
+	 * @return the timestamp from when it was sent
+	 */
 	public Long getTimeStamp()
 	{
 		return getLong("t.m");
@@ -133,7 +150,7 @@ public class Transmission extends DataCluster
 	{
 		if(o instanceof Transmission)
 		{
-			Transmission t = (Transmission)o;
+			Transmission t = (Transmission) o;
 			
 			if(t.getData().equals(getData()))
 			{
