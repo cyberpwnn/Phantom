@@ -740,14 +740,20 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static void thrash(final CommandSender sender)
 	{
 		final String t = C.LIGHT_PURPLE + "[" + C.DARK_GRAY + "Phantom" + C.LIGHT_PURPLE + "]: " + C.GRAY;
-		sender.sendMessage(t + "Preparing Thrashrel");
+		sender.sendMessage(t + "Preparing Thrash");
+		
+		boolean b = instance.developmentController.titles;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Phantom.instance, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				thrashStart();
+				if(b)
+				{
+					thrashStart();
+				}
+				
 				sender.sendMessage(t + "Checking Plugins");
 				List<String> thrashable = new ArrayList<String>();
 				
@@ -777,27 +783,51 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin(i));
 						ic++;
 						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+						
+						if(b)
+						{
+							thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+						}
 					}
 					
 					PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin("Phantom"));
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-					thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+					
+					if(b)
+					{
+						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+					}
+					
+					System.gc();
+					
 					PluginUtil.load("Phantom");
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-					thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+					
+					if(b)
+					{
+						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+					}
+					
 					for(String i : thrashable)
 					{
 						PluginUtil.load(i);
 						ic++;
 						sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
-						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+						
+						if(b)
+						{
+							thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
+						}
 					}
 					
 					sender.sendMessage(t + C.BOLD + "THRASH COMPLETE");
-					thrashComplete();
+					
+					if(b)
+					{
+						thrashComplete();
+					}
 				}
 			}
 		}, 10);
