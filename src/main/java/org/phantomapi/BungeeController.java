@@ -106,7 +106,6 @@ public class BungeeController extends Controller implements PluginMessageListene
 	{
 		if(t.hasPayload())
 		{
-			s(responders.size() + "+1");
 			responders.add(t);
 		}
 		
@@ -118,6 +117,12 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void transmit(Transmission t) throws IOException
 	{
+		if(Phantom.getServers() == null)
+		{
+			f("Cannot Transmit " + t.getSource() + " :> " + t.getDestination() + " (NO ROUTE)");
+			return;
+		}
+		
 		if(t.getDestination().equals("ALL"))
 		{
 			for(String i : Phantom.getServers())
@@ -158,7 +163,13 @@ public class BungeeController extends Controller implements PluginMessageListene
 			
 			for(File i : df.listFiles())
 			{
-				Transmission t = new Transmission("");
+				Transmission t = new Transmission("")
+				{
+					public void onResponse(Transmission t)
+					{
+						
+					}
+				};
 				
 				try
 				{
@@ -281,7 +292,13 @@ public class BungeeController extends Controller implements PluginMessageListene
 			
 			try
 			{
-				Transmission t = new Transmission(msgbytes);
+				Transmission t = new Transmission(msgbytes)
+				{
+					public void onResponse(Transmission t)
+					{
+						
+					}
+				};
 				s(C.AQUA + sname + " <- " + t.getSource() + C.YELLOW + " [" + t.getType() + "]");
 				
 				for(Transmitter i : transmitters)
@@ -289,25 +306,29 @@ public class BungeeController extends Controller implements PluginMessageListene
 					i.onTransmissionReceived(t);
 				}
 				
-				if(t.hasPayload())
+				if(t.hasPayload() && !t.getType().endsWith("-response"))
 				{
-					Transmission tt = new Transmission(t.getType() + "-response", t.getSource());
+					Transmission tt = new Transmission(t.getType() + "-response", t.getSource())
+					{
+						public void onResponse(Transmission t)
+						{
+							
+						}
+					};
+					
 					tt.set("t.k", t.getString("t.r"));
 					tt.transmit();
 				}
 				
-				
 				if(t.contains("t.k"))
 				{
-					s(responders.size() + "s");
-					
 					for(Transmission i : responders.copy())
 					{
 						if(i.getString("t.r").equals(t.getString("t.k")))
 						{
+							s("Respond");
 							i.onResponse(t);
 							responders.remove(i);
-							s("Kff:" + t.getString("t.r"));
 						}
 					}
 				}
