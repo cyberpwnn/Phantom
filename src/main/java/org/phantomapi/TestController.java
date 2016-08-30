@@ -41,6 +41,7 @@ import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
@@ -217,6 +218,36 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("transmission", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Timer ti = new Timer();
+				
+				Transmission t = new Transmission("test-packet")
+				{
+					@Override
+					public void onResponse(Transmission response)
+					{
+						ti.stop();
+						s(response.getSource() + " < " + F.nsMs(ti.getTime(), 2) + "ms > " + response.getDestination());
+					}
+				};
+								
+				try
+				{
+					ti.start();
+					t.transmit();
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		});
