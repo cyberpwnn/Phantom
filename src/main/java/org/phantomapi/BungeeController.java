@@ -13,6 +13,7 @@ import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.BungeeConnectionEstablished;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.ForwardedPluginMessage;
 import org.phantomapi.network.PluginMessage;
@@ -281,6 +282,20 @@ public class BungeeController extends Controller implements PluginMessageListene
 			
 			cc.set("this", server);
 			sname = server;
+			
+			if(!connected)
+			{
+				new TaskLater(20)
+				{
+					@Override
+					public void run()
+					{
+						s("Bungeecord Connection Established.");
+						callEvent(new BungeeConnectionEstablished(Phantom.getServerName(), new GList<String>(Phantom.getServers())));
+					}
+				};
+			}
+			
 			connected = true;
 		}
 		
