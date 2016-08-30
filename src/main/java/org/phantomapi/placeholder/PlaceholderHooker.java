@@ -16,27 +16,35 @@ public class PlaceholderHooker extends EZPlaceholderHook
 	@Override
 	public String onPlaceholderRequest(Player p, String q)
 	{
-		if(q.equalsIgnoreCase("server_count"))
+		try
 		{
-			return Phantom.instance().onlinePlayers().size() + "";
-		}
-		
-		if(q.equalsIgnoreCase("network_count"))
-		{
-			return Phantom.getNetworkCount() + "";
-		}
-		
-		for(String i : Phantom.getServers())
-		{
-			if(q.equalsIgnoreCase("server_" + i.toLowerCase() + "_count"))
+			if(q.equalsIgnoreCase("server_count"))
 			{
-				return Phantom.getNetworkCount(i) + "";
+				return Phantom.instance().onlinePlayers().size() + "";
+			}
+			
+			if(q.equalsIgnoreCase("network_count"))
+			{
+				return Phantom.getNetworkCount() + "";
+			}
+			
+			for(String i : Phantom.getServers())
+			{
+				if(q.equalsIgnoreCase("server_" + i.toLowerCase() + "_count"))
+				{
+					return Phantom.getNetworkCount(i) + "";
+				}
+			}
+			
+			if(q.equalsIgnoreCase("ping"))
+			{
+				return NMSX.ping(p) + "ms";
 			}
 		}
 		
-		if(q.equalsIgnoreCase("ping"))
+		catch(Exception e)
 		{
-			return NMSX.ping(p) + "ms";
+			
 		}
 		
 		return Phantom.instance().getPlaceholderController().handle(p, q);
