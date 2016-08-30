@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.Potion;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.MaterialBlock;
 
@@ -22,6 +23,7 @@ public class Stack
 	private EnchantmentSet enchantmentSet;
 	private GList<ItemFlag> flags;
 	private Integer amount;
+	private PotionData potionData;
 	
 	/**
 	 * Create an item stack
@@ -43,6 +45,7 @@ public class Stack
 		this.enchantmentSet = enchantmentSet;
 		this.flags = flags;
 		this.amount = amount;
+		this.potionData = null;
 	}
 	
 	/**
@@ -174,18 +177,47 @@ public class Stack
 			{
 				enchantmentSet.addEnchantment(i, is.getEnchantments().get(i));
 			}
+			
+			try
+			{
+				Potion p = Potion.fromItemStack(is);
+				PotionData pd = new PotionData(p.isSplash(), p.getLevel(), p.getEffects());
+				setPotionData(pd);
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
 		}
 	}
 	
 	public boolean equals(Object o)
 	{
+		if(o == null)
+		{
+			return false;
+		}
+		
 		if(o instanceof Stack)
 		{
 			Stack s = (Stack) o;
 			
-			if(s.getAmount() == getAmount() && s.getName().equals(getName()) && s.getMaterialBlock().equals(getMaterialBlock()) && s.getLore().equals(getLore()) && s.getFlags().equals(getFlags()) && s.getDurability() == getDurability())
+			try
 			{
-				return true;
+				if(s.getAmount() == getAmount() && s.getMaterialBlock().equals(getMaterialBlock()) && s.getLore().equals(getLore()) && s.getFlags().equals(getFlags()) && s.getDurability() == getDurability())
+				{
+					if((s.getName() != null && getName() != null && s.getName().equals(getName())) || (s.getName() == null && getName() == null))
+					{
+						return true;
+					}
+				}
+			}
+			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return false;
 			}
 		}
 		
@@ -206,6 +238,7 @@ public class Stack
 	{
 		@SuppressWarnings("deprecation")
 		ItemStack is = new ItemStack(getMaterialBlock().getMaterial(), amount, durability, getMaterialBlock().getData());
+		is.setDurability(durability);
 		
 		if(name != null || !lore.isEmpty() || !flags.isEmpty())
 		{
@@ -232,6 +265,24 @@ public class Stack
 		for(EnchantmentLevel i : getEnchantmentSet().getEnchantments())
 		{
 			is.addUnsafeEnchantment(i.getEnchantment(), i.getLevel());
+		}
+		
+		if(is.getType().equals(Material.POTION) && potionData != null)
+		{
+			try
+			{
+				Potion p = Potion.fromItemStack(is);
+				p.setLevel(potionData.getLevel());
+				p.getEffects().clear();
+				p.getEffects().addAll(potionData.getEffects());
+				p.setSplash(potionData.isSplash());
+				p.apply(is);
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
 		}
 		
 		return is;
@@ -340,5 +391,15 @@ public class Stack
 	public void setAmount(Integer amount)
 	{
 		this.amount = amount;
+	}
+	
+	public PotionData getPotionData()
+	{
+		return potionData;
+	}
+	
+	public void setPotionData(PotionData potionData)
+	{
+		this.potionData = potionData;
 	}
 }
