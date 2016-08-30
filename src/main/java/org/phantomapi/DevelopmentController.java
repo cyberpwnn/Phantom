@@ -46,6 +46,10 @@ public class DevelopmentController extends Controller implements Configurable
 	@Keyed("development.reload.everything")
 	public Boolean reloadEverything = false;
 	
+	@Comment("Should titles be displayed to players while thrashing?")
+	@Keyed("thrashing.display-titles-to-all")
+	public boolean titles = false;
+	
 	@Comment("Disable Tests")
 	@Keyed("tests.enabled")
 	public boolean tests = true;
