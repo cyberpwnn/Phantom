@@ -46,6 +46,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.Timer;
+import org.phantomapi.util.W;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
@@ -238,7 +239,7 @@ public class TestController extends Controller
 						s(response.getSource() + " < " + F.nsMs(ti.getTime(), 2) + "ms > " + response.getDestination());
 					}
 				};
-								
+				
 				try
 				{
 					ti.start();
@@ -447,6 +448,18 @@ public class TestController extends Controller
 					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 30, 5);
 					Notification n = new Notification(t, Priority.HIGH);
 					Phantom.queueNotification(i, n);
+				}
+			}
+		});
+		
+		tests.put("fast-block", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					W.setBlockFast(i.getLocation().add(0, 3, 0), new MaterialBlock(Material.STONE));
 				}
 			}
 		});
