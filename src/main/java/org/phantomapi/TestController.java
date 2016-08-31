@@ -3,6 +3,7 @@ package org.phantomapi;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,9 @@ import org.phantomapi.gui.Window;
 import org.phantomapi.inventory.EnchantmentLevel;
 import org.phantomapi.inventory.Stack;
 import org.phantomapi.inventory.StackedPlayerInventory;
+import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
@@ -59,6 +62,8 @@ import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.Schematic;
 import org.phantomapi.world.WorldArtifact;
 import org.phantomapi.world.WorldStructure;
+import com.boydti.fawe.object.RunnableVal;
+import com.boydti.fawe.util.TaskManager;
 
 /**
  * Runs tests on various functions of phantom
@@ -461,6 +466,47 @@ public class TestController extends Controller
 				{
 					W.setBlockFast(i.getLocation().add(0, 3, 0), new MaterialBlock(Material.STONE));
 				}
+			}
+		});
+		
+		tests.put("async-world", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				GChunk gc = new GChunk(Bukkit.getPlayer("cyberpwn").getLocation());
+				int[] s = new int[] {0, 0};
+				
+				TaskManager.IMP.async(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						GMap<GLocation, MaterialBlock> blocks = W.getChunkBlocksAsync(gc);
+						
+						for(GLocation i : blocks.k())
+						{
+							if(blocks.get(i).getMaterial().equals(Material.AIR))
+							{
+								s[0]++;
+							}
+							
+							s[1]++;
+						}
+						
+						TaskManager.IMP.sync(new RunnableVal<Boolean>()
+						{
+							@Override
+							public void run(Boolean value)
+							{
+								for(Player i : Bukkit.getOnlinePlayers())
+								{
+									i.sendMessage("The chunk " + gc.toString() + " has " + F.pc((double)s[0]/(double)s[1]) + " air");
+								}
+							}
+						});
+					}
+				});
 			}
 		});
 		
