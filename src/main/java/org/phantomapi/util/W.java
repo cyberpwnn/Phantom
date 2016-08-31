@@ -21,6 +21,7 @@ import org.phantomapi.world.Chunklet;
 import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
+import com.sk89q.worldedit.MaxChangedBlocksException;
 
 /**
  * World utils
@@ -194,6 +195,40 @@ public class W
 		}
 		
 		return cx;
+	}
+	
+	/**
+	 * Get the vector from a location
+	 * 
+	 * @param l
+	 *            the location
+	 * @return the world edit vector
+	 */
+	public static com.sk89q.worldedit.Vector toEditVector(Location l)
+	{
+		return new com.sk89q.worldedit.Vector(l.getX(), l.getY(), l.getZ());
+	}
+	
+	/**
+	 * Set blocks fast
+	 * 
+	 * @param l
+	 *            the block
+	 * @param mb
+	 *            the materialblock
+	 */
+	public static void setBlockFast(Location l, MaterialBlock mb)
+	{
+		try
+		{
+			Phantom.getEditSession(l.getWorld()).setBlock(toEditVector(l), mb.toBase());
+			Phantom.getEditSession(l.getWorld()).flushQueue();
+		}
+		
+		catch(MaxChangedBlocksException e)
+		{
+			
+		}
 	}
 	
 	/**
