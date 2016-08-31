@@ -1,4 +1,4 @@
-package org.phantomapi.bungeecord;
+package org.phantomapi.network;
 
 import org.phantomapi.lang.GList;
 
