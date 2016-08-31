@@ -17,6 +17,8 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.Area;
+import org.phantomapi.world.Chunklet;
+import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
 
@@ -158,6 +160,59 @@ public class W
 		}
 		
 		return d;
+	}
+	
+	/**
+	 * Get all blocks from a chunk
+	 * 
+	 * @param c
+	 *            the chunk
+	 * @return the blocks in the form of a list
+	 */
+	public static GList<Block> getBlocks(Chunk c)
+	{
+		return new GList<Block>(new Cuboid(c.getBlock(0, 0, 0).getLocation(), c.getBlock(15, 255, 15).getLocation()).iterator());
+	}
+	
+	/**
+	 * Get a list of chunklets from the given chunks (always 16)
+	 * 
+	 * @param c
+	 *            the chunk
+	 * @return the 4x4 chunklets
+	 */
+	public static GList<Chunklet> getChunklets(Chunk c)
+	{
+		GList<Chunklet> cx = new GList<Chunklet>();
+		
+		for(int i = 0; i < 15; i += 4)
+		{
+			for(int j = 0; j < 15; j += 4)
+			{
+				cx.add(new Chunklet(c.getBlock(i, 0, j).getLocation()));
+			}
+		}
+		
+		return cx;
+	}
+	
+	/**
+	 * Get a list of chunklets from a list of chunks
+	 * 
+	 * @param c
+	 *            the list of chunks
+	 * @return the list of chunklets with the size of (16 * c.size())
+	 */
+	public static GList<Chunklet> getChunklets(GList<Chunk> c)
+	{
+		GList<Chunklet> cx = new GList<Chunklet>();
+		
+		for(Chunk i : c)
+		{
+			cx.add(getChunklets(i));
+		}
+		
+		return cx;
 	}
 	
 	/**
