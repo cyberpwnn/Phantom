@@ -119,13 +119,13 @@
 			<url>http://maven.sk89q.com/artifactory/repo/</url>
 		</repository>
 		<repository>
-            <id>empcraft-repo</id>
-            <url>http://empcraft.com/maven2</url>
-        </repository>
-        <repository>
-            <id>techcable-repo</id>
-            <url>http://repo.techcable.net/content/groups/public/</url>
-        </repository>
+			<id>empcraft-repo</id>
+			<url>http://empcraft.com/maven2</url>
+		</repository>
+		<repository>
+			<id>techcable-repo</id>
+			<url>http://repo.techcable.net/content/groups/public/</url>
+		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
@@ -134,6 +134,13 @@
 		</repository>
 	</distributionManagement>
 	<dependencies>
+		<dependency>
+			<groupId>com.boydti.fawe18</groupId>
+			<artifactId>fawe</artifactId>
+			<version>16.08.28-f2d54e6-252</version>
+			<scope>system</scope>
+			<systemPath>${req.lib}\fawe.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
@@ -154,6 +161,11 @@
 			<artifactId>placeholderapi</artifactId>
 			<version>2.0.8</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.boydti</groupId>
+			<artifactId>fawe-api</artifactId>
+			<version>16.08.28-f2d54e6-252</version>
 		</dependency>
 		<dependency>
 			<groupId>com.boydti</groupId>
