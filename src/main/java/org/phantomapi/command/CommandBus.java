@@ -36,16 +36,12 @@ public class CommandBus
 		
 		for(CommandListener i : c.getRegistry().get(root.toLowerCase()))
 		{
-			PhantomCommandSender psx = new PhantomSender(sender);
-			psx.setMessageBuilder(new MessageBuilder(i));
-			
 			if(hasFilter(i, ArgumentRange.class))
 			{
 				ArgumentRange ar = (ArgumentRange) getFilter(i, ArgumentRange.class);
 				
 				if(!M.within(M.min(ar.value()), M.max(ar.value()), args.length))
 				{
-					psx.sendMessage(i.getMessageInvalidArguments(args.length, M.min(ar.value()), M.max(ar.value())));
 					continue;
 				}
 			}
@@ -54,7 +50,6 @@ public class CommandBus
 			{
 				if(sender instanceof Player)
 				{
-					psx.sendMessage(i.getMessageNotConsole());
 					continue;
 				}
 			}
@@ -63,7 +58,6 @@ public class CommandBus
 			{
 				if(!(sender instanceof Player))
 				{
-					psx.sendMessage(i.getMessageNotPlayer());
 					continue;
 				}
 			}
@@ -72,7 +66,6 @@ public class CommandBus
 			{
 				if(!sender.isOp())
 				{
-					psx.sendMessage(i.getMessageNoPermission());
 					continue;
 				}
 			}
@@ -83,7 +76,6 @@ public class CommandBus
 				
 				if(!sender.hasPermission(p.value()))
 				{
-					psx.sendMessage(i.getMessageNoPermission());
 					continue;
 				}
 			}
@@ -105,7 +97,6 @@ public class CommandBus
 				
 				if(f)
 				{
-					psx.sendMessage(i.getMessageNoPermission());
 					continue;
 				}
 			}
@@ -116,7 +107,6 @@ public class CommandBus
 				
 				if(s.value().length > args.length)
 				{
-					psx.sendMessage(i.getMessageUnknownSubCommand(args.toString()));
 					continue;
 				}
 				
@@ -133,7 +123,6 @@ public class CommandBus
 				
 				if(f)
 				{
-					psx.sendMessage(i.getMessageUnknownSubCommand(args.toString()));
 					continue;
 				}
 			}
