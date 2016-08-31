@@ -4,6 +4,8 @@ import java.util.Collection;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -15,12 +17,16 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
+import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GLocation;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.world.Area;
 import org.phantomapi.world.Chunklet;
 import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
+import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 
 /**
@@ -186,9 +192,9 @@ public class W
 	{
 		GList<Chunklet> cx = new GList<Chunklet>();
 		
-		for(int i = 0; i < 15; i += 4)
+		for(int i = 0; i < 16; i += 4)
 		{
-			for(int j = 0; j < 15; j += 4)
+			for(int j = 0; j < 16; j += 4)
 			{
 				cx.add(new Chunklet(c.getBlock(i, 0, j).getLocation()));
 			}
@@ -207,6 +213,59 @@ public class W
 	public static com.sk89q.worldedit.Vector toEditVector(Location l)
 	{
 		return new com.sk89q.worldedit.Vector(l.getX(), l.getY(), l.getZ());
+	}
+	
+	/**
+	 * Gets an async world
+	 * 
+	 * @param world
+	 *            the world name
+	 * @return the async world
+	 */
+	public static World getAsyncWorld(String world)
+	{
+		return AsyncWorld.create(new WorldCreator(world));
+	}
+	
+	/**
+	 * Applies changes to an async world
+	 * 
+	 * @param world
+	 *            the async world
+	 */
+	public static void applyChanges(World world)
+	{
+		if(world instanceof AsyncWorld)
+		{
+			((AsyncWorld) world).commit();
+		}
+	}
+	
+	/**
+	 * Reads all blocks in a chunk async.
+	 * 
+	 * @param chunk
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	public static GMap<GLocation, MaterialBlock> getChunkBlocksAsync(GChunk chunk)
+	{
+		GMap<GLocation, MaterialBlock> b = new GMap<GLocation, MaterialBlock>();
+		AsyncWorld world = AsyncWorld.create(new WorldCreator(chunk.getWorld()));
+		
+		for(int i = 0; i < 16; i++)
+		{
+			for(int j = 0; j < 256; j++)
+			{
+				for(int k = 0; k < 16; k++)
+				{
+					Block block = world.getChunkAt(chunk.getX(), chunk.getZ()).getBlock(i, j, k);
+					b.put(new GLocation(block.getLocation()), new MaterialBlock(block.getType(), block.getData()));
+				}
+			}
+		}
+		
+		return b;
 	}
 	
 	/**
