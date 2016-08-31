@@ -65,6 +65,21 @@ public class GList<T> extends ArrayList<T>
 	}
 	
 	/**
+	 * Create a glist by iterating through an iterator
+	 * 
+	 * @param it the iterator
+	 */
+	public GList(Iterator<T> it)
+	{
+		super();
+		
+		while(it.hasNext())
+		{
+			add(it.next());
+		}
+	}
+	
+	/**
 	 * Create a GList with an array of the same type
 	 * 
 	 * @param array
@@ -304,7 +319,9 @@ public class GList<T> extends ArrayList<T>
 	
 	/**
 	 * Remove all of the given object in the list.
-	 * @param t the given object
+	 * 
+	 * @param t
+	 *            the given object
 	 */
 	public void removeAll(T t)
 	{
