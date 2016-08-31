@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.phantomapi.bungeecord.Network;
+import org.phantomapi.bungeecord.PhantomNetwork;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;
@@ -21,6 +23,7 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
+import org.phantomapi.util.Refreshable;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
@@ -33,6 +36,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	private GList<Transmission> responders;
 	private Boolean connected;
 	private String sname;
+	private Network network;
 	
 	public BungeeController(Controllable parentController)
 	{
@@ -44,6 +48,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		connected = false;
 		sname = null;
 		queue = new GList<Transmission>();
+		network = new PhantomNetwork();
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
@@ -354,6 +359,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 				
 			}
 		}
+		
+		((Refreshable) network).refresh();
 	}
 	
 	public DataCluster get()
@@ -369,5 +376,40 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public String getServerName()
 	{
 		return sname;
+	}
+
+	public DataCluster getCc()
+	{
+		return cc;
+	}
+
+	public GList<Transmitter> getTransmitters()
+	{
+		return transmitters;
+	}
+
+	public GList<Transmission> getQueue()
+	{
+		return queue;
+	}
+
+	public GList<Transmission> getResponders()
+	{
+		return responders;
+	}
+
+	public Boolean getConnected()
+	{
+		return connected;
+	}
+
+	public String getSname()
+	{
+		return sname;
+	}
+
+	public Network getNetwork()
+	{
+		return network;
 	}
 }
