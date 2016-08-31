@@ -1,5 +1,6 @@
 package org.phantomapi.network;
 
+import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.Refreshable;
@@ -40,6 +41,16 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 	@Override
 	public GList<String> getPlayers()
 	{
+		if(!isRemote())
+		{
+			players.clear();
+			
+			for(Player i : Phantom.instance().onlinePlayers())
+			{
+				players.add(i.getName());
+			}
+		}
+		
 		return players.copy();
 	}
 	
