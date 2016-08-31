@@ -27,6 +27,18 @@ public class StackedInventory extends PhantomInventory implements StackedPhantom
 		return inventoryContents;
 	}
 	
+	public GMap<Integer, Stack> getNStacks()
+	{
+		GMap<Integer, Stack> inventoryContents = new GMap<Integer, Stack>();
+		
+		for(int i = 0; i < 36; i++)
+		{
+			inventoryContents.put(i, new Stack(getItem(i)));
+		}
+		
+		return inventoryContents;
+	}
+	
 	public void setStacks(GMap<Integer, Stack> stacks)
 	{
 		thrash();
