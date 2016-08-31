@@ -4,8 +4,7 @@ main: org.phantomapi.Phantom
 description: Phantom - Another Damn API
 author: cyberpwn
 authors: [cyberpwn]
-depend: [ProtocolLib, PlaceholderAPI]
-softdepend: [FastAsyncWorldEdit, WorldEdit]
+depend: [ProtocolLib, PlaceholderAPI, FastAsyncWorldEdit, WorldEdit]
 website: http://phantomapi.org/
 commands:
   phantom:
