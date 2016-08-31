@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,6 +40,7 @@ import org.phantomapi.util.SQLOperation;
 import org.phantomapi.util.Timer;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.sk89q.worldedit.EditSession;
 
 /**
  * The Phantom Plugin object.
@@ -66,6 +68,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private DefaultController defaultController;
 	private BungeeController bungeeController;
 	private PlaceholderController placeholderController;
+	private EditSessionController editSessionController;
 	
 	public void enable()
 	{
@@ -85,6 +88,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		plugins = new GList<Plugin>();
 		placeholderController = new PlaceholderController(this);
 		bungeeController = new BungeeController(this);
+		editSessionController = new EditSessionController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		new PlaceholderHooker(this, "phantom").hook();
@@ -103,6 +107,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(defaultController);
 		register(bungeeController);
 		register(placeholderController);
+		register(editSessionController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1107,5 +1112,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static Network getBungeeNetwork()
 	{
 		return instance().bungeeController.getNetwork();
+	}
+	
+	public static EditSession getEditSession(World w)
+	{
+		return instance().editSessionController.getSession(w);
 	}
 }
