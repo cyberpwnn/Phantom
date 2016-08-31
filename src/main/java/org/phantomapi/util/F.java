@@ -1,9 +1,13 @@
 package org.phantomapi.util;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 import org.phantomapi.placeholder.PlaceholderUtil;
@@ -17,6 +21,56 @@ public class F
 {
 	private static NumberFormat NF;
 	private static DecimalFormat DF;
+	
+	private static final String NAMES[] = new String[] {"Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septendecillion", "Octodecillion", "Novemdecillion", "Vigintillion",};
+	private static final BigInteger THOUSAND = BigInteger.valueOf(1000);
+	private static final NavigableMap<BigInteger, String> MAP;
+	
+	static
+	{
+		MAP = new TreeMap<BigInteger, String>();
+		for(int i = 0; i < NAMES.length; i++)
+		{
+			MAP.put(THOUSAND.pow(i + 1), NAMES[i]);
+		}
+	}
+	
+	public static String b(int i)
+	{
+		return b(new BigInteger(String.valueOf(i)));
+	}
+	
+	public static String b(long i)
+	{
+		return b(new BigInteger(String.valueOf(i)));
+	}
+	
+	public static String b(double i)
+	{
+		return b(new BigInteger(String.valueOf((long) i)));
+	}
+	
+	public static String b(BigInteger number)
+	{
+		Entry<BigInteger, String> entry = MAP.floorEntry(number);
+		if(entry == null)
+		{
+			return "Nearly nothing";
+		}
+		
+		BigInteger key = entry.getKey();
+		BigInteger d = key.divide(THOUSAND);
+		BigInteger m = number.divide(d);
+		float f = m.floatValue() / 1000.0f;
+		float rounded = ((int) (f * 100.0)) / 100.0f;
+		
+		if(rounded % 1 == 0)
+		{
+			return ((int) rounded) + " " + entry.getValue();
+		}
+		
+		return rounded + " " + entry.getValue();
+	}
 	
 	private static void instantiate()
 	{
