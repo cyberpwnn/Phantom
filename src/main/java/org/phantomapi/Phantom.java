@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.phantomapi.bungeecord.Network;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
@@ -1101,5 +1102,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public PlaceholderController getPlaceholderController()
 	{
 		return placeholderController;
+	}
+	
+	public static Network getBungeeNetwork()
+	{
+		return instance().bungeeController.getNetwork();
 	}
 }
