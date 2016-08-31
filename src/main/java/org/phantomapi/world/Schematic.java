@@ -7,6 +7,10 @@ import org.bukkit.util.Vector;
 import org.phantomapi.lang.GBiset;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.ExecutiveRunnable;
+import com.boydti.fawe.util.EditSessionBuilder;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.blocks.BaseBlock;
 
 /**
  * Schematics
@@ -330,13 +334,36 @@ public class Schematic
 			}
 		}
 		
-		lx.schedule(new ExecutiveRunnable<GBiset<MaterialBlock, Location>>()
+		try
 		{
-			public void run()
+			EditSession es = new EditSessionBuilder(location.getWorld().getName()).autoQueue(false).fastmode(true).build();
+			
+			for(GBiset<MaterialBlock, Location> i : lx)
 			{
-				next().getA().apply(next().getB());
+				try
+				{
+					es.setBlock(new com.sk89q.worldedit.Vector(i.getB().getX(), i.getB().getY(), i.getB().getZ()), new BaseBlock(i.getA().getMaterial().getId(), i.getA().getData()));
+				}
+				
+				catch(MaxChangedBlocksException e)
+				{
+					
+				}
 			}
-		});
+			
+			es.flushQueue();
+		}
+		
+		catch(Exception e)
+		{
+			lx.schedule(new ExecutiveRunnable<GBiset<MaterialBlock, Location>>()
+			{
+				public void run()
+				{
+					next().getA().apply(next().getB());
+				}
+			});
+		}
 	}
 	
 	/**
