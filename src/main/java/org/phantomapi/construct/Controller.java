@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.AsyncWorker;
+import org.phantomapi.bungeecord.Network;
 import org.phantomapi.clust.AsyncConfig;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
@@ -356,6 +357,11 @@ public abstract class Controller implements Controllable
 	public void queueNotification(Notification n)
 	{
 		Phantom.queueNotification(n);
+	}
+	
+	public Network getNetwork()
+	{
+		return Phantom.getBungeeNetwork();
 	}
 	
 	@Override

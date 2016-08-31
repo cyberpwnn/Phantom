@@ -5,6 +5,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.phantomapi.Phantom;
+import org.phantomapi.bungeecord.Network;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.command.CommandListener;
@@ -374,6 +375,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	public void unRegisterListener(Listener listener)
 	{
 		HandlerList.unregisterAll(listener);
+	}
+	
+	public Network getNetwork()
+	{
+		return Phantom.getBungeeNetwork();
 	}
 	
 	public int scheduleSyncRepeatingTask(int delay, int interval, Runnable runnable)
