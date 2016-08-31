@@ -1,7 +1,6 @@
 package org.phantomapi.lang;
 
 import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
