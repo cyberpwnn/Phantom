@@ -1,11 +1,11 @@
 name: Phantom
-version: X6
+version: X7
 main: org.phantomapi.Phantom
 description: Phantom - Another Damn API
 author: cyberpwn
 authors: [cyberpwn]
 depend: [ProtocolLib, PlaceholderAPI]
-softdepend: [FastAsyncWorldEdit]
+softdepend: [FastAsyncWorldEdit, WorldEdit]
 website: http://phantomapi.org/
 commands:
   phantom:
