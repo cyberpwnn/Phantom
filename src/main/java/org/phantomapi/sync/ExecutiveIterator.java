@@ -35,6 +35,22 @@ public abstract class ExecutiveIterator<T> implements Iterator<T>
 		this.repeated = null;
 	}
 	
+	/**
+	 * Create an iterator
+	 * 
+	 * @param it
+	 *            the iterator
+	 * @param runnable
+	 *            the executive runnable to iterate through the elements
+	 */
+	public ExecutiveIterator(Iterator<T> it)
+	{
+		this.it = it;
+		this.size = 1337;
+		this.cancelled = false;
+		this.repeated = null;
+	}
+	
 	public abstract void onIterate(T next);
 	
 	@Override
