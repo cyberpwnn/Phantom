@@ -2,6 +2,7 @@ package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import com.sk89q.worldedit.blocks.BaseBlock;
 
 /**
  * Material blocks
@@ -17,6 +18,12 @@ public class MaterialBlock
 	{
 		this.material = material;
 		this.data = data;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public BaseBlock toBase()
+	{
+		return new BaseBlock(getMaterial().getId(), getData());
 	}
 	
 	public MaterialBlock(Material material)
