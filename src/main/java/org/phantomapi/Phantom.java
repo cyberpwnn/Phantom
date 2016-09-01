@@ -443,6 +443,26 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
+	 * Get a registered controller by name
+	 * 
+	 * @param name
+	 *            the controllable name
+	 * @return the controllable object on the server or null
+	 */
+	public Controllable getBinding(String name)
+	{
+		for(Controllable i : getBindings())
+		{
+			if(i.getName().equals(name))
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Get the count of a server on the network
 	 * 
 	 * @param server
