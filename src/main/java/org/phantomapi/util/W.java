@@ -1,6 +1,7 @@
 package org.phantomapi.util;
 
 import java.util.Collection;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -201,6 +202,18 @@ public class W
 		}
 		
 		return cx;
+	}
+	
+	/**
+	 * Get a sync world from a possible async world
+	 * 
+	 * @param world
+	 *            the world
+	 * @return the sync world
+	 */
+	public static World getSyncWorld(World world)
+	{
+		return Bukkit.getWorld(world.getName());
 	}
 	
 	/**
