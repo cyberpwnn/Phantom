@@ -67,7 +67,8 @@ public class GList<T> extends ArrayList<T>
 	/**
 	 * Create a glist by iterating through an iterator
 	 * 
-	 * @param it the iterator
+	 * @param it
+	 *            the iterator
 	 */
 	public GList(Iterator<T> it)
 	{
@@ -300,6 +301,100 @@ public class GList<T> extends ArrayList<T>
 		}
 		
 		return s;
+	}
+	
+	/**
+	 * Get the last index of the list
+	 * 
+	 * @return the last index
+	 */
+	public int last()
+	{
+		return size() - 1;
+	}
+	
+	/**
+	 * Get the index at the given index (same) OR if that index does not exist,
+	 * get the LAST index of this list
+	 * 
+	 * @param index
+	 *            the index
+	 * @return the same index, or the last index of the list if the given inxex
+	 *         does not exist
+	 */
+	public int getIndexOrLast(int index)
+	{
+		if(hasIndex(index))
+		{
+			return index;
+		}
+		
+		return last();
+	}
+	
+	/**
+	 * Crop out the end of the list by supplying a START index to be the next 0
+	 * of the new cropped list
+	 * <br/>
+	 * <br/>
+	 * Example List a, b, c, d
+	 * <br/>
+	 * cropFrom(1) > c, d
+	 * 
+	 * @param from
+	 *            the from index to be the new beginning of the next index
+	 * @return the cropped glist
+	 */
+	public GList<T> cropFrom(int from)
+	{
+		return crop(from, size() - 1);
+	}
+	
+	/**
+	 * Crop out the beginning of the list by supplying an END index to be the
+	 * next end index of the new cropped list
+	 * <br/>
+	 * <br/>
+	 * Example List a, b, c, d
+	 * <br/>
+	 * cropFrom(1) > a, b
+	 * 
+	 * @param from
+	 *            the from index to be the new beginning of the next index
+	 * @return the cropped glist
+	 */
+	public GList<T> cropTo(int to)
+	{
+		return crop(0, to);
+	}
+	
+	/**
+	 * Crop the glist
+	 * <br/>
+	 * <br/>
+	 * Example List a, b, c, d
+	 * <br/>
+	 * cropFrom(1, 2) > b, c
+	 * 
+	 * @param from
+	 *            the from index
+	 * @param to
+	 *            the to index
+	 * @return the cropped glist
+	 */
+	public GList<T> crop(int from, int to)
+	{
+		GList<T> crop = new GList<T>();
+		
+		if(!isEmpty() && from >= 0 && hasIndex(from) && hasIndex(to) && from <= to)
+		{
+			for(int i = from; i <= to; i++)
+			{
+				crop.add(get(i));
+			}
+		}
+		
+		return crop;
 	}
 	
 	/**
