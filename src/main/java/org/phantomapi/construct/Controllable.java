@@ -8,7 +8,7 @@ import org.phantomapi.lang.GList;
  * 
  * @author cyberpwn
  */
-public interface Controllable extends Listener
+public interface Controllable extends Listener, ControllerMessenger
 {
 	/**
 	 * Start the controller
@@ -130,4 +130,13 @@ public interface Controllable extends Listener
 	 * @return a list of controllers
 	 */
 	public GList<Controllable> getControllers();
+	
+	/**
+	 * Get any controller on the server by name
+	 * 
+	 * @param name
+	 *            the controller name
+	 * @return the controller or null if not found
+	 */
+	public Controllable getController(String name);
 }
