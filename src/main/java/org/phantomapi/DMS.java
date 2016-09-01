@@ -41,6 +41,7 @@ public class DMS extends Controller implements PluginMessageListener
 	private GList<Plugin> pql;
 	private GList<String> servers;
 	private HotLoadController hotLoadController;
+	private ConfigurationBackupController configurationBackupController;
 	private static ServerState state;
 	
 	public DMS(Controllable parentController)
@@ -54,8 +55,10 @@ public class DMS extends Controller implements PluginMessageListener
 		servers = new GList<String>();
 		sqlt = false;
 		hotLoadController = new HotLoadController(this);
+		configurationBackupController = new ConfigurationBackupController(this);
 		
 		register(hotLoadController);
+		register(configurationBackupController);
 		
 		if(Bukkit.getOnlinePlayers().isEmpty())
 		{
@@ -309,5 +312,10 @@ public class DMS extends Controller implements PluginMessageListener
 	public HotLoadController getHotLoadController()
 	{
 		return hotLoadController;
+	}
+
+	public ConfigurationBackupController getConfigurationBackupController()
+	{
+		return configurationBackupController;
 	}
 }
