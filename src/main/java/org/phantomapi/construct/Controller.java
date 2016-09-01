@@ -11,6 +11,7 @@ import org.phantomapi.async.AsyncWorker;
 import org.phantomapi.clust.AsyncConfig;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
+import org.phantomapi.clust.HandledConfig;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
@@ -131,6 +132,16 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	 */
 	public void loadCluster(Configurable c, String category)
 	{
+		if(!c.getClass().isAnnotationPresent(HandledConfig.class))
+		{
+			Phantom.instance().getDms().getConfigurationBackupController().handle(this, c, category);
+		}
+		
+		else
+		{
+			w("Not Backing up " + c.getCodeName() + " (cold loaded)");
+		}
+		
 		File base = getPlugin().getDataFolder();
 		
 		if(category != null)
