@@ -125,6 +125,8 @@ public class DataCluster
 	 */
 	public DataCluster(Map<String, Cluster> data)
 	{
+		this();
+		
 		this.data = data;
 		this.comments = new HashMap<String, String>();
 	}
@@ -864,5 +866,15 @@ public class DataCluster
 	public void setData(Map<String, Cluster> data)
 	{
 		this.data = data;
+	}
+	
+	/**
+	 * Clones the controller
+	 * 
+	 * @return the controller
+	 */
+	public DataCluster copy()
+	{
+		return new DataCluster(getData());
 	}
 }
