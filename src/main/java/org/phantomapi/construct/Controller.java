@@ -24,7 +24,7 @@ import org.phantomapi.util.Timer;
  * 
  * @author cyberpwn
  */
-public abstract class Controller implements Controllable
+public abstract class Controller implements Controllable, ControllerMessenger
 {
 	protected final GList<Controllable> controllers;
 	protected final Controllable parentController;
@@ -522,5 +522,36 @@ public abstract class Controller implements Controllable
 	public void onPluginsComplete()
 	{
 		
+	}
+	
+	@Override
+	public ControllerMessage onControllerMessageRecieved(ControllerMessage message)
+	{
+		return message;
+	}
+	
+	@Override
+	public ControllerMessage sendMessage(Controllable controller, ControllerMessage message)
+	{
+		return controller.onControllerMessageRecieved(message.copy());
+	}
+	
+	@Override
+	public ControllerMessage sendMessage(String controller, ControllerMessage message)
+	{
+		Controllable c = getController(controller);
+		
+		if(c != null)
+		{
+			return c.onControllerMessageRecieved(message.copy());
+		}
+		
+		 return null;
+	}
+	
+	@Override
+	public Controllable getController(String name)
+	{
+		return Phantom.instance().getBinding(name);
 	}
 }
