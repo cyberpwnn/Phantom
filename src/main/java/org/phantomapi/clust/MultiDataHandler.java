@@ -12,7 +12,7 @@ import org.phantomapi.lang.GMap;
  * @param <V>
  *            the bound object used to get the data
  */
-public interface MultiDataHandler<T extends Configurable, V>
+public interface MultiDataHandler<T, V>
 {
 	/**
 	 * Get the cached object from the identifier. If it is not cached, it will
