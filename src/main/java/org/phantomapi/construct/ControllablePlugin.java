@@ -446,4 +446,35 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	{
 		
 	}
+	
+	@Override
+	public ControllerMessage sendMessage(Controllable controller, ControllerMessage message)
+	{
+		return controller.onControllerMessageRecieved(message.copy());
+	}
+	
+	@Override
+	public ControllerMessage sendMessage(String controller, ControllerMessage message)
+	{
+		Controllable c = getController(controller);
+		
+		if(c != null)
+		{
+			return c.onControllerMessageRecieved(message.copy());
+		}
+		
+		 return null;
+	}
+
+	@Override
+	public ControllerMessage onControllerMessageRecieved(ControllerMessage message)
+	{
+		return message;
+	}
+
+	@Override
+	public Controllable getController(String name)
+	{
+		return Phantom.instance().getBinding(name);
+	}
 }
