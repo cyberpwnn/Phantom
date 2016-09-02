@@ -37,6 +37,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 	private Boolean connected;
 	private String sname;
 	private Network network;
+	private Integer ti;
+	private Integer to;
 	
 	public BungeeController(Controllable parentController)
 	{
@@ -49,6 +51,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 		sname = null;
 		queue = new GList<Transmission>();
 		network = new PhantomNetwork();
+		ti = 0;
+		to = 0;
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
@@ -119,6 +123,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		boas.write(t.compress());
 		new ForwardedPluginMessage(Phantom.instance(), "PhantomTransmission", t.getDestination(), boas).send();
 		s(C.GREEN + sname + " -> " + t.getDestination() + C.YELLOW + " [" + t.getType() + "]");
+		to++;
 	}
 	
 	public void transmit(Transmission t) throws IOException
@@ -320,6 +325,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 					}
 				};
 				s(C.AQUA + sname + " <- " + t.getSource() + C.YELLOW + " [" + t.getType() + "]");
+				ti++;
 				
 				for(Transmitter i : transmitters)
 				{
@@ -411,5 +417,19 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public Network getNetwork()
 	{
 		return network;
+	}
+
+	public Integer getTi()
+	{
+		int too = ti;
+		ti = 0;
+		return too;
+	}
+
+	public Integer getTo()
+	{
+		int too = to;
+		to = 0;
+		return too;
 	}
 }
