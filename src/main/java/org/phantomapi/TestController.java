@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -45,9 +47,12 @@ import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.transmit.Transmission;
+import org.phantomapi.util.A;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
+import org.phantomapi.util.ParameterAdapter;
+import org.phantomapi.util.S;
 import org.phantomapi.util.Timer;
 import org.phantomapi.util.W;
 import org.phantomapi.vfx.ParticleEffect;
@@ -225,6 +230,96 @@ public class TestController extends Controller
 				{
 					NMSX.showEnd(i);
 				}
+			}
+		});
+		
+		tests.put("param", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				s("Test: " + "This is %a% cool %param% %_$Dtest f%");
+				s("Whas: " + "%a% = 1, %param% = 2, %_$Dtest f% = 3");
+				
+				for(String i : F.getParameters("This is %a% cool %param% %_$Dtest f%", '%'))
+				{
+					v("Found: " + i);
+				}
+				
+				s(new ParameterAdapter()
+				{
+					@Override
+					public String onParameterRequested(String parameter)
+					{
+						if(parameter.equalsIgnoreCase("a"))
+						{
+							return "1";
+						}
+						
+						if(parameter.equalsIgnoreCase("param"))
+						{
+							return "2";
+						}
+						
+						if(parameter.equalsIgnoreCase("_$Dtest f"))
+						{
+							return "3";
+						}
+						
+						return "%parameter%";
+					}
+				}.adapt("This is %a% cool %param% %_$Dtest f%"));
+			}
+		});
+		
+		tests.put("async-sync", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						Long air = 0l;
+						Long all = 0l;
+						World w = W.getAsyncWorld("world");
+						
+						for(Chunk i : w.getLoadedChunks())
+						{
+							for(int j = 0; j < 16; j++)
+							{
+								for(int k = 0; k < 16; k++)
+								{
+									for(int l = 0; l < 256; l++)
+									{
+										if(i.getBlock(j, l, k).getType().equals(Material.AIR))
+										{
+											air++;
+										}
+										
+										all++;
+									}
+								}
+							}
+						}
+						
+						final String percent = "There is " + F.pc(air.doubleValue() / all.doubleValue()) + " air in " + F.f(w.getLoadedChunks().length) + " chunks";
+						
+						new S()
+						{
+							@Override
+							public void sync()
+							{
+								for(Player i : Phantom.instance().onlinePlayers())
+								{
+									i.sendMessage(percent);
+								}
+							}
+						};
+					}
+				};
 			}
 		});
 		
@@ -501,7 +596,7 @@ public class TestController extends Controller
 							{
 								for(Player i : Bukkit.getOnlinePlayers())
 								{
-									i.sendMessage("The chunk " + gc.toString() + " has " + F.pc((double)s[0]/(double)s[1]) + " air");
+									i.sendMessage("The chunk " + gc.toString() + " has " + F.pc((double) s[0] / (double) s[1]) + " air");
 								}
 							}
 						});
