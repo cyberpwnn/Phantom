@@ -11,6 +11,7 @@ import org.phantomapi.construct.Controllable;
  */
 public abstract class Task implements Runnable
 {
+	public static int taskx = 0;
 	private Controllable pl;
 	private Integer[] task;
 	private Boolean running;
@@ -25,6 +26,7 @@ public abstract class Task implements Runnable
 	 */
 	public Task(Controllable pl, int interval)
 	{
+		taskx++;
 		this.pl = pl;
 		this.running = true;
 		this.task = new Integer[] { pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this) };
@@ -38,6 +40,7 @@ public abstract class Task implements Runnable
 	 */
 	public Task(int interval)
 	{
+		taskx++;
 		this.pl = Phantom.instance();
 		this.running = true;
 		this.task = new Integer[] { pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this) };
@@ -53,6 +56,7 @@ public abstract class Task implements Runnable
 	{
 		running = false;
 		pl.getPlugin().cancelTask(task[0]);
+		taskx--;
 	}
 	
 	/**

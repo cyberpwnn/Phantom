@@ -11,6 +11,7 @@ import org.phantomapi.construct.Controllable;
  */
 public abstract class TaskLater implements Runnable
 {
+	public static int taskx = 0;
 	private Controllable pl;
 	
 	/**
@@ -23,6 +24,7 @@ public abstract class TaskLater implements Runnable
 	{
 		this.pl = pl;
 		pl.getPlugin().scheduleSyncTask(0, this);
+		taskx++;
 	}
 	
 	/**
@@ -32,6 +34,7 @@ public abstract class TaskLater implements Runnable
 	{
 		this.pl = Phantom.instance();
 		pl.getPlugin().scheduleSyncTask(0, this);
+		taskx++;
 	}
 	
 	/**
@@ -44,6 +47,7 @@ public abstract class TaskLater implements Runnable
 	{
 		this.pl = Phantom.instance();
 		pl.getPlugin().scheduleSyncTask(delay, this);
+		taskx++;
 	}
 	
 	@Override
