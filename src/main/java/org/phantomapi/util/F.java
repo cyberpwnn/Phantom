@@ -5,9 +5,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 import org.phantomapi.placeholder.PlaceholderUtil;
@@ -260,6 +260,83 @@ public class F
 	}
 	
 	/**
+	 * Get all params out of the string with a param char such as %param_type%
+	 * where '%' is the param char, "param_type" will be included in the list of
+	 * params
+	 * 
+	 * @param s
+	 *            the string
+	 * @param paramChar
+	 *            the param char
+	 * @return a list of params excluding the param chars
+	 */
+	public static GList<String> getParameters(String s, char paramChar)
+	{
+		GList<String> params = new GList<String>();
+		Boolean inPar = false;
+		String cpar = "";
+		
+		for(Character i : s.toCharArray())
+		{
+			if(i.equals(paramChar))
+			{
+				if(inPar)
+				{
+					inPar = false;
+					
+					if(cpar.length() > 0)
+					{
+						params.add(cpar);
+					}
+					
+					cpar = "";
+				}
+				
+				else
+				{
+					inPar = true;
+				}
+			}
+			
+			else
+			{
+				if(inPar)
+				{
+					cpar = cpar + i;
+				}
+			}
+		}
+		
+		return params.removeDuplicates();
+	}
+	
+	/**
+	 * Repeat a string
+	 * 
+	 * @param s
+	 *            the string
+	 * @param n
+	 *            the amount of times to repeat
+	 * @return the repeated string
+	 */
+	public static String repeat(String s, int n)
+	{
+		if(s == null)
+		{
+			return null;
+		}
+		
+		final StringBuilder sb = new StringBuilder();
+		
+		for(int i = 0; i < n; i++)
+		{
+			sb.append(s);
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
 	 * Get a formatted representation of the memory given in megabytes
 	 * 
 	 * @param mb
@@ -335,27 +412,6 @@ public class F
 	{
 		instantiate();
 		return NF.format(i);
-	}
-	
-	/**
-	 * Repeat a string multiple times into one string
-	 * 
-	 * @param s
-	 *            the string
-	 * @param p
-	 *            times to repeat
-	 * @return the string
-	 */
-	public static String repeat(String s, int p)
-	{
-		String k = "";
-		
-		for(int i = 0; i < p; i++)
-		{
-			k = k + s;
-		}
-		
-		return k;
 	}
 	
 	/**
