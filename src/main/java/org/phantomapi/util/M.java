@@ -131,6 +131,15 @@ public class M
 		return res;
 	}
 	
+	/**
+	 * Repeat a string
+	 * 
+	 * @param s
+	 *            the string
+	 * @param n
+	 *            the amount of times to repeat
+	 * @return the repeated string
+	 */
 	private static String repeat(String s, int n)
 	{
 		if(s == null)
