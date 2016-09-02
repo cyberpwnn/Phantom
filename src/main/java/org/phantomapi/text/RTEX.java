@@ -1,8 +1,8 @@
 package org.phantomapi.text;
 
+import org.phantomapi.clust.JSONArray;
 import org.phantomapi.clust.JSONObject;
 import org.phantomapi.lang.GList;
-import com.intellectualcrafters.json.JSONArray;
 
 /**
  * Raw Text EXTRA
