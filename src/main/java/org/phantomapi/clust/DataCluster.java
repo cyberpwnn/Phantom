@@ -14,6 +14,7 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.util.Paste;
 
@@ -332,17 +333,37 @@ public class DataCluster
 	}
 	
 	/**
+	 * Get the size of this datacluster
+	 * 
+	 * @return the size of the datacluster
+	 */
+	public int size()
+	{
+		return getData().size();
+	}
+	
+	/**
+	 * Get the keys in the data cluster
+	 * 
+	 * @return the keys
+	 */
+	public GList<String> keys()
+	{
+		return new GList<String>(getData().keySet());
+	}
+	
+	/**
 	 * Get the lines in yml format
 	 * 
 	 * @param comment
 	 *            should we add comments?
 	 * @return the list of lines
 	 */
-	public List<String> toLines(boolean comment)
+	public GList<String> toLines(boolean comment)
 	{
 		FileConfiguration fc = toYaml();
-		List<String> lines = new ArrayList<String>();
-		List<String> main = new ArrayList<String>();
+		GList<String> lines = new GList<String>();
+		GList<String> main = new GList<String>();
 		
 		for(String i : fc.saveToString().split("\n"))
 		{
@@ -394,6 +415,105 @@ public class DataCluster
 		}
 		
 		return fc;
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isString(String key)
+	{
+		return contains(key, ClusterDataType.STRING);
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isStringList(String key)
+	{
+		return contains(key, ClusterDataType.STRING_LIST);
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isInteger(String key)
+	{
+		return contains(key, ClusterDataType.INTEGER);
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isDouble(String key)
+	{
+		return contains(key, ClusterDataType.DOUBLE);
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isLong(String key)
+	{
+		return contains(key, ClusterDataType.LONG);
+	}
+	
+	/**
+	 * Check if the given key is the correct type
+	 * 
+	 * @param key
+	 *            the key in question
+	 * @return returns true if the key exists and it is of the questioned type.
+	 *         returns false if either the key does not exist or it has a
+	 *         different type
+	 */
+	public boolean isBoolean(String key)
+	{
+		return contains(key, ClusterDataType.BOOLEAN);
+	}
+	
+	/**
+	 * Check if the given key and type exist in the data cluster
+	 * 
+	 * @param key
+	 *            the key
+	 * @param t
+	 *            the type
+	 * @return true if the data cluster contains the key and that key's value is
+	 *         of the type T
+	 */
+	public boolean contains(String key, ClusterDataType t)
+	{
+		return contains(key) && getType(key).equals(t);
 	}
 	
 	/**
