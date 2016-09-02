@@ -25,6 +25,8 @@ public class HotLoadController extends Controller implements Configurable
 	@Keyed("hotload.enable")
 	public Boolean enable = true;
 	
+	public int hotloads = 0;
+	
 	private Task t;
 	private GMap<File, Configurable> fileRegistry;
 	private GMap<File, Long> mods;
@@ -126,6 +128,7 @@ public class HotLoadController extends Controller implements Configurable
 		{
 			loadFile(f);
 			overChanges(f);
+			hotloads++;
 		}
 	}
 	
