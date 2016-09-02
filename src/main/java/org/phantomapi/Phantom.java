@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.phantomapi.Metrics.Graph;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
@@ -28,6 +29,8 @@ import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
+import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
@@ -223,6 +226,110 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		catch(IOException e)
 		{
 			e.printStackTrace();
+		}
+		
+		try
+		{
+			Metrics metrics = new Metrics(this);
+			
+			Graph controllerGraph = metrics.createGraph("Controllers");
+			Graph taskGraph = metrics.createGraph("Tasks");
+			Graph networkGraph = metrics.createGraph("Transmission IO");
+			Graph clusterGraph = metrics.createGraph("DataClusters IO");
+			
+			taskGraph.addPlotter(new Metrics.Plotter("Tasks Started")
+			{
+				@Override
+				public int getValue()
+				{
+					int hotloads = TaskLater.taskx;
+					TaskLater.taskx = 0;
+					
+					return hotloads;
+				}
+			});
+			
+			taskGraph.addPlotter(new Metrics.Plotter("Tasks Running")
+			{
+				@Override
+				public int getValue()
+				{
+					return Task.taskx;
+				}
+			});
+			
+			clusterGraph.addPlotter(new Metrics.Plotter("Hotloads")
+			{
+				@Override
+				public int getValue()
+				{
+					int hotloads = getDms().getHotLoadController().hotloads;
+					getDms().getHotLoadController().hotloads = 0;
+					
+					return hotloads;
+				}
+			});
+			
+			networkGraph.addPlotter(new Metrics.Plotter("Transmissions Sent")
+			{
+				@Override
+				public int getValue()
+				{
+					return getBungeeController().getTo();
+				}
+			});
+			
+			networkGraph.addPlotter(new Metrics.Plotter("Transmissions Received")
+			{
+				@Override
+				public int getValue()
+				{
+					return getBungeeController().getTi();
+				}
+			});
+			
+			networkGraph.addPlotter(new Metrics.Plotter("Transmissions Queued")
+			{
+				@Override
+				public int getValue()
+				{
+					return getBungeeController().getQueue().size();
+				}
+			});
+			
+			controllerGraph.addPlotter(new Metrics.Plotter("Controllers")
+			{
+				@Override
+				public int getValue()
+				{
+					return getBindings().size();
+				}
+			});
+			
+			controllerGraph.addPlotter(new Metrics.Plotter("Command Registrants")
+			{
+				@Override
+				public int getValue()
+				{
+					return getCommandRegistryController().getRegistry().size();
+				}
+			});
+			
+			controllerGraph.addPlotter(new Metrics.Plotter("Phantom Plugins")
+			{
+				@Override
+				public int getValue()
+				{
+					return getPlugins().size();
+				}
+			});
+			
+			metrics.start();
+		}
+		
+		catch(IOException e)
+		{
+			
 		}
 	}
 	
