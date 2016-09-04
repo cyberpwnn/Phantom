@@ -230,6 +230,18 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			e.printStackTrace();
 		}
 		
+		new TaskLater(5)
+		{
+			@Override
+			public void run()
+			{
+				for(Controllable i : bindings)
+				{
+					commandRegistryController.register((Controllable) i);
+				}
+			}
+		};
+		
 		try
 		{
 			Metrics metrics = new Metrics(this);
@@ -334,7 +346,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			
 		}
 	}
-	
+
 	public void onStop()
 	{
 		try
@@ -385,6 +397,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			s.sendMessage(C.RED + e.getMessage());
 		}
+	}
+	
+	public Controllable getInstance(Class<?> clazz)
+	{
+		for(Controllable i : bindings)
+		{
+			if(clazz.equals(i.getClass()))
+			{
+				return i;
+			}
+		}
+		
+		return null;
 	}
 	
 	public void disable()
