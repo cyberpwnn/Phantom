@@ -22,4 +22,14 @@ public class Cluster
 	{
 		return type;
 	}
+	
+	public boolean equals(Object o)
+	{
+		if(o instanceof Cluster)
+		{
+			return ((Cluster)o).getType().equals(getType());
+		}
+		
+		return false;
+	}
 }
