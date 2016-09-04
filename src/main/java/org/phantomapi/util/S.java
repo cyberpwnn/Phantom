@@ -14,14 +14,22 @@ public abstract class S
 	 */
 	public S()
 	{
-		Phantom.sync(new Runnable()
+		if(Phantom.isSync())
 		{
-			@Override
-			public void run()
+			sync();
+		}
+		
+		else
+		{
+			Phantom.sync(new Runnable()
 			{
-				sync();
-			}
-		});
+				@Override
+				public void run()
+				{
+					sync();
+				}
+			});
+		}
 	}
 	
 	public abstract void sync();

@@ -14,14 +14,22 @@ public abstract class A
 	 */
 	public A()
 	{
-		Phantom.async(new Runnable()
+		if(Phantom.isAsync())
 		{
-			@Override
-			public void run()
+			async();
+		}
+		
+		else
+		{
+			Phantom.async(new Runnable()
 			{
-				async();
-			}
-		});
+				@Override
+				public void run()
+				{
+					async();
+				}
+			});
+		}
 	}
 	
 	public abstract void async();
