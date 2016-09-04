@@ -233,6 +233,34 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("dispatcher", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				i("Info!");
+				s("Success!");
+				w("Warning!");
+				f("Failure!");
+				v("Verbose!");
+				o("Overbose!");
+				
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						i("Info!");
+						s("Success!");
+						w("Warning!");
+						f("Failure!");
+						v("Verbose!");
+						o("Overbose!");
+					}
+				};
+			}
+		});
+		
 		tests.put("param", new Runnable()
 		{
 			@Override
