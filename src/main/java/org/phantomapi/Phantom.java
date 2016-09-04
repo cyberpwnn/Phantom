@@ -42,10 +42,10 @@ import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
 import org.phantomapi.util.Timer;
+import org.phantomapi.world.PhantomEditSession;
 import com.boydti.fawe.util.TaskManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.sk89q.worldedit.EditSession;
 
 /**
  * The Phantom Plugin object.
@@ -1265,7 +1265,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return instance().bungeeController.getNetwork();
 	}
 	
-	public static EditSession getEditSession(World w)
+	public static PhantomEditSession getEditSession(World w)
 	{
 		return instance().editSessionController.getSession(w);
 	}
@@ -1290,5 +1290,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static void async(Runnable runnable)
 	{
 		TaskManager.IMP.async(runnable);
+	}
+
+	public static Long getThread()
+	{
+		return thread;
+	}
+
+	public EditSessionController getEditSessionController()
+	{
+		return editSessionController;
 	}
 }
