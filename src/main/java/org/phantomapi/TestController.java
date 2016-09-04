@@ -59,6 +59,7 @@ import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
+import org.phantomapi.world.Area;
 import org.phantomapi.world.Artifact;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
@@ -229,6 +230,43 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("acid", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							World w = W.getAsyncWorld(i.getWorld().getName());
+							Area a = new Area(i.getLocation(), 32);
+							
+							new A()
+							{
+								@Override
+								public void async()
+								{
+									for(int i = 0; i < 2048; i++)
+									{
+										Location l = a.random();
+										
+										if(w.getBlockAt(l).getType().isSolid())
+										{
+											EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) (Math.random() * 15)));
+										}
+									}
+								}
+							};
+						}
+					};
 				}
 			}
 		});
