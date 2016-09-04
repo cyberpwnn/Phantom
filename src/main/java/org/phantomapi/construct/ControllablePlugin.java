@@ -344,6 +344,8 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		{
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) c);
 		}
+		
+		Phantom.instance().getCommandRegistryController().unregister((Controllable) ControllablePlugin.this);
 	}
 	
 	@Override
