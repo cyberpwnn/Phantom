@@ -3,16 +3,17 @@ package org.phantomapi.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.phantomapi.Phantom;
+import org.phantomapi.lang.GList;
 
 /**
  * Dispatcher
  * 
  * @author cyberpwn
- *
  */
 public class D
 {
 	private String name;
+	public static GList<String> queue;
 	
 	/**
 	 * Create a dispatcher
@@ -39,15 +40,41 @@ public class D
 			return;
 		}
 		
-		String msg = s + "";
+		String msg = "";
 		
 		for(String i : o)
 		{
 			msg = msg + i;
 		}
 		
-		String tmg = C.DARK_GRAY + "/" + name + ": " + ChatColor.WHITE + msg;
-		Bukkit.getServer().getConsoleSender().sendMessage(tmg);
+		msg = s + msg;
+		
+		String tmg = C.getLastColors(msg) + "|" + C.DARK_GRAY + name + ": " + ChatColor.WHITE + msg;
+		
+		if(Phantom.isAsync())
+		{
+			tmg = C.getLastColors(msg) + "|" + "ASYNC" + tmg;
+			queue.add(tmg);
+		}
+		
+		else
+		{
+			flush();
+			Bukkit.getServer().getConsoleSender().sendMessage(tmg);
+		}
+	}
+	
+	public static void flush()
+	{
+		if(!queue.isEmpty())
+		{
+			for(String i : queue.copy())
+			{
+				Bukkit.getServer().getConsoleSender().sendMessage(i);
+			}
+			
+			queue.clear();
+		}
 	}
 	
 	/**
@@ -222,5 +249,10 @@ public class D
 	public void setSilent(Boolean silent)
 	{
 		D.silent = silent;
+	}
+	
+	static
+	{
+		queue = new GList<String>();
 	}
 }
