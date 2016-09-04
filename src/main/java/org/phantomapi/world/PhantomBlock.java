@@ -1,4 +1,4 @@
-package org.phantomapi.block;
+package org.phantomapi.world;
 
 import java.util.Collection;
 import java.util.List;

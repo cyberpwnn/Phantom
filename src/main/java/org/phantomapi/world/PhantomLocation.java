@@ -1,4 +1,4 @@
-package org.phantomapi.block;
+package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.World;
