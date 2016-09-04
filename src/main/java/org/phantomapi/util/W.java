@@ -145,6 +145,18 @@ public class W
 		return d;
 	}
 	
+	public static GList<Location> news(Location location)
+	{
+		GList<Location> news = new GList<Location>();
+		
+		news.add(location.clone().add(1, 0, 0));
+		news.add(location.clone().add(0, 0, 1));
+		news.add(location.clone().add(-1, 0, -1));
+		news.add(location.clone().add(-1, 0, 1));
+		
+		return news;
+	}
+	
 	/**
 	 * Calculates the so-called 'Manhatten Distance' between two blocks<br>
 	 * This is the distance between two points without going diagonally
