@@ -233,7 +233,7 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("acid", new Runnable()
+		tests.put("show-chunks", new Runnable()
 		{
 			@Override
 			public void run()
