@@ -13,7 +13,7 @@ import org.phantomapi.world.PhantomEditSession;
 import org.phantomapi.world.PhantomWorld;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 
-@Ticked(5)
+@Ticked(0)
 public class EditSessionController extends Controller
 {
 	private GMap<World, PhantomEditSession> sessions;
