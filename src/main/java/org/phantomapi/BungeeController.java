@@ -352,7 +352,6 @@ public class BungeeController extends Controller implements PluginMessageListene
 					{
 						if(i.getString("t.r").equals(t.getString("t.k")))
 						{
-							s("Respond");
 							i.onResponse(t);
 							responders.remove(i);
 						}
