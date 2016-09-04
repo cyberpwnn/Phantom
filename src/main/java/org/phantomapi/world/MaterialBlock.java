@@ -2,6 +2,7 @@ package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.phantomapi.EditSessionController;
 import com.sk89q.worldedit.blocks.BaseBlock;
 
 /**
@@ -45,11 +46,9 @@ public class MaterialBlock
 		this.data = 0;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void apply(Location location)
 	{
-		location.getBlock().setType(material);
-		location.getBlock().setData(data);
+		EditSessionController.queue(location, this);
 	}
 	
 	public Material getMaterial()
