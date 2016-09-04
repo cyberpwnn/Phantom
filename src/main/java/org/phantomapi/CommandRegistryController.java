@@ -1,17 +1,22 @@
 package org.phantomapi;
 
+import java.lang.reflect.Method;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.phantomapi.command.Command;
+import org.phantomapi.command.CommandAlias;
 import org.phantomapi.command.CommandBus;
+import org.phantomapi.command.CommandEventBus;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.CommandResult;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 
 /**
@@ -23,6 +28,7 @@ public class CommandRegistryController extends Controller
 {
 	private final GMap<String, GList<CommandListener>> registry;
 	private final GList<CommandListener> registrants;
+	private final GMap<String, GList<Method>> commandableEvents;
 	
 	public CommandRegistryController(Controllable parentController)
 	{
@@ -30,6 +36,53 @@ public class CommandRegistryController extends Controller
 		
 		registry = new GMap<String, GList<CommandListener>>();
 		registrants = new GList<CommandListener>();
+		commandableEvents = new GMap<String, GList<Method>>();
+	}
+	
+	public void register(Controllable c)
+	{
+		new TaskLater()
+		{
+			@Override
+			public void run()
+			{
+				for(Method i : c.getClass().getDeclaredMethods())
+				{
+					register(i);
+				}
+			}
+		};
+	}
+	
+	public void unregister(Controllable c)
+	{
+		for(Method i : c.getClass().getDeclaredMethods())
+		{
+			if(i.isAnnotationPresent(Command.class))
+			{
+				unregister(i);
+			}
+		}
+	}
+	
+	public void register(Method method)
+	{
+		if(method.isAnnotationPresent(Command.class))
+		{
+			Command c = method.getAnnotation(Command.class);
+			
+			register(c.value(), method);
+			
+			if(method.isAnnotationPresent(CommandAlias.class))
+			{
+				CommandAlias cx = method.getAnnotation(CommandAlias.class);
+				
+				for(String i : cx.value())
+				{
+					register(i, method);
+				}
+			}
+		}
 	}
 	
 	public void register(CommandListener listener)
@@ -59,6 +112,28 @@ public class CommandRegistryController extends Controller
 		o("Registered Command: " + C.GREEN + listener.getClass().getSimpleName() + " <> " + "/" + node);
 	}
 	
+	private void register(String node, Method listener)
+	{
+		if(!commandableEvents.containsKey(node.toLowerCase()))
+		{
+			commandableEvents.put(node.toLowerCase(), new GList<Method>());
+		}
+		
+		commandableEvents.get(node.toLowerCase()).add(listener);
+		
+		o("Registered Command: " + C.GREEN + listener.getClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
+	}
+	
+
+	public void unregister(Method c)
+	{
+		for(String i : commandableEvents.k())
+		{
+			commandableEvents.get(i).remove(c);
+		}
+				
+		o(C.RED + "Unregistered all commands for " + C.YELLOW + c.getClass().getSimpleName() + "." + c.getName() + "()");
+	}
 
 	public void unregister(CommandListener c)
 	{
@@ -113,6 +188,13 @@ public class CommandRegistryController extends Controller
 			return true;
 		}
 		
+		CommandEventBus busx = new CommandEventBus(this, command, args, sender);
+		
+		if(busx.getResult().equals(CommandResult.HANDLED))
+		{
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -126,5 +208,10 @@ public class CommandRegistryController extends Controller
 	public void onStop()
 	{
 		
+	}
+
+	public GMap<String, GList<Method>> getCommandableEvents()
+	{
+		return commandableEvents;
 	}
 }
