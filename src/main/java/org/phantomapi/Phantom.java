@@ -54,6 +54,7 @@ import com.sk89q.worldedit.EditSession;
  */
 public class Phantom extends PhantomPlugin implements TagProvider
 {
+	private static Long thread;
 	private static Phantom instance;
 	private DataCluster environment;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
@@ -96,6 +97,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		editSessionController = new EditSessionController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
+		thread = Thread.currentThread().getId();
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -1000,6 +1002,26 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		cc.set("phantom.api-version", getDescription().getVersion());
 		
 		return cc;
+	}
+	
+	/**
+	 * Check if the current thread is sync
+	 * 
+	 * @return true if it is
+	 */
+	public static boolean isSync()
+	{
+		return Thread.currentThread().getId() == thread;
+	}
+	
+	/**
+	 * Check if the current thread is async
+	 * 
+	 * @return true if the current thread is async
+	 */
+	public static boolean isAsync()
+	{
+		return !isSync();
 	}
 	
 	/**
