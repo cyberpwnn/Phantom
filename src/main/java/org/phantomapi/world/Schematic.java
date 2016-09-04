@@ -4,13 +4,8 @@ import java.util.Iterator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
-import org.phantomapi.lang.GBiset;
 import org.phantomapi.lang.GList;
-import org.phantomapi.sync.ExecutiveRunnable;
-import com.boydti.fawe.util.EditSessionBuilder;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.blocks.BaseBlock;
+import org.phantomapi.util.A;
 
 /**
  * Schematics
@@ -318,52 +313,26 @@ public class Schematic
 	@SuppressWarnings("deprecation")
 	public void apply(Location location)
 	{
-		GList<GBiset<MaterialBlock, Location>> lx = new GList<GBiset<MaterialBlock, Location>>();
-		
-		for(int i = 0; i < dimension.getWidth(); i++)
+		new A()
 		{
-			for(int j = 0; j < dimension.getHeight(); j++)
+			@Override
+			public void async()
 			{
-				for(int k = 0; k < dimension.getDepth(); k++)
+				for(int i = 0; i < dimension.getWidth(); i++)
 				{
-					if(!schematic[i][j][k].getMaterial().equals(location.clone().add(i, j, k).getBlock().getType()) || schematic[i][j][k].getData() != location.clone().add(i, j, k).getBlock().getData())
+					for(int j = 0; j < dimension.getHeight(); j++)
 					{
-						lx.add(new GBiset<MaterialBlock, Location>(schematic[i][j][k], location.clone().add(i, j, k)));
+						for(int k = 0; k < dimension.getDepth(); k++)
+						{
+							if(!schematic[i][j][k].getMaterial().equals(location.clone().add(i, j, k).getBlock().getType()) || schematic[i][j][k].getData() != location.clone().add(i, j, k).getBlock().getData())
+							{
+								schematic[i][j][k].apply(location.clone().add(i, j, k));
+							}
+						}
 					}
 				}
 			}
-		}
-		
-		try
-		{
-			EditSession es = new EditSessionBuilder(location.getWorld().getName()).autoQueue(false).fastmode(true).build();
-			
-			for(GBiset<MaterialBlock, Location> i : lx)
-			{
-				try
-				{
-					es.setBlock(new com.sk89q.worldedit.Vector(i.getB().getX(), i.getB().getY(), i.getB().getZ()), new BaseBlock(i.getA().getMaterial().getId(), i.getA().getData()));
-				}
-				
-				catch(MaxChangedBlocksException e)
-				{
-					
-				}
-			}
-			
-			es.flushQueue();
-		}
-		
-		catch(Exception e)
-		{
-			lx.schedule(new ExecutiveRunnable<GBiset<MaterialBlock, Location>>()
-			{
-				public void run()
-				{
-					next().getA().apply(next().getB());
-				}
-			});
-		}
+		};
 	}
 	
 	/**
