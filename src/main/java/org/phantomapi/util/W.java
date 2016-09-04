@@ -28,7 +28,6 @@ import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
-import com.sk89q.worldedit.MaxChangedBlocksException;
 
 /**
  * World utils
@@ -303,16 +302,8 @@ public class W
 	 */
 	public static void setBlockFast(Location l, MaterialBlock mb)
 	{
-		try
-		{
-			Phantom.getEditSession(l.getWorld()).setBlock(toEditVector(l), mb.toBase());
-			Phantom.getEditSession(l.getWorld()).flushQueue();
-		}
-		
-		catch(MaxChangedBlocksException e)
-		{
-			
-		}
+		Phantom.getEditSession(l.getWorld()).set(l, mb);
+		Phantom.getEditSession(l.getWorld()).flush();
 	}
 	
 	/**
