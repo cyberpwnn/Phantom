@@ -107,4 +107,19 @@ public class MessageBuilder
 		
 		return this;
 	}
+
+	public String getHoverText()
+	{
+		return hoverText;
+	}
+
+	public void setHoverText(String hoverText)
+	{
+		this.hoverText = hoverText;
+	}
+
+	public String getTag()
+	{
+		return tag;
+	}
 }
