@@ -96,6 +96,8 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) this);
 		}
 		
+		Phantom.instance().getCommandRegistryController().unregister((Controllable) this);
+		
 		onStop();
 	}
 	
