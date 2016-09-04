@@ -7,6 +7,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.ExecutivePool;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 
 /**
  * The Channeled Executive Pool Controller pools ExeutiveIterator<T> objects
@@ -15,7 +16,7 @@ import org.phantomapi.util.C;
  * @author cyberpwn
  *
  */
-@Ticked(20)
+@Ticked(0)
 public class ChanneledExecutivePoolController extends Controller
 {
 	private GMap<String, ExecutivePool> pools;
@@ -29,13 +30,18 @@ public class ChanneledExecutivePoolController extends Controller
 	
 	public void onTick()
 	{
-		for(String i : pools.k())
+		D.flush();
+		
+		if(!pools.isEmpty())
 		{
-			if(pools.get(i).isIdle())
+			for(String i : pools.k())
 			{
-				pools.get(i).cancel();
-				pools.remove(i);
-				w("Closed Execution Stream: " + C.RED + i);
+				if(pools.get(i).isIdle())
+				{
+					pools.get(i).cancel();
+					pools.remove(i);
+					w("Closed Execution Stream: " + C.RED + i);
+				}
 			}
 		}
 	}
