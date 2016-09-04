@@ -59,7 +59,6 @@ import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
-import org.phantomapi.world.Area;
 import org.phantomapi.world.Artifact;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
@@ -239,28 +238,43 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				for(Player i : Phantom.instance().onlinePlayers())
+				for(Player p : Phantom.instance().onlinePlayers())
 				{
-					new Task(0)
+					new Task(7)
 					{
 						@Override
 						public void run()
 						{
-							World w = W.getAsyncWorld(i.getWorld().getName());
-							Area a = new Area(i.getLocation(), 32);
+							Chunk c = p.getLocation().getChunk();
 							
 							new A()
 							{
 								@Override
 								public void async()
 								{
-									for(int i = 0; i < 2048; i++)
+									for(int i = 0; i < 16; i++)
 									{
-										Location l = a.random();
-										
-										if(w.getBlockAt(l).getType().isSolid())
+										for(int j = 0; j < 256; j++)
 										{
-											EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) (Math.random() * 15)));
+											for(int k = 0; k < 16; k++)
+											{
+												Location l = c.getBlock(i, j, k).getLocation();
+												
+												if((l.getBlockX() % 16 == 0 && l.getBlockY() % 16 == 0))
+												{
+													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 14));
+												}
+												
+												if((l.getBlockX() % 16 == 0 && l.getBlockZ() % 16 == 0))
+												{
+													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 5));
+												}
+												
+												if((l.getBlockZ() % 16 == 0 && l.getBlockY() % 16 == 0))
+												{
+													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 11));
+												}
+											}
 										}
 									}
 								}
