@@ -17,6 +17,11 @@ import org.bukkit.util.Vector;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.YAMLDataInput;
 import org.phantomapi.clust.YAMLDataOutput;
+import org.phantomapi.command.Command;
+import org.phantomapi.command.CommandAlias;
+import org.phantomapi.command.CommandFilter;
+import org.phantomapi.command.PhantomCommand;
+import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.gui.Click;
@@ -947,6 +952,17 @@ public class TestController extends Controller
 				break;
 			}
 		}
+	}
+	
+	@CommandFilter.Tag("Tag")
+	@CommandFilter.TagHover("Tag Hover")
+	@CommandFilter.PlayerOnly
+	@CommandFilter.Permission("must.have.this")
+	@CommandAlias("testingalias")
+	@Command("testing")
+	public void testCommand(PhantomSender sender, PhantomCommand cmd)
+	{
+		sender.sendMessage(C.WHITE + "Tested");
 	}
 	
 	public GMap<String, Runnable> getTests()
