@@ -24,12 +24,13 @@ import org.phantomapi.util.PluginUtil;
 /**
  * @author cyberpwn
  */
-@Ticked(20)
+@Ticked(60)
 public class DevelopmentController extends Controller implements Configurable
 {
 	private DataCluster cc;
 	private GMap<Plugin, Long> modifications;
 	private GMap<Plugin, Long> sizes;
+	private GMap<String, String> filePlugins;
 	private GList<String> silence = new GList<String>();
 	private GList<String> registered = new GList<String>();
 	private ExecutiveTask<Plugin> task;
@@ -62,6 +63,7 @@ public class DevelopmentController extends Controller implements Configurable
 		this.modifications = new GMap<Plugin, Long>();
 		this.sizes = new GMap<Plugin, Long>();
 		this.task = null;
+		this.filePlugins = new GMap<String, String>();
 		
 		new TaskLater(1)
 		{
@@ -93,7 +95,7 @@ public class DevelopmentController extends Controller implements Configurable
 										
 					try
 					{
-						File file = new File(getPlugin().getDataFolder().getParentFile(), PluginUtil.getPluginFileName(i.getName()));
+						File file = new File(getPlugin().getDataFolder().getParentFile(), getPluginFile(i.getName()));
 						
 						if(!modifications.containsKey(i))
 						{
@@ -152,7 +154,7 @@ public class DevelopmentController extends Controller implements Configurable
 						
 					}
 				}
-			}), 0.1, 0, new Runnable()
+			}), 0.01, 0, new Runnable()
 			{
 				public void run()
 				{
@@ -160,6 +162,16 @@ public class DevelopmentController extends Controller implements Configurable
 				}
 			});
 		}
+	}
+	
+	private String getPluginFile(String name)
+	{
+		if(!filePlugins.containsKey(name))
+		{
+			filePlugins.put(name, PluginUtil.getPluginFileName(name));
+		}
+		
+		return filePlugins.get(name);
 	}
 	
 	@Override
