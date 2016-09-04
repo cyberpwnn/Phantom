@@ -37,6 +37,30 @@ public @interface CommandFilter
 	}
 	
 	/**
+	 * Define the tag for this command response
+	 * 
+	 * @author cyberpwn
+	 */
+	@Retention(RUNTIME)
+	@Target(METHOD)
+	public @interface Tag
+	{
+		String value();
+	}
+	
+	/**
+	 * Define the tag hover for this command response
+	 * 
+	 * @author cyberpwn
+	 */
+	@Retention(RUNTIME)
+	@Target(METHOD)
+	public @interface TagHover
+	{
+		String value();
+	}
+	
+	/**
 	 * Filter players only
 	 */
 	@Retention(RUNTIME)
