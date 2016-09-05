@@ -2,7 +2,6 @@ package org.phantomapi.clust;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
