@@ -232,12 +232,17 @@ public class GTime implements Serializable
 			return minutes + " minute" + s(minutes) + " " + suff;
 		}
 		
-		if(seconds > 30)
+		if(seconds > 0)
 		{
 			return seconds + " second" + s(seconds) + " " + suff;
 		}
 		
-		return "Now";
+		if(milliseconds > 0)
+		{
+			return milliseconds + " ms" + " " + suff;
+		}
+		
+		return "Instantly";
 	}
 	
 	/**
