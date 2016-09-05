@@ -52,7 +52,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		this.parentController = parentController;
 		this.name = getClass().getSimpleName();
 		this.instance = parentController.getPlugin();
-		this.d = new D(toString());
+		this.d = new D(getPlugin().getName() + " > " + getName());
 		this.time = new Average(8);
 	}
 	
