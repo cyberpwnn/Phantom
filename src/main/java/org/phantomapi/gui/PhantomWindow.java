@@ -250,7 +250,7 @@ public class PhantomWindow implements Window, Listener
 	@EventHandler
 	public void on(InventoryClickEvent e)
 	{
-		if(e.getWhoClicked().equals(viewer) && e.getInventory().equals(inventory))
+		if(e.getWhoClicked().equals(viewer) && e.getInventory().equals(inventory) && e.getClickedInventory().getName().equals(inventory.getName()))
 		{
 			Slot s = new Slot(e.getSlot());
 			Click c = Click.fromClickType(e.getClick());
