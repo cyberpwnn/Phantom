@@ -70,7 +70,7 @@ public class W
 		{
 			if(i != null)
 			{
-				if(i.getType().equals(mb.getMaterial()) && (i.getData().getData() == -1 ? 0 : i.getData().getData()) == mb.getData())
+				if(!i.hasItemMeta() && i.getType().equals(mb.getMaterial()) && (i.getData().getData() == -1 ? 0 : i.getData().getData()) == mb.getData())
 				{
 					has += i.getAmount();
 				}
