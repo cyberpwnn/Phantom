@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.phantomapi.clust.DataCluster;
@@ -32,8 +31,6 @@ import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
-import org.phantomapi.inventory.EnchantmentLevel;
-import org.phantomapi.inventory.Stack;
 import org.phantomapi.inventory.StackedPlayerInventory;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -139,44 +136,8 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
-					
-					for(int s = 0; s < 36; s++)
-					{
-						Stack testStack = new Stack(new MaterialBlock(Material.STAINED_GLASS_PANE, (byte) s));
-						testStack.setAmount((int) (1 + (Math.random() * 8)));
-						testStack.setLore(new GList<String>().qadd(new GList<C>(C.values()).pickRandom() + "Lore " + UUID.randomUUID()));
-						testStack.setName(new GList<C>(C.values()).pickRandom() + "Test Name slot " + s);
-						testStack.getEnchantmentSet().addEnchantment(new EnchantmentLevel(Enchantment.DURABILITY, (int) (1 + (Math.random() * 15))));
-						
-						if(testStack.getData() > 15)
-						{
-							testStack.setData((byte) (testStack.getData() % 15));
-						}
-						
-						inv.setStack(s, testStack);
-						inv.thrash();
-					}
-					
-					new Task(0)
-					{
-						@Override
-						public void run()
-						{
-							for(int i : inv.getStacks().k())
-							{
-								int next = inv.getStacks().get(i).getData() + 1;
-								
-								if(next > 15)
-								{
-									next = 0;
-								}
-								
-								inv.getStacks().get(i).setAmount((int) (Math.random() * 63));
-								inv.getStacks().get(i).setLore(new GList<String>().qadd(new GList<C>(C.values()).pickRandom() + "Lore " + UUID.randomUUID()));
-								inv.getStacks().get(i).setData((byte) next);
-							}
-						}
-					};
+					inv.setStacks(inv.getStacks());
+					inv.thrash();
 				}
 			}
 		});
