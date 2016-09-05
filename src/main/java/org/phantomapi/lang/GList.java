@@ -350,6 +350,43 @@ public class GList<T> extends ArrayList<T>
 		return crop(from, size() - 1);
 	}
 	
+	public GList<GList<T>> split(int factor)
+	{
+		GList<GList<T>> factors = new GList<GList<T>>();
+		
+		int size = size() / factor;
+		
+		if(size < 1)
+		{
+			factors.add(copy());
+		}
+		
+		else
+		{
+			for(int i = 0; i < factor; i++)
+			{
+				GList<T> t = new GList<T>();
+				
+				for(int j = 0; j < size(); j++)
+				{
+					try
+					{
+						t.add(get(j * (factor + 1)));
+					}
+					
+					catch(Exception e)
+					{
+						
+					}
+				}
+				
+				factors.add(t);
+			}
+		}
+		
+		return factors;
+	}
+	
 	/**
 	 * Crop out the beginning of the list by supplying an END index to be the
 	 * next end index of the new cropped list
