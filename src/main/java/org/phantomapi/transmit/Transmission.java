@@ -103,7 +103,7 @@ public abstract class Transmission extends DataCluster
 	 */
 	public void transmit() throws IOException
 	{
-		Phantom.instance().getBungeeController().transmit(clone());
+		Phantom.instance().getBungeeController().transmit(this);
 	}
 	
 	/**

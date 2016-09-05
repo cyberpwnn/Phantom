@@ -324,6 +324,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 						
 					}
 				};
+				
 				s(C.AQUA + sname + " <- " + t.getSource() + C.YELLOW + " [" + t.getType() + "]");
 				ti++;
 				
