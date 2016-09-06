@@ -1,8 +1,10 @@
 package org.phantomapi.papyrus;
 
 import java.util.Iterator;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.map.MapView;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.world.Cuboid;
@@ -45,9 +47,21 @@ public class PaperWallSet
 		
 		while(it.hasNext())
 		{
-			if(!it.next().getType().equals(Material.MAP))
+			Block b = it.next();
+			
+			if(b.getType().equals(Material.ITEM_FRAME))
 			{
-				throw new CuboidException("Invalid wall. Must be all maps.");
+				ItemFrame iframe = (ItemFrame) b.getState();
+				
+				if(!(iframe.getItem() != null && iframe.getItem().getType().equals(Material.MAP)))
+				{
+					throw new CuboidException("Invalid wall. Must be all maps.");
+				}
+			}
+			
+			else
+			{
+				throw new CuboidException("Invalid wall. Must be all item frames.");
 			}
 		}
 	}
@@ -129,7 +143,8 @@ public class PaperWallSet
 					block = c.getRelativeBlock(i, j, 0);
 				}
 				
-				MapView mv = ((MapView) block.getState());
+				@SuppressWarnings("deprecation")
+				MapView mv = Bukkit.getMap(((ItemFrame) block.getState()).getItem().getDurability());
 				maps.put(block, mv);
 			}
 		}
