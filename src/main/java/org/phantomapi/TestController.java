@@ -199,6 +199,30 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("break-particle", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.breakParticles(i.getEyeLocation(), Material.REDSTONE_BLOCK, 24);
+				}
+			}
+		});
+		
+		tests.put("spread-particle", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.spreadParticles(i.getEyeLocation(), Material.PORTAL, 24);
+				}
+			}
+		});
+		
 		tests.put("show-chunks", new Runnable()
 		{
 			@Override
