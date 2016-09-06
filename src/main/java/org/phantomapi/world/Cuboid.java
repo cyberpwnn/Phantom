@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -19,7 +18,6 @@ import org.bukkit.material.MaterialData;
  * Cuboids
  * 
  * @author cyberpwn
- *
  */
 public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializable
 {
@@ -260,6 +258,16 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	public int getSizeZ()
 	{
 		return (z2 - z1) + 1;
+	}
+	
+	/**
+	 * Get the cuboid dimensions
+	 * 
+	 * @return the dimensions
+	 */
+	public Dimension getDimension()
+	{
+		return new Dimension(getSizeX(), getSizeY(), getSizeZ());
 	}
 	
 	/**
@@ -740,7 +748,6 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator<Block> iterator()
@@ -750,7 +757,6 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -761,7 +767,6 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
