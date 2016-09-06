@@ -150,8 +150,8 @@ public class W
 		
 		news.add(location.clone().add(1, 0, 0));
 		news.add(location.clone().add(0, 0, 1));
-		news.add(location.clone().add(-1, 0, -1));
-		news.add(location.clone().add(-1, 0, 1));
+		news.add(location.clone().add(-1, 0, 0));
+		news.add(location.clone().add(0, 0, -1));
 		
 		return news;
 	}
