@@ -28,6 +28,8 @@ import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
+import com.boydti.fawe.object.FawePlayer;
+import com.sk89q.worldedit.regions.Region;
 
 /**
  * World utils
@@ -50,6 +52,20 @@ public class W
 		BlockBreakEvent bbe = new BlockBreakEvent(block, p);
 		Phantom.instance().callEvent(bbe);
 		return !bbe.isCancelled();
+	}
+	
+	/**
+	 * Get the player's world edit selection
+	 * 
+	 * @param p
+	 *            the map
+	 * @return the selection in cuboid form
+	 */
+	public static Cuboid getSelection(Player p)
+	{
+		Region r = FawePlayer.wrap(p).getSelection();
+		
+		return new Cuboid(new Location(p.getWorld(), r.getMaximumPoint().x, r.getMaximumPoint().y, r.getMaximumPoint().z), new Location(p.getWorld(), r.getMinimumPoint().x, r.getMinimumPoint().y, r.getMinimumPoint().z));
 	}
 	
 	/**
