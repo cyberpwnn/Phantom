@@ -105,6 +105,23 @@ public class PaperWall
 	}
 	
 	/**
+	 * Clear the entire wall
+	 * 
+	 * @param color
+	 *            the color
+	 */
+	public void clear(byte color)
+	{
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				map[i][j].clear(color);
+			}
+		}
+	}
+	
+	/**
 	 * Get the papers
 	 * 
 	 * @return the papers
