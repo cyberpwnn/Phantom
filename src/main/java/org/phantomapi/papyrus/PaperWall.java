@@ -17,7 +17,7 @@ public class PaperWall
 	private final int y;
 	
 	/**
-	 * Create a paper wall with a width and height of pixels
+	 * Create a paper wall with a width and height of papers
 	 * 
 	 * @param x
 	 *            the x width
@@ -102,5 +102,15 @@ public class PaperWall
 				mx++;
 			}
 		}
+	}
+	
+	/**
+	 * Get the papers
+	 * 
+	 * @return the papers
+	 */
+	public Paper[][] getPapers()
+	{
+		return map;
 	}
 }
