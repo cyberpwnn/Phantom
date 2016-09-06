@@ -3,6 +3,7 @@ package org.phantomapi.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 
 /**
@@ -12,6 +13,56 @@ import org.phantomapi.lang.GList;
  */
 public class P
 {
+	/**
+	 * Can you find a player with the search?
+	 * 
+	 * @param search
+	 *            the search
+	 * @return true if a player can be found
+	 */
+	public boolean canFindPlayer(String search)
+	{
+		return findPlayer(search) == null ? false : true;
+	}
+	
+	/**
+	 * Find a player
+	 * 
+	 * @param search
+	 *            the search
+	 * @return the player or null
+	 */
+	public Player findPlayer(String search)
+	{
+		for(Player i : onlinePlayers())
+		{
+			if(i.getName().equalsIgnoreCase(search))
+			{
+				return i;
+			}
+		}
+		
+		for(Player i : onlinePlayers())
+		{
+			if(i.getName().toLowerCase().contains(search.toLowerCase()))
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Get online players
+	 * 
+	 * @return the players
+	 */
+	public static GList<Player> onlinePlayers()
+	{
+		return Phantom.instance().onlinePlayers();
+	}
+	
 	/**
 	 * Get the location of the player's crotch (it's needed sometimes)
 	 * 
