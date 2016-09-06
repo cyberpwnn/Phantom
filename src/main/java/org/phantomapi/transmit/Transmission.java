@@ -28,7 +28,15 @@ public abstract class Transmission extends DataCluster
 		set("t.s", Phantom.getServerName());
 		set("t.m", M.ms());
 		
-		setPayload(UUID.randomUUID().toString());
+		if(contains("t.r"))
+		{
+			setPayload(getString("t.r"));
+		}
+		
+		else
+		{
+			setPayload(UUID.randomUUID().toString());
+		}
 	}
 	
 	public void setPayload(String s)
@@ -60,7 +68,15 @@ public abstract class Transmission extends DataCluster
 	{
 		super(data);
 		
-		setPayload(UUID.randomUUID().toString());
+		if(contains("t.r"))
+		{
+			setPayload(getString("t.r"));
+		}
+		
+		else
+		{
+			setPayload(UUID.randomUUID().toString());
+		}
 	}
 	
 	/**
@@ -73,7 +89,15 @@ public abstract class Transmission extends DataCluster
 	{
 		this(type, "ALL");
 		
-		setPayload(UUID.randomUUID().toString());
+		if(contains("t.r"))
+		{
+			setPayload(getString("t.r"));
+		}
+		
+		else
+		{
+			setPayload(UUID.randomUUID().toString());
+		}
 	}
 	
 	/**
@@ -91,6 +115,16 @@ public abstract class Transmission extends DataCluster
 		};
 		
 		t.setData(getData());
+		
+		if(t.contains("t.r"))
+		{
+			t.setPayload(getString("t.r"));
+		}
+		
+		else
+		{
+			t.setPayload(UUID.randomUUID().toString());
+		}
 		
 		return t;
 	}
