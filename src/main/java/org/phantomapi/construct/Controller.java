@@ -124,6 +124,36 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	}
 	
 	/**
+	 * Check if the current thread is async
+	 * 
+	 * @return true if it is
+	 */
+	public boolean isAsync()
+	{
+		return Phantom.isAsync();
+	}
+	
+	/**
+	 * Check if the current thread is sync
+	 * 
+	 * @return true if it is
+	 */
+	public boolean isSync()
+	{
+		return Phantom.isSync();
+	}
+	
+	/**
+	 * Online players of the server
+	 * 
+	 * @return the online players
+	 */
+	public GList<Player> onlinePlayers()
+	{
+		return Phantom.instance().onlinePlayers();
+	}
+	
+	/**
 	 * Load a data cluster from file This will also create the file and add in
 	 * default values if it doesnt exist
 	 * 
@@ -559,7 +589,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			return c.onControllerMessageRecieved(message.copy());
 		}
 		
-		 return null;
+		return null;
 	}
 	
 	@Override
