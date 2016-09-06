@@ -40,6 +40,9 @@ import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nms.NMSX;
+import org.phantomapi.papyrus.PaperColor;
+import org.phantomapi.papyrus.PaperWallRenderer;
+import org.phantomapi.papyrus.PaperWallSet;
 import org.phantomapi.sfx.Audible;
 import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.slate.PhantomSlate;
@@ -62,6 +65,8 @@ import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
 import org.phantomapi.world.Artifact;
+import org.phantomapi.world.Cuboid;
+import org.phantomapi.world.CuboidException;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.EdgeDistortion;
@@ -138,6 +143,29 @@ public class TestController extends Controller
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
+				}
+			}
+		});
+		
+		tests.put("papyrus", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					try
+					{
+						Cuboid sel = W.getSelection(i);
+						PaperWallSet set = new PaperWallSet(sel);
+						PaperWallRenderer renderer = new PaperWallRenderer(set);
+						renderer.getPaperWall().clear(PaperColor.RED);
+					}
+					
+					catch(CuboidException e)
+					{
+						i.sendMessage(e.getMessage());
+					}
 				}
 			}
 		});
