@@ -4,7 +4,6 @@ package org.phantomapi.world;
  * Dimensions
  * 
  * @author cyberpwn
- *
  */
 public class Dimension
 {
@@ -14,15 +13,45 @@ public class Dimension
 	
 	/**
 	 * Make a dimension
-	 * @param width width of this (X) 
-	 * @param height the height (Y)
-	 * @param depth the depth  (Z)
+	 * 
+	 * @param width
+	 *            width of this (X)
+	 * @param height
+	 *            the height (Y)
+	 * @param depth
+	 *            the depth (Z)
 	 */
 	public Dimension(int width, int height, int depth)
 	{
 		this.width = width;
 		this.height = height;
 		this.depth = depth;
+	}
+	
+	/**
+	 * Get the direction of the flat part of this dimension (null if no thin
+	 * face)
+	 * 
+	 * @return the direction of the flat pane or null
+	 */
+	public DimensionFace getPane()
+	{
+		if(width == 1)
+		{
+			return DimensionFace.X;
+		}
+		
+		if(height == 1)
+		{
+			return DimensionFace.Y;
+		}
+		
+		if(depth == 1)
+		{
+			return DimensionFace.Z;
+		}
+		
+		return null;
 	}
 	
 	public int getWidth()
