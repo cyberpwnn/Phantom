@@ -99,4 +99,21 @@ public class Paper
 			}
 		}
 	}
+	
+	/**
+	 * Clear the map
+	 * 
+	 * @param color
+	 *            the color to clear with
+	 */
+	public void clear(byte color)
+	{
+		for(int y = 0; y < 128; y++)
+		{
+			for(int x = 0; x < 128; x++)
+			{
+				image[x][y] = color;
+			}
+		}
+	}
 }
