@@ -3,10 +3,12 @@ package org.phantomapi;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -346,7 +348,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			
 		}
 	}
-
+	
 	public void onStop()
 	{
 		try
@@ -430,6 +432,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public DataCluster getEnvironmentData()
 	{
 		return new DataCluster(environment.getData());
+	}
+	
+	/**
+	 * Get the target block location up to 512 blocks
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the target block
+	 */
+	@SuppressWarnings("deprecation")
+	public Location target(Player p)
+	{
+		return p.getTargetBlock((HashSet<Byte>) null, 512).getLocation();
 	}
 	
 	/**
@@ -1316,12 +1331,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		TaskManager.IMP.async(runnable);
 	}
-
+	
 	public static Long getThread()
 	{
 		return thread;
 	}
-
+	
 	public EditSessionController getEditSessionController()
 	{
 		return editSessionController;
