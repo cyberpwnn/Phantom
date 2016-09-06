@@ -140,15 +140,13 @@ public class DMS extends Controller implements PluginMessageListener
 	{
 		requestServerNaming();
 		
-		new TaskLater(0)
+		new TaskLater(25)
 		{
 			public void run()
 			{
 				s("-------- Environment --------");
 				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
-				Phantom.instance().logBindings(d);
 				testInternetConnection();
-				
 				showDiskSpace();
 				s("> " + C.AQUA + "Bungee Server: " + C.GREEN + sname);
 				
