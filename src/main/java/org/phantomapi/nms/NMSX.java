@@ -8,9 +8,11 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
@@ -278,6 +280,44 @@ public class NMSX
 	public static void launchFirework(Location l)
 	{
 		launchFirework(l, colors.pickRandom(), colors.pickRandom(), new GList<Type>(Type.values()).pickRandom());
+	}
+	
+	/**
+	 * Spread dust particles
+	 * 
+	 * @param l
+	 *            the location
+	 * @param type
+	 *            the material type
+	 * @param amt
+	 *            the amount of particles
+	 */
+	@SuppressWarnings("deprecation")
+	public static void spreadParticles(Location l, Material type, int amt)
+	{
+		for(int i = 0; i < amt; i++)
+		{
+			l.getWorld().playEffect(l, Effect.TILE_DUST, type.getId());
+		}
+	}
+	
+	/**
+	 * Break particles
+	 * 
+	 * @param l
+	 *            the location
+	 * @param type
+	 *            the material type
+	 * @param amt
+	 *            the amount of particles
+	 */
+	@SuppressWarnings("deprecation")
+	public static void breakParticles(Location l, Material type, int amt)
+	{
+		for(int i = 0; i < amt; i++)
+		{
+			l.getWorld().playEffect(l, Effect.TILE_BREAK, type.getId());
+		}
 	}
 	
 	/**
