@@ -51,6 +51,7 @@ import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.text.Tabulator;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.A;
 import org.phantomapi.util.C;
@@ -247,6 +248,30 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.spreadParticles(i.getEyeLocation(), Material.PORTAL, 24);
+				}
+			}
+		});
+		
+		tests.put("tabulator", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Tabulator<String> tab = new Tabulator<String>(10);
+				
+				for(int i = 0; i < 35; i++)
+				{
+					tab.add(UUID.randomUUID().toString());
+				}
+				
+				for(int i = 0; i < tab.getTabCount(); i++)
+				{
+					o("--------------------------------");
+					
+					for(String j : tab.getTab(i))
+					{
+						s("ITR: " + j);
+					}
 				}
 			}
 		});
