@@ -169,11 +169,6 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			Phantom.instance().getDms().getConfigurationBackupController().handle(this, c, category);
 		}
 		
-		else
-		{
-			w("Not Backing up " + c.getCodeName() + " (cold loaded)");
-		}
-		
 		File base = getPlugin().getDataFolder();
 		
 		if(category != null)
