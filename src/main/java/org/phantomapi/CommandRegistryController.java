@@ -16,6 +16,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 
@@ -24,7 +25,7 @@ import org.phantomapi.util.C;
  * 
  * @author cyberpwn
  */
-public class CommandRegistryController extends Controller
+public class CommandRegistryController extends Controller implements Monitorable
 {
 	private final GMap<String, GList<CommandListener>> registry;
 	private final GList<CommandListener> registrants;
@@ -213,5 +214,11 @@ public class CommandRegistryController extends Controller
 	public GMap<String, GList<Method>> getCommandableEvents()
 	{
 		return commandableEvents;
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		return "Roots: " + C.LIGHT_PURPLE + (registry.k().size() + commandableEvents.k().size()) + C.DARK_GRAY + " Listeners: " + C.LIGHT_PURPLE + registrants.size();
 	}
 }
