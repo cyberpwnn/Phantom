@@ -509,4 +509,34 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	{
 		return Phantom.instance().getBinding(name);
 	}
+	
+	public void i(String... s)
+	{
+		d.i(s);
+	}
+	
+	public void s(String... o)
+	{
+		d.s(o);
+	}
+	
+	public void f(String... o)
+	{
+		d.f(o);
+	}
+	
+	public void w(String... o)
+	{
+		d.w(o);
+	}
+	
+	public void v(String... o)
+	{
+		d.v(o);
+	}
+	
+	public void o(String... o)
+	{
+		d.o(o);
+	}
 }
