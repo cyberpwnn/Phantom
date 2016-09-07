@@ -3,6 +3,7 @@ package org.phantomapi.util;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -161,6 +162,31 @@ public class F
 	public static String memSize(long s)
 	{
 		return ofSize(s, 1024);
+	}
+	
+	/**
+	 * Get the timestamp of the time t (ms since 1970)
+	 * 
+	 * @param t
+	 *            the time
+	 * @return the stamp
+	 */
+	@SuppressWarnings("deprecation")
+	public static String stamp(long t)
+	{
+		Date d = new Date(t);
+		
+		return d.getSeconds() + "-" + d.getMinutes() + "-" + d.getHours() + "-" + d.getDate() + "-" + d.getYear();
+	}
+	
+	/**
+	 * Get the current timestamp
+	 * 
+	 * @return the timestamp
+	 */
+	public static String stamp()
+	{
+		return stamp(M.ms());
 	}
 	
 	/**
