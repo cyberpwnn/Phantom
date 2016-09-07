@@ -77,6 +77,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private BungeeController bungeeController;
 	private PlaceholderController placeholderController;
 	private EditSessionController editSessionController;
+	private MonitorController monitorController;
 	
 	public void enable()
 	{
@@ -85,6 +86,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		developmentController = new DevelopmentController(this);
 		environment = new DataCluster();
 		dms = new DMS(this);
+		monitorController = new MonitorController(this);
 		commandRegistryController = new CommandRegistryController(this);
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
@@ -105,6 +107,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
 		register(developmentController);
+		register(monitorController);
 		register(commandRegistryController);
 		register(testController);
 		register(channeledExecutivePoolController);
@@ -240,6 +243,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				for(Controllable i : bindings)
 				{
 					commandRegistryController.register((Controllable) i);
+					monitorController.register(i);
 				}
 			}
 		};
@@ -760,6 +764,32 @@ public class Phantom extends PhantomPlugin implements TagProvider
 							}
 							
 							sender.sendMessage(getChatTag() + C.GRAY + "WHAT?");
+						}
+					}
+					
+					else if(args[0].equalsIgnoreCase("hotplug") || args[0].equalsIgnoreCase("plug"))
+					{
+						if(sender instanceof Player)
+						{
+							Player p = (Player) sender;
+							
+							if(args.length == 2)
+							{
+								if(args[1].equalsIgnoreCase("off"))
+								{
+									monitorController.unPlug(p);
+								}
+								
+								else
+								{
+									monitorController.hotPlug(p, args[1]);
+								}
+							}
+							
+							else
+							{
+								monitorController.getPlug(p);
+							}
 						}
 					}
 					
@@ -1340,5 +1370,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public EditSessionController getEditSessionController()
 	{
 		return editSessionController;
+	}
+
+	public MonitorController getMonitorController()
+	{
+		return monitorController;
 	}
 }
