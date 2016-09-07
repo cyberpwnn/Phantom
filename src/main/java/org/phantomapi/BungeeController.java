@@ -19,6 +19,7 @@ import org.phantomapi.network.ForwardedPluginMessage;
 import org.phantomapi.network.Network;
 import org.phantomapi.network.PhantomNetwork;
 import org.phantomapi.network.PluginMessage;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
@@ -28,7 +29,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 @Ticked(200)
-public class BungeeController extends Controller implements PluginMessageListener
+public class BungeeController extends Controller implements PluginMessageListener, Monitorable
 {
 	private DataCluster cc;
 	private GList<Transmitter> transmitters;
@@ -431,5 +432,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 		int too = to;
 		to = 0;
 		return too;
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		return "IO: " + C.GREEN + getTi() + C.DARK_GRAY + "/" + C.RED + getTo() + C.DARK_GRAY + " Cache: " + C.LIGHT_PURPLE + queue.size();
 	}
 }
