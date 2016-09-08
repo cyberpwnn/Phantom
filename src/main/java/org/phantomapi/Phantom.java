@@ -903,7 +903,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/p,pha,phantom" + C.GRAY + " - The Beginning");
 					mb.message(sender, C.GRAY + "/phantom test,t" + C.GRAY + " - Run Tests");
 					mb.message(sender, C.GRAY + "/phantom status,s" + C.GRAY + " - How's it look doc?");
-					mb.message(sender, C.GRAY + "/phantom hotplug,plug" + C.GRAY + " - Realtime data from controllers");
+					mb.message(sender, C.GRAY + "/phantom plug" + C.GRAY + " - Realtime data from controllers");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
 				}
 			}
