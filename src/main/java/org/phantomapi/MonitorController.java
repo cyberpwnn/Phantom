@@ -9,7 +9,7 @@ import org.phantomapi.nms.NMSX;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.util.C;
 
-@Ticked(3)
+@Ticked(0)
 public class MonitorController extends Controller
 {
 	private GMap<String, Monitorable> samplers;
