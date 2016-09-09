@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.JSONArray;
 import org.phantomapi.clust.JSONObject;
+import org.phantomapi.sync.S;
 import org.phantomapi.util.C;
-import org.phantomapi.util.S;
 
 /**
  * Raw Text holder

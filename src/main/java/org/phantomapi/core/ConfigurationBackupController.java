@@ -10,9 +10,9 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.F;
-import org.phantomapi.util.S;
 
 @Ticked(20)
 public class ConfigurationBackupController extends Controller

@@ -1,4 +1,4 @@
-package org.phantomapi.util;
+package org.phantomapi.sync;
 
 import org.phantomapi.Phantom;
 

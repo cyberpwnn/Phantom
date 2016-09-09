@@ -7,7 +7,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
-import org.phantomapi.util.S;
+import org.phantomapi.sync.S;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.PPAFormat;
 import org.phantomapi.world.PhantomEditSession;

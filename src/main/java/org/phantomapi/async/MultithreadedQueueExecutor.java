@@ -1,7 +1,7 @@
 package org.phantomapi.async;
 
 import org.phantomapi.lang.GList;
-import org.phantomapi.util.S;
+import org.phantomapi.sync.S;
 
 /**
  * Create a multithreaded queue executor. This allows you to pile in objects and
