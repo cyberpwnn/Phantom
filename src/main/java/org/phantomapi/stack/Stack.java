@@ -1,4 +1,4 @@
-package org.phantomapi.inventory;
+package org.phantomapi.stack;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -6,6 +6,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
+import org.phantomapi.inventory.EnchantmentLevel;
+import org.phantomapi.inventory.EnchantmentSet;
+import org.phantomapi.inventory.PotionData;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.MaterialBlock;
 

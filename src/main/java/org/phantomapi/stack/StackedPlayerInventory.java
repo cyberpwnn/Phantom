@@ -1,7 +1,8 @@
-package org.phantomapi.inventory;
+package org.phantomapi.stack;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
+import org.phantomapi.inventory.PhantomPlayerInventory;
 import org.phantomapi.lang.GMap;
 
 /**

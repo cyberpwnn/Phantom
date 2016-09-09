@@ -1,4 +1,4 @@
-package org.phantomapi.inventory;
+package org.phantomapi.stack;
 
 import org.phantomapi.lang.GMap;
 

@@ -1,7 +1,8 @@
-package org.phantomapi.inventory;
+package org.phantomapi.stack;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.phantomapi.inventory.PhantomInventory;
 import org.phantomapi.lang.GMap;
 
 public class StackedInventory extends PhantomInventory implements StackedPhantomInventory
