@@ -1,5 +1,6 @@
 package org.phantomapi.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.phantomapi.Phantom;
@@ -12,6 +13,7 @@ import org.phantomapi.lang.GList;
  */
 public class D
 {
+	public static boolean fool = false;
 	private String name;
 	public static GList<String> queue;
 	
@@ -50,6 +52,11 @@ public class D
 		msg = s + msg;
 		
 		String tmg = C.getLastColors(msg) + "|" + C.DARK_GRAY + name + ": " + ChatColor.WHITE + msg;
+		
+		if(fool)
+		{
+			tmg = StringUtils.repeat(" ", (int) (8 * Math.random())) + ChatColor.WHITE + C.getLastColors(msg) + StringUtils.reverse(C.stripColor(msg)) + ": " + C.DARK_GRAY + StringUtils.reverse(name)  + C.getLastColors(msg) + "|";
+		}
 		
 		if(Phantom.isAsync())
 		{

@@ -145,6 +145,7 @@ public class DMS extends Controller implements PluginMessageListener
 		{
 			public void run()
 			{
+				Phantom.splash("", "", "", "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom());
 				s("-------- Environment --------");
 				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
 				testInternetConnection();
