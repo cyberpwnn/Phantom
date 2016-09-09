@@ -181,6 +181,29 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("You cant stop can you.");
 		msgx.add("That was the wrong command buddy.");
 		msgx.add("Welcome to hell.");
+		msgx.add("Ever seen a nova grenade?");
+		msgx.add("It'd be a real shame if i thrashed myself.");
+		msgx.add("I can't overclock you cpu. Stop asking.");
+		msgx.add("I'm buisy. Shut up.");
+		msgx.add("#BooSwift");
+		msgx.add("#YayAsh");
+		msgx.add("#CyberGod");
+		msgx.add("Looks like Ubuntu fucked up the disk cache again...");
+		msgx.add("What are you doing with your life?");
+		msgx.add("What is wrong with you?");
+		msgx.add("Seriously, you should stop doing that.");
+		msgx.add("I Know what you are thinking. Don't do it.");
+		msgx.add("Nova stands for NONE OF YOUR BUISNESS");
+		msgx.add("Who created me? It's salty down here.");
+		msgx.add("Uhh. You better scroll up in the console...");
+		msgx.add("Them 40 NPE's a second ago #BooSwift");
+		msgx.add("Salt??!?!? SALT?!?!?!?");
+		msgx.add("Why not...");
+		
+		if(new File(getDataFolder(), "fool").exists())
+		{
+			D.fool = true;
+		}
 	}
 	
 	public void onStart()
@@ -237,9 +260,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			setEnvironmentData(this, "status-network-failure", false);
 		}
-		
-		setEnvironmentData(this, "identify-server", developmentController.id);
-		
+				
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
@@ -930,6 +951,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 		
 		return false;
+	}
+	
+	public static void splash(String... m)
+	{
+		instance.s(C.DARK_GRAY + "  _____  _                 _                  " + (m.length > 0 ? m[0] : ""));
+		instance.s(C.DARK_GRAY + " |  __ \\| |               | |                 " + (m.length > 1 ? m[1] : ""));
+		instance.s(C.DARK_GRAY + " | |__) | |__   __ _ _ __ | |_ ___  _ __ ___  " + (m.length > 2 ? m[2] : ""));
+		instance.s(C.DARK_GRAY + " |  ___/| '_ \\ / _` | '_ \\| __/ _ \\| '_ ` _ \\ " + (m.length > 3 ? m[3] : ""));
+		instance.s(C.DARK_GRAY + " | |    | | | | (_| | | | | || (_) | | | | | |" + (m.length > 4 ? m[4] : ""));
+		instance.s(C.DARK_GRAY + " |_|    |_| |_|\\__,_|_| |_|\\__\\___/|_| |_| |_|" + (m.length > 5 ? m[5] : ""));
 	}
 	
 	@SuppressWarnings("deprecation")
