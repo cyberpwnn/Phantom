@@ -64,6 +64,13 @@ public class ConfigurationBackupController extends Controller
 							
 							for(File i : asyncQueue.k())
 							{
+								if(asyncQueue.get(i).size() == 0)
+								{
+									failed++;
+									w("Not backing up " + i.getPath() + " cluster is empty.");
+									continue;
+								}
+								
 								try
 								{
 									new YAMLDataOutput().save(asyncQueue.get(i), i);
@@ -79,12 +86,13 @@ public class ConfigurationBackupController extends Controller
 							int p = processed;
 							int f = failed;
 							
+							v("Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
+							
 							new S()
 							{
 								@Override
 								public void sync()
 								{
-									v("(ASYNC) Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
 									running = false;
 								}
 							};
