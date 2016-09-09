@@ -115,7 +115,13 @@ public class DevelopmentController extends Controller implements Configurable
 							
 							if(reloadOnChanged)
 							{
-								s("Plugin " + C.LIGHT_PURPLE + " " + i.getName() + " " + C.GREEN + "MODIFIED");
+								if(i.getName().equalsIgnoreCase("Phantom"))
+								{
+									f("Cannot Reload Phantom Cleanly.");
+									Bukkit.reload();
+									
+									return;
+								}
 								
 								MessageBuilder mb = new MessageBuilder(Phantom.instance());
 								
