@@ -1,8 +1,6 @@
 package org.phantomapi.construct;
 
-import java.lang.reflect.Method;
 import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -373,40 +371,12 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	
 	public void registerListener(Listener listener)
 	{
-		boolean b = false;
-		
-		for(Method i : listener.getClass().getDeclaredMethods())
-		{
-			if(i.isAnnotationPresent(EventHandler.class))
-			{
-				b = true;
-				break;
-			}
-		}
-		
-		if(b)
-		{
-			getServer().getPluginManager().registerEvents(listener, this);
-		}
+		getServer().getPluginManager().registerEvents(listener, this);
 	}
 	
 	public void unRegisterListener(Listener listener)
 	{
-		boolean b = false;
-		
-		for(Method i : listener.getClass().getDeclaredMethods())
-		{
-			if(i.isAnnotationPresent(EventHandler.class))
-			{
-				b = true;
-				break;
-			}
-		}
-		
-		if(b)
-		{
-			HandlerList.unregisterAll(listener);
-		}
+		HandlerList.unregisterAll(listener);
 	}
 	
 	public Network getNetwork()
