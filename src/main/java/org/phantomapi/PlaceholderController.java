@@ -44,11 +44,20 @@ public class PlaceholderController extends Controller
 	{
 		for(UUID i : hooks.k())
 		{
-			String v = hooks.get(i).onPlaceholderRequest(p, q);
-			
-			if(v != null)
+			try
 			{
-				return v;
+				String v = hooks.get(i).onPlaceholderRequest(p, q);
+				
+				if(v != null)
+				{
+					return v;
+				}
+			}
+			
+			catch(Exception e)
+			{
+				w("Warning: Exception on placeholder request: " + q);
+				e.printStackTrace();
 			}
 		}
 		
