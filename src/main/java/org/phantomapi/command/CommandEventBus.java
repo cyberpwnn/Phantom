@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.phantomapi.CommandRegistryController;
 import org.phantomapi.Phantom;
 import org.phantomapi.command.CommandFilter.ArgumentRange;
 import org.phantomapi.command.CommandFilter.ConsoleOnly;
@@ -15,6 +14,7 @@ import org.phantomapi.command.CommandFilter.PlayerOnly;
 import org.phantomapi.command.CommandFilter.SubCommands;
 import org.phantomapi.command.CommandFilter.Tag;
 import org.phantomapi.command.CommandFilter.TagHover;
+import org.phantomapi.core.CommandRegistryController;
 import org.phantomapi.util.C;
 import org.phantomapi.util.M;
 

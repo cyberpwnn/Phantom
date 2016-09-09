@@ -1,6 +1,6 @@
 package org.phantomapi.util;
 
-import org.phantomapi.DMS;
+import org.phantomapi.core.DMS;
 
 public enum ServerState
 {

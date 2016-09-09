@@ -1,6 +1,7 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.sql.SQLException;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;

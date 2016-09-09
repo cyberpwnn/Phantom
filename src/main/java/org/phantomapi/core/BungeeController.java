@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;

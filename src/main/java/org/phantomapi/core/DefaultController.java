@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;

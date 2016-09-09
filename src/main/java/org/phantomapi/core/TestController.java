@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.YAMLDataInput;
 import org.phantomapi.clust.YAMLDataOutput;

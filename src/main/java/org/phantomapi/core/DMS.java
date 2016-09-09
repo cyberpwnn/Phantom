@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.phantomapi.Phantom;
 import org.phantomapi.async.AsyncTask;
 import org.phantomapi.async.Callback;
 import org.phantomapi.construct.Controllable;

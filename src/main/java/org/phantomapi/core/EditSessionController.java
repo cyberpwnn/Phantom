@@ -1,7 +1,8 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.phantomapi.Phantom;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;

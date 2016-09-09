@@ -1,10 +1,11 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.io.File;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;

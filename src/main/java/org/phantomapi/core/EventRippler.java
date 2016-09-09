@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

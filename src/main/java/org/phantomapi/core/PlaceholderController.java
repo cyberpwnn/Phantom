@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.util.UUID;
 import org.bukkit.entity.Player;

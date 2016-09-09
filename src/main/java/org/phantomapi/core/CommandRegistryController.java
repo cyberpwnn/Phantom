@@ -1,4 +1,4 @@
-package org.phantomapi;
+package org.phantomapi.core;
 
 import java.lang.reflect.Method;
 import org.bukkit.command.CommandSender;

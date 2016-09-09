@@ -2,7 +2,7 @@ package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.phantomapi.EditSessionController;
+import org.phantomapi.core.EditSessionController;
 import com.sk89q.worldedit.blocks.BaseBlock;
 
 /**
