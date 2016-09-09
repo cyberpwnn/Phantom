@@ -1,7 +1,6 @@
 package org.phantomapi.async;
 
 import org.phantomapi.lang.GList;
-import org.phantomapi.util.A;
 import org.phantomapi.util.S;
 
 /**

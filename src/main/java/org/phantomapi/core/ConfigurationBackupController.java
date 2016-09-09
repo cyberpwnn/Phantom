@@ -2,6 +2,7 @@ package org.phantomapi.core;
 
 import java.io.File;
 import java.io.IOException;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.YAMLDataOutput;
@@ -10,7 +11,6 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.sync.TaskLater;
-import org.phantomapi.util.A;
 import org.phantomapi.util.F;
 import org.phantomapi.util.S;
 

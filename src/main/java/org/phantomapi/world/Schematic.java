@@ -4,8 +4,8 @@ import java.util.Iterator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
+import org.phantomapi.async.A;
 import org.phantomapi.lang.GList;
-import org.phantomapi.util.A;
 
 /**
  * Schematics

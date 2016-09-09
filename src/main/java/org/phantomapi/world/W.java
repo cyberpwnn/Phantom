@@ -1,4 +1,4 @@
-package org.phantomapi.util;
+package org.phantomapi.world;
 
 import java.util.Collection;
 import org.bukkit.Bukkit;
@@ -22,11 +22,6 @@ import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
-import org.phantomapi.world.Area;
-import org.phantomapi.world.Chunklet;
-import org.phantomapi.world.Cuboid;
-import org.phantomapi.world.MaterialBlock;
-import org.phantomapi.world.RayTrace;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.boydti.fawe.object.FawePlayer;
 import com.sk89q.worldedit.regions.Region;

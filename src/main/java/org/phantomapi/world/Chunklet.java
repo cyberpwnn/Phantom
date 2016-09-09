@@ -9,7 +9,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
-import org.phantomapi.util.W;
 
 /**
  * 4x4 chunklet area based on the chunk grid
