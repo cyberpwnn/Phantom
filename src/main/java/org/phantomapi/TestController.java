@@ -782,12 +782,17 @@ public class TestController extends Controller
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
+					GList<Location> queue = new GList<Location>();
+					
 					VisualEffect e = new PhantomEffect()
 					{
 						@Override
 						public void play(Location l)
 						{
-							ParticleEffect.FIREWORKS_SPARK.display(0, 1, l, 32);
+							if(Math.sin(l.getX()) > Math.cos(l.getZ()))
+							{
+								queue.add(l);
+							}
 						}
 					};
 					
@@ -809,7 +814,26 @@ public class TestController extends Controller
 						}
 					};
 					
-					ex.play(i.getLocation());
+					new A()
+					{
+						@Override
+						public void async()
+						{
+							ex.play(i.getLocation());
+							
+							new S()
+							{
+								@Override
+								public void sync()
+								{
+									for(Location l : queue)
+									{
+										ParticleEffect.FIREWORKS_SPARK.display(0, 1, l, 32);
+									}
+								}
+							};
+						}
+					};
 				}
 			}
 		});
