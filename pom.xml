@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>10.9.3</version>
+	<version>N</version>
 	<name>Phantom</name>
 	<description>Phantom - Another Damn API</description>
 	<properties>
@@ -15,6 +15,34 @@
 		<req.lib>C:\Users\cyberpwn\Documents\development\lib</req.lib>
 	</properties>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>*.sql</include>
+					<include>*.txt</include>
+					<include>*.yml</include>
+					<include>**/*.yml</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.zip</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.zip</include>
+				</includes>
+				<excludes>
+					<exclude>*.sql</exclude>
+					<exclude>*.txt</exclude>
+					<exclude>*.yml</exclude>
+					<exclude>**/*.yml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -53,15 +81,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.yml</include>
-					<include>**/*.txt</include>
-				</includes>
-			</resource>
-		</resources>
 	</build>
 	<profiles>
 		<profile>
