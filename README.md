@@ -1,4 +1,4 @@
-# Phantom X8
+# Phantom Nova
 [![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
 
 [![codebeat badge](https://codebeat.co/badges/044134b4-fd2f-4441-8993-276b4b850b30)](https://codebeat.co/projects/github-com-cyberpwnn-phantom)
