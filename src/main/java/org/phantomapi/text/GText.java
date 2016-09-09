@@ -37,45 +37,13 @@ public class GText
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
-			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
-			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
-			Boolean magic = i.contains('\u00A7' + C.MAGIC.getChar() + "");
-			Boolean italics = i.contains('\u00A7' + C.ITALIC.getChar() + "");
 			
 			if(colors.length() > 1)
 			{
 				colors = colors.substring(1, 2);
 			}
 			
-			GList<C> formats = new GList<C>();
-			
-			if(bold)
-			{
-				formats.add(C.BOLD);
-			}
-			
-			if(underline)
-			{
-				formats.add(C.UNDERLINE);
-			}
-			
-			if(strike)
-			{
-				formats.add(C.STRIKETHROUGH);
-			}
-			
-			if(magic)
-			{
-				formats.add(C.MAGIC);
-			}
-			
-			if(italics)
-			{
-				formats.add(C.ITALIC);
-			}
-			
-			t.addText(C.stripColor(i), C.getByChar(colors), formats.toArray(new C[formats.size()]));
+			t.addText(C.stripColor(i), C.getByChar(colors));
 		}
 	}
 	
@@ -111,45 +79,13 @@ public class GText
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
-			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
-			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
-			Boolean magic = i.contains('\u00A7' + C.MAGIC.getChar() + "");
-			Boolean italics = i.contains('\u00A7' + C.ITALIC.getChar() + "");
 			
 			if(colors.length() > 1)
 			{
 				colors = colors.substring(1, 2);
 			}
 			
-			GList<C> formats = new GList<C>();
-			
-			if(bold)
-			{
-				formats.add(C.BOLD);
-			}
-			
-			if(underline)
-			{
-				formats.add(C.UNDERLINE);
-			}
-			
-			if(strike)
-			{
-				formats.add(C.STRIKETHROUGH);
-			}
-			
-			if(magic)
-			{
-				formats.add(C.MAGIC);
-			}
-			
-			if(italics)
-			{
-				formats.add(C.ITALIC);
-			}
-			
-			t.addTextHover(C.stripColor(i), rtex, C.getByChar(colors), formats.toArray(new C[formats.size()]));
+			t.addTextHover(C.stripColor(i), rtex, C.getByChar(colors));
 		}
 	}
 	
@@ -187,45 +123,13 @@ public class GText
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
-			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
-			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
-			Boolean magic = i.contains('\u00A7' + C.MAGIC.getChar() + "");
-			Boolean italics = i.contains('\u00A7' + C.ITALIC.getChar() + "");
 			
 			if(colors.length() > 1)
 			{
 				colors = colors.substring(1, 2);
 			}
 			
-			GList<C> formats = new GList<C>();
-			
-			if(bold)
-			{
-				formats.add(C.BOLD);
-			}
-			
-			if(underline)
-			{
-				formats.add(C.UNDERLINE);
-			}
-			
-			if(strike)
-			{
-				formats.add(C.STRIKETHROUGH);
-			}
-			
-			if(magic)
-			{
-				formats.add(C.MAGIC);
-			}
-			
-			if(italics)
-			{
-				formats.add(C.ITALIC);
-			}
-			
-			t.addTextFireHoverCommand(C.stripColor(i), rtex, command, C.getByChar(colors), formats.toArray(new C[formats.size()]));
+			t.addTextFireHoverCommand(C.stripColor(i), rtex, command, C.getByChar(colors));
 		}
 	}
 	
@@ -263,45 +167,13 @@ public class GText
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
-			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
-			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
-			Boolean magic = i.contains('\u00A7' + C.MAGIC.getChar() + "");
-			Boolean italics = i.contains('\u00A7' + C.ITALIC.getChar() + "");
 			
 			if(colors.length() > 1)
 			{
 				colors = colors.substring(1, 2);
 			}
 			
-			GList<C> formats = new GList<C>();
-			
-			if(bold)
-			{
-				formats.add(C.BOLD);
-			}
-			
-			if(underline)
-			{
-				formats.add(C.UNDERLINE);
-			}
-			
-			if(strike)
-			{
-				formats.add(C.STRIKETHROUGH);
-			}
-			
-			if(magic)
-			{
-				formats.add(C.MAGIC);
-			}
-			
-			if(italics)
-			{
-				formats.add(C.ITALIC);
-			}
-			
-			t.addTextSuggestedHoverCommand(C.stripColor(i), rtex, command, C.getByChar(colors), formats.toArray(new C[formats.size()]));
+			t.addTextSuggestedHoverCommand(C.stripColor(i), rtex, command, C.getByChar(colors));
 		}
 	}
 	
@@ -339,45 +211,13 @@ public class GText
 		for(String i : F.colorSplit(s))
 		{
 			String colors = C.getLastColors(i);
-			Boolean bold = i.contains('\u00A7' + C.BOLD.getChar() + "");
-			Boolean underline = i.contains('\u00A7' + C.UNDERLINE.getChar() + "");
-			Boolean strike = i.contains('\u00A7' + C.STRIKETHROUGH.getChar() + "");
-			Boolean magic = i.contains('\u00A7' + C.MAGIC.getChar() + "");
-			Boolean italics = i.contains('\u00A7' + C.ITALIC.getChar() + "");
 			
 			if(colors.length() > 1)
 			{
 				colors = colors.substring(1, 2);
 			}
 			
-			GList<C> formats = new GList<C>();
-			
-			if(bold)
-			{
-				formats.add(C.BOLD);
-			}
-			
-			if(underline)
-			{
-				formats.add(C.UNDERLINE);
-			}
-			
-			if(strike)
-			{
-				formats.add(C.STRIKETHROUGH);
-			}
-			
-			if(magic)
-			{
-				formats.add(C.MAGIC);
-			}
-			
-			if(italics)
-			{
-				formats.add(C.ITALIC);
-			}
-			
-			t.addTextOpenHoverURL(C.stripColor(i), rtex, url, C.getByChar(colors), formats.toArray(new C[formats.size()]));
+			t.addTextOpenHoverURL(C.stripColor(i), rtex, url, C.getByChar(colors));
 		}
 	}
 	
