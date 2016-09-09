@@ -13,6 +13,7 @@ import org.phantomapi.lang.GList;
  * @param <T>
  *            the interface to be embedded.
  */
+@SuppressWarnings("hiding")
 public interface Embedded<T>
 {
 	/**
