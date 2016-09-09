@@ -1,4 +1,4 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
 
 public interface Distortion
 {

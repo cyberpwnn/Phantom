@@ -1,4 +1,6 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
+
+import org.phantomapi.world.MaterialBlock;
 
 /**
  * Set edge blocks to a given materialblock

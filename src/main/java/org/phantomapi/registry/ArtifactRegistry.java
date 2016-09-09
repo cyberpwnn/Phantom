@@ -1,6 +1,6 @@
 package org.phantomapi.registry;
 
-import org.phantomapi.world.Artifact;
+import org.phantomapi.schematic.Artifact;
 
 /**
  * An artifact registry

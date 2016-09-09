@@ -1,4 +1,6 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
+
+import org.phantomapi.world.MaterialBlock;
 
 public class SchematicIterator implements Runnable
 {

@@ -1,7 +1,8 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.phantomapi.world.Cuboid;
 
 /**
  * An artifact object

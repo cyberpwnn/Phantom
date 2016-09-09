@@ -1,4 +1,4 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
 
 import java.util.Iterator;
 import org.bukkit.Location;
@@ -6,6 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.util.Vector;
 import org.phantomapi.async.A;
 import org.phantomapi.lang.GList;
+import org.phantomapi.world.Dimension;
+import org.phantomapi.world.Direction;
+import org.phantomapi.world.MaterialBlock;
 
 /**
  * Schematics

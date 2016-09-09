@@ -1,8 +1,9 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.world.Cuboid;
 
 /**
  * Structure of world artifacts which could internest itself

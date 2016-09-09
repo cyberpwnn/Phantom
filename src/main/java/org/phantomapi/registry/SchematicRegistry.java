@@ -1,6 +1,6 @@
 package org.phantomapi.registry;
 
-import org.phantomapi.world.Schematic;
+import org.phantomapi.schematic.Schematic;
 
 /**
  * A schematic registry

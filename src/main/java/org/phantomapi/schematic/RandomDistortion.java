@@ -1,6 +1,7 @@
-package org.phantomapi.world;
+package org.phantomapi.schematic;
 
 import org.phantomapi.lang.GList;
+import org.phantomapi.world.MaterialBlock;
 
 /**
  * Random Distortions
