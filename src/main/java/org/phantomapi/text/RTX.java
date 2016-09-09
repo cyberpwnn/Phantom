@@ -67,56 +67,6 @@ public class RTX
 	}
 	
 	/**
-	 * Add Text with color and formatting
-	 * 
-	 * @param text
-	 *            the text
-	 * @param color
-	 *            the color
-	 * @param formatting
-	 *            the formatting
-	 */
-	public void addText(String text, C color, C... formatting)
-	{
-		JSONObject js = new JSONObject();
-		js.put("text", text);
-		js.put("color", color.name().toLowerCase());
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
-		
-		add(js);
-	}
-	
-	/**
 	 * Add a text with RTEX hovers
 	 * 
 	 * @param text
@@ -125,45 +75,12 @@ public class RTX
 	 *            the hover RTEX
 	 * @param color
 	 *            the color
-	 * @param formatting
-	 *            the formatting
 	 */
-	public void addTextHover(String text, RTEX hover, C color, C... formatting)
+	public void addTextHover(String text, RTEX hover, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
 		js.put("color", color.name().toLowerCase());
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		JSONObject hoverEvent = new JSONObject();
 		hoverEvent.put("action", "show_text");
@@ -181,10 +98,8 @@ public class RTX
 	 *            the suggestion command
 	 * @param color
 	 *            the color
-	 * @param formatting
-	 *            the formatting
 	 */
-	public void addTextSuggestedCommand(String text, String cmd, C color, C... formatting)
+	public void addTextSuggestedCommand(String text, String cmd, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -194,37 +109,6 @@ public class RTX
 		clickEvent.put("action", "suggest_command");
 		clickEvent.put("value", cmd);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		add(js);
 	}
@@ -238,10 +122,8 @@ public class RTX
 	 *            the url
 	 * @param color
 	 *            the color
-	 * @param formatting
-	 *            the formatting
 	 */
-	public void addTextOpenURL(String text, String url, C color, C... formatting)
+	public void addTextOpenURL(String text, String url, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -251,37 +133,6 @@ public class RTX
 		clickEvent.put("action", "open_url");
 		clickEvent.put("value", url);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		add(js);
 	}
@@ -298,7 +149,7 @@ public class RTX
 	 * @param formatting
 	 *            the formatting
 	 */
-	public void addTextFireCommand(String text, String cmd, C color, C... formatting)
+	public void addTextFireCommand(String text, String cmd, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -308,37 +159,6 @@ public class RTX
 		clickEvent.put("action", "run_command");
 		clickEvent.put("value", cmd);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		add(js);
 	}
@@ -357,7 +177,7 @@ public class RTX
 	 * @param formatting
 	 *            the formatting
 	 */
-	public void addTextSuggestedHoverCommand(String text, RTEX hover, String cmd, C color, C... formatting)
+	public void addTextSuggestedHoverCommand(String text, RTEX hover, String cmd, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -367,37 +187,6 @@ public class RTX
 		clickEvent.put("action", "suggest_command");
 		clickEvent.put("value", cmd);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		JSONObject hoverEvent = new JSONObject();
 		hoverEvent.put("action", "show_text");
@@ -417,10 +206,8 @@ public class RTX
 	 *            the url
 	 * @param color
 	 *            the color
-	 * @param formatting
-	 *            the color formatting
 	 */
-	public void addTextOpenHoverURL(String text, RTEX hover, String url, C color, C... formatting)
+	public void addTextOpenHoverURL(String text, RTEX hover, String url, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -430,37 +217,6 @@ public class RTX
 		clickEvent.put("action", "open_url");
 		clickEvent.put("value", url);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		JSONObject hoverEvent = new JSONObject();
 		hoverEvent.put("action", "show_text");
@@ -480,10 +236,8 @@ public class RTX
 	 *            the command
 	 * @param color
 	 *            the color
-	 * @param formatting
-	 *            the formatting
 	 */
-	public void addTextFireHoverCommand(String text, RTEX hover, String cmd, C color, C... formatting)
+	public void addTextFireHoverCommand(String text, RTEX hover, String cmd, C color)
 	{
 		JSONObject js = new JSONObject();
 		js.put("text", text);
@@ -493,37 +247,6 @@ public class RTX
 		clickEvent.put("action", "run_command");
 		clickEvent.put("value", cmd);
 		js.put("clickEvent", clickEvent);
-		
-		for(C i : formatting)
-		{
-			if(i.isFormat())
-			{
-				if(i.equals(C.BOLD))
-				{
-					js.put("bold", true);
-				}
-				
-				if(i.equals(C.ITALIC))
-				{
-					js.put("italic", true);
-				}
-				
-				if(i.equals(C.UNDERLINE))
-				{
-					js.put("underlined", true);
-				}
-				
-				if(i.equals(C.STRIKETHROUGH))
-				{
-					js.put("strikethrough", true);
-				}
-				
-				if(i.equals(C.MAGIC))
-				{
-					js.put("obfuscated", true);
-				}
-			}
-		}
 		
 		JSONObject hoverEvent = new JSONObject();
 		hoverEvent.put("action", "show_text");
