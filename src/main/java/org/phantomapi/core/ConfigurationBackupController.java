@@ -89,7 +89,7 @@ public class ConfigurationBackupController extends ConfigurableController
 								
 								try
 								{
-									File f = new File(i, "" + M.ms() + ".yml");
+									File f = new File(i, "" + F.stamp() + ".yml");
 									scannable.add(i);
 									new YAMLDataOutput().save(asyncQueue.get(i), f);
 									processed++;
