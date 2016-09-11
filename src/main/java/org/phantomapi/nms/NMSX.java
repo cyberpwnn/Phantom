@@ -272,6 +272,36 @@ public class NMSX
 	}
 	
 	/**
+	 * Play a record at the player's location
+	 * 
+	 * @param p
+	 *            the player
+	 * @param material
+	 *            the record
+	 */
+	@SuppressWarnings("deprecation")
+	public static void playRecord(Player p, Material material)
+	{
+		p.playEffect(p.getLocation(), Effect.RECORD_PLAY, material.getId());
+	}
+	
+	/**
+	 * Play a record to a player at a location
+	 * 
+	 * @param p
+	 *            the player
+	 * @param l
+	 *            the location
+	 * @param material
+	 *            the record
+	 */
+	@SuppressWarnings("deprecation")
+	public static void playRecord(Player p, Location l, Material material)
+	{
+		p.playEffect(l, Effect.RECORD_PLAY, material.getId());
+	}
+	
+	/**
 	 * Launches a randomly colored, randomly typed firework
 	 * 
 	 * @param l
