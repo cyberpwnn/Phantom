@@ -147,4 +147,15 @@ public class P
 	{
 		p.setFoodLevel(20);
 	}
+	
+	/**
+	 * Kill the player
+	 * 
+	 * @param p
+	 *            the player p
+	 */
+	public static void kill(Player p)
+	{
+		p.setHealth(0);
+	}
 }
