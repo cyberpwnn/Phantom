@@ -6,7 +6,6 @@ import org.phantomapi.lang.GList;
  * An average object
  * 
  * @author cyberpwn
- *
  */
 public class Average
 {
@@ -25,6 +24,15 @@ public class Average
 		this.limit = limit;
 		this.data = new GList<Double>();
 		this.average = 0.0;
+	}
+	
+	/**
+	 * Reset the stored data and cached average
+	 */
+	public void reset()
+	{
+		data.clear();
+		average = 0.0;
 	}
 	
 	/**
