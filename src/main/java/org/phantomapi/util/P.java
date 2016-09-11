@@ -3,8 +3,10 @@ package org.phantomapi.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
+import org.phantomapi.world.Shape;
 
 /**
  * Player utils
@@ -157,5 +159,17 @@ public class P
 	public static void kill(Player p)
 	{
 		p.setHealth(0);
+	}
+	
+	/**
+	 * Get the area of the player in the form of a shape
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the shape
+	 */
+	public static Shape getShape(Player p)
+	{
+		return new Shape(P.getCrotchLocation(p), new Vector(0.7, 1.8, 0.7));
 	}
 }
