@@ -175,8 +175,7 @@ public class F
 	public static String stamp(long t)
 	{
 		Date d = new Date(t);
-		
-		return d.getSeconds() + "-" + d.getMinutes() + "-" + d.getHours() + "-" + d.getDate() + "-" + d.getYear();
+		return d.getMonth() + "-" + d.getDate() + "-" + (d.getYear() + 1900) + " " + d.getHours() + "h " + d.getMinutes() + "m " + d.getSeconds() + "s "; 
 	}
 	
 	/**
