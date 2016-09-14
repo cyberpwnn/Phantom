@@ -172,4 +172,41 @@ public class P
 	{
 		return new Shape(P.getCrotchLocation(p), new Vector(0.7, 1.8, 0.7));
 	}
+	
+	/**
+	 * Get the 1st person hand.
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the estimate location of their hand
+	 */
+	public static Location getHand(Player p)
+	{
+		return getHand(p, 0f, 0f);
+	}
+	
+	/**
+	 * Get the 1st person hand.
+	 * 
+	 * @param p
+	 *            the player
+	 * @param yawShift
+	 *            the shift yaw
+	 * @param pitchShift
+	 *            the shift pitch
+	 * @return the location
+	 */
+	public static Location getHand(Player p, float yawShift, float pitchShift)
+	{
+		Location base = p.getEyeLocation();
+		Location mode = p.getEyeLocation();
+		Float yaw = p.getLocation().getYaw() + 50 + yawShift;
+		Float pitch = p.getLocation().getPitch() + pitchShift;
+		
+		mode.setYaw(yaw);
+		mode.setPitch(pitch);
+		base.add(mode.getDirection());
+		
+		return base;
+	}
 }
