@@ -1,6 +1,8 @@
 package org.phantomapi.vfx;
 
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
+import org.phantomapi.physics.VectorMath;
 
 /**
  * A Particle effect which is a line from a to b. Override play(location) to
@@ -30,11 +32,12 @@ public abstract class LineParticleManipulator extends ParticleManipulator
 		Double jump = dist / ppb;
 		Double jumps = dist * ppb;
 		Location cursor = a.clone();
+		Vector direction = VectorMath.direction(a, b);
 		
 		for(int i = 0; i < jumps; i++)
 		{
 			play(cursor);
-			cursor = cursor.add(b.subtract(a).toVector().normalize().multiply(jump)).clone();
+			cursor = cursor.add(direction.clone().multiply(jump)).clone();
 		}
 	}
 }
