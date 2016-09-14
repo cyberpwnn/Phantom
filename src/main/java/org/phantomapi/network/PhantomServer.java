@@ -77,4 +77,12 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 			this.players = players.copy();
 		}
 	}
+
+	public void sendPlayer(Player p)
+	{
+		if(isRemote())
+		{
+			new PluginMessage(Phantom.instance(), "ConnectOther", p.getName(), getName()).send();
+		}
+	}
 }
