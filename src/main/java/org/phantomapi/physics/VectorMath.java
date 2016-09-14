@@ -7,7 +7,6 @@ import org.bukkit.util.Vector;
  * Vector utilities
  * 
  * @author cyberpwn
- *
  */
 public class VectorMath
 {
@@ -23,6 +22,20 @@ public class VectorMath
 	public static Vector direction(Location from, Location to)
 	{
 		return to.subtract(from).toVector().normalize();
+	}
+	
+	/**
+	 * Get the vector direction from the yaw and pitch
+	 * 
+	 * @param yaw
+	 *            the yaw
+	 * @param pitch
+	 *            the pitch
+	 * @return the vector
+	 */
+	public static Vector toVector(float yaw, float pitch)
+	{
+		return new Vector(Math.cos(pitch) * Math.cos(yaw), Math.sin(pitch), Math.cos(pitch) * Math.sin(-yaw));
 	}
 	
 	/**
