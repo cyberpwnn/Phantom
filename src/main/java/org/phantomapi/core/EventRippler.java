@@ -9,9 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.InventoryDropItemOnItemEvent;
 import org.phantomapi.event.PlayerDamagePlayerEvent;
 import org.phantomapi.event.PlayerJumpEvent;
 import org.phantomapi.event.PlayerKillPlayerEvent;
@@ -119,6 +122,28 @@ public class EventRippler extends Controller
 				PlayerMoveLookEvent pmle = new PlayerMoveLookEvent(e.getPlayer(), e.getFrom(), e.getTo());
 				callEvent(pmle);
 				e.setCancelled(pmle.isCancelled() ? true : e.isCancelled());
+			}
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void on(InventoryClickEvent e)
+	{
+		try
+		{
+			ItemStack drop = e.getCursor();
+			ItemStack targ = e.getCurrentItem();
+			
+			if(targ != null && drop != null)
+			{
+				InventoryDropItemOnItemEvent emx = new InventoryDropItemOnItemEvent(e.getInventory(), (Player) e.getWhoClicked(), targ, drop, e);
+				callEvent(emx);
+				e.setCancelled(emx.isCancelled() ? true : e.isCancelled());
 			}
 		}
 		
