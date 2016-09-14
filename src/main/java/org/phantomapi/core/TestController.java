@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
@@ -25,6 +26,7 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.InventoryDropItemOnItemEvent;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
 import org.phantomapi.gui.Notification;
@@ -64,6 +66,7 @@ import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
+import org.phantomapi.util.P;
 import org.phantomapi.util.ParameterAdapter;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ParticleEffect;
@@ -326,6 +329,44 @@ public class TestController extends Controller
 						}
 					};
 				}
+			}
+		});
+		
+		tests.put("hand", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						for(Player i : Phantom.instance().onlinePlayers())
+						{
+							if(Math.random() > 0.3)
+							{
+								if(i.getItemInHand() == null || i.getItemInHand().getType().equals(Material.AIR))
+								{
+									ParticleEffect.LAVA.display(0f, 1, P.getHand(i, -15, 10), i);
+								}
+								
+								else
+								{
+									if(i.getItemInHand().getType().isBlock())
+									{
+										ParticleEffect.LAVA.display(0f, 1, P.getHand(i, -15, 20), i);
+									}
+									
+									else
+									{
+										ParticleEffect.LAVA.display(0f, 1, P.getHand(i), i);
+									}
+								}
+							}
+						}
+					}
+				};
 			}
 		});
 		
@@ -1026,6 +1067,12 @@ public class TestController extends Controller
 	public void testCommand(PhantomSender sender, PhantomCommand cmd)
 	{
 		sender.sendMessage(C.WHITE + "Tested");
+	}
+	
+	@EventHandler
+	public void on(InventoryDropItemOnItemEvent e)
+	{
+		
 	}
 	
 	public GMap<String, Runnable> getTests()
