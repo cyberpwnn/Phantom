@@ -1,5 +1,6 @@
 package org.phantomapi.network;
 
+import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 
 /**
@@ -37,4 +38,12 @@ public interface NetworkedServer
 	 * @return true if the server is not THIS server
 	 */
 	public Boolean isRemote();
+	
+	/**
+	 * Send a player to this server
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void sendPlayer(Player p);
 }
