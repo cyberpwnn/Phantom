@@ -72,6 +72,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void onTick()
 	{
+		if(DataCluster.perm > Long.MAX_VALUE / 2)
+		{
+			DataCluster.perm = 0;
+		}
+		
 		new TaskLater((int) (Math.random() * 10))
 		{
 			@Override
