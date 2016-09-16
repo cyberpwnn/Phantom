@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 import org.phantomapi.placeholder.PlaceholderUtil;
@@ -175,7 +176,7 @@ public class F
 	public static String stamp(long t)
 	{
 		Date d = new Date(t);
-		return d.getMonth() + "-" + d.getDate() + "-" + (d.getYear() + 1900) + " " + d.getHours() + "h " + d.getMinutes() + "m " + d.getSeconds() + "s "; 
+		return d.getMonth() + "-" + d.getDate() + "-" + (d.getYear() + 1900) + " " + d.getHours() + "h " + d.getMinutes() + "m " + d.getSeconds() + "s ";
 	}
 	
 	/**
@@ -229,6 +230,51 @@ public class F
 		}
 		
 		return F.f(d, 2) + " " + sub;
+	}
+	
+	/**
+	 * Wrap the text by breaking off a line and carrying over the colors per
+	 * break
+	 * 
+	 * @param s
+	 *            the string to wrap.
+	 * @return the wrapped colors (48 default)
+	 */
+	public static GList<String> wrap(String s)
+	{
+		return wrap(s, 48);
+	}
+	
+	/**
+	 * Wrap the text by breaking off a line and carrying over the colors per
+	 * break
+	 * 
+	 * @param s
+	 *            the string to wrap.
+	 * @param lim
+	 *            the line length limit
+	 * @return the wrapped colors
+	 */
+	public static GList<String> wrap(String s, int lim)
+	{
+		GList<String> wrapped = new GList<String>();
+		String last = "";
+		
+		for(String i : WordUtils.wrap(s, lim).split("\n"))
+		{
+			String base = i.trim();
+			
+			if(last.length() > 0)
+			{
+				base = C.getLastColors(last) + base;
+			}
+			
+			last = base;
+			
+			wrapped.add(base);
+		}
+		
+		return wrapped;
 	}
 	
 	/**
