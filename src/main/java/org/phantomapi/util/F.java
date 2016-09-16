@@ -747,6 +747,20 @@ public class F
 	}
 	
 	/**
+	 * nanoseconds to seconds (double) custom decimals
+	 * 
+	 * @param ms
+	 *            the nanoseconds
+	 * @param p
+	 *            number of decimal points
+	 * @return a formatted string to nanoseconds
+	 */
+	public static String nsMsd(long ns, int p)
+	{
+		return fd((double) ns / 1000000.0, p);
+	}
+	
+	/**
 	 * Colors a list of strings with & symbols
 	 * 
 	 * @param stringList
