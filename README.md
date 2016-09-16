@@ -6,5 +6,5 @@
 [![Sputnik](https://sputnik.ci/conf/badge)](https://sputnik.ci/app#/builds/cyberpwnn/Phantom)
 
 # Get Started
-* [Get Started on the Wiki](https://github.com/cyberpwnn/Phantom/wiki/)
+* [Get Started on the Wiki](https://cyberpwnn.gitbooks.io/phantom/content/)
 * [Dive into the Docs](http://cyberpwn.org/docs/phantom/)
