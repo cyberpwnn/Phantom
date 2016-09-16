@@ -177,6 +177,7 @@ public class DataCluster
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		GZIPInputStream gzi = new GZIPInputStream(bais);
 		DataInputStream dis = new DataInputStream(gzi);
+		
 		JSONObject js = new JSONObject(dis.readUTF());
 		dis.close();
 		
