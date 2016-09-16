@@ -1,5 +1,12 @@
-package org.phantomapi.util;
+package org.phantomapi.text;
 
+import org.phantomapi.util.F;
+
+/**
+ * Adapt to params
+ * 
+ * @author cyberpwn
+ */
 public abstract class ParameterAdapter
 {
 	public ParameterAdapter()
