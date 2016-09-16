@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.Callback;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.ExecutiveRunnable;
 
@@ -301,6 +302,20 @@ public class GList<T> extends ArrayList<T>
 		}
 		
 		return s;
+	}
+	
+	/**
+	 * Do something for each
+	 * 
+	 * @param callback
+	 *            the something to do things for something
+	 */
+	public void forEach(Callback<T> callback)
+	{
+		for(T i : this)
+		{
+			callback.run(i);
+		}
 	}
 	
 	/**
