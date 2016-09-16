@@ -36,6 +36,9 @@ public class DataCluster
 	
 	private Map<String, Cluster> data;
 	private Map<String, String> comments;
+	public static long perm = 0;
+	public static long totalSize = 0;
+	private long bytes;
 	
 	/**
 	 * Initializes a new data cluster
@@ -44,6 +47,8 @@ public class DataCluster
 	{
 		this.data = new HashMap<String, Cluster>();
 		this.comments = new HashMap<String, String>();
+		perm++;
+		bytes = 0;
 	}
 	
 	/**
@@ -219,7 +224,60 @@ public class DataCluster
 	 */
 	public void clear()
 	{
+		totalSize -= bytes;
 		data.clear();
+		bytes = byteSize();
+		totalSize += bytes;
+	}
+	
+	public long byteSize()
+	{
+		long byteSize = 8;
+		
+		for(String i : data.keySet())
+		{
+			byteSize += byteSize(i);
+		}
+		
+		return byteSize;
+	}
+	
+	public long byteSize(String key)
+	{
+		long k = 8 * (int) ((((key.length()) * 2) + 45) / 8);
+		
+		if(contains(key))
+		{
+			if(hasComment(key))
+			{
+				k *= 2;
+				k += 8 * (int) ((((getComment(key).length()) * 2) + 45) / 8);
+			}
+			
+			if(isString(key))
+			{
+				return k + 8 * (int) ((((getString(key).length()) * 2) + 45) / 8);
+			}
+			
+			if(isStringList(key))
+			{
+				long kv = 0;
+				
+				for(String i : getStringList(key))
+				{
+					kv += 8 * (int) ((((i.length()) * 2) + 45) / 8);
+				}
+				
+				return kv + k;
+			}
+			
+			if(isBoolean(key) || isInteger(key) || isLong(key) || isDouble(key))
+			{
+				return k + 16;
+			}
+		}
+		
+		return 0;
 	}
 	
 	/**
@@ -429,6 +487,7 @@ public class DataCluster
 	 */
 	public boolean isString(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.STRING);
 	}
 	
@@ -443,6 +502,7 @@ public class DataCluster
 	 */
 	public boolean isStringList(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.STRING_LIST);
 	}
 	
@@ -457,6 +517,7 @@ public class DataCluster
 	 */
 	public boolean isInteger(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.INTEGER);
 	}
 	
@@ -471,6 +532,7 @@ public class DataCluster
 	 */
 	public boolean isDouble(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.DOUBLE);
 	}
 	
@@ -485,6 +547,7 @@ public class DataCluster
 	 */
 	public boolean isLong(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.LONG);
 	}
 	
@@ -499,6 +562,7 @@ public class DataCluster
 	 */
 	public boolean isBoolean(String key)
 	{
+		perm++;
 		return contains(key, ClusterDataType.BOOLEAN);
 	}
 	
@@ -514,6 +578,7 @@ public class DataCluster
 	 */
 	public boolean contains(String key, ClusterDataType t)
 	{
+		perm++;
 		return contains(key) && getType(key).equals(t);
 	}
 	
@@ -529,6 +594,7 @@ public class DataCluster
 	 */
 	public void trySet(String key, Object o, String comment)
 	{
+		perm++;
 		trySet(key, o);
 		comment(key, comment);
 	}
@@ -596,6 +662,8 @@ public class DataCluster
 			
 			set(key, l);
 		}
+		
+		perm++;
 	}
 	
 	/**
@@ -608,7 +676,12 @@ public class DataCluster
 	 */
 	public void set(String key, int value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterInteger(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -621,7 +694,12 @@ public class DataCluster
 	 */
 	public void set(String key, long value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterLong(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -634,7 +712,12 @@ public class DataCluster
 	 */
 	public void set(String key, double value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterDouble(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -647,7 +730,12 @@ public class DataCluster
 	 */
 	public void set(String key, boolean value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterBoolean(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -660,7 +748,12 @@ public class DataCluster
 	 */
 	public void set(String key, String value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterString(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -673,7 +766,12 @@ public class DataCluster
 	 */
 	public void set(String key, List<String> value)
 	{
+		totalSize -= bytes;
+		bytes -= byteSize(key);
 		data.put(key, new ClusterStringList(value));
+		perm++;
+		bytes += byteSize(key);
+		totalSize += bytes;
 	}
 	
 	/**
@@ -781,6 +879,7 @@ public class DataCluster
 	 */
 	public Boolean getBoolean(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.BOOLEAN))
 		{
 			return ((ClusterBoolean) get(key)).get();
@@ -798,6 +897,7 @@ public class DataCluster
 	 */
 	public Long getLong(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.LONG))
 		{
 			return ((ClusterLong) get(key)).get();
@@ -820,6 +920,7 @@ public class DataCluster
 	 */
 	public Integer getInt(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER))
 		{
 			return ((ClusterInteger) get(key)).get();
@@ -837,6 +938,7 @@ public class DataCluster
 	 */
 	public Double getDouble(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.DOUBLE))
 		{
 			return ((ClusterDouble) get(key)).get();
@@ -854,6 +956,7 @@ public class DataCluster
 	 */
 	public String getString(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.STRING))
 		{
 			return ((ClusterString) get(key)).get();
@@ -871,6 +974,7 @@ public class DataCluster
 	 */
 	public List<String> getStringList(String key)
 	{
+		perm++;
 		if(contains(key) && getType(key).equals(ClusterDataType.STRING_LIST))
 		{
 			return ((ClusterStringList) get(key)).get();
@@ -888,6 +992,7 @@ public class DataCluster
 	 */
 	public boolean contains(String key)
 	{
+		perm++;
 		return data.containsKey(key) && data.get(key) != null;
 	}
 	
@@ -899,6 +1004,7 @@ public class DataCluster
 	 */
 	public void remove(String key)
 	{
+		perm++;
 		data.remove(key);
 	}
 	
@@ -911,6 +1017,7 @@ public class DataCluster
 	 */
 	public Object getAbstract(String key)
 	{
+		perm++;
 		if(getType(key).equals(ClusterDataType.BOOLEAN))
 		{
 			return getBoolean(key);
@@ -953,6 +1060,7 @@ public class DataCluster
 	 */
 	public Cluster get(String key)
 	{
+		perm++;
 		return data.get(key);
 	}
 	
@@ -965,6 +1073,7 @@ public class DataCluster
 	 */
 	public ClusterDataType getType(String key)
 	{
+		perm++;
 		return get(key).getType();
 	}
 	
@@ -975,6 +1084,7 @@ public class DataCluster
 	 */
 	public Map<String, Cluster> getData()
 	{
+		perm++;
 		return data;
 	}
 	
@@ -986,7 +1096,11 @@ public class DataCluster
 	 */
 	public void setData(Map<String, Cluster> data)
 	{
+		totalSize -= bytes;
+		perm++;
 		this.data = data;
+		bytes = byteSize();
+		totalSize += bytes;
 	}
 	
 	/**
