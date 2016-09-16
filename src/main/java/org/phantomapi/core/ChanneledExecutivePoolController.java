@@ -58,6 +58,8 @@ public class ChanneledExecutivePoolController extends Controller implements Moni
 		ag.put(DataCluster.perm);
 		DataCluster.perm = 0;
 		DataCluster.permX = (long) ag.getAverage();
+		DevelopmentController.ticks = 0;
+		DevelopmentController.timex = 0;
 	}
 	
 	public void fire(String channel, ExecutiveIterator<?> it)
