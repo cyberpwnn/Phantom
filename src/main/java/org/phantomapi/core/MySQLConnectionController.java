@@ -10,15 +10,21 @@ import org.phantomapi.clust.Keyed;
 import org.phantomapi.clust.MySQL;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GTriset;
+import org.phantomapi.statistics.Monitorable;
+import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 import org.phantomapi.util.SQLOperation;
 
-public class MySQLConnectionController extends Controller implements Configurable
+@Ticked(5)
+public class MySQLConnectionController extends Controller implements Configurable, Monitorable
 {
 	private DataCluster cc;
 	private GList<GTriset<SQLOperation, Configurable, Runnable>> queue;
 	private MySQL sql;
+	private int qq;
 	
 	@Comment("Database Address to the database server. Localhost is the local machine (this one)\nThis will be used for all phantom plugins that use databases")
 	@Keyed("database.address")
@@ -47,6 +53,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		this.cc = new DataCluster();
 		this.queue = new GList<GTriset<SQLOperation, Configurable, Runnable>>();
 		this.sql = null;
+		this.qq = 0;
 	}
 	
 	public boolean testConnection()
@@ -90,7 +97,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	
 	public void onTick()
 	{
-		
+		qq = 0;
 	}
 	
 	public void onStop()
@@ -110,6 +117,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	public void queue(SQLOperation o, Configurable c, Runnable finish)
 	{
 		queue.add(new GTriset<SQLOperation, Configurable, Runnable>(o, c, finish));
+		qq++;
 		
 		try
 		{
@@ -185,5 +193,11 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	public String getCodeName()
 	{
 		return "mysql";
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		return "Queued: " + C.LIGHT_PURPLE + F.f(qq);
 	}
 }
