@@ -37,8 +37,12 @@ public class DataCluster
 	private Map<String, Cluster> data;
 	private Map<String, String> comments;
 	public static long perm = 0;
+	public static long permX = 0;
 	public static long totalSize = 0;
+	public static long totalNodes = 0;
+	public static long totalClusters = 0;
 	private long bytes;
+	private long nodes;
 	
 	/**
 	 * Initializes a new data cluster
@@ -48,7 +52,9 @@ public class DataCluster
 		this.data = new HashMap<String, Cluster>();
 		this.comments = new HashMap<String, String>();
 		perm++;
+		totalClusters++;
 		bytes = 0;
+		nodes = 0;
 	}
 	
 	/**
@@ -1061,6 +1067,9 @@ public class DataCluster
 	public Cluster get(String key)
 	{
 		perm++;
+		totalNodes -= nodes;
+		nodes = size();
+		totalNodes += nodes;
 		return data.get(key);
 	}
 	
