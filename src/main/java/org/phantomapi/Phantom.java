@@ -199,6 +199,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Them 40 NPE's a second ago #BooSwift");
 		msgx.add("Salt??!?!? SALT?!?!?!?");
 		msgx.add("Why not...");
+		msgx.add("Go thrash yourself");
+		msgx.add("Plugged up and pissed off");
+		msgx.add("Let's start a fight.");
+		msgx.add("Bring it on");
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
@@ -260,7 +264,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			setEnvironmentData(this, "status-network-failure", false);
 		}
-				
+		
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
@@ -765,6 +769,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						thrash(sender);
 					}
 					
+					else if(args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v"))
+					{
+						sender.sendMessage(getChatTag() + C.DARK_GRAY + "Down with " + C.LIGHT_PURPLE + C.BOLD + getDescription().getVersion() + "?");
+					}
+					
 					else if(args[0].equalsIgnoreCase("unload") || args[0].equalsIgnoreCase("disable"))
 					{
 						if(args.length == 2)
@@ -902,6 +911,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						msg.add("Do it yourself. See what happens.");
 						msg.add("I'd love to see you try and fail horribly.");
 						msg.add("That's a terrible idea.");
+						msg.add("Go thrash youself");
 						
 						mb.message(sender, C.GRAY + msg.pickRandom());
 					}
@@ -940,6 +950,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom test,t" + C.GRAY + " - Run Tests");
 					mb.message(sender, C.GRAY + "/phantom status,s" + C.GRAY + " - How's it look doc?");
 					mb.message(sender, C.GRAY + "/phantom plug" + C.GRAY + " - Realtime data from controllers");
+					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
 				}
 			}
@@ -1418,7 +1429,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return editSessionController;
 	}
-
+	
 	public MonitorController getMonitorController()
 	{
 		return monitorController;
