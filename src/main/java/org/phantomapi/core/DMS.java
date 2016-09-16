@@ -14,11 +14,13 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.AsyncTask;
 import org.phantomapi.async.Callback;
+import org.phantomapi.clust.DataCluster;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.PluginMessage;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -33,7 +35,7 @@ import com.google.common.io.ByteStreams;
  * @author cyberpwn
  */
 @Ticked(1200)
-public class DMS extends Controller implements PluginMessageListener
+public class DMS extends Controller implements PluginMessageListener, Monitorable
 {
 	private String address;
 	private Boolean hasInternet;
@@ -317,5 +319,11 @@ public class DMS extends Controller implements PluginMessageListener
 	public ConfigurationBackupController getConfigurationBackupController()
 	{
 		return configurationBackupController;
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		return "Ramdisk: " + C.LIGHT_PURPLE + F.fileSize(DataCluster.totalSize) + C.DARK_GRAY + " Permutations: " + C.LIGHT_PURPLE + F.f(DataCluster.perm);
 	}
 }
