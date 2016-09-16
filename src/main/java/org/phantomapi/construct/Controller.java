@@ -13,6 +13,7 @@ import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.clust.HandledConfig;
 import org.phantomapi.command.CommandListener;
+import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
@@ -109,6 +110,8 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		onTick();
 		t.stop();
 		time.put(t.getTime());
+		DevelopmentController.ticks++;
+		DevelopmentController.timex+= t.getTime();
 	}
 	
 	/**
