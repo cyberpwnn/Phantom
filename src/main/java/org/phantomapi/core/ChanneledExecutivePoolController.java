@@ -4,10 +4,12 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.ExecutivePool;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
+import org.phantomapi.util.F;
 
 /**
  * The Channeled Executive Pool Controller pools ExeutiveIterator<T> objects
@@ -17,14 +19,16 @@ import org.phantomapi.util.D;
  *
  */
 @Ticked(0)
-public class ChanneledExecutivePoolController extends Controller
+public class ChanneledExecutivePoolController extends Controller implements Monitorable
 {
 	private GMap<String, ExecutivePool> pools;
+	public static int hit = 0;
 	
 	public ChanneledExecutivePoolController(Controllable parentController)
 	{
 		super(parentController);
 		
+		hit = 0;
 		pools = new GMap<String, ExecutivePool>();
 	}
 	
@@ -44,6 +48,8 @@ public class ChanneledExecutivePoolController extends Controller
 				}
 			}
 		}
+		
+		hit = 0;
 	}
 	
 	public void fire(String channel, ExecutiveIterator<?> it)
@@ -67,5 +73,18 @@ public class ChanneledExecutivePoolController extends Controller
 	public void onStop()
 	{
 		
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		int siz = 0;
+		
+		for(String i : pools.k())
+		{
+			siz += pools.get(i).size();
+		}
+		
+		return "Pools: " + C.LIGHT_PURPLE + pools.size() + C.DARK_GRAY + " Total: " + C.LIGHT_PURPLE + F.f(siz) + C.DARK_GRAY + " Activity: " + C.LIGHT_PURPLE + F.f(hit);
 	}
 }

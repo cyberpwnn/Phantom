@@ -2,6 +2,7 @@ package org.phantomapi.sync;
 
 import java.util.Iterator;
 import java.util.List;
+import org.phantomapi.core.ChanneledExecutivePoolController;
 
 /**
  * An iterator which iterates through items in a list, but executes a runnable
@@ -74,6 +75,7 @@ public abstract class ExecutiveIterator<T> implements Iterator<T>
 			t = it.next();
 		}
 		
+		ChanneledExecutivePoolController.hit++;
 		onIterate(t);
 		
 		return t;
