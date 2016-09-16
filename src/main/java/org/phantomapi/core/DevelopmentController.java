@@ -15,18 +15,20 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.ExecutiveRunnable;
 import org.phantomapi.sync.ExecutiveTask;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
 
 /**
  * @author cyberpwn
  */
 @Ticked(60)
-public class DevelopmentController extends Controller implements Configurable
+public class DevelopmentController extends Controller implements Configurable, Monitorable
 {
 	private DataCluster cc;
 	private GMap<Plugin, Long> modifications;
@@ -35,6 +37,8 @@ public class DevelopmentController extends Controller implements Configurable
 	private GList<String> silence = new GList<String>();
 	private GList<String> registered = new GList<String>();
 	private ExecutiveTask<Plugin> task;
+	public static long ticks = 0;
+	public static long timex = 0;
 	
 	@Comment("Used for identifying this server TYPE.\nIf you have multiple servers of the same type, name it the same")
 	@Keyed("server-identifier")
@@ -239,5 +243,11 @@ public class DevelopmentController extends Controller implements Configurable
 	public void onStop()
 	{
 		
+	}
+
+	@Override
+	public String getMonitorableData()
+	{
+		return "Ticks: " + C.LIGHT_PURPLE + F.f(ticks) + C.DARK_GRAY + " Time: " + C.LIGHT_PURPLE + F.nsMsd(timex, 2) + "ms";
 	}
 }
