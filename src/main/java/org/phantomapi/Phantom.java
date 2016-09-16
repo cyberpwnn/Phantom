@@ -203,6 +203,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Plugged up and pissed off");
 		msgx.add("Let's start a fight.");
 		msgx.add("Bring it on");
+		msgx.add("SUPERFUCKINGNOVAS EVERYWHERE");
+		msgx.add("Take your timings report and eat it.");
+		msgx.add("Hits of salt everywhere");
+		msgx.add("Are you sick? You don't look ok.");
+		msgx.add("BOO!");
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
