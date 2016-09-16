@@ -324,6 +324,6 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	@Override
 	public String getMonitorableData()
 	{
-		return "Ramdisk: " + C.LIGHT_PURPLE + F.fileSize(DataCluster.totalSize) + C.DARK_GRAY + " Permutations: " + C.LIGHT_PURPLE + F.f(DataCluster.perm);
+		return "Ramdisk: " + C.LIGHT_PURPLE + F.fileSize(DataCluster.totalSize) + C.DARK_GRAY + " Clusters: " + C.LIGHT_PURPLE + F.f(DataCluster.totalClusters) + C.DARK_GRAY + " Nodes: " + C.LIGHT_PURPLE + F.f(DataCluster.totalNodes) + C.DARK_GRAY + " Mods: " + C.LIGHT_PURPLE + F.f(DataCluster.permX);
 	}
 }
