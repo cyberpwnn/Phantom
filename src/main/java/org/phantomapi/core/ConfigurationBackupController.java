@@ -132,13 +132,16 @@ public class ConfigurationBackupController extends ConfigurableController
 							
 							for(File i : scannable)
 							{
-								for(File j : i.listFiles())
+								if(i.exists() && i.isDirectory())
 								{
-									if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
+									for(File j : i.listFiles())
 									{
-										if(j.delete())
+										if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
 										{
-											del++;
+											if(j.delete())
+											{
+												del++;
+											}
 										}
 									}
 								}
