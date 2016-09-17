@@ -32,13 +32,13 @@ import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.EditSessionController;
 import org.phantomapi.core.EventRippler;
 import org.phantomapi.core.Metrics;
+import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.core.MonitorController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.TestController;
-import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
@@ -65,7 +65,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
 /**
- * The Phantom Plugin object.
+ * The Phantom Plugin.
  * 
  * @author cyberpwn
  */
@@ -411,6 +411,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	/**
+	 * Save the environment data
+	 */
 	public void saveEnvironment()
 	{
 		try
@@ -424,6 +427,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	/**
+	 * Ping another server on the network
+	 * 
+	 * @param server
+	 *            the server
+	 * @param s
+	 *            the command sender
+	 */
 	public static void pingServer(String server, PhantomCommandSender s)
 	{
 		Timer ti = new Timer();
@@ -434,7 +445,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			public void onResponse(Transmission response)
 			{
 				ti.stop();
-				s.sendMessage(C.GREEN + getServerName() + " <" + F.nsMs(ti.getTime(), 6) + "> " + response.getSource());
+				s.sendMessage(C.GRAY + response.getSource() + ": " + C.WHITE + F.nsMs(Math.abs(ti.getTime()), 2));
 			}
 		};
 		
@@ -450,6 +461,13 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	/**
+	 * Get a controller by class
+	 * 
+	 * @param clazz
+	 *            the class
+	 * @return the controller or null
+	 */
 	public Controllable getInstance(Class<?> clazz)
 	{
 		for(Controllable i : bindings)
@@ -468,6 +486,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 	}
 	
+	/**
+	 * Get the server's name
+	 * 
+	 * @return the server
+	 */
 	public static String getServerName()
 	{
 		return instance.bungeeController.getServerName();
@@ -884,6 +907,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 							
 							pingServer(i, s);
 						}
+						
+						s.sendMessage(C.GRAY + "Link Speed: " + C.WHITE + F.nsMs(BungeeController.linkSpeed, 2) + "ms");
 						
 						return true;
 					}
