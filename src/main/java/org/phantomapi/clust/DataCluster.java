@@ -250,37 +250,45 @@ public class DataCluster
 	
 	public long byteSize(String key)
 	{
-		long k = 8 * (int) ((((key.length()) * 2) + 45) / 8);
-		
-		if(contains(key))
+		try
 		{
-			if(hasComment(key))
-			{
-				k *= 2;
-				k += 8 * (int) ((((getComment(key).length()) * 2) + 45) / 8);
-			}
+			long k = 8 * (int) ((((key.length()) * 2) + 45) / 8);
 			
-			if(isString(key))
+			if(contains(key))
 			{
-				return k + 8 * (int) ((((getString(key).length()) * 2) + 45) / 8);
-			}
-			
-			if(isStringList(key))
-			{
-				long kv = 0;
-				
-				for(String i : getStringList(key))
+				if(hasComment(key))
 				{
-					kv += 8 * (int) ((((i.length()) * 2) + 45) / 8);
+					k *= 2;
+					k += 8 * (int) ((((getComment(key).length()) * 2) + 45) / 8);
 				}
 				
-				return kv + k;
+				if(isString(key))
+				{
+					return k + 8 * (int) ((((getString(key).length()) * 2) + 45) / 8);
+				}
+				
+				if(isStringList(key))
+				{
+					long kv = 0;
+					
+					for(String i : getStringList(key))
+					{
+						kv += 8 * (int) ((((i.length()) * 2) + 45) / 8);
+					}
+					
+					return kv + k;
+				}
+				
+				if(isBoolean(key) || isInteger(key) || isLong(key) || isDouble(key))
+				{
+					return k + 16;
+				}
 			}
-			
-			if(isBoolean(key) || isInteger(key) || isLong(key) || isDouble(key))
-			{
-				return k + 16;
-			}
+		}
+		
+		catch(Exception e)
+		{
+			return 0;
 		}
 		
 		return 0;
