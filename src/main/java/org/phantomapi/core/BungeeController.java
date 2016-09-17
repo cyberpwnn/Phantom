@@ -26,6 +26,7 @@ import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Refreshable;
+import org.phantomapi.util.Timer;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
@@ -41,6 +42,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 	private Network network;
 	private Integer ti;
 	private Integer to;
+	private Timer t;
+	public static long linkSpeed = -1;
 	
 	public BungeeController(Controllable parentController)
 	{
@@ -55,6 +58,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		network = new PhantomNetwork();
 		ti = 0;
 		to = 0;
+		t = new Timer();
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
@@ -106,6 +110,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 			new PluginMessage(getPlugin(), "PlayerCount", "ALL").send();
 			new PluginMessage(getPlugin(), "PlayerList", "ALL").send();
 			new PluginMessage(getPlugin(), "GetServer").send();
+			t.start();
 		}
 	}
 	
@@ -309,6 +314,9 @@ public class BungeeController extends Controller implements PluginMessageListene
 			}
 			
 			connected = true;
+			t.stop();
+			linkSpeed = Math.abs(t.getTime() - (50 * 1000000));
+			t = new Timer();
 		}
 		
 		else if(subchannel.equals("PhantomTransmission"))
