@@ -55,6 +55,7 @@ import org.phantomapi.sfx.Audible;
 import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.slate.PhantomSlate;
 import org.phantomapi.slate.Slate;
+import org.phantomapi.source.SourcePack;
 import org.phantomapi.stack.StackedPlayerInventory;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
@@ -68,6 +69,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.P;
+import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
@@ -241,6 +243,58 @@ public class TestController extends Controller
 				{
 					NMSX.breakParticles(i.getEyeLocation(), Material.REDSTONE_BLOCK, 24);
 				}
+			}
+		});
+		
+		tests.put("sourcepack", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						s("Looking for plugins/Phantom/sourcepack/");
+						
+						File f = new File(getPlugin().getDataFolder(), "sourcepack");
+						
+						if(f.exists() && f.isDirectory())
+						{
+							T t = new T()
+							{
+								@Override
+								public void onStop(long nsTime, double msTime)
+								{
+									s("Done. " + C.AQUA + F.f(msTime, 3) + "ms");
+								}
+							};
+							
+							SourcePack s = new SourcePack(f);
+							
+							s("Packing... plugins/Phantom/source.zip");
+							
+							try
+							{
+								s.buildZip(new File(getPlugin().getDataFolder(), "source.zip"));
+							}
+							
+							catch(IOException e)
+							{
+								f("FAILED: " + e.getClass().getSimpleName());
+								e.printStackTrace();
+							}
+							
+							t.stop();
+						}
+						
+						else
+						{
+							f("No source");
+						}
+					}
+				};
 			}
 		});
 		
