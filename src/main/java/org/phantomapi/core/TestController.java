@@ -220,7 +220,7 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("credits", new Runnable()
+		tests.put("state-credits", new Runnable()
 		{
 			@Override
 			public void run()
@@ -228,6 +228,196 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showEnd(i);
+				}
+			}
+		});
+		
+		tests.put("state-demo", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.showDemo(i);
+				}
+			}
+		});
+		
+		tests.put("state-controls", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.showControls(i);
+				}
+			}
+		});
+		
+		tests.put("state-rain", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					float[] k = new float[] {0};
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							k[0] += 0.1;
+							NMSX.showWeather(i, k[0]);
+							
+							if(k[0] > 10)
+							{
+								cancel();
+							}
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("state-dry", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					float[] k = new float[] {10f};
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							k[0] -= 0.1;
+							NMSX.showWeather(i, k[0]);
+							
+							if(k[0] < -10.1)
+							{
+								cancel();
+							}
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("block-broken", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					NMSX.showBlockBreakAnimation(i, i.getLocation().add(0, -1, 0), (int) (Math.random() * 9));
+				}
+			}
+		});
+		
+		tests.put("state-freak", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							NMSX.showBrightness(i, (float) (Math.random() * 10));
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("state-dark", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					float[] k = new float[] {0};
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							k[0] += 0.1;
+							NMSX.showBrightness(i, k[0]);
+							
+							if(k[0] > 5.5)
+							{
+								cancel();
+							}
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("state-light", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					float[] k = new float[] {5.5f};
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							k[0] -= 0.1;
+							NMSX.showBrightness(i, k[0]);
+							
+							if(k[0] < 0.1)
+							{
+								cancel();
+							}
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("state-creep", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					float[] k = new float[] {0f};
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							k[0] += 0.1;
+							NMSX.showBrightness(i, k[0]);
+							
+							if(k[0] > 10.1)
+							{
+								cancel();
+							}
+						}
+					};
 				}
 			}
 		});
@@ -751,6 +941,24 @@ public class TestController extends Controller
 				{
 					Title t = new Title(C.RED + "TITLE", C.GREEN + "SUBTITLE", C.BLUE + "ACTION", 5, 30, 5);
 					t.send(i);
+				}
+			}
+		});
+		
+		tests.put("phantom", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					new Task(0)
+					{
+						public void run()
+						{
+							NMSX.showPickup(i, i, i);
+						}
+					};
 				}
 			}
 		});
