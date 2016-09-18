@@ -3,8 +3,10 @@ package org.phantomapi.core;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.event.InventoryDropItemOnItemEvent;
+import org.phantomapi.event.PlayerArrowDamagePlayerEvent;
 import org.phantomapi.event.PlayerDamagePlayerEvent;
 import org.phantomapi.event.PlayerJumpEvent;
 import org.phantomapi.event.PlayerKillPlayerEvent;
@@ -22,6 +25,7 @@ import org.phantomapi.event.PlayerMoveBlockEvent;
 import org.phantomapi.event.PlayerMoveChunkEvent;
 import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
+import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
 
 /**
  * Ripple fire events for more specific events
@@ -47,6 +51,32 @@ public class EventRippler extends Controller
 					PlayerDamagePlayerEvent ev = new PlayerDamagePlayerEvent((Player) e.getDamager(), (Player) e.getEntity(), (Double) e.getDamage());
 					callEvent(ev);
 					e.setCancelled(ev.isCancelled() ? true : e.isCancelled());
+				}
+			}
+			
+			else if(e.getDamager() instanceof Projectile)
+			{
+				if(e.getEntity().getType().equals(EntityType.PLAYER))
+				{
+					Projectile projectile = (Projectile) e.getDamager();
+					
+					if(projectile.getShooter() instanceof Player)
+					{
+						Player shooter = (Player) projectile.getShooter();
+						
+						PlayerProjectileDamagePlayerEvent ev = new PlayerProjectileDamagePlayerEvent(shooter, (Player) e.getEntity(), projectile, (Double) e.getDamage());
+						callEvent(ev);
+						e.setCancelled(ev.isCancelled() ? true : e.isCancelled());
+						
+						if(projectile.getType().equals(EntityType.ARROW))
+						{
+							Arrow arrow = (Arrow) projectile;
+							
+							PlayerArrowDamagePlayerEvent evx = new PlayerArrowDamagePlayerEvent(shooter, (Player) e.getEntity(), arrow, (Double) e.getDamage());
+							callEvent(evx);
+							e.setCancelled(evx.isCancelled() ? true : e.isCancelled());
+						}
+					}
 				}
 			}
 		}
@@ -158,7 +188,7 @@ public class EventRippler extends Controller
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
