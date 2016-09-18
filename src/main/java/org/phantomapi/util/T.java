@@ -31,6 +31,6 @@ public abstract class T extends Timer
 	{
 		super.stop();
 		
-		onStop(getTime(), ((double) getTime() * 1000000.0));
+		onStop(getTime(), ((double) getTime() / 1000000.0));
 	}
 }
