@@ -8,6 +8,7 @@ org.phantomapi.core
 org.phantomapi.entity
 org.phantomapi.event
 org.phantomapi.ext
+org.phantomapi.filesystem
 org.phantomapi.game
 org.phantomapi.gui
 org.phantomapi.inventory
@@ -22,6 +23,7 @@ org.phantomapi.registry
 org.phantomapi.schematic
 org.phantomapi.sfx
 org.phantomapi.slate
+org.phantomapi.source
 org.phantomapi.stack
 org.phantomapi.statistics
 org.phantomapi.sync
