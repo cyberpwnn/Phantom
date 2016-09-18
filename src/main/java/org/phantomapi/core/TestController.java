@@ -12,7 +12,6 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
@@ -26,7 +25,6 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
-import org.phantomapi.event.InventoryDropItemOnItemEvent;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
 import org.phantomapi.gui.Notification;
@@ -1121,12 +1119,6 @@ public class TestController extends Controller
 	public void testCommand(PhantomSender sender, PhantomCommand cmd)
 	{
 		sender.sendMessage(C.WHITE + "Tested");
-	}
-	
-	@EventHandler
-	public void on(InventoryDropItemOnItemEvent e)
-	{
-		
 	}
 	
 	public GMap<String, Runnable> getTests()
