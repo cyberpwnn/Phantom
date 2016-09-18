@@ -706,6 +706,168 @@ public class NMSX
 	}
 	
 	/**
+	 * Shows the demo screen
+	 * 
+	 * @param player
+	 *            the player
+	 */
+	public static void showDemo(Player player)
+	{
+		try
+		{
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutGameStateChange");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, float.class).newInstance(5, 0.0F);
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Shows the dark value
+	 * 
+	 * @param player
+	 *            the player
+	 * @param value
+	 *            the darkness value, 1=dark 0=bright others freeze client
+	 */
+	public static void showBrightness(Player player, float value)
+	{
+		try
+		{
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutGameStateChange");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, float.class).newInstance(7, value);
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Shows the weather
+	 * 
+	 * @param player
+	 *            the player
+	 * @param value
+	 *            the weather intensity
+	 */
+	public static void showWeather(Player player, float value)
+	{
+		try
+		{
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutGameStateChange");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, float.class).newInstance(7, value);
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static Object getBlockPosition(Location l)
+	{
+		try
+		{
+			Class<?> blockPosition = Class.forName(nmsPackage() + ".BlockPosition");
+			
+			return blockPosition.getConstructor(int.class, int.class, int.class).newInstance(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static void showBlockBreakAnimation(Player player, Location l, int level)
+	{
+		try
+		{
+			Object blockPosition = getBlockPosition(l);
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutBlockBreakAnimation");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, Class.forName(nmsPackage() + ".BlockPosition"), int.class).newInstance(player.getEntityId(), blockPosition, level);
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Shows the demo controls screen
+	 * 
+	 * @param player
+	 *            the player
+	 */
+	public static void showControls(Player player)
+	{
+		try
+		{
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutGameStateChange");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, float.class).newInstance(5, 101.0F);
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Pick up something
+	 * 
+	 * @param entity
+	 *            the entity
+	 * @param pick
+	 *            the item
+	 */
+	public static void showPickup(Player player, Entity entity, Entity pick)
+	{
+		try
+		{
+			Class<?> craftPlayer = Class.forName(craftPackage() + ".entity.CraftPlayer");
+			Class<?> packetGameStateChange = Class.forName(nmsPackage() + ".PacketPlayOutCollect");
+			Object handle = craftPlayer.getMethod("getHandle").invoke(player);
+			Object packet = packetGameStateChange.getConstructor(int.class, int.class).newInstance(pick.getEntityId(), entity.getEntityId());
+			Object playerConnection = handle.getClass().getDeclaredField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", Class.forName(nmsPackage() + ".Packet")).invoke(playerConnection, packet);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Sends packets to nearby players that the player is laying down/sleeping
 	 * 
 	 * @param asleep
