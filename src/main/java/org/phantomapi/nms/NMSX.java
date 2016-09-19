@@ -90,6 +90,13 @@ public class NMSX
 		return m;
 	}
 	
+	/**
+	 * Get the nms class
+	 * 
+	 * @param className
+	 *            the class name
+	 * @return returns "net.minecraft.server." + version + "." + className
+	 */
 	public static Class<?> getCBNMSClass(String className)
 	{
 		final String fullName = "net.minecraft.server." + getVersion() + className;
@@ -109,6 +116,13 @@ public class NMSX
 		return clazz;
 	}
 	
+	/**
+	 * Get the cb class
+	 * 
+	 * @param className
+	 *            the class name
+	 * @return returns "org.bukkit.craftbukkit." + version + "." + className
+	 */
 	public static Class<?> getOBCClass(String className)
 	{
 		final String fullName = "org.bukkit.craftbukkit." + getVersion() + className;
