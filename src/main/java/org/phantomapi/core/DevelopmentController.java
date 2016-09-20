@@ -190,7 +190,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 	{
 		cc.set("dispatcher.silence", false, "Should all dispatchers be silenced?");
 		
-		for(String i : registered)
+		for(String i : registered.copy())
 		{
 			cc.set("dispatcher.nodes." + i.replaceAll(" > ", "."), false);
 		}
@@ -199,7 +199,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Override
 	public void onReadConfig()
 	{
-		for(String i : registered)
+		for(String i : registered.copy())
 		{
 			if(cc.contains("dispatcher.nodes." + i.replaceAll(" > ", ".")))
 			{
