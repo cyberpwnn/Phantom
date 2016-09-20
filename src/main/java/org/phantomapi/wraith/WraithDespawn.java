@@ -1,4 +1,4 @@
-package org.phantomapi.npc;
+package org.phantomapi.wraith;
 
 /**
  * Despawn reason for wraith npcs

@@ -1,4 +1,4 @@
-package org.phantomapi.npc;
+package org.phantomapi.wraith;
 
 /**
  * Represents a target type

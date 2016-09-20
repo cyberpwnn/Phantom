@@ -1,4 +1,4 @@
-package org.phantomapi.npc;
+package org.phantomapi.wraith;
 
 import org.bukkit.Location;
 import net.citizensnpcs.npc.ai.PathStrategy;

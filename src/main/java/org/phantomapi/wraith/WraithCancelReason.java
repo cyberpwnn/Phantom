@@ -1,4 +1,4 @@
-package org.phantomapi.npc;
+package org.phantomapi.wraith;
 
 /**
  * Represents a cancel reason for a wraith to stop pathfinding
