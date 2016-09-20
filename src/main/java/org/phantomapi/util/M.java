@@ -35,6 +35,23 @@ public class M
 	}
 	
 	/**
+	 * Get true or false based on random percent
+	 * 
+	 * @param d
+	 *            between 0 and 1
+	 * @return true if true
+	 */
+	public static boolean r(Double d)
+	{
+		if(d == null)
+		{
+			return Math.random() < 0.5;
+		}
+		
+		return Math.random() < d;
+	}
+	
+	/**
 	 * Evaluates an expression using javascript engine and returns the double
 	 * result. This can take variable parameters, so you need to define them.
 	 * Parameters are defined as $[0-9]. For example evaluate("4$0/$1", 1, 2);
