@@ -178,6 +178,16 @@ public class ConfigurationBackupController extends ConfigurableController
 		}
 		
 		f = new File(f, cc.getCodeName() + ".yml");
-		queue.put(f, dc);
+		
+		File ff = f;
+		
+		new TaskLater(45)
+		{
+			@Override
+			public void run()
+			{
+				queue.put(ff, dc);
+			}
+		};
 	}
 }
