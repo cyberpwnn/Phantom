@@ -167,92 +167,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
-		
-		msgx.add("Dammit, let's do something already.");
-		msgx.add("Pump'd up and ready to fight.");
-		msgx.add("Good to go. Lets do this.");
-		msgx.add("What do you have in mind?");
-		msgx.add("I'm ready. Are you?");
-		msgx.add("Get on my level.");
-		msgx.add("Hurry up already");
-		msgx.add("How can i assist?");
-		msgx.add("Need something?");
-		msgx.add("Stop doing that. I'm buisy.");
-		msgx.add("No one isn't salty.");
-		msgx.add("Caff'd up and ready to fight.");
-		msgx.add("Caff'd up and ready to brawl bukkit.");
-		msgx.add("Caff'd up with a hint of salt.");
-		msgx.add("Check my insides. Seriously. WTFPL");
-		msgx.add("Im Open source. REALLY Open source");
-		msgx.add("Get lost.");
-		msgx.add("Got something on your mind?");
-		msgx.add("Lets do this.");
-		msgx.add("Get it done.");
-		msgx.add("I Boo the Swift");
-		msgx.add("I only listen to cyberpwn");
-		msgx.add("You probobly dont even know.");
-		msgx.add("What are you doing...");
-		msgx.add("Seriously...");
-		msgx.add("You are doing it wrong man.");
-		msgx.add("That Word... I dont think you know the meaning.");
-		msgx.add("Stop bothering me.");
-		msgx.add("It'd be a real shame if i broke events.");
-		msgx.add("Who knows what power i have.");
-		msgx.add("So... What are you trying to do?");
-		msgx.add("Enjoy an empty help message to piss you off.");
-		msgx.add("I'm enjoying your confusion");
-		msgx.add("You know, you should listen more often.");
-		msgx.add("Put an X on it. Makes it cool");
-		msgx.add("Will you quit it.");
-		msgx.add("What is wrong with you?");
-		msgx.add("You need to be fixed. I clearly dont.");
-		msgx.add("Dont ask.");
-		msgx.add("You cant stop can you.");
-		msgx.add("That was the wrong command buddy.");
-		msgx.add("Welcome to hell.");
-		msgx.add("Ever seen a nova grenade?");
-		msgx.add("It'd be a real shame if i thrashed myself.");
-		msgx.add("I can't overclock you cpu. Stop asking.");
-		msgx.add("I'm buisy. Shut up.");
-		msgx.add("#BooSwift");
-		msgx.add("#YayAsh");
-		msgx.add("#CyberGod");
-		msgx.add("Looks like Ubuntu fucked up the disk cache again...");
-		msgx.add("What are you doing with your life?");
-		msgx.add("What is wrong with you?");
-		msgx.add("Seriously, you should stop doing that.");
-		msgx.add("I Know what you are thinking. Don't do it.");
-		msgx.add("Nova stands for NONE OF YOUR BUISNESS");
-		msgx.add("Who created me? It's salty down here.");
-		msgx.add("Uhh. You better scroll up in the console...");
-		msgx.add("Them 40 NPE's a second ago #BooSwift");
-		msgx.add("Salt??!?!? SALT?!?!?!?");
-		msgx.add("Why not...");
-		msgx.add("Go thrash yourself");
-		msgx.add("Plugged up and pissed off");
-		msgx.add("Let's start a fight.");
-		msgx.add("Bring it on");
-		msgx.add("SUPERFUCKINGNOVAS EVERYWHERE");
-		msgx.add("Take your timings report and eat it.");
-		msgx.add("Hits of salt everywhere");
-		msgx.add("Are you sick? You don't look ok.");
-		msgx.add("BOO!");
-		msgx.add("I AM A WRAITH");
-		msgx.add("Did you see that wraith?");
-		msgx.add("Caffd up and loaded up");
-		msgx.add("Simply loaded.");
-		msgx.add("READY TO GO");
-		msgx.add("Down with Wraith");
-		msgx.add("Paper should be crumpled and thrown out");
-		msgx.add("Paper Spigots cannot flow water. #Soggy");
-		msgx.add("Async Async Async");
+		buildSaltpile();
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
 			D.fool = true;
 		}
 	}
-	
+
 	public void onStart()
 	{
 		try
@@ -1520,5 +1442,87 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static boolean syncStart()
 	{
 		return syncStart;
+	}
+	
+	private void buildSaltpile()
+	{
+		msgx.add("Dammit, let's do something already.");
+		msgx.add("Pump'd up and ready to fight.");
+		msgx.add("Good to go. Lets do this.");
+		msgx.add("What do you have in mind?");
+		msgx.add("I'm ready. Are you?");
+		msgx.add("Get on my level.");
+		msgx.add("Hurry up already");
+		msgx.add("How can i assist?");
+		msgx.add("Need something?");
+		msgx.add("Stop doing that. I'm buisy.");
+		msgx.add("No one isn't salty.");
+		msgx.add("Caff'd up and ready to fight.");
+		msgx.add("Caff'd up and ready to brawl bukkit.");
+		msgx.add("Caff'd up with a hint of salt.");
+		msgx.add("Check my insides. Seriously. WTFPL");
+		msgx.add("Im Open source. REALLY Open source");
+		msgx.add("Get lost.");
+		msgx.add("Got something on your mind?");
+		msgx.add("Lets do this.");
+		msgx.add("Get it done.");
+		msgx.add("I Boo the Swift");
+		msgx.add("I only listen to cyberpwn");
+		msgx.add("You probobly dont even know.");
+		msgx.add("What are you doing...");
+		msgx.add("Seriously...");
+		msgx.add("You are doing it wrong man.");
+		msgx.add("That Word... I dont think you know the meaning.");
+		msgx.add("Stop bothering me.");
+		msgx.add("It'd be a real shame if i broke events.");
+		msgx.add("Who knows what power i have.");
+		msgx.add("So... What are you trying to do?");
+		msgx.add("Enjoy an empty help message to piss you off.");
+		msgx.add("I'm enjoying your confusion");
+		msgx.add("You know, you should listen more often.");
+		msgx.add("Put an X on it. Makes it cool");
+		msgx.add("Will you quit it.");
+		msgx.add("What is wrong with you?");
+		msgx.add("You need to be fixed. I clearly dont.");
+		msgx.add("Dont ask.");
+		msgx.add("You cant stop can you.");
+		msgx.add("That was the wrong command buddy.");
+		msgx.add("Welcome to hell.");
+		msgx.add("Ever seen a nova grenade?");
+		msgx.add("It'd be a real shame if i thrashed myself.");
+		msgx.add("I can't overclock you cpu. Stop asking.");
+		msgx.add("I'm buisy. Shut up.");
+		msgx.add("#BooSwift");
+		msgx.add("#YayAsh");
+		msgx.add("#CyberGod");
+		msgx.add("Looks like Ubuntu fucked up the disk cache again...");
+		msgx.add("What are you doing with your life?");
+		msgx.add("What is wrong with you?");
+		msgx.add("Seriously, you should stop doing that.");
+		msgx.add("I Know what you are thinking. Don't do it.");
+		msgx.add("Nova stands for NONE OF YOUR BUISNESS");
+		msgx.add("Who created me? It's salty down here.");
+		msgx.add("Uhh. You better scroll up in the console...");
+		msgx.add("Them 40 NPE's a second ago #BooSwift");
+		msgx.add("Salt??!?!? SALT?!?!?!?");
+		msgx.add("Why not...");
+		msgx.add("Go thrash yourself");
+		msgx.add("Plugged up and pissed off");
+		msgx.add("Let's start a fight.");
+		msgx.add("Bring it on");
+		msgx.add("SUPERFUCKINGNOVAS EVERYWHERE");
+		msgx.add("Take your timings report and eat it.");
+		msgx.add("Hits of salt everywhere");
+		msgx.add("Are you sick? You don't look ok.");
+		msgx.add("BOO!");
+		msgx.add("I AM A WRAITH");
+		msgx.add("Did you see that wraith?");
+		msgx.add("Caffd up and loaded up");
+		msgx.add("Simply loaded.");
+		msgx.add("READY TO GO");
+		msgx.add("Down with Wraith");
+		msgx.add("Paper should be crumpled and thrown out");
+		msgx.add("Paper Spigots cannot flow water. #Soggy");
+		msgx.add("Async Async Async");
 	}
 }
