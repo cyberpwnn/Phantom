@@ -2,16 +2,22 @@ package org.phantomapi.core;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.construct.Controllable;
@@ -26,6 +32,9 @@ import org.phantomapi.event.PlayerMoveChunkEvent;
 import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
+import org.phantomapi.event.TNTPrimeEvent;
+import org.phantomapi.sync.TaskLater;
+import org.phantomapi.world.Area;
 
 /**
  * Ripple fire events for more specific events
@@ -152,6 +161,89 @@ public class EventRippler extends Controller
 				PlayerMoveLookEvent pmle = new PlayerMoveLookEvent(e.getPlayer(), e.getFrom(), e.getTo());
 				callEvent(pmle);
 				e.setCancelled(pmle.isCancelled() ? true : e.isCancelled());
+			}
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(EntityExplodeEvent e)
+	{
+		if(e.getEntity() instanceof TNTPrimed)
+		{
+			for(Block b : e.blockList())
+			{
+				if(b.getType().equals(Material.TNT))
+				{
+					new TaskLater(1)
+					{
+						@Override
+						public void run()
+						{
+							Area a = new Area(b.getLocation(), 0.99);
+							
+							for(Entity i : a.getNearbyEntities())
+							{
+								if(i.getType().equals(EntityType.PRIMED_TNT))
+								{
+									TNTPrimed tnt = (TNTPrimed) i;
+									TNTPrimeEvent ex = new TNTPrimeEvent(tnt, b);
+									callEvent(ex);
+									
+									if(ex.isCancelled())
+									{
+										tnt.remove();
+										b.setType(Material.TNT);
+									}
+									
+									break;
+								}
+							}
+						}
+					};
+				}
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void on(PlayerInteractEvent e)
+	{
+		try
+		{
+			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType().equals(Material.FLINT_AND_STEEL))
+			{
+				new TaskLater(1)
+				{
+					@Override
+					public void run()
+					{
+						Area a = new Area(e.getClickedBlock().getLocation(), 0.99);
+						
+						for(Entity i : a.getNearbyEntities())
+						{
+							if(i.getType().equals(EntityType.PRIMED_TNT))
+							{
+								TNTPrimed tnt = (TNTPrimed) i;
+								Block b = e.getClickedBlock();
+								TNTPrimeEvent ex = new TNTPrimeEvent(tnt, b);
+								callEvent(ex);
+								
+								if(ex.isCancelled())
+								{
+									tnt.remove();
+									b.setType(Material.TNT);
+								}
+								
+								break;
+							}
+						}
+					}
+				};
 			}
 		}
 		
