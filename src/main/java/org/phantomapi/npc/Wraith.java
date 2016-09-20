@@ -132,4 +132,11 @@ public interface Wraith
 	 * Destroy the entity and all of it's memory and data
 	 */
 	public void destroy();
+	
+	/**
+	 * Get the wraith navigator
+	 * 
+	 * @return the navigator
+	 */
+	public WraithNavigator getNavigator();
 }
