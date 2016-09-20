@@ -65,8 +65,6 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	{
 		if(getClass().isAnnotationPresent(SyncStart.class) && Phantom.isAsync())
 		{
-			w("Sync Load");
-			
 			new S()
 			{
 				@Override
@@ -149,7 +147,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		t.stop();
 		time.put(t.getTime());
 		DevelopmentController.ticks++;
-		DevelopmentController.timex+= t.getTime();
+		DevelopmentController.timex += t.getTime();
 	}
 	
 	/**
