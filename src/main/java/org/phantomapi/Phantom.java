@@ -60,6 +60,9 @@ import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
 import org.phantomapi.util.Timer;
 import org.phantomapi.world.PhantomEditSession;
+import org.phantomapi.wraith.InteractionAI;
+import org.phantomapi.wraith.PathingAI;
+import org.phantomapi.wraith.WraithUtils;
 import com.boydti.fawe.util.TaskManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -118,6 +121,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx = new GList<String>();
 		thread = Thread.currentThread().getId();
 		new PlaceholderHooker(this, "phantom").hook();
+		
+		WraithUtils.registerTrait(PathingAI.class);
+		WraithUtils.registerTrait(InteractionAI.class);
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
