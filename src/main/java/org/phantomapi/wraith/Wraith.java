@@ -147,14 +147,14 @@ public interface Wraith
 	 * @param trait
 	 *            the trait
 	 */
-	public void addTrait(WraithTrait trait);
+	public void addTrait(WrapperTrait trait);
 	
 	/**
 	 * Get all wraith traits
 	 * 
 	 * @return the traits
 	 */
-	public GList<WraithTrait> getTraits();
+	public GList<WrapperTrait> getTraits();
 	
 	/**
 	 * Does this wraith have the given trait
@@ -163,7 +163,7 @@ public interface Wraith
 	 *            the trait class
 	 * @return true if it does
 	 */
-	public boolean hasTrait(Class<? extends WraithTrait> trait);
+	public boolean hasTrait(Class<? extends WrapperTrait> trait);
 	
 	/**
 	 * Remove the given trait from this wraith
@@ -171,5 +171,5 @@ public interface Wraith
 	 * @param trait
 	 *            the trait class
 	 */
-	public void removeTrait(Class<? extends WraithTrait> trait);
+	public void removeTrait(Class<? extends WrapperTrait> trait);
 }
