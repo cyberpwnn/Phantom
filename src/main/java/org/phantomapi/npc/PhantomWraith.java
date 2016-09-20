@@ -115,4 +115,10 @@ public class PhantomWraith implements Wraith
 	{
 		npc.destroy();
 	}
+	
+	@Override
+	public WraithNavigator getNavigator()
+	{
+		return new PhantomWraithNavigator(this, npc.getNavigator());
+	}
 }
