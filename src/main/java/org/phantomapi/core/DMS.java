@@ -34,6 +34,7 @@ import com.google.common.io.ByteStreams;
  * 
  * @author cyberpwn
  */
+@SyncStart
 @Ticked(1200)
 public class DMS extends Controller implements PluginMessageListener, Monitorable
 {
