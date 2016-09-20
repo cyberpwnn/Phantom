@@ -4,15 +4,30 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.phantomapi.lang.GList;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.DespawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.Trait;
 
+/**
+ * A Phantom wraith
+ * 
+ * @author cyberpwn
+ */
 public class PhantomWraith implements Wraith
 {
 	private EntityType type;
 	private NPC npc;
 	
+	/**
+	 * Create a wraith
+	 * 
+	 * @param type
+	 *            the entity type
+	 * @param name
+	 *            the name
+	 */
 	public PhantomWraith(EntityType type, String name)
 	{
 		this.type = type;
@@ -120,5 +135,36 @@ public class PhantomWraith implements Wraith
 	public WraithNavigator getNavigator()
 	{
 		return new PhantomWraithNavigator(this, npc.getNavigator());
+	}
+	
+	@Override
+	public void addTrait(WraithTrait trait)
+	{
+		npc.addTrait(trait);
+	}
+	
+	@Override
+	public GList<WraithTrait> getTraits()
+	{
+		GList<WraithTrait> traits = new GList<WraithTrait>();
+		
+		for(Trait i : npc.getTraits())
+		{
+			traits.add((WraithTrait) i);
+		}
+		
+		return traits;
+	}
+	
+	@Override
+	public boolean hasTrait(Class<? extends WraithTrait> trait)
+	{
+		return npc.hasTrait(trait);
+	}
+	
+	@Override
+	public void removeTrait(Class<? extends WraithTrait> trait)
+	{
+		npc.removeTrait(trait);
 	}
 }
