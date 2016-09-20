@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.phantomapi.lang.GList;
 
 /**
  * Represents a wraith npc
@@ -139,4 +140,36 @@ public interface Wraith
 	 * @return the navigator
 	 */
 	public WraithNavigator getNavigator();
+	
+	/**
+	 * Add a wraith trait
+	 * 
+	 * @param trait
+	 *            the trait
+	 */
+	public void addTrait(WraithTrait trait);
+	
+	/**
+	 * Get all wraith traits
+	 * 
+	 * @return the traits
+	 */
+	public GList<WraithTrait> getTraits();
+	
+	/**
+	 * Does this wraith have the given trait
+	 * 
+	 * @param trait
+	 *            the trait class
+	 * @return true if it does
+	 */
+	public boolean hasTrait(Class<? extends WraithTrait> trait);
+	
+	/**
+	 * Remove the given trait from this wraith
+	 * 
+	 * @param trait
+	 *            the trait class
+	 */
+	public void removeTrait(Class<? extends WraithTrait> trait);
 }
