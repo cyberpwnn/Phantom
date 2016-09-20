@@ -324,7 +324,7 @@ public class EventRippler extends Controller
 						@Override
 						public void run()
 						{
-							Area a = new Area(b.getLocation(), 0.99);
+							Area a = new Area(b.getLocation(), 1.149);
 							
 							for(Entity i : a.getNearbyEntities())
 							{
@@ -362,7 +362,7 @@ public class EventRippler extends Controller
 					@Override
 					public void run()
 					{
-						Area a = new Area(e.getClickedBlock().getLocation(), 0.99);
+						Area a = new Area(e.getClickedBlock().getLocation(), 1.149);
 						
 						for(Entity i : a.getNearbyEntities())
 						{
