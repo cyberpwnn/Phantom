@@ -171,6 +171,9 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 						}
 					}
 				}
+				
+				s("> " + C.LIGHT_PURPLE + "Async Boot Time: " + C.AQUA + F.f(Phantom.am / 1000.0, 3) + "s " + C.YELLOW + F.pc(Phantom.am / (Phantom.am + Phantom.sm), 1));
+				s("> " + C.LIGHT_PURPLE + "Sync Boot Time: " + C.AQUA + F.f(Phantom.sm / 1000.0, 3) + "s " + C.YELLOW + F.pc(Phantom.sm / (Phantom.am + Phantom.sm), 1));
 			}
 		};
 		
@@ -290,37 +293,37 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	{
 		return sname;
 	}
-
+	
 	public String getSname()
 	{
 		return sname;
 	}
-
+	
 	public Boolean getSqlt()
 	{
 		return sqlt;
 	}
-
+	
 	public GList<Plugin> getPql()
 	{
 		return pql;
 	}
-
+	
 	public GList<String> getServers()
 	{
 		return servers;
 	}
-
+	
 	public HotLoadController getHotLoadController()
 	{
 		return hotLoadController;
 	}
-
+	
 	public ConfigurationBackupController getConfigurationBackupController()
 	{
 		return configurationBackupController;
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
