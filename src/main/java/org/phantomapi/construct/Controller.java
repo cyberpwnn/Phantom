@@ -14,9 +14,11 @@ import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.clust.HandledConfig;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.core.DevelopmentController;
+import org.phantomapi.core.SyncStart;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
+import org.phantomapi.sync.S;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.D;
 import org.phantomapi.util.T;
@@ -61,6 +63,22 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	@Override
 	public void start()
 	{
+		if(getClass().isAnnotationPresent(SyncStart.class) && Phantom.isAsync())
+		{
+			w("Sync Load");
+			
+			new S()
+			{
+				@Override
+				public void sync()
+				{
+					start();
+				}
+			};
+			
+			return;
+		}
+		
 		for(Controllable i : controllers)
 		{
 			i.start();
@@ -238,11 +256,28 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			
 			else
 			{
-				ConfigurationHandler.read(base, c);
+				File b = base;
+				
+				new S()
+				{
+					@Override
+					public void sync()
+					{
+						try
+						{
+							ConfigurationHandler.read(b, c);
+						}
+						
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
 			}
 		}
 		
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
