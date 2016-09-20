@@ -4,11 +4,24 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import net.citizensnpcs.api.ai.Navigator;
 
+/**
+ * Phantom navigator
+ * 
+ * @author cyberpwn
+ */
 public class PhantomWraithNavigator implements WraithNavigator
 {
 	private Navigator navigator;
 	private Wraith wraith;
 	
+	/**
+	 * Create the navigator
+	 * 
+	 * @param wraith
+	 *            the wraith navigator
+	 * @param navBase
+	 *            the base
+	 */
 	public PhantomWraithNavigator(Wraith wraith, Object navBase)
 	{
 		this.navigator = (Navigator) navBase;
