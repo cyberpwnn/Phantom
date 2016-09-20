@@ -5,18 +5,23 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.command.CommandListener;
+import org.phantomapi.core.SyncStart;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.network.Network;
+import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
 import org.phantomapi.util.Average;
+import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.DMSRequire;
 import org.phantomapi.util.DMSRequirement;
 import org.phantomapi.util.F;
+import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
 /**
@@ -223,35 +228,134 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void start()
 	{
-		for(Controllable i : controllers)
+		if(getClass().isAnnotationPresent(SyncStart.class) || Phantom.syncStart())
 		{
-			i.start();
+			T tx = new T()
+			{
+				@Override
+				public void onStop(long nsTime, double msTime)
+				{
+					o("Started in " + F.f(msTime, 2) + "ms");
+					Phantom.sm += msTime;
+				}
+			};
+			
+			for(Controllable i : controllers)
+			{
+				i.start();
+			}
+			
+			onStart();
+			
+			task = new Task(this, 0)
+			{
+				public void run()
+				{
+					Timer t = new Timer();
+					t.start();
+					
+					for(Controllable i : liveTimings.k())
+					{
+						liveTimings.put(i, liveTimings.get(i) - 1);
+						
+						if(liveTimings.get(i) <= 0)
+						{
+							i.tick();
+							liveTimings.put(i, timings.get(i));
+						}
+					}
+					
+					t.stop();
+					time.put(t.getTime());
+				}
+			};
+			
+			tx.stop();
 		}
 		
-		onStart();
-		
-		task = new Task(this, 0)
+		else
 		{
-			public void run()
+			T tx = new T()
 			{
-				Timer t = new Timer();
-				t.start();
-				
-				for(Controllable i : liveTimings.k())
+				@Override
+				public void onStop(long nsTime, double msTime)
 				{
-					liveTimings.put(i, liveTimings.get(i) - 1);
-					
-					if(liveTimings.get(i) <= 0)
-					{
-						i.tick();
-						liveTimings.put(i, timings.get(i));
-					}
+					o("Started in " + F.f(msTime, 2) + "ms");
+					Phantom.am += msTime;
 				}
-				
-				t.stop();
-				time.put(t.getTime());
-			}
-		};
+			};
+			
+			new A()
+			{
+				@Override
+				public void async()
+				{
+					for(Controllable i : controllers)
+					{
+						try
+						{
+							i.start();
+						}
+						
+						catch(Exception e)
+						{
+							w(C.RED + "FAILED TO ASYNC LOAD! " + C.YELLOW + "Attempting to SYNC LOAD " + i.toString());
+							
+							new S()
+							{
+								@Override
+								public void sync()
+								{
+									try
+									{
+										i.start();
+									}
+									
+									catch(Exception ex)
+									{
+										f("FAILED TO SYNC START " + i.toString());
+									}
+								}
+							};
+						}
+					}
+					
+					new S()
+					{
+						@Override
+						public void sync()
+						{
+							onStart();
+							
+							task = new Task(ControllablePlugin.this, 0)
+							{
+								public void run()
+								{
+									Timer t = new Timer();
+									t.start();
+									
+									for(Controllable i : liveTimings.k())
+									{
+										liveTimings.put(i, liveTimings.get(i) - 1);
+										
+										if(liveTimings.get(i) <= 0)
+										{
+											i.tick();
+											liveTimings.put(i, timings.get(i));
+										}
+									}
+									
+									t.stop();
+									time.put(t.getTime());
+								}
+							};
+							
+							tx.stop();
+						}
+					};
+				}
+			};
+		}
 	}
 	
 	@Override
