@@ -245,6 +245,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Down with Wraith");
 		msgx.add("Paper should be crumpled and thrown out");
 		msgx.add("Paper Spigots cannot flow water. #Soggy");
+		msgx.add("Async Async Async");
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
