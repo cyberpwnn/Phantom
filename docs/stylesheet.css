@@ -9,7 +9,7 @@ body {
     background-color:#ffffff;
     color:#353833;
     font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
-    font-size:14px;
+    font-size:18px;
     margin:0;
 }
 a:link, a:visited {
@@ -33,7 +33,7 @@ a[name]:hover {
 }
 pre {
     font-family:'DejaVu Sans Mono', monospace;
-    font-size:14px;
+    font-size:22px;
 }
 h1 {
     font-size:20px;
@@ -264,7 +264,7 @@ Page layout container styles
 .indexContainer {
     margin:10px;
     position:relative;
-    font-size:12px;
+    font-size:14px;
 }
 .indexContainer h2 {
     font-size:13px;
@@ -286,7 +286,7 @@ Page layout container styles
 }
 .contentContainer .description dl dd, .contentContainer .details dl dd, .serializedFormContainer dl dd {
     margin:5px 0 10px 0px;
-    font-size:14px;
+    font-size:22px;
     font-family:'DejaVu Sans Mono',monospace;
 }
 .serializedFormContainer dl.nameValue dt {
@@ -372,7 +372,6 @@ Table styles
     text-align:left;
     background-repeat:no-repeat;
     color:#253441;
-    font-weight:bold;
     clear:none;
     overflow:hidden;
     padding:0px;
@@ -397,12 +396,13 @@ Table styles
     padding-top:5px;
     padding-left:12px;
     padding-right:12px;
-    padding-bottom:7px;
+    padding-bottom:17px;
     display:inline-block;
     float:left;
     background-color:#D9D9D9;
     border: none;
-    height:16px;
+	font-size:22px;
+    height:30px;
 }
 .memberSummary caption span.activeTableTab span {
     white-space:nowrap;
@@ -469,7 +469,7 @@ td.colOne, td.colFirst, td.colLast, .useSummary td, .constantsSummary td{
     vertical-align:top;
     padding-right:0px;
     padding-top:8px;
-    padding-bottom:3px;
+    padding-bottom:6px;
 }
 th.colFirst, th.colLast, th.colOne, .constantsSummary th {
     background:#dee3e9;
@@ -478,13 +478,13 @@ th.colFirst, th.colLast, th.colOne, .constantsSummary th {
 }
 td.colFirst, th.colFirst {
     white-space:nowrap;
-    font-size:13px;
+    font-size:18px;
 }
 td.colLast, th.colLast {
-    font-size:13px;
+    font-size:18px;
 }
 td.colOne, th.colOne {
-    font-size:13px;
+    font-size:18px;
 }
 .overviewSummary td.colFirst, .overviewSummary th.colFirst,
 .useSummary td.colFirst, .useSummary th.colFirst,
@@ -495,9 +495,7 @@ td.colOne, th.colOne {
     width:25%;
     vertical-align:top;
 }
-td.colOne a:link, td.colOne a:active, td.colOne a:visited, td.colOne a:hover, td.colFirst a:link, td.colFirst a:active, td.colFirst a:visited, td.colFirst a:hover, td.colLast a:link, td.colLast a:active, td.colLast a:visited, td.colLast a:hover, .constantValuesContainer td a:link, .constantValuesContainer td a:active, .constantValuesContainer td a:visited, .constantValuesContainer td a:hover {
-    font-weight:bold;
-}
+
 .tableSubHeadingColor {
     background-color:#EEEEFF;
 }
@@ -526,7 +524,7 @@ ul.blockList ul.blockList ul.blockList li.blockList h3 {
 }
 
 div.block {
-    font-size:14px;
+    font-size:18px;
     font-family:'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
 }
 
@@ -548,7 +546,7 @@ Formatting effect styles
 h1.hidden {
     visibility:hidden;
     overflow:hidden;
-    font-size:10px;
+    font-size:18px;
 }
 .block {
     display:block;
