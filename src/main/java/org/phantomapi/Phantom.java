@@ -46,6 +46,7 @@ import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.sync.ExecutiveIterator;
+import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
@@ -55,6 +56,7 @@ import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
+import org.phantomapi.util.M;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
@@ -76,6 +78,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 {
 	private static Long thread;
 	private static Phantom instance;
+	public static double am = 0;
+	public static double sm = 0;
+	private static boolean syncStart;
 	private DataCluster environment;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
@@ -96,10 +101,28 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PlaceholderController placeholderController;
 	private EditSessionController editSessionController;
 	private MonitorController monitorController;
+	private Long nsx;
 	
 	public void enable()
 	{
+		nsx = M.ns();
 		instance = this;
+		syncStart = false;
+		
+		File f = new File(getDataFolder(), "sync");
+		
+		if(f.exists() && f.isDirectory())
+		{
+			new TaskLater()
+			{
+				@Override
+				public void run()
+				{
+					f("USING SYNC BOOT MODE");
+				}
+			};
+			syncStart = true;
+		}
 		
 		developmentController = new DevelopmentController(this);
 		environment = new DataCluster();
@@ -410,6 +433,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			
 		}
+		
+		new TaskLater()
+		{
+			@Override
+			public void run()
+			{
+				sm += ((double) (M.ns() - nsx) / 1000000);
+			}
+		};
 	}
 	
 	public void onStop()
@@ -808,7 +840,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					
 					else if(args[0].equalsIgnoreCase("thrash"))
 					{
-						thrash(sender);
+						new S()
+						{
+							@Override
+							public void sync()
+							{
+								thrash(sender);
+							}
+						};
 					}
 					
 					else if(args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v"))
@@ -1107,9 +1146,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					{
 						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					}
-					
-					System.gc();
-					
+										
 					PluginUtil.load("Phantom");
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
@@ -1477,5 +1514,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public MonitorController getMonitorController()
 	{
 		return monitorController;
+	}
+
+	public static boolean syncStart()
+	{
+		return syncStart;
 	}
 }
