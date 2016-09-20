@@ -30,9 +30,27 @@ public class PhantomWraith implements Wraith
 	 */
 	public PhantomWraith(EntityType type, String name)
 	{
-		this.type = type;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(type, name);
 		
+		if(npc.isSpawned())
+		{
+			this.type = npc.getEntity().getType();
+		}
+	}
+	
+	/**
+	 * Create a phantom wraith wrapper from the entity id
+	 * 
+	 * @param id the id
+	 */
+	public PhantomWraith(int id)
+	{
+		this.npc = CitizensAPI.getNPCRegistry().getById(id);
+		
+		if(npc.isSpawned())
+		{
+			this.type = npc.getEntity().getType();
+		}
 	}
 	
 	@Override
@@ -50,6 +68,11 @@ public class PhantomWraith implements Wraith
 	@Override
 	public EntityType getType()
 	{
+		if(npc.isSpawned())
+		{
+			this.type = npc.getEntity().getType();
+		}
+		
 		return type;
 	}
 	
