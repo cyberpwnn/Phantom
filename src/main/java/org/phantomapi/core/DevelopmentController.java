@@ -27,6 +27,7 @@ import org.phantomapi.util.PluginUtil;
 /**
  * @author cyberpwn
  */
+@SyncStart
 @Ticked(60)
 public class DevelopmentController extends Controller implements Configurable, Monitorable
 {
