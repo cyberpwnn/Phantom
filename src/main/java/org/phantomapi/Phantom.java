@@ -208,6 +208,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Hits of salt everywhere");
 		msgx.add("Are you sick? You don't look ok.");
 		msgx.add("BOO!");
+		msgx.add("I AM A WRAITH");
+		msgx.add("Did you see that wraith?");
+		msgx.add("Caffd up and loaded up");
+		msgx.add("Simply loaded.");
+		msgx.add("READY TO GO");
+		msgx.add("Down with Wraith");
+		msgx.add("Paper should be crumpled and thrown out");
+		msgx.add("Paper Spigots cannot flow water. #Soggy");
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
