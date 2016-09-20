@@ -46,10 +46,19 @@ public class PhantomWraith implements Wraith
 	public PhantomWraith(int id)
 	{
 		this.npc = CitizensAPI.getNPCRegistry().getById(id);
+		this.type = null;
 		
-		if(npc.isSpawned())
+		try
 		{
-			this.type = npc.getEntity().getType();
+			if(npc.isSpawned())
+			{
+				this.type = npc.getEntity().getType();
+			}
+		}
+		
+		catch(Exception e)
+		{
+			
 		}
 	}
 	
