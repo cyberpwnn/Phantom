@@ -70,7 +70,15 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
 /**
- * The Phantom Plugin.
+ * The Phantom Plugin. Useful for many things such as<br />
+ * <ul>
+ * <li>Registering custom controllers</li>
+ * <li>Getting the server information</li>
+ * <li>Static access to the bukkit api and phantom framework</li>
+ * <li>
+ * <p>
+ * Loads of utilities and features</li>
+ * </ul>
  * 
  * @author cyberpwn
  */
@@ -381,7 +389,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
-	 * Save the environment data
+	 * Save the environment data. This saves all of the data put into the
+	 * environment data cluster
 	 */
 	public void saveEnvironment()
 	{
@@ -397,10 +406,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	}
 	
 	/**
-	 * Ping another server on the network
+	 * Ping another server on the network. This sends the message to the phantom
+	 * sender instance
 	 * 
 	 * @param server
-	 *            the server
+	 *            the server the server name
 	 * @param s
 	 *            the command sender
 	 */

@@ -25,7 +25,9 @@ import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
 /**
- * A controllable plugin which can act as a plugin and a controller
+ * A controllable plugin which can act as a plugin and a controller. This
+ * controller cannot be a sub controller as it is the root controller. getPlugin
+ * returns null
  * 
  * @author cyberpwn
  */
@@ -77,11 +79,25 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		d.s("Started");
 	}
 	
+	/**
+	 * Get all controllers in this plugin
+	 * 
+	 * @return a GList of controllers
+	 */
 	public GList<Controllable> getAllControllers()
 	{
 		return getAllControllers(this);
 	}
 	
+	/**
+	 * Get all sub controllers from the given controller. This is a deep search
+	 * (ALL
+	 * sub sub controllers)
+	 * 
+	 * @param cx
+	 *            the controllable object
+	 * @return the list of controllers.
+	 */
 	private GList<Controllable> getAllControllers(Controllable cx)
 	{
 		GList<Controllable> c = new GList<Controllable>();
@@ -584,31 +600,73 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		return Phantom.instance().getBinding(name);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void i(String... s)
 	{
 		d.i(s);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void s(String... o)
 	{
 		d.s(o);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void f(String... o)
 	{
 		d.f(o);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void w(String... o)
 	{
 		d.w(o);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void v(String... o)
 	{
 		d.v(o);
 	}
 	
+	/**
+	 * Dispatcher helpers for using the internal dispatcher with this object
+	 * simply invokes d.x()
+	 * 
+	 * @param s
+	 *            the strings of messages
+	 */
 	public void o(String... o)
 	{
 		d.o(o);
