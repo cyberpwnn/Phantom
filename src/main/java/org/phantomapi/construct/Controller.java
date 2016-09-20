@@ -19,6 +19,7 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.D;
+import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
 /**
@@ -65,10 +66,29 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			i.start();
 		}
 		
+		T tx = null;
+		
+		if(Phantom.isSync())
+		{
+			tx = new T()
+			{
+				@Override
+				public void onStop(long nsTime, double msTime)
+				{
+					Phantom.sm += msTime;
+				}
+			};
+		}
+		
 		getPlugin().registerListener(this);
 		Phantom.registerSilenced(d);
 		s("Started");
 		onStart();
+		
+		if(tx != null)
+		{
+			tx.stop();
+		}
 	}
 	
 	@Override
