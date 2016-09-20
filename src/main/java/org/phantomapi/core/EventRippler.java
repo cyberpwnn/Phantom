@@ -33,8 +33,31 @@ import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
 import org.phantomapi.event.TNTPrimeEvent;
+import org.phantomapi.event.WraithClickEvent;
+import org.phantomapi.event.WraithCollisionEvent;
+import org.phantomapi.event.WraithCombustByBlockEvent;
+import org.phantomapi.event.WraithCombustByEntityEvent;
+import org.phantomapi.event.WraithDamageByBlockEvent;
+import org.phantomapi.event.WraithDamageByEntityEvent;
+import org.phantomapi.event.WraithDeathEvent;
+import org.phantomapi.event.WraithDespawnEvent;
+import org.phantomapi.event.WraithRemoveEvent;
+import org.phantomapi.event.WraithSpawnEvent;
+import org.phantomapi.event.WraithTargetEntityEvent;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.world.Area;
+import org.phantomapi.wraith.PhantomWraith;
+import net.citizensnpcs.api.event.EntityTargetNPCEvent;
+import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCCollisionEvent;
+import net.citizensnpcs.api.event.NPCCombustByBlockEvent;
+import net.citizensnpcs.api.event.NPCCombustByEntityEvent;
+import net.citizensnpcs.api.event.NPCDamageByBlockEvent;
+import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
+import net.citizensnpcs.api.event.NPCDeathEvent;
+import net.citizensnpcs.api.event.NPCDespawnEvent;
+import net.citizensnpcs.api.event.NPCRemoveEvent;
+import net.citizensnpcs.api.event.NPCSpawnEvent;
 
 /**
  * Ripple fire events for more specific events
@@ -167,6 +190,123 @@ public class EventRippler extends Controller
 		catch(Exception ex)
 		{
 			
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(EntityTargetNPCEvent e)
+	{
+		WraithTargetEntityEvent ex = new WraithTargetEntityEvent(new PhantomWraith(e.getNPC().getId()), e.getEntity());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCCollisionEvent e)
+	{
+		WraithCollisionEvent ex = new WraithCollisionEvent(new PhantomWraith(e.getNPC().getId()), e.getCollidedWith());
+		callEvent(ex);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCCombustByBlockEvent e)
+	{
+		WraithCombustByBlockEvent ex = new WraithCombustByBlockEvent(new PhantomWraith(e.getNPC().getId()), e.getCombuster());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCCombustByEntityEvent e)
+	{
+		WraithCombustByEntityEvent ex = new WraithCombustByEntityEvent(new PhantomWraith(e.getNPC().getId()), e.getCombuster());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCDamageByBlockEvent e)
+	{
+		WraithDamageByBlockEvent ex = new WraithDamageByBlockEvent(new PhantomWraith(e.getNPC().getId()), e.getDamager(), e.getDamage());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCDeathEvent e)
+	{
+		WraithDeathEvent ex = new WraithDeathEvent(new PhantomWraith(e.getNPC().getId()));
+		callEvent(ex);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCDespawnEvent e)
+	{
+		WraithDespawnEvent ex = new WraithDespawnEvent(new PhantomWraith(e.getNPC().getId()));
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCRemoveEvent e)
+	{
+		WraithRemoveEvent ex = new WraithRemoveEvent(new PhantomWraith(e.getNPC().getId()));
+		callEvent(ex);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCSpawnEvent e)
+	{
+		WraithSpawnEvent ex = new WraithSpawnEvent(new PhantomWraith(e.getNPC().getId()));
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCDamageByEntityEvent e)
+	{
+		WraithDamageByEntityEvent ex = new WraithDamageByEntityEvent(new PhantomWraith(e.getNPC().getId()), e.getDamager(), e.getDamage());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(NPCClickEvent e)
+	{
+		WraithClickEvent ex = new WraithClickEvent(new PhantomWraith(e.getNPC().getId()), e.getClicker());
+		callEvent(ex);
+		
+		if(ex.isCancelled())
+		{
+			e.setCancelled(true);
 		}
 	}
 	
