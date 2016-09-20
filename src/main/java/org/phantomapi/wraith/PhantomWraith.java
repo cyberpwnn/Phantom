@@ -170,32 +170,32 @@ public class PhantomWraith implements Wraith
 	}
 	
 	@Override
-	public void addTrait(WraithTrait trait)
+	public void addTrait(WrapperTrait trait)
 	{
 		npc.addTrait(trait);
 	}
 	
 	@Override
-	public GList<WraithTrait> getTraits()
+	public GList<WrapperTrait> getTraits()
 	{
-		GList<WraithTrait> traits = new GList<WraithTrait>();
+		GList<WrapperTrait> traits = new GList<WrapperTrait>();
 		
 		for(Trait i : npc.getTraits())
 		{
-			traits.add((WraithTrait) i);
+			traits.add((WrapperTrait) i);
 		}
 		
 		return traits;
 	}
 	
 	@Override
-	public boolean hasTrait(Class<? extends WraithTrait> trait)
+	public boolean hasTrait(Class<? extends WrapperTrait> trait)
 	{
 		return npc.hasTrait(trait);
 	}
 	
 	@Override
-	public void removeTrait(Class<? extends WraithTrait> trait)
+	public void removeTrait(Class<? extends WrapperTrait> trait)
 	{
 		npc.removeTrait(trait);
 	}
