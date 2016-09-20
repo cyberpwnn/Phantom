@@ -80,6 +80,8 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
+import org.phantomapi.wraith.InteractionAI;
+import org.phantomapi.wraith.PathingAI;
 import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
 import com.boydti.fawe.object.RunnableVal;
@@ -501,18 +503,29 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("wraith-follow", new Runnable()
+		tests.put("wraith", new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
-					Wraith w = new PhantomWraith(EntityType.PLAYER, new GList<String>(new String[]{"Xanthous_", "cyberpwn", "SwiftSwamp", "Puretie"}).pickRandom());
-					w.spawn(i.getLocation().add(10, 1, 10));
-					w.getNavigator().setTarget(i, false);
+					Wraith w = new PhantomWraith(EntityType.PLAYER, new GList<String>(new String[]{"Skriglitz", "cyberpwn", "SwiftSwamp", "BooSwift", "Puretie", "Xanthous_"}).pickRandom());
+					w.spawn(i.getLocation());
 					
-					new TaskLater(500)
+					InteractionAI iai = new InteractionAI();
+					PathingAI pai = new PathingAI();
+					pai.addPriority(Material.ANVIL, 0.967);
+					pai.addPriority(Material.BOOKSHELF, 0.967);
+					pai.addPriority(Material.ENCHANTMENT_TABLE, 0.967);
+					pai.addPriority(Material.CHEST, 0.967);
+					pai.addPriority(Material.BREWING_STAND, 0.967);
+					pai.setActivity(0.043);
+					
+					w.addTrait(pai);
+					w.addTrait(iai);
+					
+					new TaskLater(1200)
 					{
 						@Override
 						public void run()
