@@ -7,4 +7,6 @@ public interface WraithHandler extends Listener
 	public Wraith getWraith();
 	
 	public String getName();
+	
+	public void unregister();
 }
