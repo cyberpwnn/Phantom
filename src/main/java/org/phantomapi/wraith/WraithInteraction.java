@@ -7,5 +7,18 @@ package org.phantomapi.wraith;
  */
 public enum WraithInteraction
 {
-	RIGHT_CLICK, LEFT_CLICK, UNKNOWN;
+	/**
+	 * Player right clicked wraith
+	 */
+	RIGHT_CLICK,
+	
+	/**
+	 * Player left clicked wraith
+	 */
+	LEFT_CLICK,
+	
+	/**
+	 * Player did something unspeakable.
+	 */
+	UNKNOWN;
 }
