@@ -99,4 +99,8 @@ public interface NPCWrapper
 	public void setChatName(String name);
 	
 	public void setChatHover(String hover);
+	
+	public void onInteract(Player p);
+	
+	public void onCollide(Player p);
 }
