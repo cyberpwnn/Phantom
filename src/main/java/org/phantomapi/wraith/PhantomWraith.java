@@ -1,6 +1,7 @@
 package org.phantomapi.wraith;
 
 import org.bukkit.Location;
+import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 
 public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHandled
@@ -12,6 +13,7 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 		super(name, skin);
 		
 		handlers = new GList<WraithHandler>();
+		Phantom.instance().getWraithController().registerWraith(this);
 	}
 	
 	public PhantomWraith(String name)
@@ -44,6 +46,7 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 		}
 		
 		handlers.clear();
+		Phantom.instance().getWraithController().unRegisterWraith(this);
 	}
 	
 	@Override
