@@ -5,7 +5,12 @@ description: Phantom - Another Damn API
 author: cyberpwn
 authors: [cyberpwn]
 depend: [ProtocolLib, PlaceholderAPI, Citizens, FastAsyncWorldEdit, WorldEdit]
+softdepend: [WorldBorder, Essentials, Vault, WorldGuard, Votifier]
+loadbefore: [Factions, SilkSpawners, GlacialNote, NoCheatPlus, PlugMan]
 website: http://phantomapi.org/
+load: POSTWORLD
+database: false
 commands:
   phantom:
     aliases: [ph, p, phan, pha]
+    description: The only damn command you need
