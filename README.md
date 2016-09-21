@@ -7,4 +7,4 @@
 
 # Get Started
 * [Get Started on the Wiki](https://cyberpwnn.gitbooks.io/phantom/content/)
-* [Dive into the Docs](http://cyberpwn.org/docs/phantom/)
+* [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
