@@ -2,92 +2,56 @@ package org.phantomapi.wraith;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-import de.inventivegames.npc.NPC;
-import de.inventivegames.npc.NPCLib;
-import de.inventivegames.npc.equipment.EquipmentSlot;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 
 public class PhantomNPCWrapper implements NPCWrapper
 {
 	private NPC npc;
-	private String name;
-	private String skin;
-	
-	public PhantomNPCWrapper(String name, String skin)
-	{
-		this.npc = null;
-		this.name = name;
-		this.skin = skin;
-	}
 	
 	public PhantomNPCWrapper(String name)
 	{
-		this(name, name);
+		this.npc = null;
+		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 	}
 	
 	public void spawn(Location location)
 	{
-		this.npc = NPCLib.spawnPlayerNPC(location, name, skin);
+		npc.spawn(location);
 	}
 	
 	public void despawn()
 	{
 		npc.despawn();
-		npc = null;
 	}
 	
 	public boolean isSpawned()
 	{
-		return npc != null;
+		return npc.isSpawned();
 	}
 	
 	public Location getLocation()
 	{
-		if(isSpawned())
-		{
-			Location location = npc.getLocation().clone();
-			location.setYaw(getYaw());
-			location.setPitch(getPitch());
-			
-			return location;
-		}
-		
-		return null;
+		return npc.getStoredLocation();
 	}
 	
 	public void teleport(Location location)
 	{
 		if(isSpawned())
 		{
-			npc.teleport(location);
-			setYawPitch(location.getYaw(), location.getPitch());
+			npc.teleport(location, TeleportCause.PLUGIN);
 		}
 	}
 	
-	public Entity getTarget()
+	public Entity getEntity()
 	{
 		if(isSpawned())
 		{
-			return npc.getTarget();
-		}
-		
-		return null;
-	}
-	
-	public void setTarget(Entity entity)
-	{
-		if(isSpawned())
-		{
-			npc.setTarget(entity);
-		}
-	}
-	
-	public LivingEntity getEntity()
-	{
-		if(isSpawned())
-		{
-			return npc.getBukkitEntity();
+			return npc.getEntity();
 		}
 		
 		return null;
@@ -97,7 +61,7 @@ public class PhantomNPCWrapper implements NPCWrapper
 	{
 		if(isSpawned())
 		{
-			return npc.getEntityID();
+			return getEntity().getEntityId();
 		}
 		
 		return -1;
@@ -107,7 +71,7 @@ public class PhantomNPCWrapper implements NPCWrapper
 	{
 		if(isSpawned())
 		{
-			npc.pathfindTo(location);
+			npc.getNavigator().setTarget(location);
 		}
 	}
 	
@@ -115,75 +79,31 @@ public class PhantomNPCWrapper implements NPCWrapper
 	{
 		if(isSpawned())
 		{
-			npc.lookAt(location);
+			npc.faceLocation(location);
 		}
-	}
-	
-	public void setPassenger(Entity entity)
-	{
-		if(isSpawned())
-		{
-			npc.setPassenger(entity);
-		}
-	}
-	
-	public Entity getPassenger()
-	{
-		if(isSpawned())
-		{
-			return npc.getPassenger();
-		}
-		
-		return null;
-	}
-	
-	public void setYawPitch(float yaw, float pitch)
-	{
-		setYaw(yaw);
-		setPitch(pitch);
-	}
-	
-	public void setYaw(float yaw)
-	{
-		if(isSpawned())
-		{
-			npc.setYaw(yaw);
-		}
-	}
-	
-	public Float getYaw()
-	{
-		if(isSpawned())
-		{
-			return npc.getYaw();
-		}
-		
-		return null;
-	}
-	
-	public void setPitch(float pitch)
-	{
-		if(isSpawned())
-		{
-			npc.setPitch(pitch);
-		}
-	}
-	
-	public Float getPitch()
-	{
-		if(isSpawned())
-		{
-			return npc.getPitch();
-		}
-		
-		return null;
 	}
 	
 	public void setEquipment(WraithEquipment slot, ItemStack item)
 	{
 		if(isSpawned())
 		{
-			npc.setEquipment(EquipmentSlot.valueOf(slot.toString()), item);
+			Player p = (Player) getEntity();
+			
+			switch(slot)
+			{
+				case CHEST:
+					p.getInventory().setChestplate(item);
+				case FEET:
+					p.getInventory().setBoots(item);
+				case HAND:
+					p.getInventory().setItemInHand(item);
+				case HEAD:
+					p.getInventory().setHelmet(item);
+				case LEGS:
+					p.getInventory().setLeggings(item);
+				default:
+					break;
+			}
 		}
 	}
 	
@@ -191,79 +111,23 @@ public class PhantomNPCWrapper implements NPCWrapper
 	{
 		if(isSpawned())
 		{
-			return npc.getEquipment(EquipmentSlot.valueOf(slot.toString()));
-		}
-		
-		return null;
-	}
-	
-	public void setInvulnerable(boolean invulnerable)
-	{
-		if(isSpawned())
-		{
-			npc.setInvulnerable(invulnerable);
-		}
-	}
-	
-	public Boolean isInvulnerable()
-	{
-		if(isSpawned())
-		{
-			return npc.isInvulnerable();
-		}
-		
-		return null;
-	}
-	
-	public void setCollision(boolean collision)
-	{
-		if(isSpawned())
-		{
-			npc.setCollision(collision);
-		}
-	}
-	
-	public Boolean hasCollision()
-	{
-		if(isSpawned())
-		{
-			return npc.hasCollision();
-		}
-		
-		return null;
-	}
-	
-	public void setControllable(boolean controllable)
-	{
-		if(isSpawned())
-		{
-			npc.setControllable(controllable);
-		}
-	}
-	
-	public Boolean isControllable()
-	{
-		if(isSpawned())
-		{
-			return npc.isControllable();
-		}
-		
-		return null;
-	}
-	
-	public void setFrozen(boolean frozen)
-	{
-		if(isSpawned())
-		{
-			npc.setFrozen(frozen);
-		}
-	}
-	
-	public Boolean isFrozen()
-	{
-		if(isSpawned())
-		{
-			return npc.isFrozen();
+			Player p = (Player) getEntity();
+			
+			switch(slot)
+			{
+				case CHEST:
+					return p.getInventory().getChestplate();
+				case FEET:
+					return p.getInventory().getBoots();
+				case HAND:
+					return p.getInventory().getItemInHand();
+				case HEAD:
+					return p.getInventory().getHelmet();
+				case LEGS:
+					return p.getInventory().getLeggings();
+				default:
+					break;
+			}
 		}
 		
 		return null;
@@ -271,33 +135,11 @@ public class PhantomNPCWrapper implements NPCWrapper
 	
 	public String getName()
 	{
-		return name;
+		return npc.getName();
 	}
 	
 	public void setName(String name)
 	{
-		this.name = name;
-		reset();
-	}
-	
-	public String getSkin()
-	{
-		return skin;
-	}
-	
-	public void setSkin(String skin)
-	{
-		this.skin = skin;
-		reset();
-	}
-	
-	public void reset()
-	{
-		if(isSpawned())
-		{
-			Location last = getLocation();
-			despawn();
-			spawn(last);
-		}
+		npc.setName(name);
 	}
 }
