@@ -1,7 +1,7 @@
 name: Phantom
 version: ${project.version}
 main: org.phantomapi.Phantom
-description: Phantom - Another Damn API
+description: ${project.description}
 author: cyberpwn
 authors: [cyberpwn]
 depend: [ProtocolLib, PlaceholderAPI, Citizens, FastAsyncWorldEdit, WorldEdit]
