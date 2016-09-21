@@ -4,6 +4,8 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.wraith.Wraith;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 
 public class WraithController extends Controller
 {
@@ -32,6 +34,11 @@ public class WraithController extends Controller
 		}
 		
 		wraiths.clear();
+		
+		for(NPC i : new GList<NPC>(CitizensAPI.getNPCRegistry().iterator()))
+		{
+			i.destroy();
+		}
 	}
 	
 	public void registerWraith(Wraith wraith)
