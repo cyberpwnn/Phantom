@@ -22,6 +22,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	private String chatHover;
 	private MessageBuilder mb;
 	private WraithTarget target;
+	private WraithTarget focus;
 	
 	public PhantomNPCWrapper(String name)
 	{
@@ -31,28 +32,34 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		this.chatHover = "Hi, I'm " + npc.getName();
 		this.mb = new MessageBuilder(this);
 		this.target = null;
+		this.focus = null;
 	}
 	
+	@Override
 	public void spawn(Location location)
 	{
 		npc.spawn(location);
 	}
 	
+	@Override
 	public void despawn()
 	{
 		npc.despawn();
 	}
 	
+	@Override
 	public boolean isSpawned()
 	{
 		return npc.isSpawned();
 	}
 	
+	@Override
 	public Location getLocation()
 	{
 		return npc.getStoredLocation();
 	}
 	
+	@Override
 	public void teleport(Location location)
 	{
 		if(isSpawned())
@@ -61,6 +68,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		}
 	}
 	
+	@Override
 	public Entity getEntity()
 	{
 		if(isSpawned())
@@ -71,6 +79,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		return null;
 	}
 	
+	@Override
 	public int getEntityId()
 	{
 		if(isSpawned())
@@ -81,6 +90,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		return -1;
 	}
 	
+	@Override
 	public void target(Location location)
 	{
 		if(isSpawned())
@@ -89,22 +99,25 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		}
 	}
 	
+	@Override
 	public void target(Entity entity)
 	{
-		if(isSpawned())
-		{
-			target = new WraithTarget(entity);
-		}
+		target = new WraithTarget(entity);
 	}
 	
-	public void look(Location location)
+	@Override
+	public void setFocus(WraithTarget target)
 	{
-		if(isSpawned())
-		{
-			npc.faceLocation(location);
-		}
+		focus = target;
 	}
 	
+	@Override
+	public WraithTarget getFocus()
+	{
+		return focus;
+	}
+	
+	@Override
 	public void setEquipment(WraithEquipment slot, ItemStack item)
 	{
 		if(isSpawned())
@@ -129,6 +142,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		}
 	}
 	
+	@Override
 	public ItemStack getEquipment(WraithEquipment slot)
 	{
 		if(isSpawned())
@@ -155,11 +169,13 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		return null;
 	}
 	
+	@Override
 	public String getName()
 	{
 		return npc.getName();
 	}
 	
+	@Override
 	public void setName(String name)
 	{
 		npc.setName(name);
@@ -322,11 +338,49 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	}
 	
 	@Override
+	public void tick()
+	{
+		if(isSpawned())
+		{
+			onTick();
+			updateTarget();
+			updateFocus();
+		}
+	}
+	
+	@Override
+	public void onTick()
+	{
+		
+	}
+	
+	@Override
 	public void updateTarget()
 	{
 		if(hasTarget())
 		{
 			npc.getNavigator().setTarget(getTarget().getTarget());
 		}
+	}
+
+	@Override
+	public void updateFocus()
+	{
+		if(hasFocus())
+		{
+			lookAt(getFocus().getTarget());
+		}
+	}
+
+	@Override
+	public void lookAt(Location location)
+	{
+		npc.faceLocation(location);
+	}
+
+	@Override
+	public boolean hasFocus()
+	{
+		return focus != null;
 	}
 }
