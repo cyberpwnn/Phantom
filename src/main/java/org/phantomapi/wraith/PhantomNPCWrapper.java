@@ -91,18 +91,15 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	}
 	
 	@Override
-	public void target(Location location)
+	public void setTarget(Location location)
 	{
-		if(isSpawned())
-		{
-			target = new WraithTarget(location);
-		}
+		setTarget(new WraithTarget(location));
 	}
 	
 	@Override
-	public void target(Entity entity)
+	public void setTarget(Entity entity)
 	{
-		target = new WraithTarget(entity);
+		setTarget(new WraithTarget(entity));
 	}
 	
 	@Override
@@ -382,5 +379,23 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	public boolean hasFocus()
 	{
 		return focus != null;
+	}
+
+	@Override
+	public void setTarget(WraithTarget target)
+	{
+		this.target = target;
+	}
+
+	@Override
+	public void setFocus(Location location)
+	{
+		setFocus(new WraithTarget(location));
+	}
+
+	@Override
+	public void setFocus(Entity entity)
+	{
+		setFocus(new WraithTarget(entity));
 	}
 }
