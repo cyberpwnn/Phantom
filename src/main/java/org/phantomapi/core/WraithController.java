@@ -43,4 +43,17 @@ public class WraithController extends Controller
 	{
 		wraiths.remove(wraith);
 	}
+
+	public Wraith get(int entityID)
+	{
+		for(Wraith i : wraiths)
+		{
+			if(i.getEntityId() == entityID)
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
 }
