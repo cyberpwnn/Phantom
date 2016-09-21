@@ -25,6 +25,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	private MessageBuilder mb;
 	private WraithTarget target;
 	private WraithTarget focus;
+	private Boolean aggressive;
 	
 	public PhantomNPCWrapper(String name)
 	{
@@ -35,6 +36,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		this.mb = new MessageBuilder(this);
 		this.target = null;
 		this.focus = null;
+		this.aggressive = false;
 	}
 	
 	@Override
@@ -395,5 +397,23 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	public void onCollide(Entity p)
 	{
 		
+	}
+
+	@Override
+	public void onDamage(Entity damager, double damage)
+	{
+		
+	}
+
+	@Override
+	public void setAggressive(boolean aggro)
+	{
+		aggressive = true;
+	}
+
+	@Override
+	public boolean isAggressive()
+	{
+		return aggressive;
 	}
 }
