@@ -39,6 +39,7 @@ import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.TestController;
+import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
@@ -106,6 +107,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PlaceholderController placeholderController;
 	private EditSessionController editSessionController;
 	private MonitorController monitorController;
+	private WraithController wraithController;
+	
 	private Long nsx;
 	
 	public void enable()
@@ -145,6 +148,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		placeholderController = new PlaceholderController(this);
 		bungeeController = new BungeeController(this);
 		editSessionController = new EditSessionController(this);
+		wraithController = new WraithController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		thread = Thread.currentThread().getId();
@@ -166,6 +170,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(bungeeController);
 		register(placeholderController);
 		register(editSessionController);
+		register(wraithController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -176,7 +181,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			D.fool = true;
 		}
 	}
-
+	
 	public void onStart()
 	{
 		try
@@ -1073,7 +1078,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					{
 						thrashUpdate((int) (100.0 * ((double) ic / (double) imax)) + "%");
 					}
-										
+					
 					PluginUtil.load("Phantom");
 					ic++;
 					sender.sendMessage(t + "Thrashing... " + C.BOLD + (int) (100.0 * ((double) ic / (double) imax)) + "%");
@@ -1371,6 +1376,31 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return instance.globalRegistry;
 	}
 	
+	public static double getAm()
+	{
+		return am;
+	}
+	
+	public static double getSm()
+	{
+		return sm;
+	}
+	
+	public static boolean isSyncStart()
+	{
+		return syncStart;
+	}
+	
+	public WraithController getWraithController()
+	{
+		return wraithController;
+	}
+	
+	public Long getNsx()
+	{
+		return nsx;
+	}
+	
 	public BungeeController getBungeeController()
 	{
 		return bungeeController;
@@ -1442,7 +1472,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return monitorController;
 	}
-
+	
 	public static boolean syncStart()
 	{
 		return syncStart;
