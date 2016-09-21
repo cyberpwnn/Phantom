@@ -20,7 +20,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.phantomapi.Phantom;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.event.InventoryDropItemOnItemEvent;
@@ -34,18 +33,8 @@ import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
 import org.phantomapi.event.TNTPrimeEvent;
-import org.phantomapi.event.WraithCollideEvent;
-import org.phantomapi.event.WraithDamageEvent;
-import org.phantomapi.event.WraithInteractEvent;
-import org.phantomapi.event.WraithMoveEvent;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.world.Area;
-import org.phantomapi.wraith.Wraith;
-import org.phantomapi.wraith.WraithInteraction;
-import de.inventivegames.npc.event.NPCCollideEvent;
-import de.inventivegames.npc.event.NPCDamageEvent;
-import de.inventivegames.npc.event.NPCInteractEvent;
-import de.inventivegames.npc.event.NPCMotionEvent;
 
 /**
  * Ripple fire events for more specific events
@@ -178,74 +167,6 @@ public class EventRippler extends Controller
 		catch(Exception ex)
 		{
 			
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(NPCCollideEvent e)
-	{
-		Wraith wraith = Phantom.instance().getWraithController().get(e.getNPC().getEntityID());
-		
-		if(wraith != null)
-		{
-			WraithCollideEvent ev = new WraithCollideEvent(wraith, e.getWith());
-			callEvent(ev);
-			
-			if(ev.isCancelled())
-			{
-				e.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(NPCDamageEvent e)
-	{
-		Wraith wraith = Phantom.instance().getWraithController().get(e.getNPC().getEntityID());
-		
-		if(wraith != null)
-		{
-			WraithDamageEvent ev = new WraithDamageEvent(wraith, e.getDamager(), e.getCause(), (double) e.getAmount());
-			callEvent(ev);
-			
-			if(ev.isCancelled())
-			{
-				e.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(NPCInteractEvent e)
-	{
-		Wraith wraith = Phantom.instance().getWraithController().get(e.getNPC().getEntityID());
-		
-		if(wraith != null)
-		{
-			WraithInteractEvent ev = new WraithInteractEvent(wraith, e.getPlayer(), WraithInteraction.valueOf(e.getType().toString()));
-			callEvent(ev);
-			
-			if(ev.isCancelled())
-			{
-				e.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(NPCMotionEvent e)
-	{
-		Wraith wraith = Phantom.instance().getWraithController().get(e.getNPC().getEntityID());
-		
-		if(wraith != null)
-		{
-			WraithMoveEvent ev = new WraithMoveEvent(wraith, e.getMotion());
-			callEvent(ev);
-			
-			if(ev.isCancelled())
-			{
-				e.setCancelled(true);
-			}
 		}
 	}
 	
