@@ -9,7 +9,7 @@ import org.phantomapi.wraith.Wraith;
  */
 public class WraithEvent extends CancellablePhantomEvent
 {
-	private final Wraith wraith;
+	protected final Wraith wraith;
 	
 	public WraithEvent(Wraith wraith)
 	{
