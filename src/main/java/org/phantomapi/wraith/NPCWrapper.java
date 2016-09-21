@@ -28,9 +28,21 @@ public interface NPCWrapper
 	
 	public WraithTarget getTarget();
 	
+	public void tick();
+	
+	public void onTick();
+	
 	public void updateTarget();
-		
-	public void look(Location location);
+	
+	public void updateFocus();
+	
+	public boolean hasFocus();
+	
+	public void lookAt(Location location);
+	
+	public void setFocus(WraithTarget target);
+	
+	public WraithTarget getFocus();
 	
 	public void setEquipment(WraithEquipment slot, ItemStack item);
 	
