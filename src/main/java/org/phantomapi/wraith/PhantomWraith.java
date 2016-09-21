@@ -45,5 +45,15 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 		
 		handlers.clear();
 	}
+	
+	@Override
+	public void reset()
+	{
+		if(isSpawned())
+		{
+			Location last = getLocation();
+			super.despawn();
+			spawn(last);
+		}
 	}
 }
