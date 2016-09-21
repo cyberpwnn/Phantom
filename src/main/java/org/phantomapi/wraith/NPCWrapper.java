@@ -38,6 +38,8 @@ public interface NPCWrapper
 	
 	public void updateFocus();
 	
+	public void clearEquipment();
+		
 	public boolean hasFocus();
 	
 	public void lookAt(Location location);
