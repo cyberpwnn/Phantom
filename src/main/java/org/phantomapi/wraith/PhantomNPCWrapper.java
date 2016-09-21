@@ -14,6 +14,8 @@ import org.phantomapi.util.C;
 import org.phantomapi.world.Area;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.api.trait.trait.Equipment.EquipmentSlot;
 
 public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 {
@@ -119,23 +121,8 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		if(isSpawned())
 		{
-			Player p = (Player) getEntity();
-			
-			switch(slot)
-			{
-				case CHEST:
-					p.getInventory().setChestplate(item);
-				case FEET:
-					p.getInventory().setBoots(item);
-				case HAND:
-					p.getInventory().setItemInHand(item);
-				case HEAD:
-					p.getInventory().setHelmet(item);
-				case LEGS:
-					p.getInventory().setLeggings(item);
-				default:
-					break;
-			}
+			EquipmentSlot s = EquipmentSlot.valueOf(slot.toString());
+			npc.getTrait(Equipment.class).set(s, item);
 		}
 	}
 	
@@ -144,23 +131,8 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		if(isSpawned())
 		{
-			Player p = (Player) getEntity();
-			
-			switch(slot)
-			{
-				case CHEST:
-					return p.getInventory().getChestplate();
-				case FEET:
-					return p.getInventory().getBoots();
-				case HAND:
-					return p.getInventory().getItemInHand();
-				case HEAD:
-					return p.getInventory().getHelmet();
-				case LEGS:
-					return p.getInventory().getLeggings();
-				default:
-					break;
-			}
+			EquipmentSlot s = EquipmentSlot.valueOf(slot.toString());
+			return npc.getTrait(Equipment.class).get(s);
 		}
 		
 		return null;
@@ -359,7 +331,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 			npc.getNavigator().setTarget(getTarget().getTarget());
 		}
 	}
-
+	
 	@Override
 	public void updateFocus()
 	{
@@ -368,34 +340,43 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 			lookAt(getFocus().getTarget());
 		}
 	}
-
+	
 	@Override
 	public void lookAt(Location location)
 	{
 		npc.faceLocation(location);
 	}
-
+	
 	@Override
 	public boolean hasFocus()
 	{
 		return focus != null;
 	}
-
+	
 	@Override
 	public void setTarget(WraithTarget target)
 	{
 		this.target = target;
 	}
-
+	
 	@Override
 	public void setFocus(Location location)
 	{
 		setFocus(new WraithTarget(location));
 	}
-
+	
 	@Override
 	public void setFocus(Entity entity)
 	{
 		setFocus(new WraithTarget(entity));
+	}
+	
+	@Override
+	public void clearEquipment()
+	{
+		for(WraithEquipment i : WraithEquipment.values())
+		{
+			setEquipment(i, null);
+		}
 	}
 }
