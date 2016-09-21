@@ -22,9 +22,11 @@ public interface NPCWrapper
 	
 	public int getEntityId();
 	
-	public void target(Location location);
+	public void setTarget(Location location);
 	
-	public void target(Entity entity);
+	public void setTarget(Entity entity);
+	
+	public void setTarget(WraithTarget target);
 	
 	public WraithTarget getTarget();
 	
@@ -39,6 +41,10 @@ public interface NPCWrapper
 	public boolean hasFocus();
 	
 	public void lookAt(Location location);
+	
+	public void setFocus(Location location);
+	
+	public void setFocus(Entity entity);
 	
 	public void setFocus(WraithTarget target);
 	
