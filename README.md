@@ -8,3 +8,9 @@
 # Get Started
 * [Get Started on the Wiki](https://cyberpwnn.gitbooks.io/phantom/content/)
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
+
+# Latest Flagships
+* [Wraith](https://github.com/cyberpwnn/Phantom/releases/latest)
+* [Nova](https://github.com/cyberpwnn/Phantom/releases/tag/N9)
+* [Xeon](https://github.com/cyberpwnn/Phantom/releases/tag/10.9.3)
+* [Unflagged](https://github.com/cyberpwnn/Phantom/releases/tag/9.5)
