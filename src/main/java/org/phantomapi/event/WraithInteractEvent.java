@@ -2,7 +2,6 @@ package org.phantomapi.event;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.wraith.Wraith;
-import org.phantomapi.wraith.WraithInteraction;
 
 /**
  * A Player interacted with a wraith.
@@ -12,13 +11,11 @@ import org.phantomapi.wraith.WraithInteraction;
 public class WraithInteractEvent extends WraithEvent
 {
 	private final Player player;
-	private final WraithInteraction type;
 	
-	public WraithInteractEvent(Wraith wraith, Player player, WraithInteraction type)
+	public WraithInteractEvent(Wraith wraith, Player player)
 	{
 		super(wraith);
 		
-		this.type = type;
 		this.player = player;
 	}
 	
@@ -30,15 +27,5 @@ public class WraithInteractEvent extends WraithEvent
 	public Player getPlayer()
 	{
 		return player;
-	}
-	
-	/**
-	 * Get the type of interaction
-	 * 
-	 * @return the wraith interaction type
-	 */
-	public WraithInteraction getType()
-	{
-		return type;
 	}
 }
