@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -67,6 +68,7 @@ import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
+import org.phantomapi.util.M;
 import org.phantomapi.util.P;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
@@ -83,6 +85,7 @@ import org.phantomapi.world.W;
 import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
 import org.phantomapi.wraith.WraithEquipment;
+import org.phantomapi.wraith.WraithTarget;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -509,7 +512,94 @@ public class TestController extends Controller
 			{
 				for(Player i : onlinePlayers())
 				{
-					Wraith wraith = new PhantomWraith(C.AQUA + "Xanthous_");
+					Long[] last = new Long[] {M.ms()};
+					Long[] lastd = new Long[] {M.ms()};
+					
+					Wraith wraith = new PhantomWraith(C.LIGHT_PURPLE + "Wraith")
+					{
+						@Override
+						public void onTick()
+						{
+							if(hasTarget() && getLocation().distance(getTarget().getTarget()) < 4 && M.ms() - last[0] > 6000)
+							{
+								clearTarget();
+							}
+							
+							else if(!hasTarget() && getLocation().distance(i.getLocation()) > 9)
+							{
+								setTarget(i);
+							}
+						}
+						
+						@Override
+						public void onDamage(Entity e, double damage)
+						{
+							setTarget(e);
+							setFocus(e);
+							setEquipment(WraithEquipment.HAND, new ItemStack(Material.IRON_SWORD));
+							say("Bro, " + e.getName() + " what the fuck is your problem?", 12.4);
+							
+							new TaskLater(120)
+							{
+								@Override
+								public void run()
+								{
+									if(M.ms() - lastd[0] > 6000)
+									{
+										say("Alright, I'm good. I can resume drinking.", 12.7);
+										setEquipment(WraithEquipment.HAND, new ItemStack(Material.GLASS_BOTTLE));
+									}
+								}
+							};
+						}
+						
+						@Override
+						public void onCollide(Entity e)
+						{
+							if(M.ms() - last[0] > 3000)
+							{
+								last[0] = M.ms();
+								say(new GList<String>(new String[] {"What's your problem man?", "Back the fuck off dude.", "Bro, what is wrong with you?", "I said back off alright man?", "Get out of my face before I get in yours.", "You are way to close bro.", "Bruh, get out of my safe space", "Stop that, this is my space."}).pickRandom());
+								
+								setTarget(new WraithTarget(i.getLocation().add(new Vector((Math.random() * 6) - 3, 0, (Math.random() * 6) - 3))));
+							}
+						}
+						
+						@Override
+						public void onInteract(Player p)
+						{
+							say(Phantom.instance().getMsgx().pickRandom());
+							
+							setSneaking(true);
+							
+							int[] k = new int[] {0};
+							
+							new Task(2)
+							{
+								@Override
+								public void run()
+								{
+									k[0]++;
+									
+									if(M.r(0.67))
+									{
+										setSneaking(!isSneaking());
+									}
+									
+									if(k[0] > 20)
+									{
+										cancel();
+										
+										if(isSneaking())
+										{
+											setSneaking(false);
+										}
+									}
+								}
+							};
+						}
+					};
+					
 					wraith.spawn(i.getLocation());
 					
 					new TaskLater()
@@ -517,13 +607,12 @@ public class TestController extends Controller
 						@Override
 						public void run()
 						{
+							wraith.setProtected(false);
 							wraith.setTarget(i);
 							wraith.setFocus(i);
-							wraith.setEquipment(WraithEquipment.HAND, new ItemStack(Material.IRON_SWORD));
+							wraith.setEquipment(WraithEquipment.HAND, new ItemStack(Material.GLASS_BOTTLE));
 							wraith.setEquipment(WraithEquipment.LEGGINGS, new ItemStack(Material.LEATHER_LEGGINGS));
 							wraith.setEquipment(WraithEquipment.CHESTPLATE, new ItemStack(Material.LEATHER_CHESTPLATE));
-							wraith.setEquipment(WraithEquipment.BOOTS, new ItemStack(Material.LEATHER_BOOTS));
-							wraith.setEquipment(WraithEquipment.HELMET, new ItemStack(Material.LEATHER_HELMET));
 							wraith.say("What's up?", 12.8);
 						}
 					};
