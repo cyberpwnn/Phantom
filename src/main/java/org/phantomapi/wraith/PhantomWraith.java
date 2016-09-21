@@ -2,7 +2,7 @@ package org.phantomapi.wraith;
 
 import org.phantomapi.lang.GList;
 
-public class PhantomWraith extends PhantomNPCWrapper implements Wraith
+public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHandled
 {
 	private GList<WraithHandler> handlers;
 	
