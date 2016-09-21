@@ -79,6 +79,8 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
+import org.phantomapi.wraith.PhantomWraith;
+import org.phantomapi.wraith.Wraith;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -503,7 +505,20 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				
+				for(Player i : onlinePlayers())
+				{
+					Wraith wraith = new PhantomWraith(C.AQUA + i.getName());
+					wraith.spawn(i.getLocation());
+					
+					new Task(0)
+					{
+						@Override
+						public void run()
+						{
+							wraith.navigateTo(i.getLocation());
+						}
+					};
+				}
 			}
 		});
 		
