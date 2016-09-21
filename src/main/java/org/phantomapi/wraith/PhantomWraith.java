@@ -3,10 +3,21 @@ package org.phantomapi.wraith;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 
+/**
+ * Phantom wraith implementation
+ * 
+ * @author cyberpwn
+ */
 public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHandled
 {
 	private GList<WraithHandler> handlers;
 	
+	/**
+	 * Creat a wraith
+	 * 
+	 * @param name
+	 *            the name
+	 */
 	public PhantomWraith(String name)
 	{
 		super(name);
