@@ -1,5 +1,7 @@
 package org.phantomapi.wraith;
 
+import org.phantomapi.Phantom;
+
 public class WraithHandle implements WraithHandler
 {
 	private Wraith wraith;
@@ -9,6 +11,7 @@ public class WraithHandle implements WraithHandler
 		this.wraith = wraith;
 		
 		((WraithHandled) wraith).registerHandler(this);
+		Phantom.instance().registerListener(this);
 	}
 	
 	@Override
@@ -27,5 +30,11 @@ public class WraithHandle implements WraithHandler
 	public String toString()
 	{
 		return wraith.getName() + "<" + getName() + ">";
+	}
+
+	@Override
+	public void unregister()
+	{
+		Phantom.instance().unRegisterListener(this);
 	}
 }
