@@ -96,6 +96,10 @@ public interface NPCWrapper
 	
 	public String getChatHover();
 	
+	public void setAggressive(boolean aggro);
+	
+	public boolean isAggressive();
+	
 	public void setChatName(String name);
 	
 	public void setChatHover(String hover);
@@ -103,4 +107,6 @@ public interface NPCWrapper
 	public void onInteract(Player p);
 	
 	public void onCollide(Entity entity);
+	
+	public void onDamage(Entity damager, double damage);
 }
