@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
@@ -81,6 +82,7 @@ import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
+import org.phantomapi.wraith.WraithEquipment;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -515,7 +517,13 @@ public class TestController extends Controller
 						@Override
 						public void run()
 						{
-							wraith.target(i.getLocation());
+							wraith.setTarget(i);
+							wraith.setFocus(i);
+							wraith.setEquipment(WraithEquipment.HAND, new ItemStack(Material.IRON_SWORD));
+							wraith.setEquipment(WraithEquipment.LEGGINGS, new ItemStack(Material.LEATHER_LEGGINGS));
+							wraith.setEquipment(WraithEquipment.CHESTPLATE, new ItemStack(Material.LEATHER_CHESTPLATE));
+							wraith.setEquipment(WraithEquipment.BOOTS, new ItemStack(Material.LEATHER_BOOTS));
+							wraith.setEquipment(WraithEquipment.HELMET, new ItemStack(Material.LEATHER_HELMET));
 							wraith.say("What's up?", 12.8);
 						}
 					};
