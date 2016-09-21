@@ -182,11 +182,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.inventivetalent.npclib</groupId>
-			<artifactId>api</artifactId>
-			<version>1.8.6</version>
+			<groupId>net.citizensapi</groupId>
+			<artifactId>citizens</artifactId>
+			<version>2.0.16</version>
 			<scope>system</scope>
-			<systemPath>${req.lib}\NPCLib-1.8.6.jar</systemPath>
+			<systemPath>${req.lib}\Citizens-2.0.16.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.boydti</groupId>
