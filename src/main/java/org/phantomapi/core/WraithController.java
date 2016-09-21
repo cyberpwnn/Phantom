@@ -2,11 +2,13 @@ package org.phantomapi.core;
 
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.wraith.Wraith;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
+@Ticked(5)
 public class WraithController extends Controller
 {
 	private GList<Wraith> wraiths;
@@ -22,6 +24,15 @@ public class WraithController extends Controller
 	public void onStart()
 	{
 		
+	}
+	
+	@Override
+	public void onTick()
+	{
+		for(Wraith i : wraiths.copy())
+		{
+			i.tick();
+		}
 	}
 
 	@Override
