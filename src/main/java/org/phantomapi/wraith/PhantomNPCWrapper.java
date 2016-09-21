@@ -392,7 +392,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	}
 
 	@Override
-	public void onCollide(Player p)
+	public void onCollide(Entity p)
 	{
 		
 	}
