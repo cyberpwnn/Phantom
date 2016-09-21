@@ -1,5 +1,6 @@
 package org.phantomapi.wraith;
 
+import org.bukkit.Location;
 import org.phantomapi.lang.GList;
 
 public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHandled
@@ -31,5 +32,18 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 	public void unregisterHandler(WraithHandler handler)
 	{
 		handlers.remove(handler);
+		handler.unregister();
+	}
+	
+	@Override
+	public void despawn()
+	{
+		for(WraithHandler i : handlers.copy())
+		{
+			i.unregister();
+		}
+		
+		handlers.clear();
+	}
 	}
 }
