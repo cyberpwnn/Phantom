@@ -507,15 +507,16 @@ public class TestController extends Controller
 			{
 				for(Player i : onlinePlayers())
 				{
-					Wraith wraith = new PhantomWraith(C.AQUA + i.getName());
+					Wraith wraith = new PhantomWraith(C.AQUA + "Xanthous_");
 					wraith.spawn(i.getLocation());
 					
-					new Task(0)
+					new TaskLater()
 					{
 						@Override
 						public void run()
 						{
-							wraith.navigateTo(i.getLocation());
+							wraith.target(i.getLocation());
+							wraith.say("What's up?", 12.8);
 						}
 					};
 				}
