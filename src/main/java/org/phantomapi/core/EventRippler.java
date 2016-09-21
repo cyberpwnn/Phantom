@@ -35,6 +35,7 @@ import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
 import org.phantomapi.event.TNTPrimeEvent;
 import org.phantomapi.event.WraithCollideEvent;
+import org.phantomapi.event.WraithDamageEvent;
 import org.phantomapi.event.WraithInteractEvent;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.world.Area;
@@ -59,6 +60,27 @@ public class EventRippler extends Controller
 	{
 		try
 		{
+			if(e.getEntity().getType().equals(EntityType.PLAYER))
+			{
+				if(WraithUtil.isWraith((Player) e.getEntity()))
+				{
+					Wraith wraith = WraithUtil.getWraith((Player) e.getEntity());
+					WraithDamageEvent ev = new WraithDamageEvent(wraith, e.getDamager(), e.getCause(), e.getDamage());
+					
+					callEvent(ev);
+					
+					if(ev.isCancelled())
+					{
+						e.setCancelled(true);
+					}
+					
+					else
+					{
+						wraith.onDamage(ev.getDamager(), ev.getDamage());
+					}
+				}
+			}
+			
 			if(e.getDamager().getType().equals(EntityType.PLAYER))
 			{
 				if(e.getEntity().getType().equals(EntityType.PLAYER))
