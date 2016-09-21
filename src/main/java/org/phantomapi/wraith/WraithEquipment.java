@@ -1,6 +1,11 @@
 package org.phantomapi.wraith;
 
+/**
+ * Wraith equipment
+ * 
+ * @author cyberpwn
+ */
 public enum WraithEquipment
 {
-	HAND, FEET, LEGS, CHEST, HEAD;
+	HAND, BOOTS, LEGGINGS, CHESTPLATE, HELMET;
 }
