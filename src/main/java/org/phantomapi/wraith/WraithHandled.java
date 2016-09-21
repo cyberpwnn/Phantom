@@ -9,4 +9,6 @@ public interface WraithHandled
 	public void registerHandler(WraithHandler handler);
 	
 	public void unregisterHandler(WraithHandler handler);
+	
+	public void destroy();
 }
