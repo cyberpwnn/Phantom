@@ -2,10 +2,21 @@ package org.phantomapi.wraith;
 
 import org.phantomapi.Phantom;
 
+/**
+ * Wraith handler
+ * 
+ * @author cyberpwn
+ */
 public class WraithHandle implements WraithHandler
 {
 	private Wraith wraith;
 	
+	/**
+	 * Create a handler for a wraith
+	 * 
+	 * @param wraith
+	 *            the wraith to handle
+	 */
 	public WraithHandle(Wraith wraith)
 	{
 		this.wraith = wraith;
@@ -31,7 +42,7 @@ public class WraithHandle implements WraithHandler
 	{
 		return wraith.getName() + "<" + getName() + ">";
 	}
-
+	
 	@Override
 	public void unregister()
 	{
