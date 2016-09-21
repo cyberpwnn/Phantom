@@ -17,6 +17,11 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.Equipment.EquipmentSlot;
 
+/**
+ * Phantom NPC Wrapper implementation
+ * 
+ * @author cyberpwn
+ */
 public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 {
 	private NPC npc;
@@ -386,31 +391,31 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 			setEquipment(i, null);
 		}
 	}
-
+	
 	@Override
 	public void onInteract(Player p)
 	{
 		
 	}
-
+	
 	@Override
 	public void onCollide(Entity p)
 	{
 		
 	}
-
+	
 	@Override
 	public void onDamage(Entity damager, double damage)
 	{
 		
 	}
-
+	
 	@Override
 	public void setAggressive(boolean aggro)
 	{
 		aggressive = true;
 	}
-
+	
 	@Override
 	public boolean isAggressive()
 	{
