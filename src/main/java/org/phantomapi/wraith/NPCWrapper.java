@@ -102,5 +102,5 @@ public interface NPCWrapper
 	
 	public void onInteract(Player p);
 	
-	public void onCollide(Player p);
+	public void onCollide(Entity entity);
 }
