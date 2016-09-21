@@ -245,6 +245,11 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		if(isSpawned())
 		{
+			if(WraithUtil.isWraith(p))
+			{
+				return;
+			}
+			
 			mb.message(p, C.RESET + message);
 		}
 	}
@@ -378,5 +383,17 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 		{
 			setEquipment(i, null);
 		}
+	}
+
+	@Override
+	public void onInteract(Player p)
+	{
+		
+	}
+
+	@Override
+	public void onCollide(Player p)
+	{
+		
 	}
 }
