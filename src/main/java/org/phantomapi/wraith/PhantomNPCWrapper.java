@@ -46,7 +46,7 @@ public class PhantomNPCWrapper implements NPCWrapper
 	{
 		if(isSpawned())
 		{
-			Location location = npc.getLocation();
+			Location location = npc.getLocation().clone();
 			location.setYaw(getYaw());
 			location.setPitch(getPitch());
 			
