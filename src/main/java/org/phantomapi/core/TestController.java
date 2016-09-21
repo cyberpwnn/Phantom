@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
@@ -80,10 +79,6 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
-import org.phantomapi.wraith.InteractionAI;
-import org.phantomapi.wraith.PathingAI;
-import org.phantomapi.wraith.PhantomWraith;
-import org.phantomapi.wraith.Wraith;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -510,30 +505,7 @@ public class TestController extends Controller
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
-					Wraith w = new PhantomWraith(EntityType.PLAYER, new GList<String>(new String[]{"Skriglitz", "cyberpwn", "SwiftSwamp", "BooSwift", "Puretie", "Xanthous_"}).pickRandom());
-					w.spawn(i.getLocation());
 					
-					InteractionAI iai = new InteractionAI();
-					PathingAI pai = new PathingAI();
-					pai.addPriority(Material.ANVIL, 0.967);
-					pai.addPriority(Material.BOOKSHELF, 0.967);
-					pai.addPriority(Material.ENCHANTMENT_TABLE, 0.967);
-					pai.addPriority(Material.CHEST, 0.967);
-					pai.addPriority(Material.BREWING_STAND, 0.967);
-					pai.setActivity(0.043);
-					
-					w.addTrait(pai);
-					w.addTrait(iai);
-					
-					new TaskLater(1200)
-					{
-						@Override
-						public void run()
-						{
-							w.despawn();
-							w.destroy();
-						}
-					};
 				}
 			}
 		});
