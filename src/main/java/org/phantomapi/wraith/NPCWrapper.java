@@ -116,6 +116,11 @@ public interface NPCWrapper
 	public void updateFocus();
 	
 	/**
+	 * Destroy the npc
+	 */
+	public void destroy();
+	
+	/**
 	 * Remove all equipment from this npc
 	 */
 	public void clearEquipment();
