@@ -36,6 +36,7 @@ import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.core.MonitorController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NotificationController;
+import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.TestController;
@@ -108,6 +109,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private EditSessionController editSessionController;
 	private MonitorController monitorController;
 	private WraithController wraithController;
+	private PhotonController photonController;
 	
 	private Long nsx;
 	
@@ -149,6 +151,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bungeeController = new BungeeController(this);
 		editSessionController = new EditSessionController(this);
 		wraithController = new WraithController(this);
+		photonController = new PhotonController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		thread = Thread.currentThread().getId();
@@ -171,6 +174,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(placeholderController);
 		register(editSessionController);
 		register(wraithController);
+		register(photonController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1478,6 +1482,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return syncStart;
 	}
 	
+	public PhotonController getPhotonController()
+	{
+		return photonController;
+	}
+
 	private void buildSaltpile()
 	{
 		msgx.add("Dammit, let's do something already.");
