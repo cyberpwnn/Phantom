@@ -50,6 +50,26 @@ public class W
 	}
 	
 	/**
+	 * Could this block be seen based on if there is air surrounding it or not?
+	 * 
+	 * @param block
+	 *            the block
+	 * @return returns true if you could see this block ingame from a position
+	 */
+	public static boolean visible(Block block)
+	{
+		for(Block i : W.blockFaces(block))
+		{
+			if(i.getType().isTransparent())
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Get the player's world edit selection
 	 * 
 	 * @param p
