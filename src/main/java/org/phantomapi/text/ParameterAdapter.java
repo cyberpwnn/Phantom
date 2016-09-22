@@ -14,6 +14,13 @@ public abstract class ParameterAdapter
 		
 	}
 	
+	/**
+	 * A String to adapt with all adapters
+	 * 
+	 * @param s
+	 *            the string
+	 * @return the adapted string
+	 */
 	public String adapt(String s)
 	{
 		for(String i : F.getParameters(s, '%'))
