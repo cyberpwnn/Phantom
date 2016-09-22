@@ -23,7 +23,7 @@ public class PhantomEditSession
 	 */
 	public PhantomEditSession(PhantomWorld world)
 	{
-		es = new EditSessionBuilder(world.getName()).fastmode(true).limitUnlimited().autoQueue(true).build();
+		es = new EditSessionBuilder(world.getName()).fastmode(true).limitUnlimited().autoQueue(false).build();
 	}
 	
 	@SuppressWarnings("deprecation")
