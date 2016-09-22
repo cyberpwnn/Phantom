@@ -80,6 +80,7 @@ import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.CuboidException;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
+import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 import org.phantomapi.wraith.PhantomWraith;
@@ -1414,6 +1415,18 @@ public class TestController extends Controller
 				catch(IOException e)
 				{
 					e.printStackTrace();
+				}
+			}
+		});
+		
+		tests.put("relight", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					L.relight(i.getWorld());
 				}
 			}
 		});
