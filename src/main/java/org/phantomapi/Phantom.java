@@ -52,6 +52,7 @@ import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.text.SpeechMesh;
 import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
@@ -110,6 +111,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private MonitorController monitorController;
 	private WraithController wraithController;
 	private PhotonController photonController;
+	private SpeechMesh saltpile;
 	
 	private Long nsx;
 	
@@ -155,6 +157,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		thread = Thread.currentThread().getId();
+		saltpile = new SpeechMesh("saltpile");
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -1412,7 +1415,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public GList<String> getMsgx()
 	{
-		return msgx;
+		return saltpile.getAll("salt");
+	}
+	
+	public String getSalt()
+	{
+		return saltpile.get("salt");
 	}
 	
 	public GlobalRegistry getGlobalRegistry()
@@ -1567,5 +1575,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Paper should be crumpled and thrown out");
 		msgx.add("Paper Spigots cannot flow water. #Soggy");
 		msgx.add("Async Async Async");
+		saltpile.put("salt", msgx);
 	}
 }
