@@ -1,5 +1,7 @@
 package org.phantomapi.wraith;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 
@@ -52,5 +54,52 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 		
 		handlers.clear();
 		Phantom.instance().getWraithController().unRegisterWraith(this);
+	}
+	
+	@Override
+	public void tick()
+	{
+		for(WraithHandler i : handlers.copy())
+		{
+			i.onTick();
+		}
+		
+		super.tick();
+	}
+
+	@Override
+	public void onInteract(Player p)
+	{
+		for(WraithHandler i : handlers.copy())
+		{
+			if(i instanceof InteractiveHandle)
+			{
+				((InteractiveHandle) i).onInteract(p);
+			}
+		}
+	}
+
+	@Override
+	public void onCollide(Entity p)
+	{
+		for(WraithHandler i : handlers.copy())
+		{
+			if(i instanceof CollidableHandle)
+			{
+				((CollidableHandle) i).onCollide(p);
+			}
+		}
+	}
+
+	@Override
+	public void onDamage(Entity damager, double damage)
+	{
+		for(WraithHandler i : handlers.copy())
+		{
+			if(i instanceof DamagableHandle)
+			{
+				((DamagableHandle) i).onDamage(damager, damage);
+			}
+		}
 	}
 }
