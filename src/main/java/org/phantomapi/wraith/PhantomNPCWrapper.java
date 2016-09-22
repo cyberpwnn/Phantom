@@ -421,4 +421,10 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		return aggressive;
 	}
+
+	@Override
+	public void destroy()
+	{
+		npc.destroy();
+	}
 }
