@@ -13,6 +13,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -33,6 +34,7 @@ import org.phantomapi.event.PlayerMoveChunkEvent;
 import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
+import org.phantomapi.event.TNTDispenseEvent;
 import org.phantomapi.event.TNTPrimeEvent;
 import org.phantomapi.event.WraithCollideEvent;
 import org.phantomapi.event.WraithDamageEvent;
@@ -289,6 +291,48 @@ public class EventRippler extends Controller
 					};
 				}
 			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(BlockDispenseEvent e)
+	{
+		if(e.getItem() != null && e.getItem().getType().equals(Material.TNT))
+		{
+			new TaskLater(1)
+			{
+				@Override
+				public void run()
+				{
+					Area a = new Area(e.getBlock().getLocation(), 1.993);
+					for(Entity i : a.getNearbyEntities())
+					{
+						if(i.getType().equals(EntityType.PRIMED_TNT))
+						{
+							TNTPrimed tnt = (TNTPrimed) i;
+							TNTDispenseEvent exx = new TNTDispenseEvent(e.getItem(), e.getBlock(), tnt);
+							callEvent(exx);
+							
+							if(exx.isCancelled())
+							{
+								tnt.remove();
+								return;
+							}
+							
+							TNTPrimeEvent ex = new TNTPrimeEvent(tnt, e.getBlock());
+							callEvent(ex);
+							
+							if(ex.isCancelled())
+							{
+								tnt.remove();
+								return;
+							}
+														
+							break;
+						}
+					}
+				}
+			};
 		}
 	}
 	
