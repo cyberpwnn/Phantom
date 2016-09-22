@@ -27,4 +27,19 @@ public interface WraithHandler extends Listener
 	 * Unregister this wraith handler
 	 */
 	public void unregister();
+	
+	/**
+	 * Handler ticked
+	 */
+	public void onTick();
+	
+	/**
+	 * Handler bound
+	 */
+	public void onUnbind();
+	
+	/**
+	 * Handler unbound
+	 */
+	public void onBind();
 }
