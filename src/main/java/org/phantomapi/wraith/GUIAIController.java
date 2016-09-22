@@ -2,6 +2,12 @@ package org.phantomapi.wraith;
 
 import org.bukkit.entity.Player;
 
+/**
+ * GUI AI Controller, calls onInterfaceLaunch when a player interacts with this
+ * entity
+ * 
+ * @author cyberpwn
+ */
 public abstract class GUIAIController extends WraithHandle implements InteractiveHandle
 {
 	public GUIAIController(Wraith wraith)
