@@ -7,7 +7,7 @@ import org.phantomapi.Phantom;
  * 
  * @author cyberpwn
  */
-public class WraithHandle implements WraithHandler
+public abstract class WraithHandle implements WraithHandler
 {
 	private Wraith wraith;
 	
@@ -48,4 +48,13 @@ public class WraithHandle implements WraithHandler
 	{
 		Phantom.instance().unRegisterListener(this);
 	}
+
+	@Override
+	public abstract void onTick();
+
+	@Override
+	public abstract void onUnbind();
+
+	@Override
+	public abstract void onBind();
 }
