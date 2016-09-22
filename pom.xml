@@ -195,11 +195,6 @@
 			<version>16.08.28-f2d54e6-252</version>
 		</dependency>
 		<dependency>
-			<groupId>com.boydti</groupId>
-			<artifactId>fawe-api</artifactId>
-			<version>16.08.28-f2d54e6-252</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
