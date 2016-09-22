@@ -5,8 +5,6 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.wraith.Wraith;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 
 @Ticked(5)
 public class WraithController extends Controller
@@ -41,15 +39,11 @@ public class WraithController extends Controller
 		for(Wraith i : wraiths.copy())
 		{
 			i.despawn();
+			i.destroy();
 			unRegisterWraith(i);
 		}
 		
 		wraiths.clear();
-		
-		for(NPC i : new GList<NPC>(CitizensAPI.getNPCRegistry().iterator()))
-		{
-			i.destroy();
-		}
 	}
 	
 	public void registerWraith(Wraith wraith)
