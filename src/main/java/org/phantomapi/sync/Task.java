@@ -7,7 +7,6 @@ import org.phantomapi.construct.Controllable;
  * Fast access to the scheduler
  * 
  * @author cyberpwn
- *
  */
 public abstract class Task implements Runnable
 {
@@ -29,7 +28,7 @@ public abstract class Task implements Runnable
 		taskx++;
 		this.pl = pl;
 		this.running = true;
-		this.task = new Integer[] { pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this) };
+		this.task = new Integer[] {pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
 	}
 	
 	/**
@@ -43,7 +42,43 @@ public abstract class Task implements Runnable
 		taskx++;
 		this.pl = Phantom.instance();
 		this.running = true;
-		this.task = new Integer[] { pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this) };
+		this.task = new Integer[] {pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
+	}
+	
+	/**
+	 * Create a repeating task with a max interval
+	 * 
+	 * @param interval
+	 *            the interval
+	 * @param intervals
+	 *            the maximum intervals before it is cancelled
+	 */
+	public Task(int interval, int intervals)
+	{
+		int[] k = new int[] {0};
+		
+		new Task(interval)
+		{
+			@Override
+			public void run()
+			{
+				if(k[0] > intervals)
+				{
+					Task.this.cancel();
+					cancel();
+					
+					return;
+				}
+				
+				Task.this.run();
+				k[0]++;
+				
+				if(!Task.this.running)
+				{
+					cancel();
+				}
+			}
+		};
 	}
 	
 	@Override
