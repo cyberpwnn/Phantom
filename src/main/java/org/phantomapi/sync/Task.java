@@ -2,6 +2,7 @@ package org.phantomapi.sync;
 
 import org.phantomapi.Phantom;
 import org.phantomapi.construct.Controllable;
+import org.phantomapi.util.FinalInteger;
 
 /**
  * Fast access to the scheduler
@@ -12,7 +13,7 @@ public abstract class Task implements Runnable
 {
 	public static int taskx = 0;
 	private Controllable pl;
-	private Integer[] task;
+	private FinalInteger task;
 	private Boolean running;
 	
 	/**
@@ -28,7 +29,7 @@ public abstract class Task implements Runnable
 		taskx++;
 		this.pl = pl;
 		this.running = true;
-		this.task = new Integer[] {pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
+		this.task = new FinalInteger(pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this));
 	}
 	
 	/**
@@ -39,10 +40,7 @@ public abstract class Task implements Runnable
 	 */
 	public Task(int interval)
 	{
-		taskx++;
-		this.pl = Phantom.instance();
-		this.running = true;
-		this.task = new Integer[] {pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this)};
+		this(Phantom.instance(), interval);
 	}
 	
 	/**
@@ -55,14 +53,14 @@ public abstract class Task implements Runnable
 	 */
 	public Task(int interval, int intervals)
 	{
-		int[] k = new int[] {0};
+		FinalInteger k = new FinalInteger(0);
 		
 		new Task(interval)
 		{
 			@Override
 			public void run()
 			{
-				if(k[0] > intervals)
+				if(k.get() > intervals)
 				{
 					Task.this.cancel();
 					cancel();
@@ -71,7 +69,7 @@ public abstract class Task implements Runnable
 				}
 				
 				Task.this.run();
-				k[0]++;
+				k.add(1);
 				
 				if(!Task.this.running)
 				{
@@ -90,7 +88,7 @@ public abstract class Task implements Runnable
 	public void cancel()
 	{
 		running = false;
-		pl.getPlugin().cancelTask(task[0]);
+		pl.getPlugin().cancelTask(task.get());
 		taskx--;
 	}
 	
