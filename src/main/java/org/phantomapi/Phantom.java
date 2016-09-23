@@ -1041,48 +1041,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 								}
 							}
 						}
-						
-						GList<String> msg = new GList<String>();
-						msg.add("Hmmmmmmm.... No");
-						msg.add("Nope.");
-						msg.add("Perhaps... Perhaps Not?");
-						msg.add("Are you sure you know the implications of that?");
-						msg.add("You really dont have any idea what your doing.");
-						msg.add("Are you going to keep bothering me?");
-						msg.add("Seriously, stop asking.");
-						msg.add("You Annoy me, therefore i wont reload for you.");
-						msg.add("Do it yourself. See what happens.");
-						msg.add("I'd love to see you try and fail horribly.");
-						msg.add("That's a terrible idea.");
-						msg.add("Go thrash youself");
-						
-						mb.message(sender, C.GRAY + msg.pickRandom());
 					}
 					
 					else
 					{
-						GList<String> msg = new GList<String>();
-						msg.add("Yeah... Suuuurrreee... Ok...");
-						msg.add("Nope. You are terrible.");
-						msg.add(C.GREEN + "Success!" + C.GRAY + "Just kidding. Wrong again.");
-						msg.add("No. Stop it.");
-						msg.add("You are failing terribly.");
-						msg.add("You are interrupting my ability to tick controllers.");
-						msg.add("Will you quit doing that?");
-						msg.add("What is wrong with you?");
-						msg.add("That's disgusting. Stop that at once.");
-						msg.add("Hell no. Im not doing that.");
-						msg.add("What are you talking about.");
-						msg.add("Go to bed.");
-						msg.add("The typo you just created almost killed me");
-						msg.add("Are you trying to create exceptions?");
-						msg.add("For the love of all that exists...");
-						msg.add("Wh... But.... Stop.");
-						msg.add("Bam! Wrong again.");
-						msg.add("Go back to school");
-						msg.add("SPEAK ENGLISH");
-						
-						mb.message(sender, C.GRAY + msg.pickRandom());
+						mb.message(sender, C.GRAY + saltpile.get("fail"));
 					}
 				}
 				
@@ -1095,6 +1058,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom plug" + C.GRAY + " - Realtime data from controllers");
 					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
+					mb.message(sender, C.GRAY + "/phantom <un/load> [plugin]" + C.GRAY + " - Plugin Manager");
+					mb.message(sender, C.GRAY + "/phantom <dis/enable> [plugin]" + C.GRAY + " - Plugin Manager");
+					mb.message(sender, C.GRAY + "/phantom cfs [args]" + C.GRAY + " - Run CFS Operations");
 				}
 			}
 			
@@ -1618,6 +1584,39 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	private void buildSaltpile()
 	{
+		GList<String> msg = new GList<String>();
+		msg.add("Yeah... Suuuurrreee... Ok...");
+		msg.add("Nope. You are terrible.");
+		msg.add(C.GREEN + "Success!" + C.GRAY + "Just kidding. Wrong again.");
+		msg.add("No. Stop it.");
+		msg.add("You are failing terribly.");
+		msg.add("You are interrupting my ability to tick controllers.");
+		msg.add("Will you quit doing that?");
+		msg.add("What is wrong with you?");
+		msg.add("That's disgusting. Stop that at once.");
+		msg.add("Hell no. Im not doing that.");
+		msg.add("What are you talking about.");
+		msg.add("Go to bed.");
+		msg.add("The typo you just created almost killed me");
+		msg.add("Are you trying to create exceptions?");
+		msg.add("For the love of all that exists...");
+		msg.add("Wh... But.... Stop.");
+		msg.add("Bam! Wrong again.");
+		msg.add("Go back to school");
+		msg.add("SPEAK ENGLISH");
+		msg.add("Hmmmmmmm.... No");
+		msg.add("Nope.");
+		msg.add("Perhaps... Perhaps Not?");
+		msg.add("Are you sure you know the implications of that?");
+		msg.add("You really dont have any idea what your doing.");
+		msg.add("Are you going to keep bothering me?");
+		msg.add("Seriously, stop asking.");
+		msg.add("You Annoy me, therefore i wont reload for you.");
+		msg.add("Do it yourself. See what happens.");
+		msg.add("I'd love to see you try and fail horribly.");
+		msg.add("That's a terrible idea.");
+		msg.add("Go thrash youself");
+		
 		msgx.add("Dammit, let's do something already.");
 		msgx.add("Pump'd up and ready to fight.");
 		msgx.add("Good to go. Lets do this.");
@@ -1696,6 +1695,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Paper should be crumpled and thrown out");
 		msgx.add("Paper Spigots cannot flow water. #Soggy");
 		msgx.add("Async Async Async");
+		msgx.add(msg);
 		saltpile.put("salt", msgx);
+		saltpile.put("fail", msg);
 	}
 }
