@@ -27,6 +27,7 @@ public class ConfigurationBackupController extends ConfigurableController
 	@Keyed("housekeeping.time-before-delete")
 	public double ttd = 72.0;
 	
+	private GMap<Configurable, String> store;
 	private GMap<File, DataCluster> queue;
 	private GList<File> scannable;
 	private static boolean running;
@@ -39,6 +40,7 @@ public class ConfigurationBackupController extends ConfigurableController
 		this.queue = new GMap<File, DataCluster>();
 		this.scannable = new GList<File>();
 		this.k = 60;
+		this.store = new GMap<Configurable, String>();
 		
 		running = false;
 	}
@@ -186,8 +188,34 @@ public class ConfigurationBackupController extends ConfigurableController
 			@Override
 			public void run()
 			{
+				if(cat == null)
+				{
+					store.put(cc, "null");
+				}
+				
+				else
+				{
+					store.put(cc, cat);
+				}
+				
 				queue.put(ff, dc);
 			}
 		};
+	}
+	
+	public void save(Controllable c)
+	{
+		if(store.containsKey(c))
+		{
+			if(store.get(c).equals("null"))
+			{
+				((Controller) c).saveCluster(((Configurable) c), store.get(c));
+			}
+			
+			else
+			{
+				((Controller) c).saveCluster(((Configurable) c));
+			}
+		}
 	}
 }
