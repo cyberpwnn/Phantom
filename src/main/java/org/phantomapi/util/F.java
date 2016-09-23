@@ -203,7 +203,7 @@ public class F
 	public static String ofSize(long s, int div)
 	{
 		Double d = (double) s;
-		String sub = "B";
+		String sub = "Bytes";
 		
 		if(d > div - 1)
 		{
