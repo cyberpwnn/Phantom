@@ -32,21 +32,18 @@ public abstract class ControllableEnvironment extends WrappedJavaPlugin implemen
 	protected D d;
 	protected Task task;
 	private Average time;
+	private String named;
 	
-	public ControllableEnvironment(JavaPlugin plugin)
+	public ControllableEnvironment(JavaPlugin plugin, String name)
 	{
 		super(plugin);
+		
+		this.named = name;
 	}
 	
-	public void enable()
-	{
-		
-	}
+	public abstract void enable();
 	
-	public void disable()
-	{
-		
-	}
+	public abstract void disable();
 	
 	@Override
 	public void onEnable()
@@ -55,7 +52,7 @@ public abstract class ControllableEnvironment extends WrappedJavaPlugin implemen
 		timings = new GMap<Controllable, Integer>();
 		liveTimings = new GMap<Controllable, Integer>();
 		time = new Average(12);
-		d = new D(getName());
+		d = new D(getNamed());
 		
 		if(getClass().isAnnotationPresent(DMSRequire.class))
 		{
@@ -71,10 +68,14 @@ public abstract class ControllableEnvironment extends WrappedJavaPlugin implemen
 		start();
 		
 		registerTicked(this);
-		Phantom.instance().registerPlugin(this);
 		Phantom.instance().bindController(this);
 		
 		d.s("Started");
+	}
+	
+	public String getNamed()
+	{
+		return named;
 	}
 	
 	/**
