@@ -57,6 +57,7 @@ import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
+import org.phantomapi.util.CFS;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
@@ -832,6 +833,126 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						}
 					}
 					
+					else if(args[0].equalsIgnoreCase("cfs"))
+					{
+						if(args.length == 2)
+						{
+							if(CFS.exists(args[1]))
+							{
+								Controllable c = CFS.getController(args[1]);
+								sender.sendMessage(getChatTag() + C.DARK_GRAY + c.getName() + C.LIGHT_PURPLE + " " + F.fileSize(((Configurable) c).getConfiguration().byteSize()));
+								
+								for(String i : CFS.getKeys(c))
+								{
+									sender.sendMessage(getChatTag() + CFS.getNode(c, i) + " " + C.LIGHT_PURPLE + F.fileSize(CFS.getConfiguration(c).byteSize(i)));
+								}
+							}
+						}
+						
+						else if(args.length == 3)
+						{
+							if(CFS.exists(args[1]))
+							{
+								Controllable c = CFS.getController(args[1]);
+								
+								if(CFS.exists(c.getName(), args[2]))
+								{
+									sender.sendMessage(getChatTag() + CFS.getNode(c, args[2]) + " " + C.LIGHT_PURPLE + F.fileSize(CFS.getConfiguration(c).byteSize(args[2])));
+								}
+								
+								else
+								{
+									String sel = null;
+									
+									for(String i : CFS.getKeys(c))
+									{
+										if(i.equalsIgnoreCase(args[2]) || i.toLowerCase().contains(args[2].toLowerCase()))
+										{
+											sel = i;
+											
+											break;
+										}
+									}
+									
+									if(sel != null)
+									{
+										sender.sendMessage(getChatTag() + CFS.getNode(c, sel) + " " + C.LIGHT_PURPLE + F.fileSize(CFS.getConfiguration(c).byteSize(sel)));
+									}
+									
+									else
+									{
+										sender.sendMessage(getChatTag() + C.GRAY + "Invalid Node: " + C.BOLD + C.WHITE + c.getName() + "/" + args[2]);
+									}
+								}
+							}
+						}
+						
+						else if(args.length == 4)
+						{
+							if(CFS.exists(args[1]))
+							{
+								Controllable c = CFS.getController(args[1]);
+								String sel = null;
+								
+								if(CFS.exists(c.getName(), args[2]))
+								{
+									sel = args[2];
+
+								}
+								
+								else
+								{
+									for(String i : CFS.getKeys(c))
+									{
+										if(i.equalsIgnoreCase(args[2]) || i.toLowerCase().contains(args[2].toLowerCase()))
+										{
+											sel = i;
+											
+											break;
+										}
+									}
+									
+									if(sel != null)
+									{
+
+									}
+									
+									else
+									{
+										sender.sendMessage(getChatTag() + C.GRAY + "Invalid Node: " + C.BOLD + C.WHITE + c.getName() + "/" + args[2]);
+										
+										return true;
+									}
+								}
+								
+								if(sel != null)
+								{
+									try
+									{
+										CFS.set(c, sel, args[3]);
+										sender.sendMessage(getChatTag() + "Changes Injected. Will not be saved.");
+										sender.sendMessage(getChatTag() + CFS.getNode(c, sel) + " " + C.LIGHT_PURPLE + F.fileSize(CFS.getConfiguration(c).byteSize(sel)));
+									}
+									
+									catch(Exception e)
+									{
+										sender.sendMessage(getChatTag() + C.GRAY + "Invalid: " + sel + " is a " + CFS.getType(c, sel).toString().toLowerCase().replaceAll("_", " ") + " type.");
+									}
+								}
+							}
+						}
+						
+						else
+						{
+							for(Controllable i : CFS.getConfigurableControllers())
+							{
+								sender.sendMessage(getChatTag() + C.DARK_GRAY + i.getName() + C.LIGHT_PURPLE + " " + F.fileSize(((Configurable) i).getConfiguration().byteSize()));
+							}
+							
+							sender.sendMessage(getChatTag() + C.LIGHT_PURPLE + CFS.getConfigurableControllers().size() + C.DARK_GRAY + " configurable controllers loaded.");
+						}
+					}
+					
 					else if(args[0].equalsIgnoreCase("hotplug") || args[0].equalsIgnoreCase("plug"))
 					{
 						if(sender instanceof Player)
@@ -1494,7 +1615,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return photonController;
 	}
-
+	
 	private void buildSaltpile()
 	{
 		msgx.add("Dammit, let's do something already.");
