@@ -11,6 +11,7 @@ public class PhantomGameController implements GameController
 {
 	protected final Game game;
 	protected final GSet<GameHandler> handlers;
+	protected final GameEventBus bus;
 	
 	/**
 	 * Create a game controller
@@ -22,6 +23,7 @@ public class PhantomGameController implements GameController
 	{
 		this.game = game;
 		this.handlers = new GSet<GameHandler>();
+		this.bus = new PhantomGameEventBus(this);
 	}
 	
 	public Game getGame()
@@ -42,5 +44,15 @@ public class PhantomGameController implements GameController
 	public void unregisterAll()
 	{
 		handlers.clear();
+	}
+
+	public void callEvent(BaseGameEvent event)
+	{
+		bus.callEvent(event);
+	}
+	
+	public GameEventBus getEventBus()
+	{
+		return bus;
 	}
 }

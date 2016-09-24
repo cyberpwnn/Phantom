@@ -15,6 +15,14 @@ public interface GameController
 	public Game getGame();
 	
 	/**
+	 * Call an event to this games listeners
+	 * 
+	 * @param event
+	 *            the event to call
+	 */
+	public void callEvent(BaseGameEvent event);
+	
+	/**
 	 * Register a game handle
 	 * 
 	 * @param handler
@@ -34,4 +42,11 @@ public interface GameController
 	 * Unregister all of the game handlers
 	 */
 	public void unregisterAll();
+	
+	/**
+	 * Get the event bus
+	 * 
+	 * @return the game event bus
+	 */
+	public GameEventBus getEventBus();
 }
