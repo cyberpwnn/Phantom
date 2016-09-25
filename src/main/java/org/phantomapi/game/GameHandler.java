@@ -5,7 +5,7 @@ package org.phantomapi.game;
  * 
  * @author cyberpwn
  */
-public interface GameHandler
+public interface GameHandler extends GameEventListener
 {
 	/**
 	 * Get the game instance
