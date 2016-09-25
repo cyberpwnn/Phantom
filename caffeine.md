@@ -3,6 +3,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
 
 * [Phantom Core](#phantom-core)
  * [Event Listeners](#event-listeners)
+ * [Networked Servers](#networked-servers)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -16,3 +17,22 @@ Phantom.instance().registerListener(Listener);
 Phantom.instance().unRegisterListener(Listener);
 ```
 from [ControllablePlugin](http://cyberpwnn.github.io/Phantom/org/phantomapi/construct/ControllablePlugin.html#registerListener-org.bukkit.event.Listener-)
+
+### Networked Servers
+You can grab a virtual instance of the bungeecord network which is updated live. 
+``` java
+Network n = Phantom.getBungeeNetwork();
+
+for(NetworkedServer i : n.getServers())
+{
+	if(i.isRemote())
+	{
+		i.getPlayers().size();
+		i.getName();
+		i.sendPlayer(playerFromThisServer);
+	}
+}
+```
+
+from [Network](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/Network.html)
+from [NetworkedServer](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/NetworkedServer.html)
