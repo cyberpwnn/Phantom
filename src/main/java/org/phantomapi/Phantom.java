@@ -897,7 +897,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 								if(CFS.exists(c.getName(), args[2]))
 								{
 									sel = args[2];
-
+									
 								}
 								
 								else
@@ -914,7 +914,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 									
 									if(sel != null)
 									{
-
+										
 									}
 									
 									else
