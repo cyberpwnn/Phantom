@@ -35,4 +35,4 @@ for(NetworkedServer i : n.getServers())
 ```
 
 from [Network](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/Network.html)
-from [NetworkedServer](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/NetworkedServer.html)
+and [NetworkedServer](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/NetworkedServer.html)
