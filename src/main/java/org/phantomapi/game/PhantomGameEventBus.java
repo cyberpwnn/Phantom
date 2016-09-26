@@ -3,7 +3,13 @@ package org.phantomapi.game;
 import java.lang.reflect.Method;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.util.ExceptionUtil;
 
+/**
+ * Represents an event bus
+ * 
+ * @author cyberpwn
+ */
 public class PhantomGameEventBus implements GameEventBus
 {
 	private GMap<Class<?>, GList<Method>> mapping;
@@ -76,12 +82,12 @@ public class PhantomGameEventBus implements GameEventBus
 				
 				catch(Exception e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		}
 	}
-
+	
 	public GameController getController()
 	{
 		return controller;
