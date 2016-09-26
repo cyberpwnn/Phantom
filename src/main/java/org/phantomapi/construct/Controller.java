@@ -21,6 +21,7 @@ import org.phantomapi.network.Network;
 import org.phantomapi.sync.S;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.D;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
@@ -246,7 +247,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 						
 						catch(IOException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 					}
 				}.start();
@@ -268,7 +269,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 						
 						catch(IOException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 					}
 				};
@@ -277,7 +278,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -425,7 +426,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
