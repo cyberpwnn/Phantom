@@ -60,6 +60,7 @@ import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
 import org.phantomapi.util.CFS;
 import org.phantomapi.util.D;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
 import org.phantomapi.util.PluginUtil;
@@ -202,7 +203,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		GList<String> plx = new GList<String>();
@@ -255,7 +256,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		new TaskLater(5)
@@ -394,7 +395,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -411,7 +412,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
