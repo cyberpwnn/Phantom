@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
+import org.phantomapi.util.ExceptionUtil;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
@@ -34,7 +35,7 @@ import com.comphenix.protocol.events.PacketContainer;
  */
 public class NMSX
 {
-	public static NMSX bountifulAPI;
+	public static NMSX instance;
 	private static boolean useOldMethods;
 	public static String nmsver;
 	public static GList<Color> colors;
@@ -55,7 +56,7 @@ public class NMSX
 		
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
@@ -110,7 +111,7 @@ public class NMSX
 		
 		catch(final Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return clazz;
@@ -136,7 +137,7 @@ public class NMSX
 		
 		catch(final Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return clazz;
@@ -151,7 +152,7 @@ public class NMSX
 		
 		catch(final Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
@@ -168,7 +169,7 @@ public class NMSX
 		
 		catch(final Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
@@ -228,7 +229,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -383,7 +384,7 @@ public class NMSX
 		
 		catch(ClassNotFoundException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 			return null;
 		}
 	}
@@ -715,7 +716,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -739,7 +740,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -765,7 +766,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -791,7 +792,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -806,7 +807,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
@@ -827,7 +828,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -851,7 +852,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -877,7 +878,7 @@ public class NMSX
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
