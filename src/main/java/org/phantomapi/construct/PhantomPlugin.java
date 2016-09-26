@@ -2,7 +2,6 @@ package org.phantomapi.construct;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,6 +9,7 @@ import org.bukkit.event.Event;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.lang.GList;
+import org.phantomapi.util.ExceptionUtil;
 
 /**
  * A Phantom plugin which supports many things
@@ -92,7 +92,7 @@ public abstract class PhantomPlugin extends ControllablePlugin
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
