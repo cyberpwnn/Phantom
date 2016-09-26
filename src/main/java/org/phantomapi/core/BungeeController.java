@@ -25,6 +25,7 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.Refreshable;
 import org.phantomapi.util.Timer;
 import com.google.common.io.ByteArrayDataInput;
@@ -197,7 +198,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 				
 				i.delete();
@@ -234,7 +235,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		}
