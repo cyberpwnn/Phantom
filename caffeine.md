@@ -11,6 +11,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
 * [Threading & Scheduling](#threading--scheduling)
  * [Schedulers](#schedulers)
  * [Asynchronous Executions](#asynchronous-executions)
+ * [Multithreading](#multithreading)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -203,6 +204,55 @@ new A()
 		};
 		
 		//Or resume execution on async thread after sync finished (about 50ms)
+	}
+};
+```
+
+from [A](http://cyberpwnn.github.io/Phantom/org/phantomapi/async/A.html)
+and [S](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/S.html)
+
+### Multithreading
+
+Use multithreading to plow through queues async.
+
+#### Set up the queue
+Create the queue
+``` java
+//Let's pretend there are loads of strings in there
+GList<String> data = new GList<String>();
+
+//Let's create a queue that
+//1. Can process strings
+//2. Can have up to 12 working threads
+MultithreadedQueueExecutor<String> queue = new MultithreadedQueueExecutor<String>(12)
+{
+	@Override
+	public void onProcess(String t)
+	{
+		//Do something with the next string (process it)
+		t.length();
+	}
+};
+
+//Let's add our data
+for(String i : data)
+{
+	queue.queue(i);
+}
+```
+
+#### Tick the queue
+You need to tick the queue at any interval you like to dispatch new threads and essentially beat the multithreaded heart.
+
+``` java
+new Task(0)
+{
+	@Override
+	public void run()
+	{
+		//Called every tick
+		//Create new threads and take several items out of the queue
+		queue.dispatch();
 	}
 };
 ```
