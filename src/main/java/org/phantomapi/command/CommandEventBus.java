@@ -16,6 +16,7 @@ import org.phantomapi.command.CommandFilter.Tag;
 import org.phantomapi.command.CommandFilter.TagHover;
 import org.phantomapi.core.CommandRegistryController;
 import org.phantomapi.util.C;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.M;
 
 public class CommandEventBus
@@ -153,7 +154,7 @@ public class CommandEventBus
 			catch(Exception e)
 			{
 				result = CommandResult.HANDLED;
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				sender.sendMessage(C.RED + "#Boo" + e.getClass().getSimpleName() + "s");
 			}
 		}
@@ -168,7 +169,7 @@ public class CommandEventBus
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
@@ -183,7 +184,7 @@ public class CommandEventBus
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return false;
