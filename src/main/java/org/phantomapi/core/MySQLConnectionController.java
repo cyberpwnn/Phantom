@@ -15,6 +15,7 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GTriset;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.util.C;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.SQLOperation;
 
@@ -110,7 +111,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		
 		catch(ClassNotFoundException | SQLException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -126,7 +127,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		
 		catch(ClassNotFoundException | SQLException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
