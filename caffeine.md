@@ -8,6 +8,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Formatting](#formatting)
  * [Math](#math)
  * [Dispatcher](#dispatcher)
+ * [Timers](#timers)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -137,3 +138,37 @@ d.o("OVERBOSE! (Aqua)");
 
 from [D](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/D.html)
 
+### Timers
+Timers are a great way to keep track of what you are doing and how long the execution takes. It is essential for accuracy, so we measure by nanoseconds, for decimal milliseconds. Here is an example of how to use the timer.
+
+``` java
+T t = new T()
+{
+	@Override
+	public void onStop(long nsTime, double msTime)
+	{
+		//Print ms.000 decimal format
+		System.out.println("Took " + F.f(msTime, 3));
+	}
+};	
+
+//DO LONG WORK 
+
+//Runnable is called and reports time
+t.stop();
+```
+
+#### Simple Timers
+Some times you need simpler timers for more complex tasks
+``` java
+t.start();
+//Do work
+t.stop();
+
+//Format the print msg
+String time = F.nsMs(t.getTime()) + " ms";
+System.out.println("Took " + time);
+```
+
+from [T](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/T.html)
+and [Timer](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Timer.html)
