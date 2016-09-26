@@ -161,6 +161,8 @@ t.stop();
 #### Simple Timers
 Some times you need simpler timers for more complex tasks
 ``` java
+Timer t = new Timer();
+
 t.start();
 //Do work
 t.stop();
