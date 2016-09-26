@@ -256,3 +256,6 @@ new Task(0)
 	}
 };
 ```
+
+from [MultithreadedQueueExecutor](http://cyberpwnn.github.io/Phantom/org/phantomapi/async/MultithreadedQueueExecutor.html)
+
