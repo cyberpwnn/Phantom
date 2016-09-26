@@ -6,6 +6,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Networked Servers](#networked-servers)
  * [Schedulers](#schedulers)
  * [Formatting](#formatting)
+ * [Math](#math)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -87,3 +88,25 @@ M.fromRoman("XI"); //Returns 11 (int)
 ```
 from [F](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/F.html)
 and [M](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/M.html)
+
+### Math
+There are many things that can be done with math.
+
+``` java
+M.ms(); //Current Time Milliseconds
+M.ns(); //Current Time Nanoseconds
+M.avg(new GList<Double>().qadd(0.0).qadd(10.0)); //Returns 5
+M.max(-4, 4, 77); //Returns 77
+M.min(2, 7, 0, 55, -1); //Returns -1
+M.r(0.6); //Returns true 60% of the time (from 0 to 1)
+
+//JS Values
+double value = M.evaluate("Math.sin(Math.random() * 4) - 1");
+
+//Expressions
+Formula f = new Formula("($0 * $1) / $2");
+f.evaluate(2.5, 2.5, 1.4); //Effective: (2.5 * 2.5) / 1.4
+f.evaluate(21.0, 1.5, 1.423); //Effective: (21.0 * 1.5) / 1.423
+```
+from [M](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/M.html)
+and [Formula](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Formula.html)
