@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.Paste;
 
 /**
@@ -126,7 +127,7 @@ public class DataCluster
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 		
 		return null;
