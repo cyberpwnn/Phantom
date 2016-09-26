@@ -1209,6 +1209,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}, 10);
 	}
 	
+	/**
+	 * Get the data cluster status
+	 * 
+	 * @return the status
+	 */
 	public DataCluster status()
 	{
 		DataCluster cc = new DataCluster();
@@ -1280,6 +1285,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	/**
+	 * Print bindings
+	 * 
+	 * @param sender
+	 *            the sender
+	 * @param c
+	 *            the controllable object
+	 * @param ind
+	 *            the indentation
+	 */
 	private void printBindings(CommandSender sender, Controllable c, int ind)
 	{
 		sender.sendMessage(StringUtils.repeat(" ", ind) + C.GREEN + c.getClass().getSimpleName() + ": " + C.AQUA + F.nsMs((long) c.getTime(), 2) + "ms");
@@ -1307,6 +1322,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	/**
+	 * Print bindings
+	 * 
+	 * @param cx
+	 *            the dispatcher
+	 * @param c
+	 *            the controllable object
+	 * @param ind
+	 *            the indentation
+	 */
 	private void printBindings(D cx, Controllable c, int ind)
 	{
 		cx.s(StringUtils.repeat(" ", ind) + C.GREEN + c.getClass().getSimpleName() + ": " + C.AQUA + F.nsMs((long) c.getTime(), 2) + "ms");
@@ -1590,12 +1615,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return saltpile;
 	}
-
+	
 	public ResourceController getResourceController()
 	{
 		return resourceController;
 	}
-
+	
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
@@ -1710,6 +1735,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Paper Spigots cannot flow water. #Soggy");
 		msgx.add("Async Async Async");
 		msgx.add(msg);
+		
 		saltpile.put("salt", msgx);
 		saltpile.put("fail", msg);
 	}
