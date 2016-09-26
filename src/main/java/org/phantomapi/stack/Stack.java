@@ -10,6 +10,7 @@ import org.phantomapi.inventory.EnchantmentLevel;
 import org.phantomapi.inventory.EnchantmentSet;
 import org.phantomapi.inventory.PotionData;
 import org.phantomapi.lang.GList;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.MaterialBlock;
 
 /**
@@ -219,7 +220,7 @@ public class Stack
 			
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				return false;
 			}
 		}
