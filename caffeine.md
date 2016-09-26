@@ -12,6 +12,8 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Schedulers](#schedulers)
  * [Asynchronous Executions](#asynchronous-executions)
  * [Multithreading](#multithreading)
+ * [Executive Iterators](#executive-iterators)
+ * [Executive Tasks](#executive-tasks)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -258,4 +260,49 @@ new Task(0)
 ```
 
 from [MultithreadedQueueExecutor](http://cyberpwnn.github.io/Phantom/org/phantomapi/async/MultithreadedQueueExecutor.html)
+
+### Executive Iterators
+You can create iterators that, when next is called, the element will be executed (passed into a runnable to be processed)
+``` java
+//Pretend data exists in there
+GList<String> data = new GList<String>();
+
+//Create the executive iterator passing in our data
+ExecutiveIterator<String> it = new ExecutiveIterator<String>(data)
+{
+	@Override
+	public void onIterate(String next)
+	{
+		//Called when the iterator is called next
+		System.out.println(F.repeat(next, 3));
+	}
+};
+
+while(it.hasNext())
+{
+	//Calls all of the elements in the iterator
+	it.next();
+}
+```
+
+from [ExecutiveIterator](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveIterator.html)
+
+### Executive Tasks
+Put executive iterators into tasks. The difference with these, is they actually execute more than one per tick. In fact, they will execute as many as they can without exceeding the millisecond limit you supply.
+
+``` java
+//Start a task that goes through the iterator
+//Do not execute more than the 1ms limit supplied
+//With a delay of 0 (every tick)
+ExecutiveTask<String> task = new ExecutiveTask<String>(it, 1.0, 0, new Runnable()
+{
+	@Override
+	public void run()
+	{
+		//The execution has finished
+	}
+});
+```
+
+from [ExecutiveTask](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveTask.html)
 
