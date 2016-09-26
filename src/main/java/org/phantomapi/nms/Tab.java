@@ -3,6 +3,7 @@ package org.phantomapi.nms;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.phantomapi.util.ExceptionUtil;
 
 public class Tab
 {
@@ -17,7 +18,7 @@ public class Tab
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -78,7 +79,7 @@ public class Tab
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
@@ -100,9 +101,10 @@ public class Tab
 			
 			NMSX.sendPacket(player, packet);
 		}
+		
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
