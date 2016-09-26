@@ -385,12 +385,12 @@ public class PluginUtil
 		}
 		catch(InvalidDescriptionException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 			return false;
 		}
 		catch(InvalidPluginException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 			return false;
 		}
 		
@@ -489,12 +489,12 @@ public class PluginUtil
 			}
 			catch(NoSuchFieldException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				return;
 			}
 			catch(IllegalAccessException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				return;
 			}
 		}
@@ -622,12 +622,12 @@ public class PluginUtil
 			}
 			catch(NoSuchFieldException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				return;
 			}
 			catch(IllegalAccessException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 				return;
 			}
 		}
