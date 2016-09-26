@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.phantomapi.Phantom;
 import org.phantomapi.slate.SlateUtil;
+import org.phantomapi.util.ExceptionUtil;
 
 public class TabItem
 {
@@ -91,7 +92,7 @@ public class TabItem
 							}
 							catch(Exception e)
 							{
-								e.printStackTrace();
+								ExceptionUtil.print(e);
 							}
 						}
 					});
@@ -99,7 +100,7 @@ public class TabItem
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 		}
 		
@@ -117,7 +118,7 @@ public class TabItem
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 		}
 		else
@@ -131,7 +132,7 @@ public class TabItem
 			
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 		}
 		return null;
