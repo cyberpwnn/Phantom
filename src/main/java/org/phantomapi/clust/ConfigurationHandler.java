@@ -13,6 +13,7 @@ import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.D;
+import org.phantomapi.util.ExceptionUtil;
 
 /**
  * The heart of dataclusters. Most should not have to use this. It is
@@ -68,12 +69,12 @@ public class ConfigurationHandler
 						
 						catch(IllegalArgumentException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 						
 						catch(IllegalAccessException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 					}
 					
@@ -122,12 +123,12 @@ public class ConfigurationHandler
 						
 						catch(IllegalArgumentException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 						
 						catch(IllegalAccessException e)
 						{
-							e.printStackTrace();
+							ExceptionUtil.print(e);
 						}
 					}
 					
