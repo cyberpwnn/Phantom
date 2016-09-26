@@ -15,6 +15,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.ExceptionUtil;
 
 @Ticked(20)
 public class HotLoadController extends Controller implements Configurable
@@ -144,7 +145,7 @@ public class HotLoadController extends Controller implements Configurable
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 	
