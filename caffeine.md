@@ -4,12 +4,12 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
 * [Phantom Core](#phantom-core)
  * [Event Listeners](#event-listeners)
  * [Networked Servers](#networked-servers)
- * [Schedulers](#schedulers)
  * [Formatting](#formatting)
  * [Math](#math)
  * [Dispatcher](#dispatcher)
  * [Timers](#timers)
-* [Threading & Scheduling](#threading)
+* [Threading & Scheduling](#threading--scheduling)
+ * [Schedulers](#schedulers)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -42,36 +42,6 @@ for(NetworkedServer i : n.getServers())
 
 from [Network](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/Network.html)
 and [NetworkedServer](http://cyberpwnn.github.io/Phantom/org/phantomapi/network/NetworkedServer.html)
-
-### Schedulers
-You can now run quick schedulers with ease.
-#### Run Later
-``` java
-new TaskLater(20)
-{
-	@Override
-	public void run()
-	{
-		//Run this 20 ticks in the future
-	}
-};
-```
-
-from [TaskLater](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/TaskLater.html)
-
-#### Run Repetedly
-``` java
-new Task(20)
-{
-	@Override
-	public void run()
-	{
-		//Run this every 20 ticks until cancelled
-	}
-};
-```
-
-from [Task](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/Task.html)
 
 ### Formatting
 You can format text in many ways with the F class.
@@ -177,3 +147,32 @@ from [T](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/T.html)
 and [Timer](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Timer.html)
 
 ## Threading & Scheduling
+
+### Schedulers
+You can now run quick schedulers with ease.
+#### Run Later
+``` java
+new TaskLater(20)
+{
+	@Override
+	public void run()
+	{
+		//Run this 20 ticks in the future
+	}
+};
+```
+
+#### Run Repetedly
+``` java
+new Task(20)
+{
+	@Override
+	public void run()
+	{
+		//Run this every 20 ticks until cancelled
+	}
+};
+```
+
+from [Task](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/Task.html)
+and [TaskLater](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/TaskLater.html)
