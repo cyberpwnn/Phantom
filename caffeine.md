@@ -7,6 +7,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Schedulers](#schedulers)
  * [Formatting](#formatting)
  * [Math](#math)
+ * [Dispatcher](#dispatcher)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -110,3 +111,29 @@ f.evaluate(21.0, 1.5, 1.423); //Effective: (21.0 * 1.5) / 1.423
 ```
 from [M](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/M.html)
 and [Formula](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Formula.html)
+
+### Dispatcher
+You can dispatch information to the console anytime within controllers or outside of controllers. **Async Safe**
+
+``` java
+//Built into controllers and controllable plugins
+i("Info! (White. Not Gray.)");
+s("Success! (Green)");
+w("WARNING! (Yellow)");
+f("FAILURE! (Red)");
+v("Verbose! (Light Purple)");
+o("OVERBOSE! (Aqua)");
+
+//Use it anywhere
+D d = new D("Custom Tag");
+
+d.i("Info! (White. Not Gray.)");
+d.s("Success! (Green)");
+d.w("WARNING! (Yellow)");
+d.f("FAILURE! (Red)");
+d.v("Verbose! (Light Purple)");
+d.o("OVERBOSE! (Aqua)");
+```
+
+from [D](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/D.html)
+
