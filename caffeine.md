@@ -5,6 +5,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Event Listeners](#event-listeners)
  * [Networked Servers](#networked-servers)
  * [Schedulers](#schedulers)
+ * [Formatting](#formatting)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -67,3 +68,11 @@ new Task(20)
 ```
 
 from [Task](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/Task.html)
+
+### Formatting
+You can format text in many ways with the F class.
+
+``` java
+
+```
+from [F](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/F.html)
