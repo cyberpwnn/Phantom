@@ -324,6 +324,102 @@ public class W
 	}
 	
 	/**
+	 * Get an async world from a sync world
+	 * 
+	 * @param world
+	 *            the world
+	 * @return the async world
+	 */
+	public static World toAsync(World world)
+	{
+		return getAsyncWorld(world.getName());
+	}
+	
+	/**
+	 * Get the sync world from an async or sync world
+	 * 
+	 * @param world
+	 *            the async/sync world
+	 * @return the sync world
+	 */
+	public static World toSync(World world)
+	{
+		return Bukkit.getWorld(world.getName());
+	}
+	
+	/**
+	 * Get an async block from a sync or async block
+	 * 
+	 * @param block
+	 *            the sync block
+	 * @return the async block
+	 */
+	public static Block toAsync(Block block)
+	{
+		return toAsync(block.getWorld()).getBlockAt(block.getX(), block.getY(), block.getZ());
+	}
+	
+	/**
+	 * Get the sync block from a sync or async block
+	 * 
+	 * @param block
+	 *            the async/sync block
+	 * @return the sync block
+	 */
+	public static Block toSync(Block block)
+	{
+		return toSync(block.getWorld()).getBlockAt(block.getX(), block.getY(), block.getZ());
+	}
+	
+	/**
+	 * Get the async location
+	 * 
+	 * @param location
+	 *            the sync location
+	 * @return the async location
+	 */
+	public static Location toAsync(Location location)
+	{
+		return new Location(toAsync(location.getWorld()), location.getX(), location.getY(), location.getZ());
+	}
+	
+	/**
+	 * Get the sync location
+	 * 
+	 * @param location
+	 *            the async location
+	 * @return the sync location
+	 */
+	public static Location toSync(Location location)
+	{
+		return new Location(toSync(location.getWorld()), location.getX(), location.getY(), location.getZ());
+	}
+	
+	/**
+	 * Get the async chunk
+	 * 
+	 * @param chunk
+	 *            the sync chunk
+	 * @return the async chunk
+	 */
+	public static Chunk toAsync(Chunk chunk)
+	{
+		return toAsync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getX());
+	}
+	
+	/**
+	 * Get the sync chunk
+	 * 
+	 * @param chunk
+	 *            the async chunk
+	 * @return the sync chunk
+	 */
+	public static Chunk toSync(Chunk chunk)
+	{
+		return toSync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getX());
+	}
+	
+	/**
 	 * Set blocks fast
 	 * 
 	 * @param l
