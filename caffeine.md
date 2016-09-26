@@ -9,6 +9,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Math](#math)
  * [Dispatcher](#dispatcher)
  * [Timers](#timers)
+* [Threading & Scheduling](#threading)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -174,3 +175,5 @@ System.out.println("Took " + time);
 
 from [T](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/T.html)
 and [Timer](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Timer.html)
+
+## Threading & Scheduling
