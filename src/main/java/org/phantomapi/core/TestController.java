@@ -66,6 +66,7 @@ import org.phantomapi.text.ParameterAdapter;
 import org.phantomapi.text.Tabulator;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.M;
@@ -202,7 +203,7 @@ public class TestController extends Controller
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		});
@@ -223,7 +224,7 @@ public class TestController extends Controller
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		});
@@ -479,7 +480,7 @@ public class TestController extends Controller
 							catch(IOException e)
 							{
 								f("FAILED: " + e.getClass().getSimpleName());
-								e.printStackTrace();
+								ExceptionUtil.print(e);
 							}
 							
 							t.stop();
@@ -878,7 +879,7 @@ public class TestController extends Controller
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		});
@@ -1172,7 +1173,7 @@ public class TestController extends Controller
 					
 					catch(Exception e)
 					{
-						e.printStackTrace();
+						ExceptionUtil.print(e);
 					}
 				}
 			}
@@ -1414,7 +1415,7 @@ public class TestController extends Controller
 				
 				catch(IOException e)
 				{
-					e.printStackTrace();
+					ExceptionUtil.print(e);
 				}
 			}
 		});
