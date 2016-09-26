@@ -1,5 +1,7 @@
 package org.phantomapi.nms;
 
+import org.phantomapi.util.ExceptionUtil;
+
 /**
  * © Copyright 2015 inventivetalent
  *
@@ -95,7 +97,7 @@ public class NMSClass
 			}
 			catch(ClassNotFoundException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 			
 			if(version < 182)
@@ -122,7 +124,7 @@ public class NMSClass
 			}
 			catch(ClassNotFoundException e)
 			{
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 			
 			init = true;
