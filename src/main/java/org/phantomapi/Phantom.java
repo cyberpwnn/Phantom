@@ -39,6 +39,7 @@ import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProtocolController;
+import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
@@ -113,6 +114,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private WraithController wraithController;
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
+	private ResourceController resourceController;
 	
 	private Long nsx;
 	
@@ -155,6 +157,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		editSessionController = new EditSessionController(this);
 		wraithController = new WraithController(this);
 		photonController = new PhotonController(this);
+		resourceController = new ResourceController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		thread = Thread.currentThread().getId();
@@ -1582,6 +1585,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return photonController;
 	}
 	
+	public SpeechMesh getSaltpile()
+	{
+		return saltpile;
+	}
+
+	public ResourceController getResourceController()
+	{
+		return resourceController;
+	}
+
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
