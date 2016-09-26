@@ -10,6 +10,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Timers](#timers)
 * [Threading & Scheduling](#threading--scheduling)
  * [Schedulers](#schedulers)
+ * [Asynchronous Executions](#asynchronous-executions)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -147,6 +148,7 @@ from [T](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/T.html)
 and [Timer](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Timer.html)
 
 ## Threading & Scheduling
+With phantom, you can dive in and out of multiple async threads, use ticked schedulers with simplicity and much more.
 
 ### Schedulers
 You can now run quick schedulers with ease.
@@ -176,3 +178,31 @@ new Task(20)
 
 from [Task](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/Task.html)
 and [TaskLater](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/TaskLater.html)
+
+### Asynchronous Executions
+You can simply dive in and out of async threads through execution anywhere.
+
+``` java
+//Start something 
+new A()
+{
+	@Override
+	public void async()
+	{
+		//Do something that will take a while
+		//Then, once complete, break off into sync
+		
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				//Do something on the sync main thread
+				//Then once complete just finish off
+			}
+		};
+		
+		//Or resume execution on async thread after sync finished (about 50ms)
+	}
+};
+```
