@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import org.phantomapi.async.Callback;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.FU;
 
 /**
@@ -45,7 +46,7 @@ public class Download extends Thread
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			ExceptionUtil.print(e);
 		}
 	}
 }
