@@ -122,7 +122,7 @@ public class CommandRegistryController extends Controller implements Monitorable
 		
 		commandableEvents.get(node.toLowerCase()).add(listener);
 		
-		o("Registered Command: " + C.GREEN + listener.getClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
+		o("Registered Command: " + C.GREEN + listener.getDeclaringClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
 	}
 	
 
@@ -133,7 +133,7 @@ public class CommandRegistryController extends Controller implements Monitorable
 			commandableEvents.get(i).remove(c);
 		}
 				
-		o(C.RED + "Unregistered all commands for " + C.YELLOW + c.getClass().getSimpleName() + "." + c.getName() + "()");
+		o(C.RED + "Unregistered all commands for " + C.YELLOW + c.getDeclaringClass().getSimpleName() + "." + c.getName() + "()");
 	}
 
 	public void unregister(CommandListener c)
