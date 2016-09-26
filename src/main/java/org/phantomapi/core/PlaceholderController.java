@@ -6,6 +6,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.placeholder.PlaceholderHook;
+import org.phantomapi.util.ExceptionUtil;
 
 public class PlaceholderController extends Controller
 {
@@ -57,7 +58,7 @@ public class PlaceholderController extends Controller
 			catch(Exception e)
 			{
 				w("Warning: Exception on placeholder request: " + q);
-				e.printStackTrace();
+				ExceptionUtil.print(e);
 			}
 		}
 		
