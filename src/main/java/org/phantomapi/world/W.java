@@ -452,7 +452,7 @@ public class W
 	 */
 	public static Chunk toSync(Chunk chunk)
 	{
-		return toSync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getX());
+		return toSync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getZ());
 	}
 	
 	/**
