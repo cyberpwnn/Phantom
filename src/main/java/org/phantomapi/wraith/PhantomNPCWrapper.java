@@ -323,6 +323,22 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		if(isSpawned())
 		{
+			if(focus != null)
+			{
+				if(focus.getTarget() == null)
+				{
+					focus = null;
+				}
+			}
+			
+			if(target != null)
+			{
+				if(target.getTarget() == null)
+				{
+					target = null;
+				}
+			}
+			
 			onTick();
 			updateTarget();
 			updateFocus();
@@ -421,7 +437,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	{
 		return aggressive;
 	}
-
+	
 	@Override
 	public void destroy()
 	{
