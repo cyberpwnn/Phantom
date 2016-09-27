@@ -35,7 +35,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	public PhantomNPCWrapper(String name)
 	{
 		this.npc = null;
-		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name + C.BLACK + "^");
 		this.chatName = npc.getName() + ": ";
 		this.chatHover = "Hi, I'm " + npc.getName();
 		this.mb = new MessageBuilder(this);
@@ -154,6 +154,7 @@ public class PhantomNPCWrapper implements NPCWrapper, TagProvider
 	@Override
 	public void setName(String name)
 	{
+		name = name + C.BLACK + "^";
 		npc.setName(name);
 		chatName = npc.getName() + ": ";
 		chatHover = "Hi, I'm " + npc.getName();
