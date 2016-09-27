@@ -42,7 +42,7 @@ public abstract class FocusAIController extends WraithHandle
 				return;
 			}
 			
-			else
+			else if(f != null)
 			{
 				getWraith().setFocus(f);
 				onFocusChanged(f);
