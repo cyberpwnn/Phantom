@@ -4,11 +4,13 @@ import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataFile;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.sync.S;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.W;
 
@@ -54,33 +56,58 @@ public class PhantomChunkNest implements NestedChunk
 	 */
 	public void load() throws IOException
 	{
-		nested = new GMap<Location, NestedBlock>();
-				
-		if(!NestUtil.getFile(chunk).exists())
+		new A()
 		{
-			return;
-		}
-		
-		df.load(NestUtil.getFile(chunk));
-		
-		GSet<String> blocks = new GSet<String>();
-		
-		for(String i : df.keys())
-		{
-			if(i.contains("."))
+			@Override
+			public void async()
 			{
-				blocks.add(i.split("\\.")[0]);
+				Chunk ac = W.toAsync(chunk);
+				nested = new GMap<Location, NestedBlock>();
+				
+				if(!NestUtil.getFile(ac).exists())
+				{
+					return;
+				}
+				
+				try
+				{
+					df.load(NestUtil.getFile(ac));
+				}
+				
+				catch(IOException e)
+				{
+					ExceptionUtil.print(e);
+				}
+				
+				GSet<String> blocks = new GSet<String>();
+				
+				for(String i : df.keys())
+				{
+					if(i.contains("."))
+					{
+						blocks.add(i.split("\\.")[0]);
+					}
+				}
+				
+				for(String i : blocks)
+				{
+					int x = Integer.valueOf(i.split("_")[0]);
+					int y = Integer.valueOf(i.split("_")[1]);
+					int z = Integer.valueOf(i.split("_")[2]);
+					Block block = ac.getBlock(x, y, z);
+					
+					new S()
+					{
+						@Override
+						public void sync()
+						{
+							Block bb = W.toSync(block);
+							nested.put(bb.getLocation(), new PhantomBlockNest(bb, df.crop(i)));
+						}
+					};
+				}
 			}
-		}
-		
-		for(String i : blocks)
-		{
-			int x = Integer.valueOf(i.split("_")[0]);
-			int y = Integer.valueOf(i.split("_")[1]);
-			int z = Integer.valueOf(i.split("_")[2]);
-			Block block = chunk.getBlock(x, y, z);
-			nested.put(block.getLocation(), new PhantomBlockNest(block, df.crop(i)));
-		}
+		};
 	}
 	
 	/**
@@ -112,7 +139,40 @@ public class PhantomChunkNest implements NestedChunk
 			df.add(nested.get(i).getData(), W.getChunkX(i.getBlock()) + "_" + i.getBlockY() + "_" + W.getChunkZ(i.getBlock()) + ".");
 		}
 		
-		df.save(NestUtil.getFile(chunk));
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				try
+				{
+					df.save(NestUtil.getFile(chunk));
+				}
+				
+				catch(IOException e)
+				{
+					ExceptionUtil.print(e);
+					
+					new S()
+					{
+						
+						@Override
+						public void sync()
+						{
+							try
+							{
+								df.save(NestUtil.getFile(chunk));
+							}
+							
+							catch(IOException e)
+							{
+								ExceptionUtil.print(e);
+							}
+						}
+					};
+				}
+			}
+		};
 	}
 	
 	public NestedBlock getBlock(Block block)
