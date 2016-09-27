@@ -440,7 +440,7 @@ public class W
 	 */
 	public static Chunk toAsync(Chunk chunk)
 	{
-		return toAsync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getX());
+		return toAsync(chunk.getWorld()).getChunkAt(chunk.getX(), chunk.getZ());
 	}
 	
 	/**
