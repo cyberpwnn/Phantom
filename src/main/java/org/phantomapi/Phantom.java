@@ -186,6 +186,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(editSessionController);
 		register(wraithController);
 		register(photonController);
+		register(resourceController);
 		register(nestController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
