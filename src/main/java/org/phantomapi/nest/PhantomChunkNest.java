@@ -8,12 +8,23 @@ import org.phantomapi.clust.DataFile;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 
+/**
+ * Implementation of a NestedChunk
+ * 
+ * @author cyberpwn
+ */
 public class PhantomChunkNest implements NestedChunk
 {
 	private DataFile df;
 	private GMap<Block, NestedBlock> nested;
 	private Chunk chunk;
 	
+	/**
+	 * Create a phantom Chunk Nest
+	 * 
+	 * @param chunk
+	 *            the chunk
+	 */
 	public PhantomChunkNest(Chunk chunk)
 	{
 		this.df = new DataFile();
@@ -21,6 +32,12 @@ public class PhantomChunkNest implements NestedChunk
 		this.chunk = chunk;
 	}
 	
+	/**
+	 * Load this chunk data
+	 * 
+	 * @throws IOException
+	 *             shit happens
+	 */
 	public void load() throws IOException
 	{
 		nested = new GMap<Block, NestedBlock>();
@@ -53,6 +70,14 @@ public class PhantomChunkNest implements NestedChunk
 		}
 	}
 	
+	/**
+	 * Saves this set of data into a nest file. Any blocks with no nest data
+	 * will not be saved. If there is no nest data at all, any nest file will be
+	 * remved, as it is saving changes
+	 * 
+	 * @throws IOException
+	 *             shit happens
+	 */
 	public void save() throws IOException
 	{
 		for(Block i : nested.k())
@@ -91,7 +116,7 @@ public class PhantomChunkNest implements NestedChunk
 		
 		return nested.get(block);
 	}
-
+	
 	public Chunk getChunk()
 	{
 		return chunk;
