@@ -13,6 +13,7 @@ org.phantomapi.game
 org.phantomapi.gui
 org.phantomapi.inventory
 org.phantomapi.lang
+org.phantomapi.nest
 org.phantomapi.network
 org.phantomapi.nms
 org.phantomapi.papyrus
