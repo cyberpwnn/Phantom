@@ -2,11 +2,13 @@ package org.phantomapi.nest;
 
 import java.io.IOException;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataFile;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.W;
 
 /**
@@ -17,7 +19,7 @@ import org.phantomapi.world.W;
 public class PhantomChunkNest implements NestedChunk
 {
 	private DataFile df;
-	private GMap<Block, NestedBlock> nested;
+	private GMap<Location, NestedBlock> nested;
 	private Chunk chunk;
 	
 	/**
@@ -29,8 +31,18 @@ public class PhantomChunkNest implements NestedChunk
 	public PhantomChunkNest(Chunk chunk)
 	{
 		this.df = new DataFile();
-		this.nested = new GMap<Block, NestedBlock>();
+		this.nested = new GMap<Location, NestedBlock>();
 		this.chunk = chunk;
+		
+		try
+		{
+			this.load();
+		}
+		
+		catch(IOException e)
+		{
+			ExceptionUtil.print(e);
+		}
 	}
 	
 	/**
@@ -41,8 +53,8 @@ public class PhantomChunkNest implements NestedChunk
 	 */
 	public void load() throws IOException
 	{
-		nested = new GMap<Block, NestedBlock>();
-		
+		nested = new GMap<Location, NestedBlock>();
+				
 		if(!NestUtil.getFile(chunk).exists())
 		{
 			return;
@@ -67,7 +79,7 @@ public class PhantomChunkNest implements NestedChunk
 			int z = Integer.valueOf(i.split("_")[2]);
 			Block block = chunk.getBlock(x, y, z);
 			NestedBlock nb = new PhantomBlockNest(block, df.crop(i));
-			nested.put(block, nb);
+			nested.put(block.getLocation(), nb);
 		}
 	}
 	
@@ -81,7 +93,7 @@ public class PhantomChunkNest implements NestedChunk
 	 */
 	public void save() throws IOException
 	{
-		for(Block i : nested.k())
+		for(Location i : nested.k())
 		{
 			if(nested.get(i).getData().getData().isEmpty())
 			{
@@ -95,9 +107,9 @@ public class PhantomChunkNest implements NestedChunk
 			return;
 		}
 		
-		for(Block i : nested.k())
+		for(Location i : nested.k())
 		{
-			df.add(nested.get(i).getData(), W.getChunkX(i) + "_" + i.getY() + "_" + W.getChunkZ(i) + ".");
+			df.add(nested.get(i).getData(), W.getChunkX(i.getBlock()) + "_" + i.getBlockY() + "_" + W.getChunkZ(i.getBlock()) + ".");
 		}
 		
 		df.save(NestUtil.getFile(chunk));
@@ -105,17 +117,12 @@ public class PhantomChunkNest implements NestedChunk
 	
 	public NestedBlock getBlock(Block block)
 	{
-		if(!block.getChunk().equals(chunk))
+		if(!nested.containsKey(block.getLocation()))
 		{
-			return null;
+			nested.put(block.getLocation(), new PhantomBlockNest(block, new DataCluster()));
 		}
 		
-		if(!nested.containsKey(block))
-		{
-			nested.put(block, new PhantomBlockNest(block, new DataCluster()));
-		}
-		
-		return nested.get(block);
+		return nested.get(block.getLocation());
 	}
 	
 	public Chunk getChunk()
