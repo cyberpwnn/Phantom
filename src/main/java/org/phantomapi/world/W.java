@@ -129,6 +129,42 @@ public class W
 	}
 	
 	/**
+	 * Get the block coord for the given chunk (0-15)
+	 * 
+	 * @param b
+	 *            the block
+	 * @return the coord
+	 */
+	public static int getChunkX(Block b)
+	{
+		return b.getX() - (b.getChunk().getX() << 4);
+	}
+	
+	/**
+	 * Get the block coord for the given chunk (0-255)
+	 * 
+	 * @param b
+	 *            the block
+	 * @return the coord
+	 */
+	public static int getChunkY(Block b)
+	{
+		return b.getY();
+	}
+	
+	/**
+	 * Get the block coord for the given chunk (0-15)
+	 * 
+	 * @param b
+	 *            the block
+	 * @return the coord
+	 */
+	public static int getChunkZ(Block b)
+	{
+		return b.getZ() - (b.getChunk().getZ() << 4);
+	}
+	
+	/**
 	 * Take items from the player's inventory
 	 * 
 	 * @param p
