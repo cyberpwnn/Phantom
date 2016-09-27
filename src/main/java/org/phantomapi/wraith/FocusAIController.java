@@ -37,7 +37,7 @@ public abstract class FocusAIController extends WraithHandle
 				}
 			}
 			
-			if(getWraith().getFocus().getTarget().equals(f))
+			if(getWraith().hasFocus() && getWraith().getFocus().getTarget().equals(f))
 			{
 				return;
 			}
