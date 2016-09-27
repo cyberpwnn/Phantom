@@ -3,6 +3,7 @@ package org.phantomapi.core;
 import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
+import org.phantomapi.async.AsyncUtil;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GMap;
@@ -10,6 +11,7 @@ import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
 import org.phantomapi.nest.PhantomChunkNest;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.world.W;
 
 public class NestController extends Controller
 {
@@ -21,13 +23,13 @@ public class NestController extends Controller
 		
 		nests = new GMap<Chunk, PhantomChunkNest>();
 	}
-
+	
 	@Override
 	public void onStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
@@ -36,6 +38,9 @@ public class NestController extends Controller
 	
 	public NestedChunk get(Chunk c)
 	{
+		AsyncUtil.enforceSync();
+		c = W.toSync(c);
+		
 		if(!c.isLoaded())
 		{
 			return null;
@@ -62,6 +67,9 @@ public class NestController extends Controller
 	
 	public NestedBlock get(Block block)
 	{
+		AsyncUtil.enforceSync();
+		block = W.toSync(block);
+		
 		if(!block.getChunk().isLoaded())
 		{
 			return null;
