@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataFile;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.util.ExceptionUtil;
@@ -78,8 +79,7 @@ public class PhantomChunkNest implements NestedChunk
 			int y = Integer.valueOf(i.split("_")[1]);
 			int z = Integer.valueOf(i.split("_")[2]);
 			Block block = chunk.getBlock(x, y, z);
-			NestedBlock nb = new PhantomBlockNest(block, df.crop(i));
-			nested.put(block.getLocation(), nb);
+			nested.put(block.getLocation(), new PhantomBlockNest(block, df.crop(i)));
 		}
 	}
 	
@@ -128,5 +128,10 @@ public class PhantomChunkNest implements NestedChunk
 	public Chunk getChunk()
 	{
 		return chunk;
+	}
+
+	public GList<NestedBlock> getBlocks()
+	{
+		return nested.v();
 	}
 }
