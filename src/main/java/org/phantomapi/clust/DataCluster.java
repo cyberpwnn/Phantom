@@ -904,6 +904,34 @@ public class DataCluster
 	}
 	
 	/**
+	 * Add all data from the given data cluster into this data cluster with a
+	 * prefixed key adapted from the given data cluster
+	 * 
+	 * @param data
+	 *            the data cluster to add to this data cluster
+	 * @param prefix
+	 *            the prefix to adapt the keys from the given data cluster
+	 */
+	public void add(DataCluster data, String prefix)
+	{
+		for(String i : data.getData().keySet())
+		{
+			getData().put(prefix + i, data.getData().get(i));
+		}
+	}
+	
+	/**
+	 * Add all data from the given data cluster into this data cluster
+	 * 
+	 * @param data
+	 *            the data cluster to add to this data cluster
+	 */
+	public void add(DataCluster data)
+	{
+		add(data, "");
+	}
+	
+	/**
 	 * Get the object from the given path
 	 * 
 	 * @param key
