@@ -3,6 +3,9 @@ package org.phantomapi.core;
 import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.phantomapi.async.AsyncUtil;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
@@ -57,7 +60,7 @@ public class NestController extends Controller
 			
 			catch(IOException e)
 			{
-				f("Failed to load nest");
+				f("Failed to load nested chunk");
 				ExceptionUtil.print(e);
 			}
 		}
@@ -76,5 +79,23 @@ public class NestController extends Controller
 		}
 		
 		return get(block.getChunk()).getBlock(block);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(ChunkUnloadEvent e)
+	{
+		if(nests.contains(e.getChunk()))
+		{
+			try
+			{
+				((PhantomChunkNest) get(e.getChunk())).save();
+			}
+			
+			catch(IOException e1)
+			{
+				f("Failed to save nested chunk");
+				ExceptionUtil.print(e1);
+			}
+		}
 	}
 }
