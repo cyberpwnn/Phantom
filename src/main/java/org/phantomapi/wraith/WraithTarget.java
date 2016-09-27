@@ -73,7 +73,7 @@ public class WraithTarget
 			return location;
 		}
 		
-		else if(entity.isDead())
+		else if(entity == null || entity.isDead())
 		{
 			return null;
 		}
