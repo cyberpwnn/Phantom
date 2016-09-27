@@ -17,7 +17,7 @@ public class Nest
 	 *            the block
 	 * @return the nested block or null
 	 */
-	public NestedBlock get(Block block)
+	public static NestedBlock get(Block block)
 	{
 		return Phantom.instance().getNestController().get(block);
 	}
