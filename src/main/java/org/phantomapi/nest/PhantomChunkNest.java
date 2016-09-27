@@ -7,6 +7,7 @@ import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataFile;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.world.W;
 
 /**
  * Implementation of a NestedChunk
@@ -96,7 +97,7 @@ public class PhantomChunkNest implements NestedChunk
 		
 		for(Block i : nested.k())
 		{
-			df.add(nested.get(i).getData(), i.getX() + "_" + i.getY() + "_" + i.getZ() + ".");
+			df.add(nested.get(i).getData(), W.getChunkX(i) + "_" + i.getY() + "_" + W.getChunkZ(i) + ".");
 		}
 		
 		df.save(NestUtil.getFile(chunk));
