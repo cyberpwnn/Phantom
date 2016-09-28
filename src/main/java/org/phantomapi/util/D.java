@@ -77,7 +77,15 @@ public class D
 		{
 			for(String i : queue.copy())
 			{
-				Bukkit.getServer().getConsoleSender().sendMessage(i);
+				try
+				{
+					Bukkit.getServer().getConsoleSender().sendMessage(i);
+				}
+				
+				catch(Exception e)
+				{
+					
+				}
 			}
 			
 			queue.clear();
