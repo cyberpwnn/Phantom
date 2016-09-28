@@ -4,14 +4,20 @@ import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataFile;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.lang.Title;
 import org.phantomapi.sync.S;
+import org.phantomapi.text.ProgressSpinner;
+import org.phantomapi.util.C;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.util.F;
 import org.phantomapi.world.W;
 
 /**
@@ -89,23 +95,69 @@ public class PhantomChunkNest implements NestedChunk
 					}
 				}
 				
+				int k = 128;
+				int v = 0;
+				ProgressSpinner s = new ProgressSpinner();
+				String pc = "";
+				
 				for(String i : blocks)
 				{
+					if(!chunk.isLoaded())
+					{
+						return;
+					}
+					
 					int x = Integer.valueOf(i.split("_")[0]);
 					int y = Integer.valueOf(i.split("_")[1]);
 					int z = Integer.valueOf(i.split("_")[2]);
-					Block block = ac.getBlock(x, y, z);
+					Block bb = ac.getBlock(x, y, z);
+					nested.put(bb.getLocation(), new PhantomBlockNest(bb, df.crop(i)));
+					k--;
+					v++;
 					
-					new S()
+					if(k <= 0)
 					{
-						@Override
-						public void sync()
+						k = 64;
+						pc = F.pc((double)((double)v / (double)blocks.size()), 0);
+						String cc = pc;
+						
+						new S()
 						{
-							Block bb = W.toSync(block);
-							nested.put(bb.getLocation(), new PhantomBlockNest(bb, df.crop(i)));
-						}
-					};
+							@Override
+							public void sync()
+							{
+								Title t = new Title(C.LIGHT_PURPLE + s.toString() + " " + "Loading " + cc, 0, 20, 20);
+								
+								for(Entity i : chunk.getEntities())
+								{
+									if(i instanceof Player)
+									{
+										Player p = (Player) i;
+										t.send(p);
+									}
+								}
+							}
+						};
+					}
 				}
+				
+				new S()
+				{
+					@Override
+					public void sync()
+					{
+						Title t = new Title(C.LIGHT_PURPLE + s.toString() + " " + "Complete", 0, 20, 20);
+						
+						for(Entity i : chunk.getEntities())
+						{
+							if(i instanceof Player)
+							{
+								Player p = (Player) i;
+								t.send(p);
+							}
+						}
+					}
+				};
 			}
 		};
 	}
