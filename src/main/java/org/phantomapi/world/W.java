@@ -335,15 +335,13 @@ public class W
 	}
 	
 	/**
-	 * Get the MCAWorld instance for the given world. The type is set to object
-	 * to prevent phantom plugins from having to depend on fawe at the same
-	 * time. Use a phantom edit session with a PhantomWorld set for mca
+	 * Get the MCAWorld instance for the given world.
 	 * 
 	 * @param world
 	 *            the world
 	 * @return the mca world instance
 	 */
-	public static Object getMCAWorld(World world)
+	public static MCAWorld getMCAWorld(World world)
 	{
 		return new MCAWorld(world.getName(), new File(world.getWorldFolder(), "region"), true);
 	}
