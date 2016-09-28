@@ -86,7 +86,9 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
+import org.phantomapi.world.PE;
 import org.phantomapi.world.W;
+import org.phantomapi.world.WorldLock;
 import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
 import org.phantomapi.wraith.WraithEquipment;
@@ -248,6 +250,138 @@ public class TestController extends Controller
 						
 						i.sendMessage(nb.getData().toJSON().toString());
 					}
+				}
+			}
+		});
+		
+		tests.put("relock", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				World world = Bukkit.getWorld("world");
+				
+				for(Player i : world.getPlayers())
+				{
+					P.showProgress(i, "Locking World");
+					PE.BLINDNESS.a(63).d(12000).c(i);
+				}
+				
+				new TaskLater(20)
+				{
+					@Override
+					public void run()
+					{
+						for(Player i : world.getPlayers())
+						{
+							P.showProgress(i, "Locking World;Establishing Lock");
+						}
+						
+						WorldLock lock = new WorldLock(world);
+						
+						new TaskLater(10)
+						{
+							@Override
+							public void run()
+							{
+								for(Player i : world.getPlayers())
+								{
+									P.showProgress(i, "Locking World;Locking");
+								}
+								
+								lock.lock();
+								
+								new TaskLater(15)
+								{
+									@Override
+									public void run()
+									{
+										for(Player i : world.getPlayers())
+										{
+											P.showProgress(i, "Releasing World;Establishing Lock");
+										}
+										
+										new TaskLater(10)
+										{
+											@Override
+											public void run()
+											{
+												for(Player i : world.getPlayers())
+												{
+													P.showProgress(i, "Releasing World;Releasing");
+												}
+												
+												lock.release();
+												
+												for(Player i : world.getPlayers())
+												{
+													P.clearProgress(i);
+													P.clearEffects(i);
+												}
+											}
+										};
+									}
+								};
+							}
+						};
+					}
+				};
+			}
+		});
+		
+		tests.put("progress", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					P.showProgress(i, "Please Wait");
+					
+					new TaskLater(100)
+					{
+						@Override
+						public void run()
+						{
+							P.showProgress(i, "Getting Shit Done");
+						}
+					};
+					
+					new TaskLater(110)
+					{
+						@Override
+						public void run()
+						{
+							P.showProgress(i, "Getting Shit Done;Handling Things");
+						}
+					};
+					
+					new TaskLater(200)
+					{
+						@Override
+						public void run()
+						{
+							P.showProgress(i, "Getting Shit Done;Thrashing");
+						}
+					};
+					
+					new TaskLater(250)
+					{
+						@Override
+						public void run()
+						{
+							P.showProgress(i, "Cleaning Up;Deleting Crap");
+						}
+					};
+					
+					new TaskLater(310)
+					{
+						@Override
+						public void run()
+						{
+							P.clearProgress(i);
+						}
+					};
 				}
 			}
 		});
