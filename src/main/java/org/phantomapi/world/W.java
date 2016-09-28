@@ -1,6 +1,5 @@
 package org.phantomapi.world;
 
-import java.io.File;
 import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -24,7 +23,6 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
-import com.boydti.fawe.jnbt.anvil.MCAWorld;
 import com.boydti.fawe.object.FawePlayer;
 import com.sk89q.worldedit.regions.Region;
 
@@ -332,18 +330,6 @@ public class W
 		{
 			((AsyncWorld) world).commit();
 		}
-	}
-	
-	/**
-	 * Get the MCAWorld instance for the given world.
-	 * 
-	 * @param world
-	 *            the world
-	 * @return the mca world instance
-	 */
-	public static MCAWorld getMCAWorld(World world)
-	{
-		return new MCAWorld(world.getName(), new File(world.getWorldFolder(), "region"), true);
 	}
 	
 	/**
