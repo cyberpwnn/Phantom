@@ -254,6 +254,29 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("nestsuper", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					GMap<GLocation, MaterialBlock> blocks = W.getChunkBlocksAsync(new GChunk(i.getLocation().getChunk()));
+					
+					for(GLocation j : blocks.k())
+					{
+						Block b = j.toLocation().getBlock();
+						NestedBlock nb = Nest.get(b);
+						
+						if(nb != null)
+						{
+							nb.getData().set("dat", (int) Math.random());
+						}
+					}
+				}
+			}
+		});
+		
 		tests.put("relock", new Runnable()
 		{
 			@Override
