@@ -209,4 +209,28 @@ public class P
 		
 		return base;
 	}
+	
+	/**
+	 * Show progress
+	 * 
+	 * @param p
+	 *            player
+	 * @param msg
+	 *            the message
+	 */
+	public static void showProgress(Player p, String msg)
+	{
+		Phantom.instance().getDms().showProgress(p, msg);
+	}
+	
+	/**
+	 * Remove all progress for player
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public static void clearProgress(Player p)
+	{
+		Phantom.instance().getDms().clearProgress(p);
+	}
 }
