@@ -54,6 +54,8 @@ public abstract class Task implements Runnable
 	public Task(int interval, int intervals)
 	{
 		FinalInteger k = new FinalInteger(0);
+		this.task = new FinalInteger(-1);
+		this.running = true;
 		
 		new Task(interval)
 		{
@@ -62,7 +64,6 @@ public abstract class Task implements Runnable
 			{
 				if(k.get() > intervals)
 				{
-					Task.this.cancel();
 					cancel();
 					
 					return;
