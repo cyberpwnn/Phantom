@@ -3,6 +3,7 @@ package org.phantomapi.world;
 import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -67,6 +69,21 @@ public class W
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Set the color of a peice of armor
+	 * 
+	 * @param s
+	 *            the item stack
+	 * @param c
+	 *            the color
+	 */
+	public static void colorArmor(ItemStack s, Color c)
+	{
+		LeatherArmorMeta lam = (LeatherArmorMeta) s.getItemMeta();
+		lam.setColor(c);
+		s.setItemMeta(lam);
 	}
 	
 	/**
