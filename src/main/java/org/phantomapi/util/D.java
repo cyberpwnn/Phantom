@@ -75,17 +75,25 @@ public class D
 	{
 		if(!queue.isEmpty())
 		{
-			for(String i : queue.copy())
+			try
 			{
-				try
+				for(String i : queue.copy())
 				{
-					Bukkit.getServer().getConsoleSender().sendMessage(i);
-				}
-				
-				catch(Exception e)
-				{
+					try
+					{
+						Bukkit.getServer().getConsoleSender().sendMessage(i);
+					}
 					
+					catch(Exception e)
+					{
+						
+					}
 				}
+			}
+			
+			catch(Exception e)
+			{
+				return;
 			}
 			
 			queue.clear();
