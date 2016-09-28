@@ -15,6 +15,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Executive Iterators](#executive-iterators)
  * [Executive Tasks](#executive-tasks)
 * [World Manipulation](#world-manipulation)
+ * [Async Sync Objects](#async-sync-objects)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
@@ -319,4 +320,25 @@ ExecutiveTask<String> task = new ExecutiveTask<String>(it, 1.0, 0, new Runnable(
 from [ExecutiveTask](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveTask.html)
 
 ## World Manipulation
-Manipulate the world 
+Manipulate the world with loads of utilities
+* [Async Sync Objects](#async-sync-objects)
+
+### Async Sync Objects
+Get the Async or Sync object from a world regardless if it is async or sync already. Keep in mind, if you have the async world instance, getting the chunk will return an async chunk, same for async chunks returning async blocks.
+
+``` java
+//Get worlds by name (you can use world.getName() too)
+World syncWorld = Bukkit.getWorld("world");
+World asyncWorld = W.getAsyncWorld("world");
+asyncWorld = W.toAsync(syncWorld);
+
+//Get the async chunk from the sync chunk
+Chunk syncChunk = syncWorld.getChunkAt(0, 0);
+Chunk asyncChunk = W.toAsync(syncChunk);
+
+//Get the async block from the sync block
+Block syncBlock = syncChunk.getBlock(0, 0, 0);
+Block asyncBlock = W.toAsync(syncBlock);
+```
+
+from [W](http://cyberpwnn.github.io/Phantom/org/phantomapi/world/W.html)
