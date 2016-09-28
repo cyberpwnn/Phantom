@@ -14,9 +14,16 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Multithreading](#multithreading)
  * [Executive Iterators](#executive-iterators)
  * [Executive Tasks](#executive-tasks)
+* [World Manipulation](#world-manipulation)
 
 ## Phantom Core
 The core contains several useful apis and ultilities for you to use while developing. 
+* [Event Listeners](#event-listeners)
+* [Networked Servers](#networked-servers)
+* [Formatting](#formatting)
+* [Math](#math)
+* [Dispatcher](#dispatcher)
+* [Timers](#timers)
 
 ### Event Listeners
 You can easily register and unregister listeners. Remember, Controllers by default are event listeners and probobly registered.
@@ -152,7 +159,12 @@ and [Timer](http://cyberpwnn.github.io/Phantom/org/phantomapi/util/Timer.html)
 
 ## Threading & Scheduling
 With phantom, you can dive in and out of multiple async threads, use ticked schedulers with simplicity and much more.
-
+* [Schedulers](#schedulers)
+* [Asynchronous Executions](#asynchronous-executions)
+* [Multithreading](#multithreading)
+* [Executive Iterators](#executive-iterators)
+* [Executive Tasks](#executive-tasks)
+ 
 ### Schedulers
 You can now run quick schedulers with ease.
 #### Run Later
@@ -306,3 +318,5 @@ ExecutiveTask<String> task = new ExecutiveTask<String>(it, 1.0, 0, new Runnable(
 
 from [ExecutiveTask](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveTask.html)
 
+## World Manipulation
+Manipulate the world 
