@@ -13,6 +13,7 @@ import org.phantomapi.async.AsyncUtil;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.PlayerMoveChunkEvent;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
@@ -38,13 +39,7 @@ public class NestController extends Controller implements Monitorable
 	@Override
 	public void onStart()
 	{
-		for(World i : Bukkit.getWorlds())
-		{
-			for(Chunk j : i.getLoadedChunks())
-			{
-				nests.put(j, new PhantomChunkNest(j));
-			}
-		}
+		
 	}
 	
 	@Override
@@ -142,6 +137,15 @@ public class NestController extends Controller implements Monitorable
 	public void on(ChunkLoadEvent e)
 	{
 		nests.put(e.getChunk(), new PhantomChunkNest(e.getChunk()));
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void on(PlayerMoveChunkEvent e)
+	{
+		if(!nests.containsKey(e.getToChunk()))
+		{
+			nests.put(e.getToChunk(), new PhantomChunkNest(e.getToChunk()));
+		}
 	}
 	
 	@Override
