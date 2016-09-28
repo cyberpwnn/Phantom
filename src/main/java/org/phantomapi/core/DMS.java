@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -19,9 +20,13 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.Title;
 import org.phantomapi.network.PluginMessage;
 import org.phantomapi.statistics.Monitorable;
+import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.text.ProgressSpinner;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
@@ -47,6 +52,8 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	private HotLoadController hotLoadController;
 	private ConfigurationBackupController configurationBackupController;
 	private static ServerState state;
+	private ProgressSpinner spinner;
+	private GMap<Player, String> progressing;
 	
 	public DMS(Controllable parentController)
 	{
@@ -60,6 +67,8 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		sqlt = false;
 		hotLoadController = new HotLoadController(this);
 		configurationBackupController = new ConfigurationBackupController(this);
+		progressing = new GMap<Player, String>();
+		spinner = new ProgressSpinner();
 		
 		register(hotLoadController);
 		register(configurationBackupController);
@@ -76,6 +85,29 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
+		
+		new Task(0)
+		{
+			@Override
+			public void run()
+			{
+				String next = spinner.toString();
+				
+				for(Player i : progressing.k())
+				{
+					String msg = progressing.get(i);
+					String sub = "";
+					
+					if(msg.contains(";"))
+					{
+						sub = msg.split(";")[1];
+						msg = msg.split(";")[0];
+					}
+					
+					new Title(C.LIGHT_PURPLE + msg, C.LIGHT_PURPLE + next + " " + C.DARK_GRAY + sub , "  ", 0, 5, 5).send(i);
+				}
+			}
+		};
 	}
 	
 	@EventHandler
@@ -323,6 +355,22 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	public ConfigurationBackupController getConfigurationBackupController()
 	{
 		return configurationBackupController;
+	}
+	
+	public void showProgress(Player p, String message)
+	{
+		progressing.put(p, message);
+	}
+	
+	public void clearProgress(Player p)
+	{
+		progressing.remove(p);
+	}
+	
+	@EventHandler
+	public void on(PlayerQuitEvent e)
+	{
+		clearProgress(e.getPlayer());
 	}
 	
 	@Override
