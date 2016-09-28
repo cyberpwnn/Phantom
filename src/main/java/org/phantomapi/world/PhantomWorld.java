@@ -39,12 +39,30 @@ import org.bukkit.util.Vector;
 public class PhantomWorld implements World
 {
 	private World world;
+	private Boolean mca;
 	
 	public PhantomWorld(World world)
 	{
 		this.world = world;
+		this.mca = false;
 	}
 	
+	public PhantomWorld(World world, boolean mca)
+	{
+		this.world = world;
+		this.mca = mca;
+	}
+	
+	public World getWorld()
+	{
+		return world;
+	}
+
+	public Boolean getMca()
+	{
+		return mca;
+	}
+
 	@Override
 	public void sendPluginMessage(Plugin source, String channel, byte[] message)
 	{
