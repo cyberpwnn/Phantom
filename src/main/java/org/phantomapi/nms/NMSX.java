@@ -644,7 +644,7 @@ public class NMSX
 		
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			
 		}
 	}
 	
