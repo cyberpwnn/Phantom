@@ -2,9 +2,8 @@ package org.phantomapi.clust;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +17,7 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.Paste;
+import com.google.common.io.ByteStreams;
 
 /**
  * The data cluster holds keyed values in paths ready to be written to files in
@@ -167,11 +167,11 @@ public class DataCluster
 	public byte[] compress() throws IOException
 	{
 		String data = toJSON().toString();
+		byte[] dat = data.getBytes(StandardCharsets.UTF_8);
 		ByteArrayOutputStream boas = new ByteArrayOutputStream();
 		GZIPOutputStream gzo = new GZIPOutputStream(boas);
-		DataOutputStream dos = new DataOutputStream(gzo);
-		dos.writeUTF(data);
-		dos.close();
+		gzo.write(dat);
+		gzo.close();
 		
 		return boas.toByteArray();
 	}
@@ -188,11 +188,9 @@ public class DataCluster
 	{
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		GZIPInputStream gzi = new GZIPInputStream(bais);
-		DataInputStream dis = new DataInputStream(gzi);
-		
-		JSONObject js = new JSONObject(dis.readUTF());
-		dis.close();
-		
+		byte[] dat = ByteStreams.toByteArray(gzi);
+		JSONObject js = new JSONObject(new String(dat, StandardCharsets.UTF_8));
+		gzi.close();
 		addJson(js);
 	}
 	
