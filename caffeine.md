@@ -14,7 +14,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Multithreading](#multithreading)
  * [Executive Iterators](#executive-iterators)
  * [Executive Tasks](#executive-tasks)
-* [World Manipulation](#world-manipulation)
+* [World Utils](#world-utils)
  * [Async Sync Objects](#async-sync-objects)
  * [Color Armor](#color-armor)
 
@@ -320,9 +320,10 @@ ExecutiveTask<String> task = new ExecutiveTask<String>(it, 1.0, 0, new Runnable(
 
 from [ExecutiveTask](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveTask.html)
 
-## World Manipulation
+## World Utils
 Manipulate the world with loads of utilities
 * [Async Sync Objects](#async-sync-objects)
+* [Color Armor](#color-armor)
 
 ### Async Sync Objects
 Get the Async or Sync object from a world regardless if it is async or sync already. Keep in mind, if you have the async world instance, getting the chunk will return an async chunk, same for async chunks returning async blocks.
