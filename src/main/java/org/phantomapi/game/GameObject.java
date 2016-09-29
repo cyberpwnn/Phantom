@@ -22,4 +22,11 @@ public interface GameObject extends DataEntity
 	 * @return the game object id
 	 */
 	public String getId();
+	
+	/**
+	 * Get the game
+	 * 
+	 * @return the game
+	 */
+	public Game getGame();
 }
