@@ -26,7 +26,12 @@ public abstract class GListAdapter<FROM, TO>
 		
 		for(FROM i : from)
 		{
-			adapted.add(onAdapt(i));
+			TO t = onAdapt(i);
+			
+			if(t != null)
+			{
+				adapted.add(onAdapt(i));
+			}
 		}
 		
 		return adapted;
