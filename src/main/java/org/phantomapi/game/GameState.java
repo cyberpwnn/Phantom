@@ -27,12 +27,18 @@ public interface GameState extends PlayerContainer, GameObjectContainer
 	/**
 	 * Used for adding objects into the reference map
 	 * 
-	 * @param key
-	 *            the key
 	 * @param object
 	 *            the object
 	 */
-	public void registerGameObject(String key, GameObject object);
+	public void registerGameObject(GameObject object);
+	
+	/**
+	 * Used for removing objects from the reference map
+	 * 
+	 * @param object
+	 *            the object
+	 */
+	public void unregisterGameObject(GameObject object);
 	
 	/**
 	 * Add a player
