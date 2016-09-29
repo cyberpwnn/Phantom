@@ -335,7 +335,7 @@ public class W
 		return AsyncWorld.create(new WorldCreator(world));
 	}
 	
-	/**
+	/**	
 	 * Applies changes to an async world
 	 * 
 	 * @param world

@@ -139,6 +139,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					f("USING SYNC BOOT MODE");
 				}
 			};
+			
 			syncStart = true;
 		}
 		
