@@ -62,7 +62,11 @@ public class PhotonController extends Controller implements Monitorable
 	
 	public void relight(Chunk chunk)
 	{
-		wait = true;
+		if(queue.size() < 344)
+		{
+			wait = true;
+		}
+		
 		queue.add(chunk);
 	}
 	
