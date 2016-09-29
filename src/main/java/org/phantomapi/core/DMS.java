@@ -26,7 +26,7 @@ import org.phantomapi.network.PluginMessage;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
-import org.phantomapi.text.ProgressSpinner;
+import org.phantomapi.text.PhantomSpinner;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
@@ -52,7 +52,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	private HotLoadController hotLoadController;
 	private ConfigurationBackupController configurationBackupController;
 	private static ServerState state;
-	private ProgressSpinner spinner;
+	private PhantomSpinner spinner;
 	private GMap<Player, String> progressing;
 	
 	public DMS(Controllable parentController)
@@ -68,7 +68,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		hotLoadController = new HotLoadController(this);
 		configurationBackupController = new ConfigurationBackupController(this);
 		progressing = new GMap<Player, String>();
-		spinner = new ProgressSpinner();
+		spinner = new PhantomSpinner();
 		
 		register(hotLoadController);
 		register(configurationBackupController);
