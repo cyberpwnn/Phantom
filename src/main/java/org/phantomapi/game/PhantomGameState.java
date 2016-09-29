@@ -39,9 +39,14 @@ public class PhantomGameState implements GameState
 		return objects;
 	}
 	
-	public void registerGameObject(String key, GameObject object)
+	public void registerGameObject(GameObject object)
 	{
-		objects.put(key, object);
+		objects.put(object.getId(), object);
+	}
+	
+	public void unregisterGameObject(GameObject object)
+	{
+		objects.remove(object.getId());
 	}
 
 	public GList<Player> getPlayers()
