@@ -10,14 +10,18 @@ import org.phantomapi.Phantom;
  */
 public abstract class A
 {
+	public static int threads = 0;
+	
 	/**
 	 * Create a fast async execution. Must implement the async() method (abstract)
 	 */
 	public A()
 	{
+		threads++;
 		if(Phantom.isAsync())
 		{
 			async();
+			
 		}
 		
 		else
