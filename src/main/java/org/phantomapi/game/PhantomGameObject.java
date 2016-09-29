@@ -29,7 +29,7 @@ public class PhantomGameObject extends ConfigurableObject implements GameObject
 		this.game = game;
 		this.type = type;
 		getConfiguration().set("gameobject-id", UUID.randomUUID().toString());
-		game.getState().registerGameObject(getId(), this);
+		game.getState().registerGameObject(this);
 	}
 	
 	@Override
@@ -69,5 +69,11 @@ public class PhantomGameObject extends ConfigurableObject implements GameObject
 	{
 		getConfiguration().setData(new DataCluster(data).getData());
 		ConfigurationHandler.toFields(this);
+	}
+
+	@Override
+	public void destroy()
+	{
+		game.getState().unregisterGameObject(this);
 	}
 }
