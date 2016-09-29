@@ -1,5 +1,6 @@
 package org.phantomapi.game;
 
+import org.bukkit.entity.Player;
 import org.phantomapi.lang.GMap;
 
 /**
@@ -32,4 +33,20 @@ public interface GameState extends PlayerContainer, GameObjectContainer
 	 *            the object
 	 */
 	public void registerGameObject(String key, GameObject object);
+	
+	/**
+	 * Add a player
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void addPlayer(Player p);
+	
+	/**
+	 * Remove a player
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void removePlayer(Player p);
 }
