@@ -1,11 +1,13 @@
 package org.phantomapi.game;
 
+import org.bukkit.entity.Player;
+
 /**
  * Represents a game instance
  * 
  * @author cyberpwn
  */
-public interface Game
+public interface Game extends PlayerContainer, GameObjectContainer
 {
 	/**
 	 * Start the game up after it's been initialized
@@ -71,4 +73,20 @@ public interface Game
 	 * @return the game profile
 	 */
 	public GameProfile getProfile();
+	
+	/**
+	 * Join the player into the game
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public boolean joinGame(Player p);
+	
+	/**
+	 * Quit the player from the game
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void quitGame(Player p);
 }
