@@ -7,7 +7,7 @@ import org.phantomapi.lang.GMap;
  * 
  * @author cyberpwn
  */
-public interface GameState
+public interface GameState extends PlayerContainer, GameObjectContainer
 {
 	/**
 	 * Get the game
