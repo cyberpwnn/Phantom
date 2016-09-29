@@ -1,5 +1,8 @@
 package org.phantomapi.game;
 
+import org.bukkit.entity.Player;
+import org.phantomapi.lang.GList;
+
 /**
  * Represents a phantom game instance implementation
  * 
@@ -31,6 +34,10 @@ public abstract class PhantomGame implements Game
 	public abstract void onStart(String... lauchParameters);
 	
 	public abstract void onStop(String... endParameters);
+	
+	public abstract void onJoin(Player p);
+	
+	public abstract void onQuit(Player p);
 	
 	public void startGame(String... lauchParameters)
 	{
@@ -72,5 +79,49 @@ public abstract class PhantomGame implements Game
 	public GameProfile getProfile()
 	{
 		return profile;
+	}
+	
+	@Override
+	public GList<Player> getPlayers()
+	{
+		return getState().getPlayers();
+	}
+	
+	@Override
+	public boolean contains(Player p)
+	{
+		return getState().contains(p);
+	}
+	
+	@Override
+	public GList<GameObject> getGameObjects()
+	{
+		return getState().getGameObjects();
+	}
+	
+	@Override
+	public boolean contains(GameObject o)
+	{
+		return getState().contains(o);
+	}
+	
+	@Override
+	public boolean joinGame(Player p)
+	{
+		if(getProfile().getCapacityProfile().canJoin(getPlayers().size()))
+		{
+			getState().addPlayer(p);
+			onJoin(p);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void quitGame(Player p)
+	{
+		onQuit(p);
+		getState().removePlayer(p);
 	}
 }
