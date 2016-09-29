@@ -64,4 +64,11 @@ public interface Game
 	 *            the game instance status
 	 */
 	public void setStatus(GameStatus status);
+	
+	/**
+	 * Get the game profile for defining basic things
+	 * 
+	 * @return the game profile
+	 */
+	public GameProfile getProfile();
 }
