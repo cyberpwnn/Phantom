@@ -217,6 +217,19 @@ public class GTime implements Serializable
 	 */
 	public String to(String suff)
 	{
+		int months = (int) (days / 30);
+		int years = (int)(months / 12);
+		
+		if(years > 0)
+		{
+			return years + " year" + s((int) (months / 12)) + " " + suff;
+		}
+		
+		if(months > 0)
+		{
+			return months + " month" + s((int) (days / 30)) + " " + suff;
+		}
+		
 		if(days > 0)
 		{
 			return days + " day" + s(days) + " " + suff;
