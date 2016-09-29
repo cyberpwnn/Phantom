@@ -21,14 +21,15 @@ public interface GameState
 	 * 
 	 * @return the game objects
 	 */
-	public GMap<String, GMap<String, GameObject>> getObjects();
+	public GMap<String, GameObject> getObjects();
 	
 	/**
-	 * Get all game objects from the given type
+	 * Used for adding objects into the reference map
 	 * 
-	 * @param type
-	 *            the type
-	 * @return the game objects or null
+	 * @param key
+	 *            the key
+	 * @param object
+	 *            the object
 	 */
-	public GMap<String, GameObject> getObjects(String type);
+	public void registerGameObject(String key, GameObject object);
 }
