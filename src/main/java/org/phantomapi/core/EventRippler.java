@@ -22,8 +22,10 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.phantomapi.async.A;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.InventoryDropItemOnItemEvent;
 import org.phantomapi.event.PlayerArrowDamagePlayerEvent;
 import org.phantomapi.event.PlayerDamagePlayerEvent;
@@ -39,7 +41,12 @@ import org.phantomapi.event.TNTPrimeEvent;
 import org.phantomapi.event.WraithCollideEvent;
 import org.phantomapi.event.WraithDamageEvent;
 import org.phantomapi.event.WraithInteractEvent;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.Average;
+import org.phantomapi.util.C;
+import org.phantomapi.util.F;
+import org.phantomapi.util.M;
 import org.phantomapi.world.Area;
 import org.phantomapi.wraith.Wraith;
 import org.phantomapi.wraith.WraithUtil;
@@ -50,11 +57,24 @@ import net.citizensnpcs.api.event.NPCCollisionEvent;
  * 
  * @author cyberpwn
  */
-public class EventRippler extends Controller
+@Ticked(0)
+public class EventRippler extends Controller implements Monitorable
 {
+	private long last;
+	private long diff;
+	private long hang;
+	private double doub;
+	private Average load;
+	
 	public EventRippler(Controllable parentController)
 	{
 		super(parentController);
+		
+		last = 0;
+		diff = 0;
+		hang = 0;
+		doub = 0;
+		load = new Average(24);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -124,6 +144,29 @@ public class EventRippler extends Controller
 		{
 			
 		}
+	}
+	
+	public void onTick()
+	{
+		long ns = M.ns();
+		diff = ns - last;
+		last = ns;
+		hang = diff - 50000000;
+		doub = (double) hang / 50000000.0;
+		load.put(Math.abs(((double) Math.abs(A.threads) / (double) Thread.activeCount()) + doub));
+		
+		if(A.threads < 7 && A.threads > 0)
+		{
+			A.threads--;
+			return;
+		}
+		
+		if(A.threads <= 0)
+		{
+			return;
+		}
+		
+		A.threads = (A.threads - (A.threads / 2)) - 1;
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -327,7 +370,7 @@ public class EventRippler extends Controller
 								tnt.remove();
 								return;
 							}
-														
+							
 							break;
 						}
 					}
@@ -411,5 +454,11 @@ public class EventRippler extends Controller
 	public void onStop()
 	{
 		
+	}
+	
+	@Override
+	public String getMonitorableData()
+	{
+		return "Load: " + C.LIGHT_PURPLE + F.pc(load.getAverage());
 	}
 }
