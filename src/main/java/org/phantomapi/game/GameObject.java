@@ -29,4 +29,9 @@ public interface GameObject extends DataEntity
 	 * @return the game
 	 */
 	public Game getGame();
+	
+	/**
+	 * Destroy this game object and remove the reference in the game state
+	 */
+	public void destroy();
 }
