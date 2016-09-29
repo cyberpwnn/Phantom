@@ -14,6 +14,7 @@ import org.phantomapi.clust.DataCluster;
 public class PhantomGameObject extends ConfigurableObject implements GameObject
 {
 	protected final String type;
+	protected final Game game;
 	
 	/**
 	 * Create a game object
@@ -21,12 +22,14 @@ public class PhantomGameObject extends ConfigurableObject implements GameObject
 	 * @param type
 	 *            the object type
 	 */
-	public PhantomGameObject(String type)
+	public PhantomGameObject(Game game, String type)
 	{
 		super(type);
 		
+		this.game = game;
 		this.type = type;
 		getConfiguration().set("gameobject-id", UUID.randomUUID().toString());
+		game.getState().registerGameObject(getId(), this);
 	}
 	
 	@Override
@@ -35,11 +38,19 @@ public class PhantomGameObject extends ConfigurableObject implements GameObject
 		return type + "-" + getId();
 	}
 	
+	@Override
 	public String getType()
 	{
 		return type;
 	}
 	
+	@Override
+	public Game getGame()
+	{
+		return game;
+	}
+	
+	@Override
 	public String getId()
 	{
 		return getConfiguration().getString("gameobject-id");
