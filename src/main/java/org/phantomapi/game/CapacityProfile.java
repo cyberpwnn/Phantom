@@ -9,11 +9,13 @@ public class CapacityProfile
 {
 	private int playerLimit;
 	private CapacityMode mode;
+	private boolean acceptingPlayers;
 	
 	public CapacityProfile()
 	{
 		this.playerLimit = -1;
 		this.mode = CapacityMode.UNLIMITED;
+		this.acceptingPlayers = true;
 	}
 	
 	public int getPlayerLimit()
@@ -35,7 +37,17 @@ public class CapacityProfile
 	{
 		this.mode = mode;
 	}
-	
+
+	public boolean isAcceptingPlayers()
+	{
+		return acceptingPlayers;
+	}
+
+	public void setAcceptingPlayers(boolean acceptingPlayers)
+	{
+		this.acceptingPlayers = acceptingPlayers;
+	}
+
 	/**
 	 * Could another player join with the given count?
 	 * 
@@ -45,6 +57,6 @@ public class CapacityProfile
 	 */
 	public boolean canJoin(int count)
 	{
-		return mode.equals(CapacityMode.UNLIMITED) || playerLimit >= count + 1;
+		return (mode.equals(CapacityMode.UNLIMITED) || playerLimit >= count + 1) && acceptingPlayers;
 	}
 }
