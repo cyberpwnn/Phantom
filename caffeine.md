@@ -349,18 +349,8 @@ from [W](http://cyberpwnn.github.io/Phantom/org/phantomapi/world/W.html)
 Color armor very simply
 
 ``` java
-//Get worlds by name (you can use world.getName() too)
-World syncWorld = Bukkit.getWorld("world");
-World asyncWorld = W.getAsyncWorld("world");
-asyncWorld = W.toAsync(syncWorld);
-
-//Get the async chunk from the sync chunk
-Chunk syncChunk = syncWorld.getChunkAt(0, 0);
-Chunk asyncChunk = W.toAsync(syncChunk);
-
-//Get the async block from the sync block
-Block syncBlock = syncChunk.getBlock(0, 0, 0);
-Block asyncBlock = W.toAsync(syncBlock);
+ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE);
+W.colorArmor(is, Color.BLACK);
 ```
 
 from [W](http://cyberpwnn.github.io/Phantom/org/phantomapi/world/W.html)
