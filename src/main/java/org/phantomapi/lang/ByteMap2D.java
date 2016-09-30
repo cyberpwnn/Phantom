@@ -1,4 +1,4 @@
-package org.phantomapi.util;
+package org.phantomapi.lang;
 
 /**
  * Two dimensional byte map
