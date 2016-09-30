@@ -306,12 +306,12 @@ public class EventRippler extends Controller implements Monitorable
 			{
 				if(b.getType().equals(Material.TNT))
 				{
-					new TaskLater(1)
+					new TaskLater(2)
 					{
 						@Override
 						public void run()
 						{
-							Area a = new Area(b.getLocation(), 1.149);
+							Area a = new Area(b.getLocation(), 2.149);
 							
 							for(Entity i : a.getNearbyEntities())
 							{
@@ -342,12 +342,12 @@ public class EventRippler extends Controller implements Monitorable
 	{
 		if(e.getItem() != null && e.getItem().getType().equals(Material.TNT))
 		{
-			new TaskLater(1)
+			new TaskLater(2)
 			{
 				@Override
 				public void run()
 				{
-					Area a = new Area(e.getBlock().getLocation(), 1.993);
+					Area a = new Area(e.getBlock().getLocation(), 2.993);
 					for(Entity i : a.getNearbyEntities())
 					{
 						if(i.getType().equals(EntityType.PRIMED_TNT))
@@ -386,12 +386,12 @@ public class EventRippler extends Controller implements Monitorable
 		{
 			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType().equals(Material.FLINT_AND_STEEL))
 			{
-				new TaskLater(1)
+				new TaskLater(2)
 				{
 					@Override
 					public void run()
 					{
-						Area a = new Area(e.getClickedBlock().getLocation(), 1.149);
+						Area a = new Area(e.getClickedBlock().getLocation(), 2.549);
 						
 						for(Entity i : a.getNearbyEntities())
 						{
