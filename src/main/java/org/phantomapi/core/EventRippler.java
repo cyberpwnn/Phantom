@@ -64,7 +64,7 @@ public class EventRippler extends Controller implements Monitorable
 	private long diff;
 	private long hang;
 	private double doub;
-	private Average load;
+	public static Average load;
 	
 	public EventRippler(Controllable parentController)
 	{
