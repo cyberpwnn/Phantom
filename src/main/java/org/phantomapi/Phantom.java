@@ -1759,6 +1759,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Prism light");
 		msgx.add("I can turn anything into rainbow");
 		msgx.add("Prism Rules");
+		msgx.add("Stop asking");
+		msgx.add("Greased up and ready to wrestle");
+		msgx.add("Killing it. No, seriously. Check CPU");
+		msgx.add("Check the console");
+		msgx.add("Holy FAWELZ");
+		msgx.add("Eat Multicore TNT");
+		msgx.add("Eat Rainbows");
+		msgx.add("Eat Prisms");
+		msgx.add("Eat Glass");
+		msgx.add("Eat it all");
+		msgx.add("Take it all in");
+		msgx.add("Beautiful");
+		msgx.add("Cafd");
 		
 		msgx.add(msg);
 		
