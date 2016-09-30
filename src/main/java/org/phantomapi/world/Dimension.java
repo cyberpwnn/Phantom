@@ -29,6 +29,21 @@ public class Dimension
 	}
 	
 	/**
+	 * Make a dimension
+	 * 
+	 * @param width
+	 *            width of this (X)
+	 * @param height
+	 *            the height (Y)
+	 */
+	public Dimension(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+		this.depth = 0;
+	}
+	
+	/**
 	 * Get the direction of the flat part of this dimension (null if no thin
 	 * face)
 	 * 
