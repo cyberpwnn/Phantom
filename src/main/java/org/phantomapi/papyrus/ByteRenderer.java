@@ -8,7 +8,7 @@ import org.phantomapi.world.Dimension;
  * 
  * @author cyberpwn
  */
-public abstract class PapyrusRenderer implements Renderer
+public abstract class ByteRenderer implements Renderer
 {
 	private final Dimension dimension;
 	private final ByteMap2D byteMap;
@@ -19,7 +19,7 @@ public abstract class PapyrusRenderer implements Renderer
 	 * @param dimension
 	 *            the dimension
 	 */
-	public PapyrusRenderer(Dimension dimension)
+	public ByteRenderer(Dimension dimension)
 	{
 		this.dimension = dimension;
 		this.byteMap = new ByteMap2D(dimension.getWidth(), dimension.getHeight(), PaperColor.WHITE);
