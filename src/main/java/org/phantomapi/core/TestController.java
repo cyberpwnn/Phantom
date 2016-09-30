@@ -15,6 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
@@ -46,6 +48,10 @@ import org.phantomapi.lang.Title;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nms.NMSX;
+import org.phantomapi.papyrus.Maps;
+import org.phantomapi.papyrus.PaperColor;
+import org.phantomapi.papyrus.PapyrusRenderer;
+import org.phantomapi.papyrus.RenderFilter;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -166,7 +172,59 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					ItemStack is = new ItemStack(Material.MAP);
+					ItemMeta im = is.getItemMeta();
+					im.setDisplayName(C.LIGHT_PURPLE + "Papyrus");
+					is.setItemMeta(im);
+					i.setItemInHand(is);
+					
+					new TaskLater()
+					{
+						@Override
+						public void run()
+						{
+							MapView view = Maps.getView(i.getItemInHand());
+							
+							new PapyrusRenderer(view)
+							{
+								@Override
+								public void render()
+								{
+									clear(PaperColor.GRAY_1);
+									filter(new RenderFilter()
+									{
+										@Override
+										public byte onRender(int x, int y, byte currentColor)
+										{
+											if(M.r(0.3))
+											{
+												return PaperColor.GRAY_2;
+											}
+											
+											return currentColor;
+										}
+									});
+									
+									filter(new RenderFilter()
+									{
+										@Override
+										public byte onRender(int x, int y, byte currentColor)
+										{
+											if(M.r(EventRippler.load.getAverage() * Math.random()))
+											{
+												return PaperColor.RED;
+											}
+											
+											return currentColor;
+										}
+									});
+								}
+							};
+						}
+					};
+				}
 			}
 		});
 		
