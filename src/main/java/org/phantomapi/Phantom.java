@@ -1745,6 +1745,21 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Paper should be crumpled and thrown out");
 		msgx.add("Paper Spigots cannot flow water. #Soggy");
 		msgx.add("Async Async Async");
+		msgx.add("Prism Bitch");
+		msgx.add("Feel the rays");
+		msgx.add("Can you cut light?");
+		msgx.add("I Cut light");
+		msgx.add("I Shread light rays");
+		msgx.add("I Destroy the spectrum");
+		msgx.add("I am the spectrum");
+		msgx.add("It's Prism Bro");
+		msgx.add("Pure Glass");
+		msgx.add("Ultraviolet");
+		msgx.add("I excrete photons constantly.");
+		msgx.add("Prism light");
+		msgx.add("I can turn anything into rainbow");
+		msgx.add("Prism Rules");
+		
 		msgx.add(msg);
 		
 		saltpile.put("salt", msgx);
