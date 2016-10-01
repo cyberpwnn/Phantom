@@ -1,5 +1,6 @@
 package org.phantomapi.clust;
 
+import java.io.Serializable;
 import org.phantomapi.clust.DataCluster.ClusterDataType;
 
 /**
@@ -7,8 +8,9 @@ import org.phantomapi.clust.DataCluster.ClusterDataType;
  * @author cyberpwn
  *
  */
-public class Cluster
+public class Cluster implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	protected final ClusterDataType type;
 	protected Double value;
 	
