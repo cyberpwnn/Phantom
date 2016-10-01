@@ -433,6 +433,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		Transmission t = new Transmission("ping", server)
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onResponse(Transmission response)
 			{
