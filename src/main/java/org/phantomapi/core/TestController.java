@@ -29,6 +29,7 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
 import org.phantomapi.gui.Notification;
@@ -1058,6 +1059,55 @@ public class TestController extends Controller
 				catch(IOException e)
 				{
 					ExceptionUtil.print(e);
+				}
+			}
+		});
+		
+		tests.put("data-ser", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				DataCluster cc = new DataCluster();
+				cc.set("string", "string");
+				cc.set("int", 43);
+				
+				File f = new File(getPlugin().getDataFolder(), "ser.ser");
+				
+				if(f.exists())
+				{
+					f.delete();
+				}
+				
+				try
+				{
+					f.createNewFile();
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				try
+				{
+					byte[] data = Serializer.serialize(cc);
+					d.s("Bytes: " + data);
+					Serializer.serializeToFile(cc, f);
+					
+					d.s("Reading file");
+					DataCluster dc = (DataCluster) Serializer.deserializeFromFile(f);
+					d.s("data: " + dc.toJSON().toString());
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				catch(ClassNotFoundException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		});
