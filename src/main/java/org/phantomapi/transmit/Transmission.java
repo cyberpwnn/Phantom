@@ -14,6 +14,11 @@ import org.phantomapi.util.M;
 public abstract class Transmission extends DataCluster
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create a transmission packet
 	 * 
 	 * @param type
@@ -108,6 +113,11 @@ public abstract class Transmission extends DataCluster
 		Transmission th = this;
 		Transmission t = new Transmission(getType())
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void onResponse(Transmission t)
 			{
 				th.onResponse(t);
