@@ -10,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -45,8 +44,6 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
-import org.phantomapi.nest.Nest;
-import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
@@ -269,49 +266,6 @@ public class TestController extends Controller
 				catch(IOException e)
 				{
 					ExceptionUtil.print(e);
-				}
-			}
-		});
-		
-		tests.put("nest", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					Block b = i.getLocation().getBlock();
-					NestedBlock nb = Nest.get(b);
-					
-					if(nb != null)
-					{
-						nb.getData().set(UUID.randomUUID().toString(), "Some UUID");
-						
-						i.sendMessage(nb.getData().toJSON().toString());
-					}
-				}
-			}
-		});
-		
-		tests.put("nestsuper", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					GMap<GLocation, MaterialBlock> blocks = W.getChunkBlocksAsync(new GChunk(i.getLocation().getChunk()));
-					
-					for(GLocation j : blocks.k())
-					{
-						Block b = j.toLocation().getBlock();
-						NestedBlock nb = Nest.get(b);
-						
-						if(nb != null)
-						{
-							nb.getData().set("dat", (int) Math.random());
-						}
-					}
 				}
 			}
 		});
