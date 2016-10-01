@@ -2,6 +2,7 @@ package org.phantomapi.filesystem;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +12,6 @@ import java.io.Serializable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import com.google.common.io.ByteStreams;
-import de.schlichtherle.io.File;
 
 /**
  * Serializable utils
