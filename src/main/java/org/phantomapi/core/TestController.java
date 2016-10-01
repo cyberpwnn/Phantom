@@ -1036,6 +1036,11 @@ public class TestController extends Controller
 				
 				Transmission t = new Transmission("test-packet")
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void onResponse(Transmission response)
 					{
