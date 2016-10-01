@@ -10,6 +10,11 @@ import org.phantomapi.clust.DataCluster;
 public class ControllerMessage extends DataCluster
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create a controller message
 	 * 
 	 * @param controller
