@@ -17,7 +17,7 @@ public class NestUtil
 	 *            the chunk
 	 * @return the file representation
 	 */
-	public static File getFile(Chunk chunk)
+	public static File getChunkFile(Chunk chunk)
 	{
 		return new File(new File(chunk.getWorld().getWorldFolder(), "nest"), "n." + chunk.getX() + "." + chunk.getZ() + ".nst");
 	}
