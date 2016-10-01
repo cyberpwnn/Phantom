@@ -9,6 +9,11 @@ import org.phantomapi.clust.DataCluster.ClusterDataType;
  */
 public class ClusterLong extends Cluster
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ClusterLong(Long value)
 	{
 		super(ClusterDataType.LONG, (double) value);
