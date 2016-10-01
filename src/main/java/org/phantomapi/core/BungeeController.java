@@ -184,6 +184,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 			{
 				Transmission t = new Transmission("")
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					public void onResponse(Transmission t)
 					{
 						
@@ -330,6 +335,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 			{
 				Transmission t = new Transmission(msgbytes)
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					public void onResponse(Transmission t)
 					{
 						
@@ -348,6 +358,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 				{
 					Transmission tt = new Transmission(t.getType() + "-response", t.getSource())
 					{
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
 						public void onResponse(Transmission t)
 						{
 							
