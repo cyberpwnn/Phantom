@@ -1,7 +1,8 @@
 package org.phantomapi.nest;
 
 import java.io.File;
-import org.bukkit.Chunk;
+import org.phantomapi.lang.GChunk;
+import org.phantomapi.util.Worlds;
 
 /**
  * Nest Utilities
@@ -14,11 +15,11 @@ public class NestUtil
 	 * Get the file name for a chunk nest
 	 * 
 	 * @param chunk
-	 *            the chunk
+	 *            the gchunk
 	 * @return the file representation
 	 */
-	public static File getChunkFile(Chunk chunk)
+	public static File getChunkFile(GChunk chunk)
 	{
-		return new File(new File(chunk.getWorld().getWorldFolder(), "nest"), "n." + chunk.getX() + "." + chunk.getZ() + ".nst");
+		return new File(new File(Worlds.getWorld(chunk.getWorld()).getWorldFolder(), "nest"), "n." + chunk.getX() + "." + chunk.getZ() + ".n");
 	}
 }
