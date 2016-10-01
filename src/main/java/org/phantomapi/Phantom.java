@@ -35,6 +35,7 @@ import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.core.MonitorController;
 import org.phantomapi.core.MySQLConnectionController;
+import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
@@ -116,6 +117,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
 	private ResourceController resourceController;
+	private NestController nestController;
 	
 	private Long nsx;
 	
@@ -162,6 +164,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		resourceController = new ResourceController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
+		nestController = new NestController(this);
 		thread = Thread.currentThread().getId();
 		saltpile = new SpeechMesh("saltpile");
 		new PlaceholderHooker(this, "phantom").hook();
@@ -185,6 +188,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(wraithController);
 		register(photonController);
 		register(resourceController);
+		register(nestController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -437,7 +441,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			public void onResponse(Transmission response)
 			{
@@ -1608,6 +1612,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return monitorController;
 	}
 	
+	public NestController getNestController()
+	{
+		return nestController;
+	}
+	
 	public static boolean syncStart()
 	{
 		return syncStart;
@@ -1627,7 +1636,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return resourceController;
 	}
-
+	
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
