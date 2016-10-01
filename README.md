@@ -10,7 +10,7 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Prism**](https://github.com/cyberpwnn/Phantom/releases/latest)
+* [**Prism**](https://github.com/cyberpwnn/Phantom/releases/)
 * [Wraith](https://github.com/cyberpwnn/Phantom/releases/W9)
 * [Nova](https://github.com/cyberpwnn/Phantom/releases/tag/N9)
 * [Xeon](https://github.com/cyberpwnn/Phantom/releases/tag/10.9.3)
