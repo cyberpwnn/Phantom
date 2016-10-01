@@ -10,6 +10,10 @@ import org.phantomapi.clust.DataCluster.ClusterDataType;
  */
 public class ClusterStringList extends Cluster
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<String> strings;
 	
 	public ClusterStringList(List<String> value)
