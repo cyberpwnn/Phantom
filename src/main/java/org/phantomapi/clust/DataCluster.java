@@ -3,6 +3,7 @@ package org.phantomapi.clust;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +26,13 @@ import com.google.common.io.ByteStreams;
  * 
  * @author cyberpwn
  */
-public class DataCluster
+public class DataCluster implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @author cyberpwn
 	 */
