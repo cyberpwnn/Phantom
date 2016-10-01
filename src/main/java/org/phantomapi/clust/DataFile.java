@@ -13,6 +13,11 @@ import java.nio.file.Files;
 public class DataFile extends DataCluster implements DataEntity
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Load data from the given file. If it doesnt exist it will be created
 	 * 
 	 * @param file
