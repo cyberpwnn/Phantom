@@ -9,6 +9,11 @@ import org.phantomapi.clust.DataCluster.ClusterDataType;
  */
 public class ClusterBoolean extends Cluster
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ClusterBoolean(boolean value)
 	{
 		super(ClusterDataType.BOOLEAN, (double) (value ? 1 : 0));
