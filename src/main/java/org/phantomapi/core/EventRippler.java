@@ -306,7 +306,7 @@ public class EventRippler extends Controller implements Monitorable
 			{
 				if(b.getType().equals(Material.TNT))
 				{
-					new TaskLater(2)
+					new TaskLater()
 					{
 						@Override
 						public void run()
@@ -342,7 +342,7 @@ public class EventRippler extends Controller implements Monitorable
 	{
 		if(e.getItem() != null && e.getItem().getType().equals(Material.TNT))
 		{
-			new TaskLater(2)
+			new TaskLater()
 			{
 				@Override
 				public void run()
@@ -386,7 +386,7 @@ public class EventRippler extends Controller implements Monitorable
 		{
 			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType().equals(Material.FLINT_AND_STEEL))
 			{
-				new TaskLater(2)
+				new TaskLater()
 				{
 					@Override
 					public void run()
