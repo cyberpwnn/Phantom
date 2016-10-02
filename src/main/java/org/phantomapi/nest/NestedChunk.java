@@ -61,4 +61,16 @@ public class NestedChunk extends NestedObject
 		
 		return blocks.get(l);
 	}
+	
+	public int size()
+	{
+		int k = 0;
+		
+		for(GLocation i : blocks.k())
+		{
+			k += blocks.get(i).size();
+		}
+		
+		return super.size() + k;
+	}
 }
