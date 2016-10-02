@@ -52,11 +52,13 @@ public class NestedChunk extends NestedObject
 	 */
 	public NestedBlock getBlock(Block block)
 	{
-		if(!blocks.contains(block))
+		GLocation l = new GLocation(block.getLocation());
+		
+		if(!blocks.containsKey(l))
 		{
-			blocks.put(new GLocation(block.getLocation()), new NestedBlock(new GLocation(block.getLocation())));
+			blocks.put(l, new NestedBlock(l));
 		}
 		
-		return blocks.get(new GLocation(block.getLocation()));
+		return blocks.get(l);
 	}
 }
