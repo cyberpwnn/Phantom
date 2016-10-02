@@ -45,6 +45,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.nest.Nest;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
@@ -935,6 +936,20 @@ public class TestController extends Controller
 						o("Overbose!");
 					}
 				};
+			}
+		});
+		
+		tests.put("nest", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Nest.getBlock(i.getLocation().getBlock()).set("test", M.ms());
+					i.sendMessage(Nest.getBlock(i.getLocation().getBlock()).toJSON().toString());
+					i.sendMessage("" + Nest.getChunk(i.getLocation().getChunk()).getBlocks().size());
+				}
 			}
 		});
 		
