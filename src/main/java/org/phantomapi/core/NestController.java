@@ -53,7 +53,37 @@ public class NestController extends Controller implements Monitorable
 	{
 		for(Chunk i : Chunks.getLoadedChunks())
 		{
-			queue.add(i);
+			File file = NestUtil.getChunkFile(new GChunk(i));
+			loading.add(i);
+			
+			if(file.exists())
+			{
+				try
+				{
+					NestedChunk nc = (NestedChunk) Serializer.deserializeFromFile(file);
+					
+					new S()
+					{
+						@Override
+						public void sync()
+						{
+							loading.remove(i);
+							chunks.put(i, nc);
+						}
+					};
+				}
+				
+				catch(Exception e)
+				{
+					ExceptionUtil.print(e);
+				}
+			}
+			
+			else
+			{
+				loading.remove(i);
+				chunks.put(i, new NestedChunk(new GChunk(i)));
+			}
 		}
 	}
 	
@@ -65,6 +95,12 @@ public class NestController extends Controller implements Monitorable
 			File file = NestUtil.getChunkFile(new GChunk(i));
 			
 			NestedChunk c = chunks.get(i);
+			
+			if(c.size() == 0)
+			{
+				file.delete();
+				continue;
+			}
 			
 			try
 			{
