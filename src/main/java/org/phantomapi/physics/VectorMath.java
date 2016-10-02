@@ -2,6 +2,8 @@ package org.phantomapi.physics;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GListAdapter;
 
 /**
  * Vector utilities
@@ -66,5 +68,26 @@ public class VectorMath
 		Vector vt = new Vector(0, 0, 0).add(v);
 		
 		return vi.distance(vt);
+	}
+	
+	/**
+	 * Shift all vectors based on the given vector
+	 * 
+	 * @param vector
+	 *            the vector direction to shift the vectors
+	 * @param vectors
+	 *            the vectors to be shifted
+	 * @return the shifted vectors
+	 */
+	public static GList<Vector> shift(Vector vector, GList<Vector> vectors)
+	{
+		return new GList<Vector>(new GListAdapter<Vector, Vector>()
+		{
+			@Override
+			public Vector onAdapt(Vector from)
+			{
+				return from.add(vector);
+			}
+		}.adapt(vectors));
 	}
 }
