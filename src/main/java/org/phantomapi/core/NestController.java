@@ -11,6 +11,8 @@ import org.phantomapi.async.A;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.NestChunkLoadEvent;
+import org.phantomapi.event.NestChunkUnloadEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -69,6 +71,7 @@ public class NestController extends Controller implements Monitorable
 						{
 							loading.remove(i);
 							chunks.put(i, nc);
+							callEvent(new NestChunkLoadEvent(chunks.get(i)));
 						}
 					};
 				}
@@ -83,6 +86,7 @@ public class NestController extends Controller implements Monitorable
 			{
 				loading.remove(i);
 				chunks.put(i, new NestedChunk(new GChunk(i)));
+				callEvent(new NestChunkLoadEvent(chunks.get(i)));
 			}
 		}
 	}
@@ -148,6 +152,7 @@ public class NestController extends Controller implements Monitorable
 									{
 										loading.remove(i);
 										chunks.put(i, nc);
+										callEvent(new NestChunkLoadEvent(chunks.get(i)));
 									}
 								};
 							}
@@ -164,6 +169,7 @@ public class NestController extends Controller implements Monitorable
 				{
 					loading.remove(i);
 					chunks.put(i, new NestedChunk(new GChunk(i)));
+					callEvent(new NestChunkLoadEvent(chunks.get(i)));
 				}
 			}
 			
@@ -200,6 +206,7 @@ public class NestController extends Controller implements Monitorable
 		
 		if(c.size() == 0 && c.getBlocks().isEmpty())
 		{
+			callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
 			chunks.remove(chunk);
 			file.delete();
 			return;
@@ -225,6 +232,7 @@ public class NestController extends Controller implements Monitorable
 						@Override
 						public void sync()
 						{
+							callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
 							chunks.remove(chunk);
 						}
 					};
