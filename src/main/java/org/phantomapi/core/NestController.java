@@ -14,13 +14,18 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.nest.NestUtil;
+import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.S;
+import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.util.F;
 
 /**
  * Loads nest chunks
@@ -28,7 +33,7 @@ import org.phantomapi.util.ExceptionUtil;
  * @author cyberpwn
  */
 @Ticked(0)
-public class NestController extends Controller
+public class NestController extends Controller implements Monitorable
 {
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
@@ -59,14 +64,22 @@ public class NestController extends Controller
 		{
 			File file = NestUtil.getChunkFile(new GChunk(i));
 			
+			NestedChunk c = chunks.get(i);
+			
 			try
 			{
-				Serializer.serializeToFile(chunks.get(i), file);
+				if(!file.exists())
+				{
+					file.getParentFile().mkdirs();
+					file.createNewFile();
+				}
+				
+				Serializer.serializeToFile(c, file);
 			}
 			
-			catch(IOException e)
+			catch(IOException ex)
 			{
-				ExceptionUtil.print(e);
+				ExceptionUtil.print(ex);
 			}
 		}
 	}
@@ -138,14 +151,72 @@ public class NestController extends Controller
 	{
 		File file = NestUtil.getChunkFile(new GChunk(e.getChunk()));
 		
-		try
+		Chunk chunk = e.getChunk();
+		NestedChunk c = chunks.get(e.getChunk());
+		
+		for(GLocation i : c.getBlocks().k())
 		{
-			Serializer.serializeToFile(chunks.get(e.getChunk()), file);
+			if(c.getBlocks().get(i).size() == 0)
+			{
+				c.getBlocks().remove(i);
+			}
 		}
 		
-		catch(IOException ex)
+		if(c.size() == 0 && c.getBlocks().isEmpty())
 		{
-			ExceptionUtil.print(ex);
+			chunks.remove(chunk);
+			file.delete();
+			return;
 		}
+		
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				try
+				{
+					if(!file.exists())
+					{
+						file.getParentFile().mkdirs();
+						file.createNewFile();
+					}
+					
+					Serializer.serializeToFile(c, file);
+					
+					new S()
+					{
+						@Override
+						public void sync()
+						{
+							chunks.remove(chunk);
+						}
+					};
+				}
+				
+				catch(IOException ex)
+				{
+					ExceptionUtil.print(ex);
+				}
+			}
+		};
+	}
+	
+	@Override
+	public String getMonitorableData()
+	{
+		long size = 0;
+		
+		for(Chunk i : chunks.k())
+		{
+			size += chunks.get(i).byteSize();
+			
+			for(NestedBlock j : chunks.get(i).getBlocks().v())
+			{
+				size += j.byteSize();
+			}
+		}
+		
+		return "Chunks: " + C.LIGHT_PURPLE + F.f(chunks.size()) + C.DARK_GRAY + " Ramdisk: " + C.LIGHT_PURPLE + F.fileSize(size);
 	}
 }
