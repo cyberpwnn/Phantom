@@ -3,11 +3,14 @@ package org.phantomapi.core;
 import java.io.File;
 import java.io.IOException;
 import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.clust.DataCluster;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -24,10 +27,12 @@ import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.S;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
+import org.phantomapi.util.Probe;
 
 /**
  * Loads nest chunks
@@ -35,11 +40,12 @@ import org.phantomapi.util.F;
  * @author cyberpwn
  */
 @Ticked(0)
-public class NestController extends Controller implements Monitorable
+public class NestController extends Controller implements Monitorable, Probe
 {
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
 	private GSet<Chunk> queue;
+	private GSet<Chunk> unload;
 	
 	public NestController(Controllable parentController)
 	{
@@ -48,6 +54,7 @@ public class NestController extends Controller implements Monitorable
 		this.chunks = new GMap<Chunk, NestedChunk>();
 		this.loading = new GSet<Chunk>();
 		this.queue = new GSet<Chunk>();
+		this.unload = new GSet<Chunk>();
 	}
 	
 	@Override
@@ -79,6 +86,7 @@ public class NestController extends Controller implements Monitorable
 				catch(Exception e)
 				{
 					ExceptionUtil.print(e);
+					file.delete();
 				}
 			}
 			
@@ -89,6 +97,8 @@ public class NestController extends Controller implements Monitorable
 				callEvent(new NestChunkLoadEvent(chunks.get(i)));
 			}
 		}
+		
+		Phantom.instance().getProbeController().registerProbe(this);
 	}
 	
 	@Override
@@ -122,6 +132,15 @@ public class NestController extends Controller implements Monitorable
 				ExceptionUtil.print(ex);
 			}
 		}
+		
+		new TaskLater()
+		{
+			@Override
+			public void run()
+			{
+				Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
+			}
+		};
 	}
 	
 	@Override
@@ -150,9 +169,19 @@ public class NestController extends Controller implements Monitorable
 									@Override
 									public void sync()
 									{
-										loading.remove(i);
-										chunks.put(i, nc);
-										callEvent(new NestChunkLoadEvent(chunks.get(i)));
+										if(unload.contains(i))
+										{
+											f("Chunk " + i.getX() + "," + i.getZ() + " @" + i.getWorld().getName() + " Already unloading. Not Referencing.");
+											loading.remove(i);
+											unload.remove(i);
+										}
+										
+										else
+										{
+											loading.remove(i);
+											chunks.put(i, nc);
+											callEvent(new NestChunkLoadEvent(chunks.get(i)));
+										}
 									}
 								};
 							}
@@ -195,6 +224,13 @@ public class NestController extends Controller implements Monitorable
 		
 		Chunk chunk = e.getChunk();
 		NestedChunk c = chunks.get(e.getChunk());
+		
+		if(c == null)
+		{
+			f("Chunk " + chunk.getX() + "," + chunk.getZ() + " @" + chunk.getWorld().getName() + " unloaded invalid.");
+			unload.add(e.getChunk());
+			return;
+		}
 		
 		for(GLocation i : c.getBlocks().k())
 		{
@@ -262,5 +298,21 @@ public class NestController extends Controller implements Monitorable
 		}
 		
 		return "Chunks: " + C.LIGHT_PURPLE + F.f(chunks.size()) + C.DARK_GRAY + " Ramdisk: " + C.LIGHT_PURPLE + F.fileSize(size);
+	}
+	
+	@Override
+	public DataCluster onProbe(Block block, DataCluster probeSet)
+	{
+		try
+		{
+			probeSet.add(chunks.get(block.getChunk()).getBlock(block).copy());
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		return probeSet;
 	}
 }
