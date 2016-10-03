@@ -39,6 +39,7 @@ import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
+import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.TestController;
@@ -100,6 +101,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
 	private ProtocolController protocolController;
+	private ProbeController probeController;
 	private EventRippler eventRippler;
 	private CommandRegistryController commandRegistryController;
 	private DMS dms;
@@ -151,6 +153,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		testController = new TestController(this);
 		channeledExecutivePoolController = new ChanneledExecutivePoolController(this);
 		notificationController = new NotificationController(this);
+		probeController = new ProbeController(this);
 		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		eventRippler = new EventRippler(this);
@@ -177,6 +180,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(testController);
 		register(channeledExecutivePoolController);
 		register(notificationController);
+		register(probeController);
 		register(mySQLConnectionController);
 		register(dms);
 		register(eventRippler);
@@ -994,6 +998,17 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						}
 					}
 					
+					else if(args[0].equalsIgnoreCase("probe"))
+					{
+						if(sender instanceof Player)
+						{
+							Player p = (Player) sender;
+							
+							mb.message(sender, C.GRAY + "Have Fun");
+							p.getInventory().addItem(probeController.getProbe());
+						}
+					}
+					
 					else if(args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("s"))
 					{
 						mb.message(sender, C.GRAY + "How's it look doc?");
@@ -1071,6 +1086,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom test,t" + C.GRAY + " - Run Tests");
 					mb.message(sender, C.GRAY + "/phantom status,s" + C.GRAY + " - How's it look doc?");
 					mb.message(sender, C.GRAY + "/phantom plug" + C.GRAY + " - Realtime data from controllers");
+					mb.message(sender, C.GRAY + "/phantom probe" + C.GRAY + " - Probe everything.");
 					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
 					mb.message(sender, C.GRAY + "/phantom <un/load> [plugin]" + C.GRAY + " - Plugin Manager");
@@ -1632,6 +1648,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return saltpile;
 	}
 	
+	public ProbeController getProbeController()
+	{
+		return probeController;
+	}
+
 	public ResourceController getResourceController()
 	{
 		return resourceController;
