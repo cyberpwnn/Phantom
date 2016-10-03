@@ -21,6 +21,7 @@ import org.phantomapi.util.D;
 import org.phantomapi.util.DMSRequire;
 import org.phantomapi.util.DMSRequirement;
 import org.phantomapi.util.F;
+import org.phantomapi.util.Probe;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
@@ -460,6 +461,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 		}
 		
+		if(this instanceof Probe)
+		{
+			Phantom.instance().getProbeController().unRegisterProbe((Probe) c);
+		}
+		
 		if(c instanceof CommandListener)
 		{
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) c);
@@ -486,6 +492,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		if(c instanceof CommandListener)
 		{
 			Phantom.instance().getCommandRegistryController().register((CommandListener) c);
+		}
+		
+		if(this instanceof Probe)
+		{
+			Phantom.instance().getProbeController().registerProbe((Probe) c);
 		}
 	}
 	

@@ -22,6 +22,7 @@ import org.phantomapi.sync.S;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.util.Probe;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 
@@ -127,6 +128,11 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		catch(Exception e)
 		{
 			
+		}
+		
+		if(this instanceof Probe)
+		{
+			Phantom.instance().getProbeController().unRegisterProbe((Probe) this);
 		}
 		
 		if(this instanceof CommandListener)
@@ -477,6 +483,11 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		if(c instanceof CommandListener)
 		{
 			Phantom.instance().getCommandRegistryController().register((CommandListener) c);
+		}
+		
+		if(this instanceof Probe)
+		{
+			Phantom.instance().getProbeController().registerProbe((Probe) c);
 		}
 	}
 	
