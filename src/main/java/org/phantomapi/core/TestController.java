@@ -13,6 +13,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -87,6 +89,8 @@ import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.PE;
+import org.phantomapi.world.VariableBlock;
+import org.phantomapi.world.VectorSchematic;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WorldLock;
 import org.phantomapi.wraith.PhantomWraith;
@@ -1695,6 +1699,38 @@ public class TestController extends Controller
 				break;
 			}
 		}
+	}
+	
+	@EventHandler
+	public void on(BlockPlaceEvent e)
+	{
+		VectorSchematic vs = new VectorSchematic();
+		vs.getSchematic().put(new Vector(0, 0, 0), new VariableBlock(Material.DIAMOND_BLOCK));
+		vs.getSchematic().put(new Vector(0, 1, 0), new VariableBlock(Material.REDSTONE_BLOCK));
+		vs.getSchematic().put(new Vector(1, 1, 0), new VariableBlock(Material.REDSTONE_BLOCK));
+		vs.getSchematic().put(new Vector(-1, 1, 0), new VariableBlock(Material.REDSTONE_BLOCK));
+		vs.getSchematic().put(new Vector(0, 1, 1), new VariableBlock(Material.REDSTONE_BLOCK));
+		vs.getSchematic().put(new Vector(0, 1, -1), new VariableBlock(Material.REDSTONE_BLOCK));
+		vs.getSchematic().put(new Vector(0, 2, 0), new VariableBlock(Material.DIAMOND_BLOCK));
+		
+		new TaskLater()
+		{
+			@Override
+			public void run()
+			{
+				GMap<Vector, Location> map = vs.match(e.getBlock().getLocation());
+				
+				if(map != null)
+				{
+					e.getPlayer().sendMessage("Success");
+				}
+				
+				else
+				{
+					e.getPlayer().sendMessage("fail");
+				}
+			}
+		};
 	}
 	
 	@CommandFilter.Tag("Tag")
