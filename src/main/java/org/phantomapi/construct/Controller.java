@@ -485,7 +485,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			Phantom.instance().getCommandRegistryController().register((CommandListener) c);
 		}
 		
-		if(this instanceof Probe)
+		if(c instanceof Probe)
 		{
 			Phantom.instance().getProbeController().registerProbe((Probe) c);
 		}
