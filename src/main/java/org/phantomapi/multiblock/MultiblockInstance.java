@@ -2,6 +2,7 @@ package org.phantomapi.multiblock;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
@@ -111,5 +112,11 @@ public class MultiblockInstance implements Multiblock
 	public void load()
 	{
 		Chunks.load(getChunks());
+	}
+
+	@Override
+	public World getWorld()
+	{
+		return getChunks().get(0).getWorld();	
 	}
 }
