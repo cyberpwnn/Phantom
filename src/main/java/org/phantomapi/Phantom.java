@@ -34,6 +34,7 @@ import org.phantomapi.core.EventRippler;
 import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.core.MonitorController;
+import org.phantomapi.core.MultiblockRegistryController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
@@ -119,6 +120,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
 	private ResourceController resourceController;
+	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
 	
 	private Long nsx;
@@ -165,6 +167,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		wraithController = new WraithController(this);
 		photonController = new PhotonController(this);
 		resourceController = new ResourceController(this);
+		multiblockRegistryController = new MultiblockRegistryController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		nestController = new NestController(this);
@@ -193,6 +196,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(photonController);
 		register(resourceController);
 		register(nestController);
+		register(multiblockRegistryController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1658,6 +1662,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return resourceController;
 	}
 	
+	public MultiblockRegistryController getMultiblockRegistryController()
+	{
+		return multiblockRegistryController;
+	}
+
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
