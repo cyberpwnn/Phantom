@@ -19,7 +19,7 @@ public class MultiblockUtils
 	 *            the world
 	 * @return the next id
 	 */
-	public int getNextID(World world)
+	public static int getNextID(World world)
 	{
 		File f = new File(world.getWorldFolder(), "multiblock");
 		
@@ -40,7 +40,7 @@ public class MultiblockUtils
 	 *            the mbid
 	 * @return the file
 	 */
-	public File getFile(World world, int id)
+	public static File getFile(World world, int id)
 	{
 		return new File(new File(world.getWorldFolder(), "multiblock"), id + ".mub");
 	}
@@ -53,7 +53,7 @@ public class MultiblockUtils
 	 * @throws IOException
 	 *             shit happens
 	 */
-	public void save(Multiblock multiblock) throws IOException
+	public static void save(Multiblock multiblock) throws IOException
 	{
 		File file = getFile(multiblock.getWorld(), multiblock.getId());
 		Serializer.serializeToFile(multiblock, file);
@@ -72,7 +72,7 @@ public class MultiblockUtils
 	 * @throws ClassNotFoundException
 	 *             shit happens
 	 */
-	public Multiblock load(World world, int id) throws IOException, ClassNotFoundException
+	public static Multiblock load(World world, int id) throws IOException, ClassNotFoundException
 	{
 		File file = getFile(world, id);
 		
