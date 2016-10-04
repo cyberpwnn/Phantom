@@ -1,5 +1,6 @@
 package org.phantomapi.world;
 
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
@@ -74,6 +75,11 @@ public class VectorSchematic
 		}
 		
 		return vectors;
+	}
+	
+	public GMap<Vector, Location> match(Location location)
+	{
+		return null;
 	}
 	
 	/**
