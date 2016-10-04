@@ -77,8 +77,47 @@ public class VectorSchematic
 		return vectors;
 	}
 	
+	/**
+	 * Match the location as part of a multiblock structure
+	 * 
+	 * @param location
+	 *            the location
+	 * @return the mapping or null if no match
+	 */
 	public GMap<Vector, Location> match(Location location)
 	{
+		MaterialBlock mb = new MaterialBlock(location);
+		
+		for(Vector i : find(mb))
+		{
+			Vector shift = i;
+			Location base = location.clone().subtract(shift);
+			GMap<Vector, Location> map = new GMap<Vector, Location>();
+			Boolean found = true;
+			
+			for(Vector j : schematic.k())
+			{
+				Location attempt = base.clone().add(j);
+				MaterialBlock mbx = new MaterialBlock(attempt);
+				
+				if(schematic.get(j).is(mbx))
+				{
+					map.put(j, attempt);
+				}
+				
+				else
+				{
+					found = false;
+					break;
+				}
+			}
+			
+			if(found)
+			{
+				return map;
+			}
+		}
+		
 		return null;
 	}
 	
