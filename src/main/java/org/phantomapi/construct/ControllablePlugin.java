@@ -461,7 +461,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 		}
 		
-		if(this instanceof Probe)
+		if(c instanceof Probe)
 		{
 			Phantom.instance().getProbeController().unRegisterProbe((Probe) c);
 		}
