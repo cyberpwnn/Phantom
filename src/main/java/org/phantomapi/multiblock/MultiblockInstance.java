@@ -1,60 +1,115 @@
 package org.phantomapi.multiblock;
 
-import java.io.Serializable;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.GSet;
+import org.phantomapi.lang.GVector;
+import org.phantomapi.util.Chunks;
 
 /**
- * Represents a multiblock instance
+ * Multiblock instance
  * 
  * @author cyberpwn
  */
-public interface MultiblockInstance extends Serializable
+public class MultiblockInstance implements Multiblock
 {
-	/**
-	 * Get all chunks this instance requires
-	 * 
-	 * @return the chunks
-	 */
-	public GList<Chunk> getChunks();
+	private static final long serialVersionUID = 1L;
+	
+	private GMap<GVector, GLocation> mapping;
+	private int id;
+	private String type;
 	
 	/**
-	 * Get the vector mapping for this structure
+	 * Create a multiblock instance
 	 * 
-	 * @return the mapping of structure vectors to literal locations
+	 * @param id
+	 *            the id
+	 * @param type
+	 *            the type
+	 * @param mapping
+	 *            the mapping
 	 */
-	public GMap<Vector, Location> getMapping();
+	public MultiblockInstance(int id, String type, GMap<Vector, Location> mapping)
+	{
+		this.id = id;
+		this.type = type;
+		this.mapping = new GMap<GVector, GLocation>();
+		
+		for(Vector i : mapping.k())
+		{
+			this.mapping.put(new GVector(i), new GLocation(mapping.get(i)));
+		}
+	}
 	
-	/**
-	 * Get all locations for this structure
-	 * 
-	 * @return the structure
-	 */
-	public GList<Location> getLocations();
+	@Override
+	public GList<Chunk> getChunks()
+	{
+		GSet<Chunk> set = new GSet<Chunk>();
+		
+		for(GVector i : mapping.k())
+		{
+			set.add(mapping.get(i).toLocation().getChunk());
+		}
+		
+		return new GList<Chunk>(set);
+	}
 	
-	/**
-	 * Get the type of this structure
-	 * 
-	 * @return the type
-	 */
-	public String getType();
+	@Override
+	public GMap<Vector, Location> getMapping()
+	{
+		GMap<Vector, Location> map = new GMap<Vector, Location>();
+		
+		for(GVector i : mapping.k())
+		{
+			map.put(i.toVector(), mapping.get(i).toLocation());
+		}
+		
+		return map;
+	}
 	
-	/**
-	 * Does the given location reside in this structure
-	 * 
-	 * @param location
-	 *            the location
-	 * @return true if it does
-	 */
-	public boolean contains(Location location);
+	@Override
+	public GList<Location> getLocations()
+	{
+		return getMapping().v();
+	}
 	
-	/**
-	 * Get the size of this structure
-	 * 
-	 * @return the size
-	 */
-	public int size();
+	@Override
+	public String getType()
+	{
+		return type;
+	}
+	
+	@Override
+	public boolean contains(Location location)
+	{
+		return getLocations().contains(location);
+	}
+	
+	@Override
+	public int size()
+	{
+		return mapping.size();
+	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+
+	@Override
+	public void unload()
+	{
+		Chunks.unload(getChunks());
+	}
+
+	@Override
+	public void load()
+	{
+		Chunks.load(getChunks());
+	}
 }
