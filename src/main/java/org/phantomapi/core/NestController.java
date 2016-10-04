@@ -39,13 +39,13 @@ import org.phantomapi.util.Probe;
  * 
  * @author cyberpwn
  */
+@SyncStart
 @Ticked(0)
 public class NestController extends Controller implements Monitorable, Probe
 {
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
 	private GSet<Chunk> queue;
-	private GSet<Chunk> unload;
 	
 	public NestController(Controllable parentController)
 	{
@@ -54,7 +54,6 @@ public class NestController extends Controller implements Monitorable, Probe
 		this.chunks = new GMap<Chunk, NestedChunk>();
 		this.loading = new GSet<Chunk>();
 		this.queue = new GSet<Chunk>();
-		this.unload = new GSet<Chunk>();
 	}
 	
 	@Override
@@ -169,19 +168,9 @@ public class NestController extends Controller implements Monitorable, Probe
 									@Override
 									public void sync()
 									{
-										if(unload.contains(i))
-										{
-											f("Chunk " + i.getX() + "," + i.getZ() + " @" + i.getWorld().getName() + " Already unloading. Not Referencing.");
-											loading.remove(i);
-											unload.remove(i);
-										}
-										
-										else
-										{
-											loading.remove(i);
-											chunks.put(i, nc);
-											callEvent(new NestChunkLoadEvent(chunks.get(i)));
-										}
+										loading.remove(i);
+										chunks.put(i, nc);
+										callEvent(new NestChunkLoadEvent(chunks.get(i)));
 									}
 								};
 							}
@@ -228,7 +217,7 @@ public class NestController extends Controller implements Monitorable, Probe
 		if(c == null)
 		{
 			f("Chunk " + chunk.getX() + "," + chunk.getZ() + " @" + chunk.getWorld().getName() + " unloaded invalid.");
-			unload.add(e.getChunk());
+			reload();
 			return;
 		}
 		
