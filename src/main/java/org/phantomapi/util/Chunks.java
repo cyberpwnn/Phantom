@@ -202,4 +202,18 @@ public class Chunks
 	{
 		return isLoaded(c.getWorld(), c.getX(), c.getZ());
 	}
+	
+	/**
+	 * Load all chunks
+	 * 
+	 * @param chunks
+	 *            the chunks
+	 */
+	public static void load(GList<Chunk> chunks)
+	{
+		for(Chunk i : chunks)
+		{
+			i.load();
+		}
+	}
 }
