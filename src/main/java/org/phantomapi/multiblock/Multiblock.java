@@ -3,6 +3,7 @@ package org.phantomapi.multiblock;
 import java.io.Serializable;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
@@ -41,6 +42,13 @@ public interface Multiblock extends Serializable
 	 * @return the type
 	 */
 	public String getType();
+	
+	/**
+	 * Get the world
+	 * 
+	 * @return the world
+	 */
+	public World getWorld();
 	
 	/**
 	 * Does the given location reside in this structure
