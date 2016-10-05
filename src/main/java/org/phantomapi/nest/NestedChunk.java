@@ -73,4 +73,41 @@ public class NestedChunk extends NestedObject
 		
 		return super.size() + k;
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((blocks == null) ? 0 : blocks.hashCode());
+		result = prime * result + ((chunk == null) ? 0 : chunk.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		NestedChunk other = (NestedChunk) obj;
+		if(blocks == null)
+		{
+			if(other.blocks != null)
+				return false;
+		}
+		else if(!blocks.equals(other.blocks))
+			return false;
+		if(chunk == null)
+		{
+			if(other.chunk != null)
+				return false;
+		}
+		else if(!chunk.equals(other.chunk))
+			return false;
+		return true;
+	}
 }
