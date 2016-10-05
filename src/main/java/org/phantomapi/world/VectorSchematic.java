@@ -130,4 +130,33 @@ public class VectorSchematic
 	{
 		return schematic;
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((schematic == null) ? 0 : schematic.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		VectorSchematic other = (VectorSchematic) obj;
+		if(schematic == null)
+		{
+			if(other.schematic != null)
+				return false;
+		}
+		else if(!schematic.equals(other.schematic))
+			return false;
+		return true;
+	}
 }
