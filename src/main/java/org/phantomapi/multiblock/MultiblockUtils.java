@@ -56,6 +56,13 @@ public class MultiblockUtils
 	public static void save(Multiblock multiblock) throws IOException
 	{
 		File file = getFile(multiblock.getWorld(), multiblock.getId());
+		
+		if(!file.exists())
+		{
+			file.getParentFile().mkdirs();
+			file.createNewFile();
+		}
+		
 		Serializer.serializeToFile(multiblock, file);
 	}
 	
