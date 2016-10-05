@@ -75,39 +75,47 @@ public class ProbeController extends Controller
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void on(PlayerInteractEvent e)
 	{
-		if(e.getClickedBlock() != null && e.getItem() != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+		try
 		{
-			if(e.getItem().getType().equals(Material.TRIPWIRE_HOOK))
+			if(e.getClickedBlock() != null && e.getItem() != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 			{
-				ItemStack is = e.getItem();
-				ItemMeta im = is.getItemMeta();
-				
-				if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
+				if(e.getItem().getType().equals(Material.TRIPWIRE_HOOK))
 				{
-					DataCluster cc = probe(e.getClickedBlock());
-					MessageBuilder mb = new MessageBuilder();
-					PhantomSender s = new PhantomSender(e.getPlayer());
-					mb.setTag(C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Probe" + C.DARK_GRAY + "]: " + C.GRAY, C.LIGHT_PURPLE + "Probed information");
-					s.setMessageBuilder(mb);
+					ItemStack is = e.getItem();
+					ItemMeta im = is.getItemMeta();
 					
-					if(cc.size() == 0)
+					if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
 					{
-						s.sendMessage("No Data for " + C.WHITE + e.getClickedBlock().getX() + " " + e.getClickedBlock().getY() + " " + e.getClickedBlock().getZ());
-					}
-					
-					else
-					{
-						s.sendMessage(C.WHITE.toString() + cc.size() + C.GRAY + " Nodes, " + C.WHITE + F.fileSize(cc.byteSize()));
+						DataCluster cc = probe(e.getClickedBlock());
+						MessageBuilder mb = new MessageBuilder();
+						PhantomSender s = new PhantomSender(e.getPlayer());
+						mb.setTag(C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Probe" + C.DARK_GRAY + "]: " + C.GRAY, C.LIGHT_PURPLE + "Probed information");
+						s.setMessageBuilder(mb);
 						
-						for(String i : cc.toLines(false))
+						if(cc.size() == 0)
 						{
-							s.sendMessage(i);
+							s.sendMessage("No Data for " + C.WHITE + e.getClickedBlock().getX() + " " + e.getClickedBlock().getY() + " " + e.getClickedBlock().getZ());
 						}
+						
+						else
+						{
+							s.sendMessage(C.WHITE.toString() + cc.size() + C.GRAY + " Nodes, " + C.WHITE + F.fileSize(cc.byteSize()));
+							
+							for(String i : cc.toLines(false))
+							{
+								s.sendMessage(i);
+							}
+						}
+						
+						e.setCancelled(true);
 					}
-					
-					e.setCancelled(true);
 				}
 			}
+		}
+		
+		catch(Exception ex)
+		{
+			
 		}
 	}
 }
