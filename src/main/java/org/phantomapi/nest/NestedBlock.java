@@ -23,21 +23,44 @@ public class NestedBlock extends NestedObject
 		return location;
 	}
 	
-	public boolean equals(Object object)
+	@Override
+	public int hashCode()
 	{
-		if(object instanceof Block)
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(obj instanceof Block)
 		{
-			if(new GLocation(((Block) object).getLocation()).equals(location))
+			if(new GLocation(((Block) obj).getLocation()).equals(location))
 			{
 				return true;
 			}
 		}
 		
-		if(object instanceof NestedBlock)
+		if(obj instanceof NestedBlock)
 		{
-			return location.equals(((NestedBlock) object).location);
+			return location.equals(((NestedBlock) obj).location);
 		}
-		
-		return false;
+		if(getClass() != obj.getClass())
+			return false;
+		NestedBlock other = (NestedBlock) obj;
+		if(location == null)
+		{
+			if(other.location != null)
+				return false;
+		}
+		else if(!location.equals(other.location))
+			return false;
+		return true;
 	}
 }
