@@ -18,7 +18,6 @@ import org.phantomapi.event.NestChunkLoadEvent;
 import org.phantomapi.event.NestChunkUnloadEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.lang.GChunk;
-import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
@@ -45,7 +44,6 @@ public class NestController extends Controller implements Monitorable, Probe
 {
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
-	private GSet<Chunk> queue;
 	
 	public NestController(Controllable parentController)
 	{
@@ -53,7 +51,6 @@ public class NestController extends Controller implements Monitorable, Probe
 		
 		this.chunks = new GMap<Chunk, NestedChunk>();
 		this.loading = new GSet<Chunk>();
-		this.queue = new GSet<Chunk>();
 	}
 	
 	@Override
@@ -77,7 +74,13 @@ public class NestController extends Controller implements Monitorable, Probe
 						{
 							loading.remove(i);
 							chunks.put(i, nc);
-							callEvent(new NestChunkLoadEvent(chunks.get(i)));
+							new TaskLater(1)
+							{
+								public void run()
+								{
+									callEvent(new NestChunkLoadEvent(chunks.get(i)));
+								}
+							};
 						}
 					};
 				}
@@ -86,6 +89,9 @@ public class NestController extends Controller implements Monitorable, Probe
 				{
 					ExceptionUtil.print(e);
 					file.delete();
+					loading.remove(i);
+					chunks.put(i, new NestedChunk(new GChunk(i)));
+					callEvent(new NestChunkLoadEvent(chunks.get(i)));
 				}
 			}
 			
@@ -145,10 +151,23 @@ public class NestController extends Controller implements Monitorable, Probe
 	@Override
 	public void onTick()
 	{
-		if(!queue.isEmpty())
+		
+	}
+	
+	public NestedChunk get(Chunk c)
+	{
+		return chunks.get(c);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void on(ChunkLoadEvent e)
+	{
+		new TaskLater()
 		{
-			for(Chunk i : new GList<Chunk>(queue.iterator()))
+			@Override
+			public void run()
 			{
+				Chunk i = e.getChunk();
 				File file = NestUtil.getChunkFile(new GChunk(i));
 				loading.add(i);
 				
@@ -190,20 +209,7 @@ public class NestController extends Controller implements Monitorable, Probe
 					callEvent(new NestChunkLoadEvent(chunks.get(i)));
 				}
 			}
-			
-			queue.clear();
-		}
-	}
-	
-	public NestedChunk get(Chunk c)
-	{
-		return chunks.get(c);
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void on(ChunkLoadEvent e)
-	{
-		queue.add(e.getChunk());
+		};
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -211,13 +217,17 @@ public class NestController extends Controller implements Monitorable, Probe
 	{
 		File file = NestUtil.getChunkFile(new GChunk(e.getChunk()));
 		
+		if(!chunks.containsKey(e.getChunk()))
+		{
+			return;
+		}
+		
 		Chunk chunk = e.getChunk();
 		NestedChunk c = chunks.get(e.getChunk());
 		
 		if(c == null)
 		{
 			f("Chunk " + chunk.getX() + "," + chunk.getZ() + " @" + chunk.getWorld().getName() + " unloaded invalid.");
-			reload();
 			return;
 		}
 		
