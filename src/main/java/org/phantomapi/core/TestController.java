@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -29,6 +30,10 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.MultiblockConstructEvent;
+import org.phantomapi.event.MultiblockDestroyEvent;
+import org.phantomapi.event.MultiblockLoadEvent;
+import org.phantomapi.event.MultiblockUnloadEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
@@ -45,6 +50,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
@@ -163,6 +169,24 @@ public class TestController extends Controller
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
 				}
+			}
+		});
+		
+		//TODO Remove on it
+		tests.put("multiblock-registry", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				MultiblockStructure s = new MultiblockStructure("test");
+				s.add(0, 0, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
+				s.add(0, 1, 0, new MaterialBlock(Material.EMERALD_BLOCK));
+				s.add(1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
+				s.add(-1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
+				s.add(0, 1, 1, new MaterialBlock(Material.REDSTONE_BLOCK));
+				s.add(0, 1, -1, new MaterialBlock(Material.REDSTONE_BLOCK));
+				s.add(0, 2, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
+				s.register();
 			}
 		});
 		
@@ -1723,5 +1747,35 @@ public class TestController extends Controller
 	public void onStop()
 	{
 		
+	}
+	
+	@EventHandler
+	public void on(MultiblockConstructEvent e)
+	{
+		e.getPlayer().sendMessage("Created Mblock Structure " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockDestroyEvent e)
+	{
+		e.getPlayer().sendMessage("Destroyed Mblock Structure " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockUnloadEvent e)
+	{
+		for(Player i : onlinePlayers())
+		{
+			i.sendMessage("Multiblock Unloaded " + e.getMultiblock().getId());
+		}
+	}
+	
+	@EventHandler
+	public void on(MultiblockLoadEvent e)
+	{
+		for(Player i : onlinePlayers())
+		{
+			i.sendMessage("Multiblock Loaded " + e.getMultiblock().getId());
+		}
 	}
 }
