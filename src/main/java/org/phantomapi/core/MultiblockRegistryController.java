@@ -24,7 +24,6 @@ import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.multiblock.MultiblockUtils;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.sync.TaskLater;
-import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 
 /**
@@ -78,7 +77,6 @@ public class MultiblockRegistryController extends Controller
 				{
 					MultiblockUnloadEvent mbu = new MultiblockUnloadEvent(instances.get(i), e.getWorld());
 					callEvent(mbu);
-					Chunks.unload(instances.get(i).getChunks());
 					MultiblockUtils.save(instances.get(i));
 					instances.remove(i);
 				}
@@ -116,6 +114,11 @@ public class MultiblockRegistryController extends Controller
 		
 		for(Integer i : ids)
 		{
+			if(instances.k().contains(i))
+			{
+				continue;
+			}
+			
 			try
 			{
 				File file = MultiblockUtils.getFile(e.getWorld(), i);
