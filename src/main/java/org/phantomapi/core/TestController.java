@@ -13,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -30,10 +29,6 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
-import org.phantomapi.construct.Ticked;
-import org.phantomapi.event.MultiblockConstructEvent;
-import org.phantomapi.event.MultiblockDestroyEvent;
-import org.phantomapi.event.MultiblockInteractEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
@@ -50,15 +45,12 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
-import org.phantomapi.multiblock.Multiblock;
-import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
-import org.phantomapi.physics.VectorMath;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -90,7 +82,6 @@ import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
-import org.phantomapi.world.Area;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
@@ -110,7 +101,6 @@ import com.boydti.fawe.util.TaskManager;
  * 
  * @author cyberpwn
  */
-@Ticked(0)
 public class TestController extends Controller
 {
 	private GMap<String, Runnable> tests;
@@ -1726,62 +1716,12 @@ public class TestController extends Controller
 	@Override
 	public void onStart()
 	{
-		MultiblockStructure ms = new MultiblockStructure("test");
-		ms.add(0, 0, 0, new MaterialBlock(Material.GLASS));
-		ms.add(0, 1, 0, new MaterialBlock(Material.IRON_FENCE));
-		ms.add(0, 2, 0, new MaterialBlock(Material.GLASS));
-		ms.register();
+		
 	}
 	
 	@Override
 	public void onStop()
 	{
 		
-	}
-	
-	@EventHandler
-	public void on(MultiblockConstructEvent e)
-	{
-		e.getPlayer().sendMessage("Created Mblock Structure " + e.getMultiblock().getId());
-	}
-	
-	@EventHandler
-	public void on(MultiblockDestroyEvent e)
-	{
-		e.getPlayer().sendMessage("Destroyed Mblock Structure " + e.getMultiblock().getId());
-	}
-	
-	@EventHandler
-	public void on(MultiblockInteractEvent e)
-	{
-		e.getPlayer().sendMessage("Interacted With Mblock Structure " + e.getMultiblock().getId());
-	}
-	
-	public void onTick()
-	{
-		for(Multiblock i : Phantom.instance().getMultiblocks("test"))
-		{
-			for(Location j : i.getLocations())
-			{
-				if(j.getBlock().getType().equals(Material.GLASS))
-				{
-					ParticleEffect.FIREWORKS_SPARK.display(new Vector(0, 1, 0), 0.1f, j.clone().add(0.5, 0, 0.5), 24);
-				}
-			}
-			
-			for(Multiblock j : Phantom.instance().getMultiblocks("test"))
-			{
-				if(!j.equals(i))
-				{
-					Location a = j.getMapping().get(new Vector(0, 1, 0));
-					Location b = i.getMapping().get(new Vector(0, 1, 0));
-					
-					if(a.getWorld().equals(b.getWorld()) && Area.within(a, b, 32))
-					{
-						ParticleEffect.FIREWORKS_SPARK.display(VectorMath.direction(a, b), 0.7f, a.clone().add(0.5, 0, 0.5), 64);
-					}
-				}
-			}
-		}
 	}
 }
