@@ -21,6 +21,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.phantomapi.Phantom;
+import org.phantomapi.ext.Protocol;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.ExceptionUtil;
 import com.comphenix.protocol.PacketType;
@@ -607,6 +608,11 @@ public class NMSX
 	 */
 	public static void sendActionBar(Player player, String message)
 	{
+		if(Protocol.getProtocol(player).equals(Protocol.V7))
+		{
+			return;
+		}
+		
 		try
 		{
 			Object ppoc;
