@@ -30,10 +30,10 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.MultiblockConstructEvent;
 import org.phantomapi.event.MultiblockDestroyEvent;
-import org.phantomapi.event.MultiblockLoadEvent;
-import org.phantomapi.event.MultiblockUnloadEvent;
+import org.phantomapi.event.MultiblockInteractEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
@@ -50,6 +50,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.nms.NMSX;
@@ -57,6 +58,7 @@ import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
+import org.phantomapi.physics.VectorMath;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -88,6 +90,7 @@ import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
+import org.phantomapi.world.Area;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
@@ -107,6 +110,7 @@ import com.boydti.fawe.util.TaskManager;
  * 
  * @author cyberpwn
  */
+@Ticked(0)
 public class TestController extends Controller
 {
 	private GMap<String, Runnable> tests;
@@ -169,24 +173,6 @@ public class TestController extends Controller
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
 				}
-			}
-		});
-		
-		//TODO Remove on it
-		tests.put("multiblock-registry", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				MultiblockStructure s = new MultiblockStructure("test");
-				s.add(0, 0, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
-				s.add(0, 1, 0, new MaterialBlock(Material.EMERALD_BLOCK));
-				s.add(1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
-				s.add(-1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
-				s.add(0, 1, 1, new MaterialBlock(Material.REDSTONE_BLOCK));
-				s.add(0, 1, -1, new MaterialBlock(Material.REDSTONE_BLOCK));
-				s.add(0, 2, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
-				s.register();
 			}
 		});
 		
@@ -1740,7 +1726,11 @@ public class TestController extends Controller
 	@Override
 	public void onStart()
 	{
-		
+		MultiblockStructure ms = new MultiblockStructure("test");
+		ms.add(0, 0, 0, new MaterialBlock(Material.GLASS));
+		ms.add(0, 1, 0, new MaterialBlock(Material.IRON_FENCE));
+		ms.add(0, 2, 0, new MaterialBlock(Material.GLASS));
+		ms.register();
 	}
 	
 	@Override
@@ -1762,20 +1752,36 @@ public class TestController extends Controller
 	}
 	
 	@EventHandler
-	public void on(MultiblockUnloadEvent e)
+	public void on(MultiblockInteractEvent e)
 	{
-		for(Player i : onlinePlayers())
-		{
-			i.sendMessage("Multiblock Unloaded " + e.getMultiblock().getId());
-		}
+		e.getPlayer().sendMessage("Interacted With Mblock Structure " + e.getMultiblock().getId());
 	}
 	
-	@EventHandler
-	public void on(MultiblockLoadEvent e)
+	public void onTick()
 	{
-		for(Player i : onlinePlayers())
+		for(Multiblock i : Phantom.instance().getMultiblocks("test"))
 		{
-			i.sendMessage("Multiblock Loaded " + e.getMultiblock().getId());
+			for(Location j : i.getLocations())
+			{
+				if(j.getBlock().getType().equals(Material.GLASS))
+				{
+					ParticleEffect.FIREWORKS_SPARK.display(new Vector(0, 1, 0), 0.1f, j.clone().add(0.5, 0, 0.5), 24);
+				}
+			}
+			
+			for(Multiblock j : Phantom.instance().getMultiblocks("test"))
+			{
+				if(!j.equals(i))
+				{
+					Location a = j.getMapping().get(new Vector(0, 1, 0));
+					Location b = i.getMapping().get(new Vector(0, 1, 0));
+					
+					if(a.getWorld().equals(b.getWorld()) && Area.within(a, b, 32))
+					{
+						ParticleEffect.FIREWORKS_SPARK.display(VectorMath.direction(a, b), 0.7f, a.clone().add(0.5, 0, 0.5), 64);
+					}
+				}
+			}
 		}
 	}
 }
