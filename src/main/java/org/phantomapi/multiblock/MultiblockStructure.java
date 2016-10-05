@@ -1,6 +1,7 @@
 package org.phantomapi.multiblock;
 
 import org.bukkit.util.Vector;
+import org.phantomapi.Phantom;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.VariableBlock;
 import org.phantomapi.world.VectorSchematic;
@@ -101,5 +102,21 @@ public class MultiblockStructure extends VectorSchematic
 		{
 			getSchematic().get(v).addBlock(mb);
 		}
+	}
+	
+	/**
+	 * Register this structure
+	 */
+	public void register()
+	{
+		Phantom.instance().getMultiblockRegistryController().registerStructure(this);
+	}
+	
+	/**
+	 * Unregister structure
+	 */
+	public void unRegister()
+	{
+		Phantom.instance().getMultiblockRegistryController().unRegisterStructure(this);
 	}
 }
