@@ -22,13 +22,30 @@ public class MultiblockUtils
 	public static int getNextID(World world)
 	{
 		File f = new File(world.getWorldFolder(), "multiblock");
+		int lim = 1;
 		
 		if(f.exists() && f.isDirectory())
 		{
-			return f.listFiles().length + 1;
+			for(File i : f.listFiles())
+			{
+				try
+				{
+					Integer v = Integer.valueOf(i.getName().split("\\.")[0]);
+					
+					if(v > lim)
+					{
+						lim = v;
+					}
+				}
+				
+				catch(Exception e)
+				{
+					
+				}
+			}
 		}
 		
-		return 1;
+		return lim + 1;
 	}
 	
 	/**
