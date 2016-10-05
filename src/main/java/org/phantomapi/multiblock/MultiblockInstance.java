@@ -101,22 +101,62 @@ public class MultiblockInstance implements Multiblock
 	{
 		return id;
 	}
-
+	
 	@Override
 	public void unload()
 	{
 		Chunks.unload(getChunks());
 	}
-
+	
 	@Override
 	public void load()
 	{
 		Chunks.load(getChunks());
 	}
-
+	
 	@Override
 	public World getWorld()
 	{
-		return getChunks().get(0).getWorld();	
+		return getChunks().get(0).getWorld();
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((mapping == null) ? 0 : mapping.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		MultiblockInstance other = (MultiblockInstance) obj;
+		if(id != other.id)
+			return false;
+		if(mapping == null)
+		{
+			if(other.mapping != null)
+				return false;
+		}
+		else if(!mapping.equals(other.mapping))
+			return false;
+		if(type == null)
+		{
+			if(other.type != null)
+				return false;
+		}
+		else if(!type.equals(other.type))
+			return false;
+		return true;
 	}
 }
