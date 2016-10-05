@@ -43,6 +43,7 @@ import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.ResourceController;
+import org.phantomapi.core.SlateController;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
@@ -52,6 +53,7 @@ import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
+import org.phantomapi.slate.Slate;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
@@ -123,6 +125,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private ResourceController resourceController;
 	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
+	private SlateController slateController;
 	
 	private Long nsx;
 	
@@ -168,6 +171,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		wraithController = new WraithController(this);
 		photonController = new PhotonController(this);
 		resourceController = new ResourceController(this);
+		slateController = new SlateController(this);
 		multiblockRegistryController = new MultiblockRegistryController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
@@ -198,6 +202,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(resourceController);
 		register(nestController);
 		register(multiblockRegistryController);
+		register(slateController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1676,6 +1681,35 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public MultiblockRegistryController getMultiblockRegistryController()
 	{
 		return multiblockRegistryController;
+	}
+	
+	public SlateController getSlateController()
+	{
+		return slateController;
+	}
+	
+	/**
+	 * Set the slate
+	 * 
+	 * @param p
+	 *            the player
+	 * @param slate
+	 *            the slate
+	 */
+	public void setSlate(Player p, Slate slate)
+	{
+		slateController.set(p, slate);
+	}
+	
+	/**
+	 * Remove the slate
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void removeSlate(Player p)
+	{
+		slateController.clear(p);
 	}
 	
 	private void buildSaltpile()
