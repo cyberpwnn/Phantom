@@ -27,7 +27,7 @@ public class ProtocolController extends Controller
 	{
 		return entityHider;
 	}
-
+	
 	@Override
 	public void onStop()
 	{
