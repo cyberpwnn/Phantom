@@ -47,6 +47,7 @@ import org.phantomapi.core.TestController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
@@ -1108,6 +1109,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return false;
 	}
 	
+	public GList<Multiblock> getMultiblocks()
+	{
+		return multiblockRegistryController.getMultiblocks();
+	}
+	
+	public GList<Multiblock> getMultiblocks(String type)
+	{
+		return multiblockRegistryController.getMultiblocks(type);
+	}
+	
 	public static void splash(String... m)
 	{
 		instance.s(C.DARK_GRAY + "  _____  _                 _                  " + (m.length > 0 ? m[0] : ""));
@@ -1656,7 +1667,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return probeController;
 	}
-
+	
 	public ResourceController getResourceController()
 	{
 		return resourceController;
@@ -1666,7 +1677,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return multiblockRegistryController;
 	}
-
+	
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
