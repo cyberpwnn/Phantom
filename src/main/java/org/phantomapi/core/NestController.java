@@ -295,6 +295,7 @@ public class NestController extends Controller implements Monitorable, Probe
 		try
 		{
 			probeSet.add(chunks.get(block.getChunk()).getBlock(block).copy());
+			probeSet.add(chunks.get(block.getChunk()));
 		}
 		
 		catch(Exception e)
