@@ -20,7 +20,6 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.DMSRequire;
 import org.phantomapi.util.DMSRequirement;
-import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Probe;
 import org.phantomapi.util.T;
@@ -408,16 +407,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void tick()
 	{
-		try
-		{
-			onTick();
-		}
-		
-		catch(Exception e)
-		{
-			f("Failed to tick " + getName() + " <> " + e.getClass().getSimpleName());
-			ExceptionUtil.print(e);
-		}
+		onTick();
 	}
 	
 	@Override
