@@ -38,6 +38,7 @@ import org.phantomapi.core.MultiblockRegistryController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
+import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProbeController;
@@ -126,6 +127,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
 	private SlateController slateController;
+	private PhastController phastController;
 	
 	private Long nsx;
 	
@@ -172,6 +174,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		photonController = new PhotonController(this);
 		resourceController = new ResourceController(this);
 		slateController = new SlateController(this);
+		phastController = new PhastController(this);
 		multiblockRegistryController = new MultiblockRegistryController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
@@ -203,6 +206,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(nestController);
 		register(multiblockRegistryController);
 		register(slateController);
+		register(phastController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1581,6 +1585,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static GlobalRegistry getRegistry()
 	{
 		return instance.globalRegistry;
+	}
+	
+	public PhastController getPhastController()
+	{
+		return phastController;
 	}
 	
 	public static double getAm()
