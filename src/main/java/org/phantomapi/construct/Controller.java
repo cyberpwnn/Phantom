@@ -101,6 +101,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		getPlugin().registerListener(this);
 		Phantom.registerSilenced(d);
 		s("Started");
+		onStart();
 		
 		if(tx != null)
 		{
