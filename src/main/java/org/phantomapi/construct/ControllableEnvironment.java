@@ -20,6 +20,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.DMSRequire;
 import org.phantomapi.util.DMSRequirement;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
@@ -405,7 +406,16 @@ public abstract class ControllableEnvironment extends WrappedJavaPlugin implemen
 	@Override
 	public void tick()
 	{
-		onTick();
+		try
+		{
+			onTick();
+		}
+		
+		catch(Exception e)
+		{
+			f("Failed to tick " + getName() + " <> " + e.getClass().getSimpleName());
+			ExceptionUtil.print(e);
+		}
 	}
 	
 	@Override
