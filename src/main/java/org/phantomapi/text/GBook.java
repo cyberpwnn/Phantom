@@ -104,4 +104,28 @@ public class GBook
 		book.setItemMeta(bookMeta);
 		return book;
 	}
+	
+	/**
+	 * Read a books text
+	 * 
+	 * @param is
+	 *            the item stack
+	 * @return the text
+	 */
+	public static GList<String> read(ItemStack is)
+	{
+		GList<String> text = new GList<String>();
+		
+		if(is.getType().equals(Material.WRITTEN_BOOK))
+		{
+			BookMeta bookMeta = (BookMeta) is.getItemMeta();
+			
+			for(String i : bookMeta.getPages())
+			{
+				text.add(i);
+			}
+		}
+		
+		return text;
+	}
 }
