@@ -4,11 +4,7 @@ import javax.script.ScriptException;
 import org.phantomapi.Phantom;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.lang.GList;
-import org.phantomapi.nms.NMSX;
 import org.phantomapi.sync.TaskLater;
-import org.phantomapi.util.C;
-import org.phantomapi.util.F;
-import org.phantomapi.util.P;
 
 /**
  * Phast evaluator
@@ -27,7 +23,6 @@ public class Phast
 	 */
 	public static void evaluate(String expression, PhantomCommandSender sender) throws ScriptException
 	{
-		status(sender, "Reading Script");
 		GList<String> inv = new GList<String>();
 		
 		if(!expression.endsWith(";"))
@@ -36,7 +31,6 @@ public class Phast
 		}
 		
 		expression = expression.substring(0, expression.length() - 1);
-		status(sender, "Processing");
 		
 		for(String i : expression.split(";"))
 		{
@@ -60,77 +54,60 @@ public class Phast
 			inv.add(in);
 		}
 		
-		status(sender, "Executing");
+		GList<String> km = inv.copy();
 		
-		int[] k = new int[] {0};
-		int v = 0;
+		execute(km, new int[] {0});
+	}
+	
+	private static void execute(GList<String> im, int[] d)
+	{
+		if(im.isEmpty())
+		{
+			return;
+		}
 		
-		new TaskLater((inv.size() * 5) + 20)
+		new TaskLater(d[0])
 		{
 			@Override
 			public void run()
 			{
-				status(sender, null);
-			}
-		};
-		
-		for(String i : inv)
-		{
-			new TaskLater(v * 5)
-			{
-				@Override
-				public void run()
+				String i = im.pop();
+				String name = i;
+				GList<String> args = new GList<String>();
+				
+				if(i.contains(" "))
 				{
-					String name = i;
-					GList<String> args = new GList<String>();
-					
-					if(i.contains(" "))
-					{
-						GList<String> seg = new GList<String>(i.split(" "));
-						name = seg.pop();
-						args = seg.copy();
-					}
-					
-					status(sender, "Executing " + F.pc((double) k[0] / (double) inv.size()) + ";Invoking " + i);
-					
+					GList<String> seg = new GList<String>(i.split(" "));
+					name = seg.pop();
+					args = seg.copy();
+				}
+				
+				try
+				{
 					try
 					{
-						Phantom.instance().getPhastController().handle(name, args.toArray(new String[args.size()]));
+						if(name.equalsIgnoreCase("wait") && args.size() == 1)
+						{
+							Integer wa = Integer.valueOf(args.get(0));
+							d[0] += wa;
+						}
 					}
 					
-					catch(Exception e)
+					catch(Exception ex)
 					{
-						status(sender, "Executing " + F.pc((double) k[0] / (double) inv.size()) + ";" + C.RED + "\\FAILED");
+						ex.printStackTrace();
 					}
 					
-					k[0]++;
+					Phantom.instance().getPhastController().handle(name, args.toArray(new String[args.size()]));
 				}
-			};
-			
-			v++;
-		}
-	}
-	
-	private static void status(PhantomCommandSender sender, String message)
-	{
-		if(message == null)
-		{
-			if(sender.isPlayer())
-			{
-				P.clearProgress(sender.getPlayer());
+				
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				execute(im, d);
 			}
-			
-			return;
-		}
-		
-		if(sender.isPlayer())
-		{
-			NMSX.sendActionBar(sender.getPlayer(), message);
-		}
-		
-		else
-		{
-			sender.sendMessage(message);
-		}
+		};
 	}
 }
