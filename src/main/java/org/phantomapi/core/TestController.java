@@ -66,6 +66,7 @@ import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.text.GBook;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.ParameterAdapter;
 import org.phantomapi.text.Tabulator;
@@ -268,6 +269,21 @@ public class TestController extends Controller
 				catch(IOException e)
 				{
 					ExceptionUtil.print(e);
+				}
+			}
+		});
+		
+		tests.put("read-book", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					for(String j : GBook.read(i.getItemInHand()))
+					{
+						i.sendMessage(j);
+					}
 				}
 			}
 		});
