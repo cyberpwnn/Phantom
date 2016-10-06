@@ -16,9 +16,11 @@ import org.phantomapi.phast.PhastDisableNode;
 import org.phantomapi.phast.PhastEnableNode;
 import org.phantomapi.phast.PhastLoadNode;
 import org.phantomapi.phast.PhastReloadNode;
+import org.phantomapi.phast.PhastResetNode;
 import org.phantomapi.phast.PhastThrashNode;
 import org.phantomapi.phast.PhastTitleNode;
 import org.phantomapi.phast.PhastUnloadNode;
+import org.phantomapi.phast.PhastWaitNode;
 import org.phantomapi.text.GBook;
 import org.phantomapi.util.C;
 
@@ -137,11 +139,13 @@ public class PhastController extends CommandController
 		registerPhast(new PhastUnloadNode());
 		registerPhast(new PhastEnableNode());
 		registerPhast(new PhastDisableNode());
+		registerPhast(new PhastResetNode());
 		registerPhast(new PhastReloadNode());
 		registerPhast(new PhastThrashNode());
 		registerPhast(new PhastCNode());
 		registerPhast(new PhastTitleNode());
 		registerPhast(new PhastAlertNode());
+		registerPhast(new PhastWaitNode());
 	}
 	
 	@Override
