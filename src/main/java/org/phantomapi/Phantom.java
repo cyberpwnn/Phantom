@@ -1898,6 +1898,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Take it all in");
 		msgx.add("Beautiful");
 		msgx.add("Cafd");
+		msgx.add("Just Buttfaced into a few exceptions there");
+		msgx.add("THE CROWWWWWWNNNNNNNNNNNNNNNNNN");
+		msgx.add("FAP is good.");
+		msgx.add("Im out");
+		msgx.add("Piss off");
+		msgx.add("Well hello there dan from the future, fuck you.");
 		
 		msgx.add(msg);
 		
