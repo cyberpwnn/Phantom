@@ -43,10 +43,16 @@ public class SlateController extends Controller
 	public void set(Player p, Slate slate)
 	{
 		slates.put(p, slate);
+		slate.addViewer(p);
 	}
 	
 	public void clear(Player p)
 	{
+		if(slates.containsKey(p))
+		{
+			slates.get(p).removeViewer(p);
+		}
+		
 		slates.remove(p);
 	}
 }
