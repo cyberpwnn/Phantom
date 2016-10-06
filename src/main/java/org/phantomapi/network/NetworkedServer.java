@@ -46,4 +46,11 @@ public interface NetworkedServer
 	 *            the player
 	 */
 	public void sendPlayer(Player p);
+	
+	/**
+	 * Is this server a lobby server?
+	 * 
+	 * @return true if it is
+	 */
+	public boolean isLobby();
 }
