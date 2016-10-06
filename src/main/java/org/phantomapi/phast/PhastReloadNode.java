@@ -1,9 +1,11 @@
 package org.phantomapi.phast;
 
-import org.phantomapi.util.U;
+import org.bukkit.Bukkit;
+import org.phantomapi.Phantom;
+import org.phantomapi.util.PluginUtil;
 
 /**
- * A Node for reloading the server
+ * A Node for reloading controllers
  * 
  * @author cyberpwn
  */
@@ -17,15 +19,23 @@ public class PhastReloadNode extends PhastNode
 	@Override
 	public String phastHelp()
 	{
-		return "reload - Reloads the server";
+		return "reload [c/plugin] - Reloads a controller or plugin";
 	}
 	
 	@Override
 	public void on(String[] args)
 	{
-		if(args.length == 0)
+		if(args.length == 1)
 		{
-			U.reload();
+			try
+			{
+				Phantom.instance().getController(args[0]).reload();
+			}
+			
+			catch(Exception e)
+			{
+				PluginUtil.reload(Bukkit.getPluginManager().getPlugin(args[0]));
+			}
 		}
 	}
 }
