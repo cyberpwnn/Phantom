@@ -2,6 +2,7 @@ package org.phantomapi.network;
 
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GListAdapter;
 import org.phantomapi.util.Refreshable;
 
 /**
@@ -90,5 +91,41 @@ public class PhantomNetwork implements Network, Refreshable
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public GList<NetworkedServer> getRemoteServers()
+	{
+		return new GList<NetworkedServer>(new GListAdapter<NetworkedServer, NetworkedServer>()
+		{
+			@Override
+			public NetworkedServer onAdapt(NetworkedServer from)
+			{
+				if(from.isRemote())
+				{
+					return from;
+				}
+				
+				return null;
+			}
+		}.adapt(getServers()));
+	}
+	
+	@Override
+	public GList<NetworkedServer> getLobbyServers()
+	{
+		return new GList<NetworkedServer>(new GListAdapter<NetworkedServer, NetworkedServer>()
+		{
+			@Override
+			public NetworkedServer onAdapt(NetworkedServer from)
+			{
+				if(from.isLobby())
+				{
+					return from;
+				}
+				
+				return null;
+			}
+		}.adapt(getServers()));
 	}
 }
