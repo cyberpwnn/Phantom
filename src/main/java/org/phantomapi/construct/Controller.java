@@ -149,18 +149,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	{
 		Timer t = new Timer();
 		t.start();
-		
-		try
-		{
-			onTick();
-		}
-		
-		catch(Exception e)
-		{
-			f("Failed to tick " + getName() + " <> " + e.getClass().getSimpleName());
-			ExceptionUtil.print(e);
-		}
-		
+		onTick();
 		t.stop();
 		time.put(t.getTime());
 		DevelopmentController.ticks++;
