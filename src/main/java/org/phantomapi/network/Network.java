@@ -17,6 +17,20 @@ public interface Network
 	public GList<NetworkedServer> getServers();
 	
 	/**
+	 * Get remote servers on the network
+	 * 
+	 * @return the remote servers
+	 */
+	public GList<NetworkedServer> getRemoteServers();
+	
+	/**
+	 * Get lobby servers
+	 * 
+	 * @return the lobby servers
+	 */
+	public GList<NetworkedServer> getLobbyServers();
+	
+	/**
 	 * Get the list of players on all servers
 	 * 
 	 * @return the list of players
