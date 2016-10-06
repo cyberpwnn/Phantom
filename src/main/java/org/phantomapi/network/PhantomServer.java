@@ -85,4 +85,14 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 			new PluginMessage(Phantom.instance(), "ConnectOther", p.getName(), getName()).send();
 		}
 	}
+	
+	public boolean isLobby()
+	{
+		if(name.toLowerCase().contains("lobby") || name.toLowerCase().contains("hub"))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }
