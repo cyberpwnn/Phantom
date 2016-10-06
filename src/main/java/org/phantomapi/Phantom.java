@@ -1256,6 +1256,43 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}, 10);
 	}
 	
+	public static void thrash()
+	{
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Phantom.instance, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				List<String> thrashable = new ArrayList<String>();
+				
+				for(Plugin i : Bukkit.getPluginManager().getPlugins())
+				{
+					if(i instanceof PhantomPlugin && !i.getName().equals(Phantom.instance.getName()))
+					{
+						thrashable.add(i.getName());
+					}
+				}
+				
+				if(!thrashable.isEmpty())
+				{
+					for(String i : thrashable)
+					{
+						PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin(i));
+					}
+					
+					PluginUtil.unloadNoGC(Bukkit.getPluginManager().getPlugin("Phantom"));
+					
+					PluginUtil.load("Phantom");
+					
+					for(String i : thrashable)
+					{
+						PluginUtil.load(i);
+					}
+				}
+			}
+		}, 10);
+	}
+	
 	/**
 	 * Get the data cluster status
 	 * 
