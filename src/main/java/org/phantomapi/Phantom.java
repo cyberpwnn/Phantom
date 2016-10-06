@@ -45,7 +45,6 @@ import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SlateController;
-import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
@@ -93,7 +92,6 @@ import com.comphenix.protocol.ProtocolManager;
  * 
  * @author cyberpwn
  */
-@SyncStart
 public class Phantom extends PhantomPlugin implements TagProvider
 {
 	private static Long thread;
