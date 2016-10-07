@@ -270,6 +270,11 @@ public class PhantomWindow implements Window, Listener
 			
 			e.setCancelled(true);
 		}
+		
+		if(e.getWhoClicked().equals(viewer))
+		{
+			e.setCancelled(true);
+		}
 	}
 	
 	public boolean equals(Object object)
