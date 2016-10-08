@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -44,6 +43,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 {
 	private GMap<String, MultiblockStructure> structures;
 	private GMap<Integer, Multiblock> instances;
+	private GMap<Chunk, Integer> instanceReference;
 	private int v = 0;
 	
 	public MultiblockRegistryController(Controllable parentController)
@@ -52,6 +52,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 		
 		this.structures = new GMap<String, MultiblockStructure>();
 		this.instances = new GMap<Integer, Multiblock>();
+		this.instanceReference = new GMap<Chunk, Integer>();
 	}
 	
 	@Override
@@ -76,34 +77,39 @@ public class MultiblockRegistryController extends Controller implements Monitora
 		structures.remove(mb.getType());
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler
 	public void on(NestChunkUnloadEvent e)
 	{
-		v--;
-		for(Integer i : instances.k())
+		if(instanceReference.containsKey(e.getChunk()))
 		{
-			if(instances.get(i).getChunks().contains(e.getChunk()))
+			int i = instanceReference.get(e.getChunk());
+			
+			try
 			{
-				try
-				{
-					MultiblockUnloadEvent mbu = new MultiblockUnloadEvent(instances.get(i), e.getWorld());
-					callEvent(mbu);
-					MultiblockUtils.save(instances.get(i));
-					instances.remove(i);
-				}
+				MultiblockUnloadEvent mbu = new MultiblockUnloadEvent(instances.get(i), e.getWorld());
+				callEvent(mbu);
+				MultiblockUtils.save(instances.get(i));
+				instances.remove(i);
 				
-				catch(IOException ex)
+				for(Chunk j : instanceReference.k())
 				{
-					ExceptionUtil.print(ex);
+					if(instanceReference.get(j) == i)
+					{
+						instanceReference.remove(j);
+					}
 				}
+			}
+			
+			catch(IOException ex)
+			{
+				ExceptionUtil.print(ex);
 			}
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler
 	public void on(NestChunkLoadEvent e)
 	{
-		v++;
 		if(Nest.getChunk(e.getChunk()) != null)
 		{
 			GSet<Integer> ids = new GSet<Integer>();
@@ -143,6 +149,15 @@ public class MultiblockRegistryController extends Controller implements Monitora
 						{
 							Multiblock mb = MultiblockUtils.load(e.getWorld(), i);
 							instances.put(i, mb);
+							
+							for(Chunk j : mb.getChunks())
+							{
+								if(j.isLoaded())
+								{
+									instanceReference.put(j, i);
+								}
+							}
+							
 							MultiblockLoadEvent mbl = new MultiblockLoadEvent(mb, e.getWorld());
 							callEvent(mbl);
 						}
@@ -196,6 +211,14 @@ public class MultiblockRegistryController extends Controller implements Monitora
 								
 								for(Chunk j : mb.getChunks())
 								{
+									if(j.isLoaded())
+									{
+										instanceReference.put(j, id);
+									}
+								}
+								
+								for(Chunk j : mb.getChunks())
+								{
 									Nest.getChunk(j).set("mb.i-" + mb.getId(), mb.getType());
 								}
 							}
@@ -236,53 +259,6 @@ public class MultiblockRegistryController extends Controller implements Monitora
 					}
 				}
 			}
-			
-			new TaskLater()
-			{
-				@Override
-				public void run()
-				{
-					if(Nest.getChunk(e.getClickedBlock().getChunk()) == null)
-					{
-						return;
-					}
-					
-					for(String i : structures.k())
-					{
-						GMap<Vector, Location> map = structures.get(i).match(e.getClickedBlock().getLocation());
-						
-						if(map != null)
-						{
-							int id = MultiblockUtils.getNextID(e.getClickedBlock().getWorld());
-							Multiblock mb = new MultiblockInstance(id, i, map);
-							
-							try
-							{
-								MultiblockConstructEvent mbc = new MultiblockConstructEvent(e.getPlayer(), mb, mb.getWorld());
-								callEvent(mbc);
-								
-								if(!e.isCancelled())
-								{
-									MultiblockUtils.save(mb);
-									instances.put(id, mb);
-									
-									for(Chunk j : mb.getChunks())
-									{
-										Nest.getChunk(j).set("mb.i-" + mb.getId(), mb.getType());
-									}
-								}
-							}
-							
-							catch(IOException ex)
-							{
-								ExceptionUtil.print(ex);
-							}
-							
-							break;
-						}
-					}
-				}
-			};
 		}
 		
 		catch(Exception ex)
@@ -311,6 +287,14 @@ public class MultiblockRegistryController extends Controller implements Monitora
 					Multiblock mb = instances.get(i);
 					instances.remove(i);
 					MultiblockUtils.getFile(mb.getWorld(), i).delete();
+					
+					for(Chunk j : instanceReference.k())
+					{
+						if(instanceReference.get(j) == i)
+						{
+							instanceReference.remove(j);
+						}
+					}
 					
 					for(Chunk j : mb.getChunks())
 					{
