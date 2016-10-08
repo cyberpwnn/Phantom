@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -29,6 +30,11 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.MultiblockConstructEvent;
+import org.phantomapi.event.MultiblockDestroyEvent;
+import org.phantomapi.event.MultiblockInteractEvent;
+import org.phantomapi.event.MultiblockLoadEvent;
+import org.phantomapi.event.MultiblockUnloadEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
@@ -45,6 +51,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
@@ -77,6 +84,7 @@ import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
+import org.phantomapi.util.Players;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ParticleEffect;
@@ -1732,7 +1740,45 @@ public class TestController extends Controller
 	@Override
 	public void onStart()
 	{
-		
+		MultiblockStructure mb = new MultiblockStructure("tester");
+		mb.add(0, 0, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
+		mb.add(0, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
+		mb.add(1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
+		mb.add(0, 1, 1, new MaterialBlock(Material.REDSTONE_BLOCK));
+		mb.add(-1, 1, 0, new MaterialBlock(Material.REDSTONE_BLOCK));
+		mb.add(0, 1, -1, new MaterialBlock(Material.REDSTONE_BLOCK));
+		mb.add(0, 2, 0, new MaterialBlock(Material.DIAMOND_BLOCK));
+		mb.register();
+	}
+	
+	@EventHandler
+	public void on(MultiblockLoadEvent e)
+	{
+		Players.getAnyPlayer().sendMessage("Loaded: " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockUnloadEvent e)
+	{
+		Players.getAnyPlayer().sendMessage("Unloaded: " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockConstructEvent e)
+	{
+		Players.getAnyPlayer().sendMessage("Created: " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockDestroyEvent e)
+	{
+		Players.getAnyPlayer().sendMessage("Destroyed: " + e.getMultiblock().getId());
+	}
+	
+	@EventHandler
+	public void on(MultiblockInteractEvent e)
+	{
+		Players.getAnyPlayer().sendMessage("Interacted: " + e.getMultiblock().getId());
 	}
 	
 	@Override
