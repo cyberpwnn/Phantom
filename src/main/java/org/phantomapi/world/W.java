@@ -11,6 +11,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -167,6 +168,19 @@ public class W
 	public static int getChunkY(Block b)
 	{
 		return b.getY();
+	}
+	
+	/**
+	 * Drop an experience orb
+	 * 
+	 * @param location
+	 *            the location
+	 * @param xp
+	 *            the amount of xp
+	 */
+	public static void dropXp(Location location, int xp)
+	{
+		((ExperienceOrb) location.getWorld().spawn(location, ExperienceOrb.class)).setExperience(xp);
 	}
 	
 	/**
@@ -335,7 +349,7 @@ public class W
 		return AsyncWorld.create(new WorldCreator(world));
 	}
 	
-	/**	
+	/**
 	 * Applies changes to an async world
 	 * 
 	 * @param world
