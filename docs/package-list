@@ -1,6 +1,7 @@
 org.phantomapi
 org.phantomapi.async
 org.phantomapi.block
+org.phantomapi.callable
 org.phantomapi.clust
 org.phantomapi.command
 org.phantomapi.construct
@@ -18,8 +19,10 @@ org.phantomapi.nest
 org.phantomapi.network
 org.phantomapi.nms
 org.phantomapi.papyrus
+org.phantomapi.phast
 org.phantomapi.physics
 org.phantomapi.placeholder
+org.phantomapi.plugin
 org.phantomapi.refract
 org.phantomapi.registry
 org.phantomapi.schematic
