@@ -23,6 +23,7 @@ import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
+import org.phantomapi.core.BlockCheckController;
 import org.phantomapi.core.BungeeController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
@@ -128,6 +129,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private NestController nestController;
 	private SlateController slateController;
 	private PhastController phastController;
+	private BlockCheckController blockCheckController;
 	
 	private Long nsx;
 	
@@ -179,6 +181,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		nestController = new NestController(this);
+		blockCheckController = new BlockCheckController(this);
 		thread = Thread.currentThread().getId();
 		saltpile = new SpeechMesh("saltpile");
 		new PlaceholderHooker(this, "phantom").hook();
@@ -207,6 +210,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(multiblockRegistryController);
 		register(slateController);
 		register(phastController);
+		register(blockCheckController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1756,6 +1760,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public void removeSlate(Player p)
 	{
 		slateController.clear(p);
+	}
+	
+	public BlockCheckController getBlockCheckController()
+	{
+		return blockCheckController;
 	}
 	
 	private void buildSaltpile()
