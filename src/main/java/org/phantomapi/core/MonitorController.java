@@ -60,6 +60,7 @@ public class MonitorController extends Controller
 		}
 	}
 	
+	@Override
 	public void onTick()
 	{
 		if(!monitors.isEmpty())
