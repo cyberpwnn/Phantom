@@ -6,6 +6,7 @@ import org.phantomapi.block.BlockHandler;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
+import org.phantomapi.util.C;
 
 /**
  * Checks blocks
@@ -37,11 +38,13 @@ public class BlockCheckController extends Controller
 	
 	public void registerBlockHandler(BlockHandler handler)
 	{
+		s("Registered Block Handler: " + C.AQUA + handler.getClass().getSimpleName());
 		handlers.add(handler);
 	}
 	
 	public void unRegisterBlockHandler(BlockHandler handler)
 	{
+		f("Unregistered Block Handler: " + C.YELLOW + handler.getClass().getSimpleName());
 		handlers.remove(handler);
 	}
 	
