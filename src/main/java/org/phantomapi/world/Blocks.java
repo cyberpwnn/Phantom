@@ -1,5 +1,6 @@
 package org.phantomapi.world;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
@@ -13,6 +14,18 @@ import org.phantomapi.lang.GList;
  */
 public class Blocks
 {
+	/**
+	 * Get the center of the block
+	 * 
+	 * @param block
+	 *            the block
+	 * @return the center location
+	 */
+	public static Location getCenter(Block block)
+	{
+		return block.getLocation().clone().add(0.5, 0.5, 0.5);
+	}
+	
 	/**
 	 * Can the player modify the given block based on region handlers
 	 * 
