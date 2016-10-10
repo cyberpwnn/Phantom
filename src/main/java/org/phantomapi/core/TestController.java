@@ -77,6 +77,7 @@ import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
+import org.phantomapi.util.Players;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ParticleEffect;
@@ -129,6 +130,7 @@ public class TestController extends Controller
 				
 				Phantom.schedule(new ExecutiveIterator<String>(k.copy())
 				{
+					@Override
 					public void onIterate(String next)
 					{
 						while(Math.random() < 0.6)
@@ -249,6 +251,15 @@ public class TestController extends Controller
 				{
 					ExceptionUtil.print(e);
 				}
+			}
+		});
+		
+		tests.put("nest-map", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Nest.giveMap(Players.getAnyPlayer());
 			}
 		});
 		
@@ -754,7 +765,7 @@ public class TestController extends Controller
 								last[0] = M.ms();
 								say(new GList<String>(new String[] {"What's your problem man?", "Back the fuck off dude.", "Bro, what is wrong with you?", "I said back off alright man?", "Get out of my face before I get in yours.", "You are way to close bro.", "Bruh, get out of my safe space", "Stop that, this is my space."}).pickRandom());
 								
-								setTarget(new WraithTarget(i.getLocation().add(new Vector((Math.random() * 6) - 3, 0, (Math.random() * 6) - 3))));
+								setTarget(new WraithTarget(i.getLocation().add(new Vector(Math.random() * 6 - 3, 0, Math.random() * 6 - 3))));
 							}
 						}
 						
@@ -864,17 +875,17 @@ public class TestController extends Controller
 											{
 												Location l = c.getBlock(i, j, k).getLocation();
 												
-												if((l.getBlockX() % 16 == 0 && l.getBlockY() % 16 == 0))
+												if(l.getBlockX() % 16 == 0 && l.getBlockY() % 16 == 0)
 												{
 													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 14));
 												}
 												
-												if((l.getBlockX() % 16 == 0 && l.getBlockZ() % 16 == 0))
+												if(l.getBlockX() % 16 == 0 && l.getBlockZ() % 16 == 0)
 												{
 													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 5));
 												}
 												
-												if((l.getBlockZ() % 16 == 0 && l.getBlockY() % 16 == 0))
+												if(l.getBlockZ() % 16 == 0 && l.getBlockY() % 16 == 0)
 												{
 													EditSessionController.queue(l, new MaterialBlock(Material.STAINED_GLASS, (byte) 11));
 												}
@@ -1337,6 +1348,7 @@ public class TestController extends Controller
 				{
 					new Task(0)
 					{
+						@Override
 						public void run()
 						{
 							NMSX.showPickup(i, i, i);
@@ -1574,6 +1586,7 @@ public class TestController extends Controller
 					Window main = new PhantomWindow(C.AQUA + "Main", i);
 					Window dialog = new PhantomDialog(ChatColor.DARK_RED + "Are you SURE?", i, true)
 					{
+						@Override
 						public void onCancelled(Player p, Window w, Dialog d)
 						{
 							test.open();
@@ -1582,6 +1595,7 @@ public class TestController extends Controller
 					
 					dialog.addElement(new PhantomElement(Material.SLIME_BALL, new Slot(0, 2), C.GREEN + "YES")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							main.open();
@@ -1590,6 +1604,7 @@ public class TestController extends Controller
 					
 					dialog.addElement(new PhantomElement(Material.BARRIER, new Slot(0, 3), C.RED + "NO")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							test.open();
@@ -1598,6 +1613,7 @@ public class TestController extends Controller
 					
 					main.addElement(new PhantomElement(Material.SLIME_BALL, new Slot(0, 2), C.RED + "Colored")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							test.open();
@@ -1606,6 +1622,7 @@ public class TestController extends Controller
 					
 					test.addElement(new PhantomElement(Material.BARRIER, new Slot(-1, 3), C.RED + "Close")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							test.close();
@@ -1614,6 +1631,7 @@ public class TestController extends Controller
 					
 					test.addElement(new PhantomElement(Material.CARROT_STICK, new Slot(0, 3), C.RED + "Do something")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							dialog.open();
@@ -1622,6 +1640,7 @@ public class TestController extends Controller
 					
 					test.addElement(new PhantomElement(Material.MAGMA_CREAM, new Slot(1, 3), C.RED + "Back")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							main.open();
@@ -1630,6 +1649,7 @@ public class TestController extends Controller
 					
 					main.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 1, new Slot(0, 1), " ")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							
@@ -1637,6 +1657,7 @@ public class TestController extends Controller
 					});
 					test.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 2, new Slot(0, 1), " ")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							
@@ -1644,6 +1665,7 @@ public class TestController extends Controller
 					});
 					dialog.setBackground(new PhantomElement(Material.STAINED_GLASS_PANE, (byte) 3, new Slot(0, 1), " ")
 					{
+						@Override
 						public void onClick(Player p, Click c, Window w)
 						{
 							
