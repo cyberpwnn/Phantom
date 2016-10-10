@@ -179,7 +179,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	{
 		requestServerNaming();
 		
-		new TaskLater(50)
+		new TaskLater(5)
 		{
 			@Override
 			public void run()
