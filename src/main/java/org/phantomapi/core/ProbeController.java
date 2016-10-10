@@ -14,6 +14,7 @@ import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
+import org.phantomapi.nest.Nest;
 import org.phantomapi.stack.Stack;
 import org.phantomapi.sync.Task;
 import org.phantomapi.text.MessageBuilder;
@@ -32,7 +33,7 @@ public class ProbeController extends Controller
 	{
 		super(parentController);
 		
-		this.probes = new GList<Probe>();
+		probes = new GList<Probe>();
 	}
 	
 	@Override
@@ -80,8 +81,38 @@ public class ProbeController extends Controller
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void on(PlayerInteractEvent e)
 	{
+		if(!e.getPlayer().hasPermission("pha.god"))
+		{
+			return;
+		}
+		
 		try
 		{
+			if(e.getAction().equals(Action.LEFT_CLICK_AIR) && e.getPlayer().isSneaking())
+			{
+				if(e.getItem().getType().equals(Material.TRIPWIRE_HOOK))
+				{
+					ItemStack is = e.getItem();
+					ItemMeta im = is.getItemMeta();
+					
+					if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
+					{
+						Nest.giveMap(e.getPlayer());
+					}
+				}
+				
+				else if(e.getItem().getType().equals(Material.MAP))
+				{
+					ItemStack is = e.getItem();
+					ItemMeta im = is.getItemMeta();
+					
+					if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
+					{
+						e.getPlayer().setItemInHand(getProbe());
+					}
+				}
+			}
+			
 			if(e.getClickedBlock() != null && e.getItem() != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 			{
 				if(e.getItem().getType().equals(Material.TRIPWIRE_HOOK))
@@ -143,7 +174,7 @@ public class ProbeController extends Controller
 											
 											fi.add(1);
 											
-											for(double i = 0; i < 5; i += 0.1)
+											for(double i = 0; i < 3; i += 0.1)
 											{
 												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0 + i, 0), 32);
 												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0 - i, 0), 32);
