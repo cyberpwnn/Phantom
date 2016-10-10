@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.A;
 import org.phantomapi.lang.GList;
+import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
@@ -22,7 +24,6 @@ import org.phantomapi.util.ExceptionUtil;
  * loadCluster would call parts of this when needed.
  * 
  * @author cyberpwn
- *
  */
 public class ConfigurationHandler
 {
@@ -140,8 +141,7 @@ public class ConfigurationHandler
 				
 				else
 				{
-					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");
-					;
+					new D(c.getCodeName() + "/" + i.getType().getSimpleName() + " " + i.getName()).w("INVALID TYPE. NOT SUPPORTED FOR KEYED CONFIGS");;
 				}
 			}
 		}
@@ -245,7 +245,6 @@ public class ConfigurationHandler
 		fromFields(c);
 		c.onNewConfig();
 		new YAMLDataInput().load(c.getConfiguration(), config);
-		new YAMLDataOutput().save(c.getConfiguration(), config);
 		toFields(c);
 		
 		new TaskLater()
@@ -256,13 +255,37 @@ public class ConfigurationHandler
 				c.onReadConfig();
 			}
 		};
-
-		new TaskLater(3)
+		
+		new S()
 		{
 			@Override
-			public void run()
+			public void sync()
 			{
-				Phantom.instance().getDms().getHotLoadController().registerHotLoad(config, c);
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						try
+						{
+							new YAMLDataOutput().save(c.getConfiguration(), config);
+							
+							new TaskLater(3)
+							{
+								@Override
+								public void run()
+								{
+									Phantom.instance().getDms().getHotLoadController().registerHotLoad(config, c);
+								}
+							};
+						}
+						
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
 			}
 		};
 	}
@@ -421,9 +444,9 @@ public class ConfigurationHandler
 			ResultSet resx = stx.executeQuery();
 			resx.next();
 			JSONObject jso = new JSONObject(resx.getString("d"));
-			c.getConfiguration().addJson(jso);			
-			toFields(c);			
-			c.onReadConfig();			
+			c.getConfiguration().addJson(jso);
+			toFields(c);
+			c.onReadConfig();
 			resx.close();
 			stx.close();
 		}
