@@ -8,16 +8,21 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.phantomapi.block.BlockHandler;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.stack.Stack;
+import org.phantomapi.sync.Task;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
+import org.phantomapi.util.FinalInteger;
 import org.phantomapi.util.Probe;
+import org.phantomapi.vfx.ParticleEffect;
+import org.phantomapi.world.Blocks;
 
 public class ProbeController extends Controller
 {
@@ -92,6 +97,14 @@ public class ProbeController extends Controller
 						mb.setTag(C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Probe" + C.DARK_GRAY + "]: " + C.GRAY, C.LIGHT_PURPLE + "Probed information");
 						s.setMessageBuilder(mb);
 						
+						for(BlockHandler i : Blocks.getHandlers())
+						{
+							if(i.getProtector(e.getClickedBlock()) != null)
+							{
+								s.sendMessage(C.WHITE.toString() + "Protector: " + C.GRAY + i.getProtector() + " <> " + i.getProtector(e.getClickedBlock()));
+							}
+						}
+						
 						if(cc.size() == 0)
 						{
 							s.sendMessage("No Data for " + C.WHITE + e.getClickedBlock().getX() + " " + e.getClickedBlock().getY() + " " + e.getClickedBlock().getZ());
@@ -106,6 +119,49 @@ public class ProbeController extends Controller
 								s.sendMessage(i);
 							}
 						}
+						
+						FinalInteger fi = new FinalInteger(0);
+						
+						new Task(0)
+						{
+							@Override
+							public void run()
+							{
+								if(fi.get() > 5)
+								{
+									cancel();
+									
+									new Task(0)
+									{
+										@Override
+										public void run()
+										{
+											if(fi.get() > 10)
+											{
+												cancel();
+											}
+											
+											fi.add(1);
+											
+											for(double i = 0; i < 5; i += 0.1)
+											{
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0 + i, 0), 32);
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0 - i, 0), 32);
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0 + i, 0, 0), 32);
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0 - i, 0, 0), 32);
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0, 0 + i), 32);
+												ParticleEffect.FIREWORKS_SPARK.display(0f, 1, Blocks.getCenter(e.getClickedBlock()).add(0, 0, 0 - i), 32);
+											}
+										}
+									};
+								}
+								
+								fi.add(1);
+								ParticleEffect.SPELL_WITCH.display(0.6f, 12, Blocks.getCenter(e.getClickedBlock()), 32);
+								ParticleEffect.SPELL_WITCH.display(0.6f, 12, Blocks.getCenter(e.getClickedBlock()).add(0, 0.5, 0), 32);
+								ParticleEffect.SPELL_WITCH.display(0.6f, 12, Blocks.getCenter(e.getClickedBlock()).add(0, -0.5, 0), 32);
+							}
+						};
 						
 						e.setCancelled(true);
 					}
