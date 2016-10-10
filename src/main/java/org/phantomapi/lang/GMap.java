@@ -106,6 +106,16 @@ public class GMap<K, V> extends ConcurrentHashMap<K, V>
 	}
 	
 	/**
+	 * Get a copied GSet of the keys (modification safe)
+	 * 
+	 * @return keys
+	 */
+	public GSet<K> kset()
+	{
+		return new GSet<K>(keySet());
+	}
+	
+	/**
 	 * Get a copied GList of the values (modification safe)
 	 * 
 	 * @return values
@@ -113,6 +123,16 @@ public class GMap<K, V> extends ConcurrentHashMap<K, V>
 	public GList<V> v()
 	{
 		return new GList<V>(values());
+	}
+	
+	/**
+	 * Get a copied GSet of the values (modification safe)
+	 * 
+	 * @return values
+	 */
+	public GSet<V> vset()
+	{
+		return new GSet<V>(values());
 	}
 	
 	/**
@@ -134,6 +154,7 @@ public class GMap<K, V> extends ConcurrentHashMap<K, V>
 	/**
 	 * Override. Works just like containsKey(Object o)
 	 */
+	@Override
 	public boolean contains(Object o)
 	{
 		return containsKey(o);
