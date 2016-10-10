@@ -44,6 +44,7 @@ import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
+import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SlateController;
 import org.phantomapi.core.TestController;
@@ -101,6 +102,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public static double sm = 0;
 	private static boolean syncStart;
 	private DataCluster environment;
+	private RegistryController registryController;
 	private ChanneledExecutivePoolController channeledExecutivePoolController;
 	private TestController testController;
 	private NotificationController notificationController;
@@ -133,6 +135,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	private Long nsx;
 	
+	@Override
 	public void enable()
 	{
 		nsx = M.ns();
@@ -155,6 +158,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			syncStart = true;
 		}
 		
+		registryController = new RegistryController(this);
 		developmentController = new DevelopmentController(this);
 		environment = new DataCluster();
 		dms = new DMS(this);
@@ -188,6 +192,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
+		register(registryController);
 		register(developmentController);
 		register(monitorController);
 		register(commandRegistryController);
@@ -222,6 +227,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	@Override
 	public void onStart()
 	{
 		try
@@ -294,7 +300,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			{
 				for(Controllable i : bindings)
 				{
-					commandRegistryController.register((Controllable) i);
+					commandRegistryController.register(i);
 					monitorController.register(i);
 				}
 			}
@@ -409,11 +415,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			@Override
 			public void run()
 			{
-				sm += ((double) (M.ns() - nsx) / 1000000);
+				sm += (double) (M.ns() - nsx) / 1000000;
 			}
 		};
 	}
 	
+	@Override
 	public void onStop()
 	{
 		try
@@ -504,6 +511,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return null;
 	}
 	
+	@Override
 	public void disable()
 	{
 		
@@ -1209,7 +1217,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					sender.sendMessage(t + C.BOLD + "BEGINNING THRASH");
 					
 					int ic = 0;
-					int imax = (thrashable.size() * 2) + 2;
+					int imax = thrashable.size() * 2 + 2;
 					
 					for(String i : thrashable)
 					{
@@ -1319,7 +1327,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				cc.set(key + ".ms", i.getTime());
 			}
 			
-			if((i instanceof CommandListener) && getCommandRegistryController().getRegistrants().contains((CommandListener) i))
+			if(i instanceof CommandListener && getCommandRegistryController().getRegistrants().contains(i))
 			{
 				CommandListener l = (CommandListener) i;
 				GList<String> regi = new GList<String>(l.getCommandAliases()).qadd(l.getCommandName());
@@ -1765,6 +1773,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public BlockCheckController getBlockCheckController()
 	{
 		return blockCheckController;
+	}
+	
+	public RegistryController getRegistryController()
+	{
+		return registryController;
 	}
 	
 	private void buildSaltpile()
