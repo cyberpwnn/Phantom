@@ -1,4 +1,4 @@
-package org.phantomapi.util;
+package org.phantomapi.entity;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
