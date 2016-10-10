@@ -104,7 +104,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 						msg = msg.split(";")[0];
 					}
 					
-					new Title(C.LIGHT_PURPLE + msg, C.LIGHT_PURPLE + next + " " + C.DARK_GRAY + sub , "  ", 0, 5, 5).send(i);
+					new Title(C.LIGHT_PURPLE + msg, C.LIGHT_PURPLE + next + " " + C.DARK_GRAY + sub, "  ", 0, 5, 5).send(i);
 				}
 			}
 		};
@@ -131,6 +131,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		}
 	}
 	
+	@Override
 	public void onTick()
 	{
 		requestServerNaming();
@@ -164,6 +165,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		}
 	}
 	
+	@Override
 	public void onStop()
 	{
 		if(state.equals(ServerState.RUNNING))
@@ -172,12 +174,14 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		}
 	}
 	
+	@Override
 	public void onStart()
 	{
 		requestServerNaming();
 		
-		new TaskLater(25)
+		new TaskLater(50)
 		{
+			@Override
 			public void run()
 			{
 				Phantom.splash("", "", "", "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom());
@@ -212,6 +216,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		
 		new TaskLater(0)
 		{
+			@Override
 			public void run()
 			{
 				state = ServerState.RUNNING;
@@ -257,9 +262,10 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		w("> " + C.AQUA + "Testing Internet Connection...");
 		new AsyncTask<String>(new Callback<String>()
 		{
+			@Override
 			public void run()
 			{
-				DMS.this.address = get();
+				address = get();
 				
 				if(get() == null)
 				{
@@ -277,6 +283,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 			}
 		})
 		{
+			@Override
 			public String execute()
 			{
 				try
