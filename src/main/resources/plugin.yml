@@ -5,8 +5,6 @@ description: ${project.description}
 author: cyberpwn
 authors: [cyberpwn]
 depend: [ProtocolLib, PlaceholderAPI, Citizens, FastAsyncWorldEdit, WorldEdit]
-softdepend: [WorldBorder, Essentials, Vault, WorldGuard, Votifier]
-loadbefore: [Factions, SilkSpawners, GlacialNote, NoCheatPlus, PlugMan]
 website: http://phantomapi.org/
 load: POSTWORLD
 database: false
