@@ -14,6 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
@@ -219,7 +220,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
-		buildSaltpile();
+		
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				buildSaltpile();
+			}
+		};
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
@@ -440,15 +449,22 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	 */
 	public void saveEnvironment()
 	{
-		try
+		new A()
 		{
-			new JSONDataOutput().save(environment, envFile);
-		}
-		
-		catch(IOException e)
-		{
-			ExceptionUtil.print(e);
-		}
+			@Override
+			public void async()
+			{
+				try
+				{
+					new JSONDataOutput().save(environment, envFile);
+				}
+				
+				catch(IOException e)
+				{
+					ExceptionUtil.print(e);
+				}
+			}
+		};
 	}
 	
 	/**
@@ -1051,9 +1067,29 @@ public class Phantom extends PhantomPlugin implements TagProvider
 							}
 						}
 						
-						mb.message(sender, C.GRAY + "Highest: " + C.WHITE + ccc.getClass().getSimpleName() + "(" + F.nsMs((long) highest, 4) + "ms)");
-						sender.sendMessage(getChatTag() + C.GRAY + "Status: " + C.WHITE + status().paste() + ".js");
-						sender.sendMessage(getChatTag() + C.GRAY + "Network: " + C.WHITE + getBungeeController().get().paste() + ".js");
+						double hh = highest;
+						Controllable ccx = ccc;
+						
+						new A()
+						{
+							String a = status().paste() + ".js";
+							String b = getBungeeController().get().paste() + ".js";
+							
+							@Override
+							public void async()
+							{
+								new S()
+								{
+									@Override
+									public void sync()
+									{
+										mb.message(sender, C.GRAY + "Highest: " + C.WHITE + ccx.getClass().getSimpleName() + "(" + F.nsMs((long) hh, 4) + "ms)");
+										sender.sendMessage(getChatTag() + C.GRAY + "Status: " + C.WHITE + a);
+										sender.sendMessage(getChatTag() + C.GRAY + "Network: " + C.WHITE + b);
+									}
+								};
+							}
+						};
 					}
 					
 					else if(args[0].equalsIgnoreCase("network") || args[0].equalsIgnoreCase("n"))
