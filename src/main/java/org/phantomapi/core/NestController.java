@@ -18,9 +18,11 @@ import org.phantomapi.event.NestChunkLoadEvent;
 import org.phantomapi.event.NestChunkUnloadEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.lang.GChunk;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.nest.NestScrub;
 import org.phantomapi.nest.NestUtil;
 import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
@@ -44,13 +46,15 @@ public class NestController extends Controller implements Monitorable, Probe
 {
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
+	private GList<NestScrub> scrubs;
 	
 	public NestController(Controllable parentController)
 	{
 		super(parentController);
 		
-		this.chunks = new GMap<Chunk, NestedChunk>();
-		this.loading = new GSet<Chunk>();
+		chunks = new GMap<Chunk, NestedChunk>();
+		loading = new GSet<Chunk>();
+		scrubs = new GList<NestScrub>();
 	}
 	
 	@Override
@@ -74,8 +78,10 @@ public class NestController extends Controller implements Monitorable, Probe
 						{
 							loading.remove(i);
 							chunks.put(i, nc);
+							
 							new TaskLater(1)
 							{
+								@Override
 								public void run()
 								{
 									callEvent(new NestChunkLoadEvent(chunks.get(i)));
@@ -151,7 +157,7 @@ public class NestController extends Controller implements Monitorable, Probe
 	@Override
 	public void onTick()
 	{
-
+		
 	}
 	
 	public NestedChunk get(Chunk c)
@@ -189,6 +195,7 @@ public class NestController extends Controller implements Monitorable, Probe
 									{
 										loading.remove(i);
 										chunks.put(i, nc);
+										scrub(chunks.get(i));
 										callEvent(new NestChunkLoadEvent(chunks.get(i)));
 									}
 								};
@@ -210,6 +217,38 @@ public class NestController extends Controller implements Monitorable, Probe
 				}
 			}
 		};
+	}
+	
+	public void scrub(NestedChunk c)
+	{
+		for(NestScrub j : scrubs)
+		{
+			try
+			{
+				j.onScan(c);
+			}
+			
+			catch(Exception e)
+			{
+				ExceptionUtil.print(e);
+			}
+		}
+		
+		for(GLocation i : c.getBlocks().k())
+		{
+			for(NestScrub j : scrubs)
+			{
+				try
+				{
+					j.onScan(c.getBlocks().get(i));
+				}
+				
+				catch(Exception e)
+				{
+					ExceptionUtil.print(e);
+				}
+			}
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -314,5 +353,15 @@ public class NestController extends Controller implements Monitorable, Probe
 		}
 		
 		return probeSet;
+	}
+	
+	public void registerScrub(NestScrub i)
+	{
+		scrubs.add(i);
+	}
+	
+	public void unregisterScrub(NestScrub i)
+	{
+		scrubs.remove(i);
 	}
 }
