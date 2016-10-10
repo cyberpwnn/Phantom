@@ -13,7 +13,8 @@ public abstract class A
 	public static int threads = 0;
 	
 	/**
-	 * Create a fast async execution. Must implement the async() method (abstract)
+	 * Create a fast async execution. Must implement the async() method
+	 * (abstract)
 	 */
 	public A()
 	{
@@ -21,7 +22,6 @@ public abstract class A
 		if(Phantom.isAsync())
 		{
 			async();
-			
 		}
 		
 		else
