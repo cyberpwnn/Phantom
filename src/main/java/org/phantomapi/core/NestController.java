@@ -84,6 +84,11 @@ public class NestController extends Controller implements Monitorable, Probe
 								@Override
 								public void run()
 								{
+									if(chunks.get(i) == null)
+									{
+										return;
+									}
+									
 									callEvent(new NestChunkLoadEvent(chunks.get(i)));
 								}
 							};
@@ -195,6 +200,12 @@ public class NestController extends Controller implements Monitorable, Probe
 									{
 										loading.remove(i);
 										chunks.put(i, nc);
+										
+										if(chunks.get(i) == null)
+										{
+											return;
+										}
+										
 										scrub(chunks.get(i));
 										callEvent(new NestChunkLoadEvent(chunks.get(i)));
 									}
