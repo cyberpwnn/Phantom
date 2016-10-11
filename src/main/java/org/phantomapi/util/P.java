@@ -16,13 +16,58 @@ import org.phantomapi.world.Shape;
 public class P
 {
 	/**
+	 * Get total experience
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the total xp
+	 */
+	public static int getTotalExperience(Player p)
+	{
+		try
+		{
+			Class<?> sef = Class.forName("com.earth2me.essentials.craftbukkit.SetExpFix");
+			return (int) sef.getMethod("getTotalExperience", Player.class).invoke(null, p);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * Set total experience
+	 * 
+	 * @param p
+	 *            the player
+	 * @param xp
+	 *            the xp
+	 */
+	public static void setTotalExperience(Player p, int xp)
+	{
+		try
+		{
+			Class<?> sef = Class.forName("com.earth2me.essentials.craftbukkit.SetExpFix");
+			sef.getMethod("setTotalExperience", Player.class, int.class).invoke(null, p, xp);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+	}
+	
+	/**
 	 * Can you find a player with the search?
 	 * 
 	 * @param search
 	 *            the search
 	 * @return true if a player can be found
 	 */
-	public boolean canFindPlayer(String search)
+	public static boolean canFindPlayer(String search)
 	{
 		return findPlayer(search) == null ? false : true;
 	}
@@ -34,7 +79,7 @@ public class P
 	 *            the search
 	 * @return the player or null
 	 */
-	public Player findPlayer(String search)
+	public static Player findPlayer(String search)
 	{
 		for(Player i : onlinePlayers())
 		{
