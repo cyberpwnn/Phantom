@@ -149,14 +149,7 @@ public class NestController extends Controller implements Monitorable, Probe
 			}
 		}
 		
-		new TaskLater()
-		{
-			@Override
-			public void run()
-			{
-				Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
-			}
-		};
+		Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
 	}
 	
 	@Override
