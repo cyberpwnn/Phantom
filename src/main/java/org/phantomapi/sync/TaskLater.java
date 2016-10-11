@@ -1,13 +1,15 @@
 package org.phantomapi.sync;
 
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.phantomapi.Phantom;
 import org.phantomapi.construct.Controllable;
+import org.phantomapi.util.D;
+import org.phantomapi.util.ExceptionUtil;
 
 /**
  * Fast access to the scheduler
  * 
  * @author cyberpwn
- *
  */
 public abstract class TaskLater implements Runnable
 {
@@ -22,9 +24,33 @@ public abstract class TaskLater implements Runnable
 	 */
 	public TaskLater(Controllable pl)
 	{
-		this.pl = pl;
-		pl.getPlugin().scheduleSyncTask(0, this);
-		taskx++;
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				TaskLater.this.pl = pl;
+				
+				try
+				{
+					pl.getPlugin().scheduleSyncTask(0, TaskLater.this);
+				}
+				
+				catch(IllegalPluginAccessException e)
+				{
+					new D("Task").f("Could not create plugin. It's disabled.");
+					ExceptionUtil.print(e);
+				}
+				
+				catch(Exception e)
+				{
+					new D("Exception: " + e.getClass().getSimpleName());
+					ExceptionUtil.print(e);
+				}
+				
+				taskx++;
+			}
+		};
 	}
 	
 	/**
@@ -32,9 +58,33 @@ public abstract class TaskLater implements Runnable
 	 */
 	public TaskLater()
 	{
-		this.pl = Phantom.instance();
-		pl.getPlugin().scheduleSyncTask(0, this);
-		taskx++;
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				pl = Phantom.instance();
+				
+				try
+				{
+					pl.getPlugin().scheduleSyncTask(0, TaskLater.this);
+				}
+				
+				catch(IllegalPluginAccessException e)
+				{
+					new D("Task").f("Could not create plugin. It's disabled.");
+					ExceptionUtil.print(e);
+				}
+				
+				catch(Exception e)
+				{
+					new D("Exception: " + e.getClass().getSimpleName());
+					ExceptionUtil.print(e);
+				}
+				
+				taskx++;
+			}
+		};
 	}
 	
 	/**
@@ -45,9 +95,33 @@ public abstract class TaskLater implements Runnable
 	 */
 	public TaskLater(Integer delay)
 	{
-		this.pl = Phantom.instance();
-		pl.getPlugin().scheduleSyncTask(delay, this);
-		taskx++;
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				pl = Phantom.instance();
+				
+				try
+				{
+					pl.getPlugin().scheduleSyncTask(delay, TaskLater.this);
+				}
+				
+				catch(IllegalPluginAccessException e)
+				{
+					new D("Task").f("Could not create plugin. It's disabled.");
+					ExceptionUtil.print(e);
+				}
+				
+				catch(Exception e)
+				{
+					new D("Exception: " + e.getClass().getSimpleName());
+					ExceptionUtil.print(e);
+				}
+				
+				taskx++;
+			}
+		};
 	}
 	
 	@Override
