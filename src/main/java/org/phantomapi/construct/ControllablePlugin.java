@@ -15,6 +15,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.network.Network;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
@@ -252,7 +253,6 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 				@Override
 				public void onStop(long nsTime, double msTime)
 				{
-					o("Started in " + F.f(msTime, 2) + "ms");
 					Phantom.sm += msTime;
 				}
 			};
@@ -264,27 +264,34 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 			onStart();
 			
-			task = new Task(this, 0)
+			new TaskLater(1)
 			{
 				@Override
 				public void run()
 				{
-					Timer t = new Timer();
-					t.start();
-					
-					for(Controllable i : liveTimings.k())
+					task = new Task(ControllablePlugin.this, 0)
 					{
-						liveTimings.put(i, liveTimings.get(i) - 1);
-						
-						if(liveTimings.get(i) <= 0)
+						@Override
+						public void run()
 						{
-							i.tick();
-							liveTimings.put(i, timings.get(i));
+							Timer t = new Timer();
+							t.start();
+							
+							for(Controllable i : liveTimings.k())
+							{
+								liveTimings.put(i, liveTimings.get(i) - 1);
+								
+								if(liveTimings.get(i) <= 0)
+								{
+									i.tick();
+									liveTimings.put(i, timings.get(i));
+								}
+							}
+							
+							t.stop();
+							time.put(t.getTime());
 						}
-					}
-					
-					t.stop();
-					time.put(t.getTime());
+					};
 				}
 			};
 			
