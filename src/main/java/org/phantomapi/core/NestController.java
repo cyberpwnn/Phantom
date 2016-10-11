@@ -290,6 +290,9 @@ public class NestController extends Controller implements Monitorable, Probe
 			return;
 		}
 		
+		callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
+		chunks.remove(chunk);
+		
 		new A()
 		{
 			@Override
@@ -304,16 +307,6 @@ public class NestController extends Controller implements Monitorable, Probe
 					}
 					
 					Serializer.serializeToFile(c, file);
-					
-					new S()
-					{
-						@Override
-						public void sync()
-						{
-							callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
-							chunks.remove(chunk);
-						}
-					};
 				}
 				
 				catch(IOException ex)
