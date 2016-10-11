@@ -1,10 +1,15 @@
 package org.phantomapi.phast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import javax.script.ScriptException;
+import org.bukkit.Bukkit;
 import org.phantomapi.Phantom;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.U;
 
 /**
  * Phast evaluator
@@ -71,6 +76,7 @@ public class Phast
 			@Override
 			public void run()
 			{
+				d[0] = 0;
 				String i = im.pop();
 				String name = i;
 				GList<String> args = new GList<String>();
@@ -89,7 +95,44 @@ public class Phast
 						if(name.equalsIgnoreCase("wait") && args.size() == 1)
 						{
 							Integer wa = Integer.valueOf(args.get(0));
-							d[0] += wa;
+							d[0] = wa;
+						}
+						
+						if(name.equalsIgnoreCase("reload") || name.equalsIgnoreCase("thrash"))
+						{
+							File f = new File(new File(Phantom.instance().getDataFolder(), "scripts"), "resume.txt");
+							
+							if(f.exists())
+							{
+								f.delete();
+							}
+							
+							f.createNewFile();
+							PrintWriter bw = new PrintWriter(new FileWriter(f, false));
+							
+							for(String j : im)
+							{
+								bw.println(j + ";");
+							}
+							
+							bw.close();
+							
+							File s = new File(Phantom.instance().getDataFolder(), "initial.txt");
+							PrintWriter bwf = new PrintWriter(new FileWriter(s, true));
+							bwf.println("resume.txt");
+							bwf.close();
+						}
+						
+						if(name.equalsIgnoreCase("reset"))
+						{
+							Bukkit.reload();
+							return;
+						}
+						
+						if(name.equalsIgnoreCase("thrash"))
+						{
+							U.thrash();
+							return;
 						}
 					}
 					
