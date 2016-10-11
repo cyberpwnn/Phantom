@@ -37,10 +37,10 @@ public class ConfigurationBackupController extends ConfigurableController
 	{
 		super(parentController, "backup-manager");
 		
-		this.queue = new GMap<File, DataCluster>();
-		this.scannable = new GList<File>();
-		this.k = 60;
-		this.store = new GMap<Configurable, String>();
+		queue = new GMap<File, DataCluster>();
+		scannable = new GList<File>();
+		k = 60;
+		store = new GMap<Configurable, String>();
 		
 		running = false;
 	}
@@ -57,116 +57,125 @@ public class ConfigurationBackupController extends ConfigurableController
 		
 	}
 	
+	@Override
 	public void onTick()
 	{
 		k++;
 		
-		new TaskLater(2)
+		try
 		{
-			@Override
-			public void run()
+			new TaskLater(2)
 			{
-				if(!running && !queue.isEmpty())
+				@Override
+				public void run()
 				{
-					running = true;
-					GMap<File, DataCluster> asyncQueue = queue.copy();
-					queue.clear();
-					
-					new A()
+					if(!running && !queue.isEmpty())
 					{
-						@Override
-						public void async()
+						running = true;
+						GMap<File, DataCluster> asyncQueue = queue.copy();
+						queue.clear();
+						
+						new A()
 						{
-							int processed = 0;
-							int failed = 0;
-							
-							for(File i : asyncQueue.k())
+							@Override
+							public void async()
 							{
-								if(asyncQueue.get(i).size() == 0)
-								{
-									failed++;
-									w("Not backing up " + i.getPath() + " cluster is empty.");
-									continue;
-								}
+								int processed = 0;
+								int failed = 0;
 								
-								try
+								for(File i : asyncQueue.k())
 								{
-									File f = new File(i, "" + F.stamp() + ".yml");
-									scannable.add(i);
-									new YAMLDataOutput().save(asyncQueue.get(i), f);
-									processed++;
-								}
-								
-								catch(IOException e)
-								{
-									failed++;
-								}
-							}
-							
-							int p = processed;
-							int f = failed;
-							
-							v("Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
-							
-							new S()
-							{
-								@Override
-								public void sync()
-								{
-									running = false;
-								}
-							};
-						}
-					};
-				}
-				
-				if(!running && queue.isEmpty() && !scannable.isEmpty() && k > 60)
-				{
-					k = 0;
-					running = true;
-					
-					new A()
-					{
-						@Override
-						public void async()
-						{
-							int del = 0;
-							
-							for(File i : scannable)
-							{
-								if(i.exists() && i.isDirectory())
-								{
-									for(File j : i.listFiles())
+									if(asyncQueue.get(i).size() == 0)
 									{
-										if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
+										failed++;
+										w("Not backing up " + i.getPath() + " cluster is empty.");
+										continue;
+									}
+									
+									try
+									{
+										File f = new File(i, "" + F.stamp() + ".yml");
+										scannable.add(i);
+										new YAMLDataOutput().save(asyncQueue.get(i), f);
+										processed++;
+									}
+									
+									catch(IOException e)
+									{
+										failed++;
+									}
+								}
+								
+								int p = processed;
+								int f = failed;
+								
+								v("Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
+								
+								new S()
+								{
+									@Override
+									public void sync()
+									{
+										running = false;
+									}
+								};
+							}
+						};
+					}
+					
+					if(!running && queue.isEmpty() && !scannable.isEmpty() && k > 60)
+					{
+						k = 0;
+						running = true;
+						
+						new A()
+						{
+							@Override
+							public void async()
+							{
+								int del = 0;
+								
+								for(File i : scannable)
+								{
+									if(i.exists() && i.isDirectory())
+									{
+										for(File j : i.listFiles())
 										{
-											if(j.delete())
+											if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
 											{
-												del++;
+												if(j.delete())
+												{
+													del++;
+												}
 											}
 										}
 									}
 								}
-							}
-							
-							if(del > 0)
-							{
-								w("Cleaned " + del + " old backups.");
-							}
-							
-							new S()
-							{
-								@Override
-								public void sync()
+								
+								if(del > 0)
 								{
-									running = false;
+									w("Cleaned " + del + " old backups.");
 								}
-							};
-						}
-					};
+								
+								new S()
+								{
+									@Override
+									public void sync()
+									{
+										running = false;
+									}
+								};
+							}
+						};
+					}
 				}
-			}
-		};
+			};
+		}
+		
+		catch(Exception e)
+		{
+			f("INVALID STATE");
+		}
 	}
 	
 	public void handle(Controller c, Configurable cc, String cat)
@@ -209,12 +218,12 @@ public class ConfigurationBackupController extends ConfigurableController
 		{
 			if(store.get(c).equals("null"))
 			{
-				((Controller) c).saveCluster(((Configurable) c), store.get(c));
+				((Controller) c).saveCluster((Configurable) c, store.get(c));
 			}
 			
 			else
 			{
-				((Controller) c).saveCluster(((Configurable) c));
+				((Controller) c).saveCluster((Configurable) c);
 			}
 		}
 	}
