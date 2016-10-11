@@ -16,7 +16,6 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
-import org.phantomapi.sync.ExecutiveRunnable;
 import org.phantomapi.sync.ExecutiveTask;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
@@ -65,11 +64,11 @@ public class DevelopmentController extends Controller implements Configurable, M
 	{
 		super(parentController);
 		
-		this.cc = new DataCluster();
-		this.modifications = new GMap<Plugin, Long>();
-		this.sizes = new GMap<Plugin, Long>();
-		this.task = null;
-		this.filePlugins = new GMap<String, String>();
+		cc = new DataCluster();
+		modifications = new GMap<Plugin, Long>();
+		sizes = new GMap<Plugin, Long>();
+		task = null;
+		filePlugins = new GMap<String, String>();
 		
 		new TaskLater(1)
 		{
@@ -83,6 +82,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 		};
 	}
 	
+	@Override
 	public void onTick()
 	{
 		if(!(reloadOnChanged || reloadEverything))
@@ -92,87 +92,76 @@ public class DevelopmentController extends Controller implements Configurable, M
 		
 		if(task == null || !task.isRunning())
 		{
-			task = new ExecutiveTask<Plugin>(new GList<Plugin>(getPlugin().getServer().getPluginManager().getPlugins()).iterator(new ExecutiveRunnable<Plugin>()
+			for(Plugin i : getPlugin().getServer().getPluginManager().getPlugins())
 			{
-				@Override
-				public void run()
+				try
 				{
-					Plugin i = next();
-										
-					try
+					File file = new File(getPlugin().getDataFolder().getParentFile(), getPluginFile(i.getName()));
+					
+					if(!modifications.containsKey(i))
 					{
-						File file = new File(getPlugin().getDataFolder().getParentFile(), getPluginFile(i.getName()));
+						modifications.put(i, file.lastModified());
+					}
+					
+					if(!sizes.containsKey(i))
+					{
+						sizes.put(i, file.length());
+					}
+					
+					if(modifications.get(i) != file.lastModified() || sizes.get(i) != file.length())
+					{
+						modifications.put(i, file.lastModified());
+						sizes.put(i, file.length());
+						s("File Modified");
 						
-						if(!modifications.containsKey(i))
+						if(reloadOnChanged)
 						{
-							modifications.put(i, file.lastModified());
-						}
-						
-						if(!sizes.containsKey(i))
-						{
-							sizes.put(i, file.length());
-						}
-						
-						if(modifications.get(i) != file.lastModified() || sizes.get(i) != file.length())
-						{
-							modifications.put(i, file.lastModified());
-							sizes.put(i, file.length());
-							
-							if(reloadOnChanged)
+							if(i.getName().equalsIgnoreCase("Phantom"))
 							{
-								if(i.getName().equalsIgnoreCase("Phantom"))
-								{
-									f("Cannot Reload Phantom Cleanly.");
-									Bukkit.reload();
-									
-									return;
-								}
+								f("Cannot Reload Phantom Cleanly.");
+								Bukkit.reload();
 								
-								MessageBuilder mb = new MessageBuilder(Phantom.instance());
+								return;
+							}
+							
+							MessageBuilder mb = new MessageBuilder(Phantom.instance());
+							
+							for(Player p : Phantom.instance().onlinePlayers())
+							{
+								mb.message(p, C.GRAY + "Hotload Detected: " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
+							}
+							
+							if(reloadEverything)
+							{
+								s("Reloading All Plugins");
+								
+								Bukkit.reload();
 								
 								for(Player p : Phantom.instance().onlinePlayers())
 								{
-									mb.message(p, C.GRAY + "Hotload Detected: " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
+									mb.message(p, C.GRAY + "Reloaded All Plugins");
 								}
+							}
+							
+							else
+							{
+								s("Reloading " + C.LIGHT_PURPLE + i.getName());
+								PluginUtil.reload(i);
 								
-								if(reloadEverything)
+								for(Player p : Phantom.instance().onlinePlayers())
 								{
-									s("Reloading All Plugins");
-									
-									Bukkit.reload();
-									
-									for(Player p : Phantom.instance().onlinePlayers())
-									{
-										mb.message(p, C.GRAY + "Reloaded All Plugins");
-									}
-								}
-								
-								else
-								{
-									s("Reloading " + C.LIGHT_PURPLE + i.getName());
-									PluginUtil.reload(i);
-									
-									for(Player p : Phantom.instance().onlinePlayers())
-									{
-										mb.message(p, C.GRAY + "Reloaded " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
-									}
+									mb.message(p, C.GRAY + "Reloaded " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
 								}
 							}
 						}
 					}
-					
-					catch(Exception e)
-					{
-						
-					}
 				}
-			}), 0.01, 0, new Runnable()
-			{
-				public void run()
+				
+				catch(Exception e)
 				{
 					
 				}
-			});
+			}
 		}
 	}
 	
@@ -245,7 +234,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 	{
 		
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
