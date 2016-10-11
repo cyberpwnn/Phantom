@@ -49,6 +49,7 @@ import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SlateController;
+import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
@@ -97,6 +98,7 @@ import net.milkbowl.vault.economy.Economy;
  * 
  * @author cyberpwn
  */
+@SyncStart
 public class Phantom extends PhantomPlugin implements TagProvider
 {
 	private static Long thread;
@@ -142,6 +144,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void enable()
 	{
+		thread = Thread.currentThread().getId();
 		nsx = M.ns();
 		instance = this;
 		syncStart = false;
@@ -190,7 +193,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx = new GList<String>();
 		nestController = new NestController(this);
 		blockCheckController = new BlockCheckController(this);
-		thread = Thread.currentThread().getId();
 		saltpile = new SpeechMesh("saltpile");
 		new PlaceholderHooker(this, "phantom").hook();
 		
