@@ -102,15 +102,6 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				Multiblock mb = instances.get(i);
 				instances.remove(i);
 				Chunks.unload(mb.getChunks());
-				
-				new TaskLater(5)
-				{
-					@Override
-					public void run()
-					{
-						Chunks.unload(mb.getChunks());
-					}
-				};
 			}
 			
 			catch(IOException ex)
