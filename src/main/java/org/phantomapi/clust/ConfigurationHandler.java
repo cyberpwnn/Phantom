@@ -270,12 +270,27 @@ public class ConfigurationHandler
 						{
 							new YAMLDataOutput().save(c.getConfiguration(), config);
 							
-							new TaskLater(3)
+							new S()
 							{
 								@Override
-								public void run()
+								public void sync()
 								{
-									Phantom.instance().getDms().getHotLoadController().registerHotLoad(config, c);
+									try
+									{
+										new TaskLater(3)
+										{
+											@Override
+											public void run()
+											{
+												Phantom.instance().getDms().getHotLoadController().registerHotLoad(config, c);
+											}
+										};
+									}
+									
+									catch(Exception e)
+									{
+										new D("remote").f("FAILED TO CALL FILE. STATE CHANGED");
+									}
 								}
 							};
 						}
@@ -287,6 +302,7 @@ public class ConfigurationHandler
 					}
 				};
 			}
+			
 		};
 	}
 	
