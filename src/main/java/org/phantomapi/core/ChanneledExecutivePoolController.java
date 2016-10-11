@@ -18,7 +18,6 @@ import org.phantomapi.util.F;
  * through channels. No need to run your own tasks for them.
  * 
  * @author cyberpwn
- *
  */
 @Ticked(0)
 public class ChanneledExecutivePoolController extends Controller implements Monitorable
@@ -36,6 +35,7 @@ public class ChanneledExecutivePoolController extends Controller implements Moni
 		pools = new GMap<String, ExecutivePool>();
 	}
 	
+	@Override
 	public void onTick()
 	{
 		D.flush();
@@ -48,7 +48,6 @@ public class ChanneledExecutivePoolController extends Controller implements Moni
 				{
 					pools.get(i).cancel();
 					pools.remove(i);
-					w("Closed Execution Stream: " + C.RED + i);
 				}
 			}
 		}
@@ -66,25 +65,24 @@ public class ChanneledExecutivePoolController extends Controller implements Moni
 	{
 		if(!pools.containsKey(channel))
 		{
-			s("Opened Execution Stream: " + C.AQUA + channel);
 			pools.put(channel, new ExecutivePool((double) 1, 0));
 		}
 		
 		pools.get(channel).add(it);
 	}
-
+	
 	@Override
 	public void onStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
 		
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
