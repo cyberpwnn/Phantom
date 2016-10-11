@@ -30,6 +30,7 @@ import org.phantomapi.nest.Nest;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
+import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import net.minecraft.server.v1_8_R3.Material;
@@ -50,9 +51,9 @@ public class MultiblockRegistryController extends Controller implements Monitora
 	{
 		super(parentController);
 		
-		this.structures = new GMap<String, MultiblockStructure>();
-		this.instances = new GMap<Integer, Multiblock>();
-		this.instanceReference = new GMap<Chunk, Integer>();
+		structures = new GMap<String, MultiblockStructure>();
+		instances = new GMap<Integer, Multiblock>();
+		instanceReference = new GMap<Chunk, Integer>();
 	}
 	
 	@Override
@@ -89,7 +90,6 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				MultiblockUnloadEvent mbu = new MultiblockUnloadEvent(instances.get(i), e.getWorld());
 				callEvent(mbu);
 				MultiblockUtils.save(instances.get(i));
-				instances.remove(i);
 				
 				for(Chunk j : instanceReference.k())
 				{
@@ -98,6 +98,19 @@ public class MultiblockRegistryController extends Controller implements Monitora
 						instanceReference.remove(j);
 					}
 				}
+				
+				Multiblock mb = instances.get(i);
+				instances.remove(i);
+				Chunks.unload(mb.getChunks());
+				
+				new TaskLater(5)
+				{
+					@Override
+					public void run()
+					{
+						Chunks.unload(mb.getChunks());
+					}
+				};
 			}
 			
 			catch(IOException ex)
@@ -152,10 +165,12 @@ public class MultiblockRegistryController extends Controller implements Monitora
 							
 							for(Chunk j : mb.getChunks())
 							{
-								if(j.isLoaded())
+								if(!j.isLoaded())
 								{
-									instanceReference.put(j, i);
+									j.load();
 								}
+								
+								instanceReference.put(j, i);
 							}
 							
 							MultiblockLoadEvent mbl = new MultiblockLoadEvent(mb, e.getWorld());
@@ -246,7 +261,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				return;
 			}
 			
-			if(((e.getItem() == null || e.getItem().getType().equals(Material.AIR))) || e.getPlayer().isSneaking())
+			if(e.getItem() == null || e.getItem().getType().equals(Material.AIR) || e.getPlayer().isSneaking())
 			{
 				for(Integer i : instances.k())
 				{
