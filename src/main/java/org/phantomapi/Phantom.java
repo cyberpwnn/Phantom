@@ -1993,6 +1993,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Im out");
 		msgx.add("Piss off");
 		msgx.add("Well hello there dan from the future, fuck you.");
+		msgx.add("Welcome to the shadows");
+		msgx.add("The shadows win");
+		msgx.add("Light is voided shadows");
+		msgx.add("The Shadow of Bukkit");
+		msgx.add("A Shadow");
+		msgx.add("Made of shadows");
 		
 		msgx.add(msg);
 		
