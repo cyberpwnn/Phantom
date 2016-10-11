@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
@@ -17,6 +18,7 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.ExecutiveTask;
+import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
@@ -118,8 +120,21 @@ public class DevelopmentController extends Controller implements Configurable, M
 						{
 							if(i.getName().equalsIgnoreCase("Phantom"))
 							{
-								f("Cannot Reload Phantom Cleanly.");
-								Bukkit.reload();
+								new A()
+								{
+									@Override
+									public void async()
+									{
+										new S()
+										{
+											@Override
+											public void sync()
+											{
+												Bukkit.reload();
+											}
+										};
+									}
+								};
 								
 								return;
 							}
@@ -135,7 +150,21 @@ public class DevelopmentController extends Controller implements Configurable, M
 							{
 								s("Reloading All Plugins");
 								
-								Bukkit.reload();
+								new A()
+								{
+									@Override
+									public void async()
+									{
+										new S()
+										{
+											@Override
+											public void sync()
+											{
+												Bukkit.reload();
+											}
+										};
+									}
+								};
 								
 								for(Player p : Phantom.instance().onlinePlayers())
 								{
