@@ -64,112 +64,105 @@ public class ConfigurationBackupController extends ConfigurableController
 		
 		try
 		{
-			new TaskLater(2)
+			if(!running && !queue.isEmpty())
 			{
-				@Override
-				public void run()
+				running = true;
+				GMap<File, DataCluster> asyncQueue = queue.copy();
+				queue.clear();
+				
+				new A()
 				{
-					if(!running && !queue.isEmpty())
+					@Override
+					public void async()
 					{
-						running = true;
-						GMap<File, DataCluster> asyncQueue = queue.copy();
-						queue.clear();
+						int processed = 0;
+						int failed = 0;
 						
-						new A()
+						for(File i : asyncQueue.k())
+						{
+							if(asyncQueue.get(i).size() == 0)
+							{
+								failed++;
+								w("Not backing up " + i.getPath() + " cluster is empty.");
+								continue;
+							}
+							
+							try
+							{
+								File f = new File(i, "" + F.stamp() + ".yml");
+								scannable.add(i);
+								new YAMLDataOutput().save(asyncQueue.get(i), f);
+								processed++;
+							}
+							
+							catch(IOException e)
+							{
+								failed++;
+							}
+						}
+						
+						int p = processed;
+						int f = failed;
+						
+						v("Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
+						
+						new S()
 						{
 							@Override
-							public void async()
+							public void sync()
 							{
-								int processed = 0;
-								int failed = 0;
-								
-								for(File i : asyncQueue.k())
-								{
-									if(asyncQueue.get(i).size() == 0)
-									{
-										failed++;
-										w("Not backing up " + i.getPath() + " cluster is empty.");
-										continue;
-									}
-									
-									try
-									{
-										File f = new File(i, "" + F.stamp() + ".yml");
-										scannable.add(i);
-										new YAMLDataOutput().save(asyncQueue.get(i), f);
-										processed++;
-									}
-									
-									catch(IOException e)
-									{
-										failed++;
-									}
-								}
-								
-								int p = processed;
-								int f = failed;
-								
-								v("Backed up " + F.f(p) + " file(s) with " + F.f(f) + " failures.");
-								
-								new S()
-								{
-									@Override
-									public void sync()
-									{
-										running = false;
-									}
-								};
+								running = false;
 							}
 						};
 					}
-					
-					if(!running && queue.isEmpty() && !scannable.isEmpty() && k > 60)
+				};
+			}
+			
+			if(!running && queue.isEmpty() && !scannable.isEmpty() && k > 60)
+			{
+				k = 0;
+				running = true;
+				
+				new A()
+				{
+					@Override
+					public void async()
 					{
-						k = 0;
-						running = true;
+						int del = 0;
 						
-						new A()
+						for(File i : scannable)
 						{
-							@Override
-							public void async()
+							if(i.exists() && i.isDirectory())
 							{
-								int del = 0;
-								
-								for(File i : scannable)
+								for(File j : i.listFiles())
 								{
-									if(i.exists() && i.isDirectory())
+									if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
 									{
-										for(File j : i.listFiles())
+										if(j.delete())
 										{
-											if(new GTime(M.ms() - j.lastModified()).getHours() > ttd && i.listFiles().length > 1)
-											{
-												if(j.delete())
-												{
-													del++;
-												}
-											}
+											del++;
 										}
 									}
 								}
-								
-								if(del > 0)
-								{
-									w("Cleaned " + del + " old backups.");
-								}
-								
-								new S()
-								{
-									@Override
-									public void sync()
-									{
-										running = false;
-									}
-								};
+							}
+						}
+						
+						if(del > 0)
+						{
+							w("Cleaned " + del + " old backups.");
+						}
+						
+						new S()
+						{
+							@Override
+							public void sync()
+							{
+								running = false;
 							}
 						};
 					}
-				}
-			};
+				};
+			}
 		}
 		
 		catch(Exception e)
