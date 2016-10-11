@@ -1,7 +1,10 @@
 package org.phantomapi.sync;
 
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.phantomapi.Phantom;
 import org.phantomapi.construct.Controllable;
+import org.phantomapi.util.D;
+import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.FinalInteger;
 
 /**
@@ -26,10 +29,33 @@ public abstract class Task implements Runnable
 	 */
 	public Task(Controllable pl, int interval)
 	{
-		taskx++;
-		this.pl = pl;
-		this.running = true;
-		this.task = new FinalInteger(pl.getPlugin().scheduleSyncRepeatingTask(0, interval, this));
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				taskx++;
+				Task.this.pl = pl;
+				running = true;
+				
+				try
+				{
+					task = new FinalInteger(pl.getPlugin().scheduleSyncRepeatingTask(0, interval, Task.this));
+				}
+				
+				catch(IllegalPluginAccessException e)
+				{
+					new D("Task").f("Could not create plugin. It's disabled.");
+					ExceptionUtil.print(e);
+				}
+				
+				catch(Exception e)
+				{
+					new D("Exception: " + e.getClass().getSimpleName());
+					ExceptionUtil.print(e);
+				}
+			}
+		};
 	}
 	
 	/**
@@ -53,29 +79,52 @@ public abstract class Task implements Runnable
 	 */
 	public Task(int interval, int intervals)
 	{
-		FinalInteger k = new FinalInteger(0);
-		this.task = new FinalInteger(-1);
-		this.running = true;
-		
-		new Task(interval)
+		new S()
 		{
 			@Override
-			public void run()
+			public void sync()
 			{
-				if(k.get() > intervals)
+				FinalInteger k = new FinalInteger(0);
+				try
 				{
-					cancel();
-					
-					return;
+					task = new FinalInteger(-1);
 				}
 				
-				Task.this.run();
-				k.add(1);
-				
-				if(!Task.this.running)
+				catch(IllegalPluginAccessException e)
 				{
-					cancel();
+					new D("Task").f("Could not create plugin. It's disabled.");
+					ExceptionUtil.print(e);
 				}
+				
+				catch(Exception e)
+				{
+					new D("Exception: " + e.getClass().getSimpleName());
+					ExceptionUtil.print(e);
+				}
+				
+				running = true;
+				
+				new Task(interval)
+				{
+					@Override
+					public void run()
+					{
+						if(k.get() > intervals)
+						{
+							cancel();
+							
+							return;
+						}
+						
+						Task.this.run();
+						k.add(1);
+						
+						if(!Task.this.running)
+						{
+							cancel();
+						}
+					}
+				};
 			}
 		};
 	}
