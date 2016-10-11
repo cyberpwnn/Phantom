@@ -1,12 +1,18 @@
 package org.phantomapi.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.script.ScriptException;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.command.CommandController;
 import org.phantomapi.command.CommandFilter;
 import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
+import org.phantomapi.command.PhantomSender;
 import org.phantomapi.lang.GList;
 import org.phantomapi.phast.Phast;
 import org.phantomapi.phast.PhastAlertNode;
@@ -14,6 +20,7 @@ import org.phantomapi.phast.PhastCNode;
 import org.phantomapi.phast.PhastCommand;
 import org.phantomapi.phast.PhastDisableNode;
 import org.phantomapi.phast.PhastEnableNode;
+import org.phantomapi.phast.PhastInstallNode;
 import org.phantomapi.phast.PhastLoadNode;
 import org.phantomapi.phast.PhastReloadNode;
 import org.phantomapi.phast.PhastResetNode;
@@ -21,6 +28,7 @@ import org.phantomapi.phast.PhastThrashNode;
 import org.phantomapi.phast.PhastTitleNode;
 import org.phantomapi.phast.PhastUnloadNode;
 import org.phantomapi.phast.PhastWaitNode;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.GBook;
 import org.phantomapi.util.C;
 
@@ -146,6 +154,147 @@ public class PhastController extends CommandController
 		registerPhast(new PhastTitleNode());
 		registerPhast(new PhastAlertNode());
 		registerPhast(new PhastWaitNode());
+		registerPhast(new PhastInstallNode());
+		
+		new TaskLater(20)
+		{
+			@Override
+			public void run()
+			{
+				File f = new File(getPlugin().getDataFolder(), "startup.txt");
+				File f2 = new File(getPlugin().getDataFolder(), "initial.txt");
+				File s = new File(getPlugin().getDataFolder(), "scripts");
+				
+				if(!s.exists())
+				{
+					s.mkdirs();
+				}
+				
+				if(!f.exists())
+				{
+					try
+					{
+						f.createNewFile();
+					}
+					
+					catch(IOException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+				if(!f2.exists())
+				{
+					try
+					{
+						f2.createNewFile();
+					}
+					
+					catch(IOException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+				try
+				{
+					BufferedReader bu = new BufferedReader(new FileReader(f));
+					String line;
+					GList<String> files = new GList<String>();
+					
+					while((line = bu.readLine()) != null)
+					{
+						files.add(line);
+					}
+					
+					bu.close();
+					
+					for(String i : files)
+					{
+						for(File j : new File(getPlugin().getDataFolder(), "scripts").listFiles())
+						{
+							if(j.getName().equals(i))
+							{
+								execute(j);
+								break;
+							}
+						}
+					}
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				try
+				{
+					BufferedReader bu = new BufferedReader(new FileReader(f2));
+					String line;
+					GList<String> files = new GList<String>();
+					
+					while((line = bu.readLine()) != null)
+					{
+						files.add(line);
+					}
+					
+					bu.close();
+					
+					for(String i : files)
+					{
+						for(File j : new File(getPlugin().getDataFolder(), "scripts").listFiles())
+						{
+							if(j.getName().equals(i))
+							{
+								execute(j);
+								break;
+							}
+						}
+					}
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				f2.delete();
+				
+				try
+				{
+					f2.createNewFile();
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	public void execute(File file)
+	{
+		try
+		{
+			BufferedReader bu = new BufferedReader(new FileReader(file));
+			String line;
+			String k = "";
+			
+			while((line = bu.readLine()) != null)
+			{
+				k = k + line;
+			}
+			
+			bu.close();
+			v("Executing Script" + file.getName());
+			Phast.evaluate(k, new PhantomSender(Bukkit.getConsoleSender()));
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
