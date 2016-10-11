@@ -225,7 +225,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 			timings.put(c, v);
 			liveTimings.put(c, v);
-			d.s("Tickable: " + ChatColor.LIGHT_PURPLE + c.toString() + ChatColor.YELLOW + " @" + F.f((20.0 / (double) v), 2) + " tps");
+			d.s("Tickable: " + ChatColor.LIGHT_PURPLE + c.toString() + ChatColor.YELLOW + " @" + F.f(20.0 / v, 2) + " tps");
 		}
 		
 		for(Controllable i : c.getControllers())
@@ -266,6 +266,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			
 			task = new Task(this, 0)
 			{
+				@Override
 				public void run()
 				{
 					Timer t = new Timer();
@@ -346,6 +347,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 							
 							task = new Task(ControllablePlugin.this, 0)
 							{
+								@Override
 								public void run()
 								{
 									Timer t = new Timer();
@@ -471,7 +473,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) c);
 		}
 		
-		Phantom.instance().getCommandRegistryController().unregister((Controllable) ControllablePlugin.this);
+		Phantom.instance().getCommandRegistryController().unregister(ControllablePlugin.this);
 	}
 	
 	@Override
