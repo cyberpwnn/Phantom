@@ -82,4 +82,12 @@ public interface Multiblock extends Serializable
 	 * Load all responsible chunks for holding this structure
 	 */
 	public void load();
+	
+	/**
+	 * Rechecks the multiblock to determine if it has broken or has changed
+	 * 
+	 * @return returns true if the multiblock is valid, returns false if it is
+	 *         not valid
+	 */
+	public boolean update();
 }
