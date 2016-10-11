@@ -14,6 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
@@ -81,6 +82,7 @@ import org.phantomapi.world.PhantomEditSession;
 import com.boydti.fawe.util.TaskManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import net.milkbowl.vault.economy.Economy;
 
 /**
  * The Phantom Plugin. Useful for many things such as<br />
@@ -101,6 +103,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private static Phantom instance;
 	public static double am = 0;
 	public static double sm = 0;
+	private Economy econ = null;
 	private static boolean syncStart;
 	private DataCluster environment;
 	private RegistryController registryController;
@@ -239,6 +242,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStart()
 	{
+		setupEconomy();
+		
 		try
 		{
 			new JSONDataInput().load(environment, envFile);
@@ -427,6 +432,25 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				sm += (double) (M.ns() - nsx) / 1000000;
 			}
 		};
+	}
+	
+	private boolean setupEconomy()
+	{
+		if(getPlugin().getServer().getPluginManager().getPlugin("Vault") == null)
+		{
+			return false;
+		}
+		
+		RegisteredServiceProvider<Economy> rsp = getPlugin().getServer().getServicesManager().getRegistration(Economy.class);
+		
+		if(rsp == null)
+		{
+			return false;
+		}
+		
+		econ = rsp.getProvider();
+		
+		return econ != null;
 	}
 	
 	@Override
@@ -1814,6 +1838,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public RegistryController getRegistryController()
 	{
 		return registryController;
+	}
+	
+	public Economy getEcon()
+	{
+		return econ;
 	}
 	
 	private void buildSaltpile()
