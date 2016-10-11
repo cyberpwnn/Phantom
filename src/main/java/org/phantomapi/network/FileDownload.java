@@ -47,15 +47,15 @@ public abstract class FileDownload
 	{
 		this.source = source;
 		this.destination = destination;
-		this.percent = -1;
-		this.downloading = false;
-		this.complete = false;
-		this.failed = false;
-		this.startTime = M.ms();
-		this.finishTime = M.ms() - 1000;
-		this.elapsedTime = 0;
-		this.remainingTime = 1;
-		this.remainingAverage = new Average(40);
+		percent = -1;
+		downloading = false;
+		complete = false;
+		failed = false;
+		startTime = M.ms();
+		finishTime = M.ms() - 1000;
+		elapsedTime = 0;
+		remainingTime = 1;
+		remainingAverage = new Average(4);
 	}
 	
 	/**
@@ -90,14 +90,14 @@ public abstract class FileDownload
 					{
 						out.write(data, 0, count);
 						sumCount += count;
-						bytesPerSecond = sumCount / ((double) M.ms() - (double) startTime) / 1000.0;
+						bytesPerSecond = sumCount / (((double) M.ms() - (double) startTime) / 1000.0);
 						elapsedTime = M.ms() - startTime;
 						downloadedSize = (long) sumCount;
 						
 						if(size > 0)
 						{
 							percent = sumCount / size;
-							remainingTime = (long) (((((double) (elapsedTime) / percent) - elapsedTime) + (double) (bytesPerSecond / (double) size) * 1000) / 2);
+							remainingTime = (long) ((elapsedTime / percent - elapsedTime + bytesPerSecond / size * 1000) / 2);
 							remainingAverage.put(remainingTime);
 						}
 					}
