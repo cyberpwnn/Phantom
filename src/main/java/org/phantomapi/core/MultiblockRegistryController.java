@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -35,7 +36,6 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
-import net.minecraft.server.v1_8_R3.Material;
 
 /**
  * Manages multiblock registries
