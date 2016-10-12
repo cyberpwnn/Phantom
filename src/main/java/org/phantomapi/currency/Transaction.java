@@ -27,6 +27,7 @@ public class Transaction
 		to = null;
 		amount = null;
 		this.currency = currency;
+		messager = new CurrencyDiff(currency);
 	}
 	
 	/**
@@ -121,12 +122,12 @@ public class Transaction
 	{
 		if(f > t)
 		{
-			messager.spent(p, f - t, t);
+			p.sendMessage(messager.spent(p, f - t, t));
 		}
 		
 		else
 		{
-			messager.earned(p, t - f, t);
+			p.sendMessage(messager.earned(p, t - f, t));
 		}
 	}
 	

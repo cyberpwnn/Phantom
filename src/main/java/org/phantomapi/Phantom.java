@@ -145,6 +145,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public void enable()
 	{
 		thread = Thread.currentThread().getId();
+		setupEconomy();
 		nsx = M.ns();
 		instance = this;
 		syncStart = false;
@@ -244,7 +245,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStart()
 	{
-		setupEconomy();
 		
 		try
 		{
