@@ -1,5 +1,6 @@
 package org.phantomapi.registry;
 
+import org.phantomapi.construct.Controllable;
 import org.phantomapi.lang.GSet;
 
 /**
@@ -7,38 +8,56 @@ import org.phantomapi.lang.GSet;
  *
  * @author cyberpwn
  */
-public interface Registrar
+public interface Registrar<T extends Registrant>
 {
 	/**
-	 * Returns the class this registrar is capable of registering
-	 *
-	 * @return
+	 * Get the registrar type
+	 * 
+	 * @return the registrar type
 	 */
-	public Class<? extends Registrant> getRegistrantClass();
-
+	public String getType();
+	
+	/**
+	 * Is the given object capable of being registered
+	 * 
+	 * @param o
+	 *            the object
+	 * @return true if it can be registered
+	 */
+	public boolean isValid(Controllable o);
+	
 	/**
 	 * Get all registrants
 	 *
 	 * @return the registrants
 	 */
-	public GSet<Registrant> getRegistrants();
-
+	public GSet<T> getRegistrants();
+	
 	/**
 	 * Register a registrant
 	 *
 	 * @param registrant
 	 *            the registrant
 	 */
-	public void register(Registrant registrant);
-
+	public void register(Controllable registrant);
+	
 	/**
 	 * Unregister the registrant
 	 *
 	 * @param registrant
 	 *            the registrant
 	 */
-	public void unregister(Registrant registrant);
-
+	public void unregister(Controllable registrant);
+	
+	/**
+	 * Is the given registrant registered?
+	 * 
+	 * @param registrant
+	 *            the registrant
+	 * @return true if it is
+	 */
+	public boolean isRegistered(Controllable registrant);
+	
 	/**
 	 * Unregister all registrants
 	 */
