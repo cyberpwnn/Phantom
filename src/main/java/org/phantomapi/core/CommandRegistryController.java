@@ -17,7 +17,6 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
-import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 
 /**
@@ -42,19 +41,13 @@ public class CommandRegistryController extends Controller implements Monitorable
 	
 	public void register(Controllable c)
 	{
-		new TaskLater()
+		for(Method i : c.getClass().getDeclaredMethods())
 		{
-			@Override
-			public void run()
-			{
-				for(Method i : c.getClass().getDeclaredMethods())
-				{
-					register(i);
-				}
-			}
-		};
+			register(i);
+		}
 	}
 	
+	@Override
 	public void unregister(Controllable c)
 	{
 		for(Method i : c.getClass().getDeclaredMethods())
@@ -125,17 +118,16 @@ public class CommandRegistryController extends Controller implements Monitorable
 		o("Registered Command: " + C.GREEN + listener.getDeclaringClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
 	}
 	
-
 	public void unregister(Method c)
 	{
 		for(String i : commandableEvents.k())
 		{
 			commandableEvents.get(i).remove(c);
 		}
-				
+		
 		o(C.RED + "Unregistered all commands for " + C.YELLOW + c.getDeclaringClass().getSimpleName() + "." + c.getName() + "()");
 	}
-
+	
 	public void unregister(CommandListener c)
 	{
 		for(String i : getRegistry().k())
@@ -175,7 +167,7 @@ public class CommandRegistryController extends Controller implements Monitorable
 			e.setCancelled(true);
 		}
 	}
-
+	
 	private boolean processCommand(CommandSender sender, String message)
 	{
 		String roots = message.startsWith("/") ? message.substring(1) : message;
@@ -198,24 +190,24 @@ public class CommandRegistryController extends Controller implements Monitorable
 		
 		return false;
 	}
-
+	
 	@Override
 	public void onStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
 		
 	}
-
+	
 	public GMap<String, GList<Method>> getCommandableEvents()
 	{
 		return commandableEvents;
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
