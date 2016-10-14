@@ -261,6 +261,11 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				return;
 			}
 			
+			if(e.getClickedBlock() != null && (e.getClickedBlock().getType().equals(Material.CHEST) || e.getClickedBlock().getType().equals(Material.TRAPPED_CHEST)))
+			{
+				return;
+			}
+			
 			if(e.getItem() == null || e.getItem().getType().equals(Material.AIR) || e.getPlayer().isSneaking())
 			{
 				for(Integer i : instances.k())
