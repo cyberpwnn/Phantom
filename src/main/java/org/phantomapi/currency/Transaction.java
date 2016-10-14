@@ -14,6 +14,7 @@ public class Transaction
 	private Currency currency;
 	private CurrencyMessager messager;
 	private Double amount;
+	private Boolean diff;
 	
 	/**
 	 * Create a transaction
@@ -24,10 +25,22 @@ public class Transaction
 	public Transaction(Currency currency)
 	{
 		from = null;
+		diff = true;
 		to = null;
 		amount = null;
 		this.currency = currency;
 		messager = new CurrencyDiff(currency);
+	}
+	
+	/**
+	 * Dont send diff messages
+	 * 
+	 * @return the transaction
+	 */
+	public Transaction noDiff()
+	{
+		diff = false;
+		return this;
 	}
 	
 	/**
@@ -120,6 +133,11 @@ public class Transaction
 	
 	private void diff(Player p, double f, double t)
 	{
+		if(!diff)
+		{
+			return;
+		}
+		
 		if(f > t)
 		{
 			p.sendMessage(messager.spent(p, f - t, t));
