@@ -39,7 +39,6 @@ public abstract class TaskLater implements Runnable
 				catch(IllegalPluginAccessException e)
 				{
 					new D("Task").f("Could not create plugin. It's disabled.");
-					ExceptionUtil.print(e);
 				}
 				
 				catch(Exception e)
