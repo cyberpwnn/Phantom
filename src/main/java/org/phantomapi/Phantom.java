@@ -148,9 +148,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		setupEconomy();
 		nsx = M.ns();
 		instance = this;
-		syncStart = false;
+		syncStart = true;
 		
-		File f = new File(getDataFolder(), "sync");
+		File f = new File(getDataFolder(), "async");
 		
 		if(f.exists() && f.isDirectory())
 		{
@@ -159,11 +159,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				@Override
 				public void run()
 				{
-					f("USING SYNC BOOT MODE");
+					f("USING ASYNC BOOT MODE");
 				}
 			};
 			
-			syncStart = true;
+			syncStart = false;
 		}
 		
 		registryController = new RegistryController(this);
