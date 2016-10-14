@@ -1,6 +1,7 @@
 package org.phantomapi.registry;
 
 import org.phantomapi.Phantom;
+import org.phantomapi.construct.Controllable;
 
 /**
  * Registry utils
@@ -15,9 +16,9 @@ public class R
 	 * @param registrant
 	 *            the registrant
 	 */
-	public static void register(Registrant registrant)
+	public static void register(Controllable registrant)
 	{
-		Phantom.instance().getRegistryController().register(registrant);
+		Phantom.instance().getRegistryController().registerRegistrant(registrant);
 	}
 	
 	/**
@@ -26,9 +27,9 @@ public class R
 	 * @param registrant
 	 *            the registrant
 	 */
-	public static void unregister(Registrant registrant)
+	public static void unregister(Controllable registrant)
 	{
-		Phantom.instance().getRegistryController().register(registrant);
+		Phantom.instance().getRegistryController().unregisterRegistrant(registrant);
 	}
 	
 	/**
@@ -37,8 +38,8 @@ public class R
 	 * @param registrar
 	 *            the registrar
 	 */
-	public static void registerRegistrar(Registrar registrar)
+	public static void registerRegistrar(Registrar<?> registrar)
 	{
-		Phantom.instance().getRegistryController().getRegisters().add(registrar);
+		Phantom.instance().getRegistryController().registerRegistrar(registrar);
 	}
 }
