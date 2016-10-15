@@ -1636,15 +1636,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public void unbindController(Controllable c)
 	{
-		new TaskLater()
-		{
-			@Override
-			public void run()
-			{
-				commandRegistryController.unregister(c);
-				monitorController.unregister(c);
-			}
-		};
+		commandRegistryController.unregister(c);
+		monitorController.unregister(c);
 		
 		bindings.remove(c);
 	}
