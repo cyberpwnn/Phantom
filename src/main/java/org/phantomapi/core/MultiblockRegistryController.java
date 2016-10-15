@@ -216,7 +216,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 						
 						try
 						{
-							MultiblockConstructEvent mbc = new MultiblockConstructEvent(e.getPlayer(), mb, mb.getWorld());
+							MultiblockConstructEvent mbc = new MultiblockConstructEvent(e.getPlayer(), mb, mb.getWorld(), e.getBlock());
 							callEvent(mbc);
 							
 							if(!e.isCancelled())
@@ -272,7 +272,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				{
 					if(instances.get(i).getWorld().equals(e.getClickedBlock().getWorld()) && instances.get(i).contains(e.getClickedBlock().getLocation()))
 					{
-						MultiblockInteractEvent evt = new MultiblockInteractEvent(e.getPlayer(), instances.get(i), e.getPlayer().getWorld(), e.getAction());
+						MultiblockInteractEvent evt = new MultiblockInteractEvent(e.getPlayer(), instances.get(i), e.getPlayer().getWorld(), e.getAction(), e.getClickedBlock());
 						callEvent(evt);
 						e.setCancelled(true);
 						return;
@@ -299,7 +299,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 		{
 			if(instances.get(i).getWorld().equals(e.getBlock().getWorld()) && instances.get(i).contains(e.getBlock().getLocation()))
 			{
-				MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(e.getPlayer(), instances.get(i), e.getBlock().getWorld());
+				MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(e.getPlayer(), instances.get(i), e.getBlock().getWorld(), e.getBlock());
 				callEvent(mbd);
 				
 				if(!mbd.isCancelled())
@@ -367,7 +367,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 				
 				if(!next.update())
 				{
-					MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld());
+					MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld(), null);
 					callEvent(mbd);
 					f("Destroying invalid multiblock: " + next.getType() + "." + next.getId());
 					Multiblock mb = next;
