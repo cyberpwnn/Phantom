@@ -1,6 +1,7 @@
 package org.phantomapi.event;
 
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.phantomapi.multiblock.Multiblock;
@@ -14,9 +15,9 @@ public class MultiblockInteractEvent extends MultiblockPlayerEvent
 {
 	private final Action action;
 	
-	public MultiblockInteractEvent(Player player, Multiblock multiblock, World world, Action action)
+	public MultiblockInteractEvent(Player player, Multiblock multiblock, World world, Action action, Block block)
 	{
-		super(player, multiblock, world);
+		super(player, multiblock, world, block);
 		
 		this.action = action;
 	}
