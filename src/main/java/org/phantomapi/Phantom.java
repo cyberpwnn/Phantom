@@ -1551,6 +1551,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public void bindController(Controllable c)
 	{
+		commandRegistryController.register(c);
+		monitorController.register(c);
 		bindings.add(c);
 	}
 	
@@ -1626,6 +1628,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public void unbindController(Controllable c)
 	{
+		commandRegistryController.unregister(c);
+		monitorController.unregister(c);
 		bindings.remove(c);
 	}
 	
