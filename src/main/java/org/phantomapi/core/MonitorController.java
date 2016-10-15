@@ -79,4 +79,13 @@ public class MonitorController extends Controller
 			samplers.put(c.getName(), (Monitorable) c);
 		}
 	}
+	
+	@Override
+	public void unregister(Controllable c)
+	{
+		if(c instanceof Monitorable)
+		{
+			samplers.remove(c.getName());
+		}
+	}
 }
