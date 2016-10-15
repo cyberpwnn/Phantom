@@ -1,6 +1,7 @@
 package org.phantomapi.event;
 
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.phantomapi.multiblock.Multiblock;
 
@@ -11,8 +12,8 @@ import org.phantomapi.multiblock.Multiblock;
  */
 public class MultiblockDestroyEvent extends MultiblockPlayerEvent
 {
-	public MultiblockDestroyEvent(Player player, Multiblock multiblock, World world)
+	public MultiblockDestroyEvent(Player player, Multiblock multiblock, World world, Block block)
 	{
-		super(player, multiblock, world);
+		super(player, multiblock, world, block);
 	}
 }
