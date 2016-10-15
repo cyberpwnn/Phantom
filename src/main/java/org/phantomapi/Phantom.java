@@ -51,6 +51,7 @@ import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SlateController;
 import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
+import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
@@ -138,6 +139,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private SlateController slateController;
 	private PhastController phastController;
 	private BlockCheckController blockCheckController;
+	private UpdateController updateController;
 	
 	private Long nsx;
 	
@@ -194,6 +196,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx = new GList<String>();
 		nestController = new NestController(this);
 		blockCheckController = new BlockCheckController(this);
+		updateController = new UpdateController(this);
 		saltpile = new SpeechMesh("saltpile");
 		new PlaceholderHooker(this, "phantom").hook();
 		
@@ -223,6 +226,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(slateController);
 		register(phastController);
 		register(blockCheckController);
+		register(updateController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -877,6 +881,18 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						};
 					}
 					
+					else if(args[0].equalsIgnoreCase("update"))
+					{
+						new S()
+						{
+							@Override
+							public void sync()
+							{
+								updateController.update(new PhantomSender(sender));
+							}
+						};
+					}
+					
 					else if(args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v"))
 					{
 						sender.sendMessage(getChatTag() + C.DARK_GRAY + "Down with " + C.LIGHT_PURPLE + C.BOLD + getDescription().getVersion() + "?");
@@ -1177,6 +1193,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom probe" + C.GRAY + " - Probe everything.");
 					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
+					mb.message(sender, C.GRAY + "/phantom update" + C.GRAY + " - Update modified plugins");
 					mb.message(sender, C.GRAY + "/phantom <un/load> [plugin]" + C.GRAY + " - Plugin Manager");
 					mb.message(sender, C.GRAY + "/phantom <dis/enable> [plugin]" + C.GRAY + " - Plugin Manager");
 					mb.message(sender, C.GRAY + "/phantom cfs [args]" + C.GRAY + " - Run CFS Operations");
