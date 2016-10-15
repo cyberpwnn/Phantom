@@ -113,9 +113,16 @@ public class CommandRegistryController extends Controller implements Monitorable
 			commandableEvents.put(node.toLowerCase(), new GList<Method>());
 		}
 		
-		commandableEvents.get(node.toLowerCase()).add(listener);
+		if(!commandableEvents.get(node.toLowerCase()).contains(listener))
+		{
+			commandableEvents.get(node.toLowerCase()).add(listener);
+			o("Registered Command: " + C.GREEN + listener.getDeclaringClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
+		}
 		
-		o("Registered Command: " + C.GREEN + listener.getDeclaringClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
+		else
+		{
+			w("Duplicate Registry Ignored: " + C.RED + listener.getDeclaringClass().getSimpleName() + "." + listener.getName() + "()" + " <> " + "/" + node);
+		}
 	}
 	
 	public void unregister(Method c)
