@@ -54,12 +54,12 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	 */
 	public Controller(Controllable parentController)
 	{
-		this.controllers = new GList<Controllable>();
+		controllers = new GList<Controllable>();
 		this.parentController = parentController;
-		this.name = getClass().getSimpleName();
-		this.instance = parentController.getPlugin();
-		this.d = new D(getPlugin().getName() + " > " + getName());
-		this.time = new Average(8);
+		name = getClass().getSimpleName();
+		instance = parentController.getPlugin();
+		d = new D(getPlugin().getName() + " > " + getName());
+		time = new Average(8);
 	}
 	
 	@Override
@@ -140,7 +140,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) this);
 		}
 		
-		Phantom.instance().getCommandRegistryController().unregister((Controllable) this);
+		Phantom.instance().getCommandRegistryController().unregister(this);
 		
 		onStop();
 	}
@@ -581,6 +581,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		d.o(o);
 	}
 	
+	@Override
 	public double getTime()
 	{
 		return time.getAverage();
