@@ -78,6 +78,7 @@ public class ProbeController extends Controller
 		return s.toItemStack();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void on(PlayerInteractEvent e)
 	{
@@ -135,6 +136,8 @@ public class ProbeController extends Controller
 								s.sendMessage(C.WHITE.toString() + "Protector: " + C.GRAY + i.getProtector() + " <> " + i.getProtector(e.getClickedBlock()));
 							}
 						}
+						
+						s.sendMessage(C.WHITE.toString() + "Block: " + C.GRAY + e.getClickedBlock().getType().toString() + ":" + e.getClickedBlock().getData());
 						
 						if(cc.size() == 0)
 						{
