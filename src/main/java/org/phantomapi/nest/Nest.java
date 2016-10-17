@@ -24,16 +24,60 @@ import org.phantomapi.world.Blocks;
  */
 public class Nest
 {
+	/**
+	 * Has the loaded chunk been loaded in through nest?
+	 * 
+	 * @param c
+	 *            the chunk
+	 * @return true if it has
+	 */
+	public static boolean isLoaded(Chunk c)
+	{
+		return getChunk(c) != null;
+	}
+	
+	/**
+	 * Is the given block loaded with nest data?
+	 * 
+	 * @param b
+	 *            the block
+	 * @return true if it is
+	 */
+	public static boolean isLoaded(Block b)
+	{
+		return isLoaded(b.getChunk());
+	}
+	
+	/**
+	 * Get the given chunk nest data
+	 * 
+	 * @param c
+	 *            the chunk
+	 * @return the nested chunk or null if not loaded yet
+	 */
 	public static NestedChunk getChunk(Chunk c)
 	{
 		return Phantom.instance().getNestController().get(c);
 	}
 	
+	/**
+	 * Get the nested block
+	 * 
+	 * @param block
+	 *            the block
+	 * @return the nested block or null if not loaded yet
+	 */
 	public static NestedBlock getBlock(Block block)
 	{
 		return getChunk(block.getChunk()).getBlock(block);
 	}
 	
+	/**
+	 * Get a nest map
+	 * 
+	 * @param p
+	 *            the player
+	 */
 	public static void giveMap(Player p)
 	{
 		ItemStack is = new ItemStack(Material.MAP);
