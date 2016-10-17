@@ -23,7 +23,7 @@ org.phantomapi.papyrus
 org.phantomapi.phast
 org.phantomapi.physics
 org.phantomapi.placeholder
-org.phantomapi.plugin
+org.phantomapi.queue
 org.phantomapi.refract
 org.phantomapi.registry
 org.phantomapi.schematic
