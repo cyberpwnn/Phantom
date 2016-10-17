@@ -91,7 +91,7 @@ public class UpdateController extends Controller
 			P.showProgress(p.getPlayer(), "Updating;Checking for Modifications");
 		}
 		
-		new TaskLater(10)
+		new TaskLater(1)
 		{
 			@Override
 			public void run()
@@ -119,7 +119,7 @@ public class UpdateController extends Controller
 					P.showProgress(p.getPlayer(), "Updating " + updates.size() + " Plugins;Checking for Modifications");
 				}
 				
-				new Task(14)
+				new Task(5)
 				{
 					@Override
 					public void run()
@@ -130,7 +130,7 @@ public class UpdateController extends Controller
 							{
 								P.showProgress(p.getPlayer(), "Updating Finished");
 								
-								new TaskLater(40)
+								new TaskLater(10)
 								{
 									@Override
 									public void run()
