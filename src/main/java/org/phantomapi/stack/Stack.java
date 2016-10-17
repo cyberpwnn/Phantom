@@ -1,10 +1,12 @@
 package org.phantomapi.stack;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.Potion;
 import org.phantomapi.inventory.EnchantmentLevel;
 import org.phantomapi.inventory.EnchantmentSet;
@@ -28,6 +30,7 @@ public class Stack
 	private GList<ItemFlag> flags;
 	private Integer amount;
 	private PotionData potionData;
+	private Color dyeColor;
 	
 	/**
 	 * Create an item stack
@@ -49,7 +52,8 @@ public class Stack
 		this.enchantmentSet = enchantmentSet;
 		this.flags = flags;
 		this.amount = amount;
-		this.potionData = null;
+		potionData = null;
+		dyeColor = null;
 	}
 	
 	/**
@@ -146,35 +150,35 @@ public class Stack
 	{
 		if(is == null)
 		{
-			this.materialBlock = new MaterialBlock(Material.AIR);
-			this.name = null;
-			this.lore = new GList<String>();
-			this.durability = (short) 0;
-			this.enchantmentSet = new EnchantmentSet();
-			this.flags = new GList<ItemFlag>();
-			this.amount = 1;
+			materialBlock = new MaterialBlock(Material.AIR);
+			name = null;
+			lore = new GList<String>();
+			durability = (short) 0;
+			enchantmentSet = new EnchantmentSet();
+			flags = new GList<ItemFlag>();
+			amount = 1;
 		}
 		
 		else
 		{
-			this.materialBlock = new MaterialBlock(is.getType(), is.getData().getData());
-			this.durability = is.getDurability();
-			this.enchantmentSet = new EnchantmentSet();
-			this.amount = is.getAmount();
+			materialBlock = new MaterialBlock(is.getType(), is.getData().getData());
+			durability = is.getDurability();
+			enchantmentSet = new EnchantmentSet();
+			amount = is.getAmount();
 			
 			if(is.hasItemMeta())
 			{
 				ItemMeta im = is.getItemMeta();
-				this.name = im.getDisplayName();
-				this.lore = new GList<String>(im.getLore());
-				this.flags = new GList<ItemFlag>(im.getItemFlags());
+				name = im.getDisplayName();
+				lore = new GList<String>(im.getLore());
+				flags = new GList<ItemFlag>(im.getItemFlags());
 			}
 			
 			else
 			{
-				this.name = null;
-				this.lore = new GList<String>();
-				this.flags = new GList<ItemFlag>();
+				name = null;
+				lore = new GList<String>();
+				flags = new GList<ItemFlag>();
 			}
 			
 			for(Enchantment i : is.getEnchantments().keySet())
@@ -193,9 +197,16 @@ public class Stack
 			{
 				
 			}
+			
+			if(is.getType().equals(Material.LEATHER_BOOTS) || is.getType().equals(Material.LEATHER_CHESTPLATE) || is.getType().equals(Material.LEATHER_HELMET) || is.getType().equals(Material.LEATHER_LEGGINGS))
+			{
+				LeatherArmorMeta lam = (LeatherArmorMeta) is.getItemMeta();
+				dyeColor = lam.getColor();
+			}
 		}
 	}
 	
+	@Override
 	public boolean equals(Object o)
 	{
 		if(o == null)
@@ -228,6 +239,7 @@ public class Stack
 		return false;
 	}
 	
+	@Override
 	public Stack clone()
 	{
 		return new Stack(getMaterialBlock(), getName(), getLore(), getDurability(), getEnchantmentSet(), getFlags(), getAmount());
@@ -287,6 +299,13 @@ public class Stack
 			{
 				
 			}
+		}
+		
+		if(is.getType().equals(Material.LEATHER_BOOTS) || is.getType().equals(Material.LEATHER_CHESTPLATE) || is.getType().equals(Material.LEATHER_HELMET) || is.getType().equals(Material.LEATHER_LEGGINGS))
+		{
+			LeatherArmorMeta lam = (LeatherArmorMeta) is.getItemMeta();
+			lam.setColor(dyeColor);
+			is.setItemMeta(lam);
 		}
 		
 		return is;
@@ -405,5 +424,15 @@ public class Stack
 	public void setPotionData(PotionData potionData)
 	{
 		this.potionData = potionData;
+	}
+	
+	public Color getDyeColor()
+	{
+		return dyeColor;
+	}
+	
+	public void setDyeColor(Color dyeColor)
+	{
+		this.dyeColor = dyeColor;
 	}
 }
