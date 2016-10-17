@@ -48,6 +48,28 @@ public class MB
 	}
 	
 	/**
+	 * Get all loaded multiblock instances
+	 * 
+	 * @param type
+	 *            the multiblock type
+	 * @return the instances
+	 */
+	public static GList<Multiblock> getInstances(String type)
+	{
+		GList<Multiblock> instances = getInstances().copy();
+		
+		for(Multiblock i : instances.copy())
+		{
+			if(!i.getType().equals(type))
+			{
+				instances.remove(i);
+			}
+		}
+		
+		return instances;
+	}
+	
+	/**
 	 * Get the multiblock instance for the given holder
 	 * 
 	 * @param v
