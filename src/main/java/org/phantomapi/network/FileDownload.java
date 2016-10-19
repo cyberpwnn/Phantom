@@ -8,10 +8,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import org.phantomapi.async.A;
+import org.phantomapi.lang.GTime;
 import org.phantomapi.sync.S;
+import org.phantomapi.sync.Task;
 import org.phantomapi.util.Average;
+import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.util.F;
 import org.phantomapi.util.M;
+import org.phantomapi.util.T;
 
 /**
  * File async download with progress and status
@@ -296,5 +302,48 @@ public abstract class FileDownload
 	public long getTotalSize()
 	{
 		return totalSize;
+	}
+	
+	public static void download(URL url, File file)
+	{
+		D d = new D("Downloading " + file.getName());
+		
+		T t = new T()
+		{
+			@Override
+			public void onStop(long nsTime, double msTime)
+			{
+				d.s("Finished Downloading " + file.getName() + " in " + new GTime((long) msTime));
+			}
+		};
+		
+		FileDownload fd = new FileDownload(url, file)
+		{
+			@Override
+			public void onCompleted()
+			{
+				t.stop();
+			}
+		};
+		
+		fd.start();
+		
+		new Task(20)
+		{
+			@Override
+			public void run()
+			{
+				if(fd.isComplete())
+				{
+					cancel();
+					return;
+				}
+				
+				if(fd.isDownloading())
+				{
+					d.v("@ " + F.fileSize((long) fd.getBytesPerSecond()) + "/s " + C.AQUA + new GTime((long) fd.getRemainingTime()).to() + "left");
+				}
+			}
+		};
 	}
 }
