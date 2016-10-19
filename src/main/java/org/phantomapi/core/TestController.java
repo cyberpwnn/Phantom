@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
+import org.phantomapi.abstraction.Instance;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.YAMLDataInput;
@@ -451,6 +452,52 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showDemo(i);
+				}
+			}
+		});
+		
+		tests.put("instance-meta", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Instance a = new Instance("object", null);
+				a.getData().set(a.getRoot() + ".enabled", true);
+				
+				Instance b = new Instance("entity", a);
+				b.getData().set(b.getRoot() + ".health-max-health", 20.0);
+				b.getData().set(b.getRoot() + ".health-regen-amount", 1);
+				b.getData().set(b.getRoot() + ".health-regen-interval", 10);
+				b.getData().set(b.getRoot() + ".health-regen-cooldown-seconds", 7);
+				b.getData().set(b.getRoot() + ".health-invincible", false);
+				b.getData().set(b.getRoot() + ".display-hidden", false);
+				b.getData().set(b.getRoot() + ".display-name", "&aGreen Name");
+				b.getData().set(b.getRoot() + ".display-name-visible", true);
+				b.getData().set(b.getRoot() + ".display-baby", false);
+				b.getData().set(b.getRoot() + ".status-level-min", 5);
+				b.getData().set(b.getRoot() + ".status-level-max", 12);
+				b.getData().set(b.getRoot() + ".movement-wander", true);
+				b.getData().set(b.getRoot() + ".movement-always-wander", true);
+				b.getData().set(b.getRoot() + ".death-drop-xp", 2);
+				b.getData().set(b.getRoot() + ".death-drop", "ROTTEN_FLESH");
+				b.getData().set(b.getRoot() + ".display-display-type", "ZOMBIE");
+				b.getData().set(b.getRoot() + ".display-display-sound", "ZOMBIE_IDLE");
+				
+				Instance c = new Instance("monster", b);
+				c.getData().set(c.getRoot() + ".combat-damage-min", 0.5);
+				c.getData().set(c.getRoot() + ".combat-damage-max", 8.5);
+				c.getData().set(c.getRoot() + ".spawn-density", 7.5);
+				
+				File f = new File(getPlugin().getDataFolder(), "test.yml");
+				
+				try
+				{
+					new YAMLDataOutput().save(c.getData(), f);
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		});
