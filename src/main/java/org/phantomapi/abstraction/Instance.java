@@ -1,7 +1,11 @@
 package org.phantomapi.abstraction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.YAMLDataInput;
+import org.phantomapi.clust.YAMLDataOutput;
 import org.phantomapi.lang.GList;
 
 /**
@@ -81,5 +85,17 @@ public class Instance implements MetaInstance
 		}
 		
 		return ma.reverse().toString(".");
+	}
+	
+	@Override
+	public void load(File file) throws IOException
+	{
+		new YAMLDataInput().load(getData(), file);
+	}
+	
+	@Override
+	public void save(File file) throws IOException
+	{
+		new YAMLDataOutput().save(getData(), file);
 	}
 }
