@@ -1,4 +1,5 @@
 org.phantomapi
+org.phantomapi.abstraction
 org.phantomapi.async
 org.phantomapi.block
 org.phantomapi.callable
