@@ -306,6 +306,15 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("jframe", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new TestGui(new PhantomSender(Bukkit.getConsoleSender()));
+			}
+		});
+		
 		tests.put("read-book", new Runnable()
 		{
 			@Override
