@@ -123,6 +123,7 @@ public class GList<T> extends ArrayList<T>
 	{
 		return new ExecutiveIterator<T>(copy())
 		{
+			@Override
 			public void onIterate(T next)
 			{
 				runnable.run(next);
@@ -495,6 +496,7 @@ public class GList<T> extends ArrayList<T>
 	{
 		Collections.sort(this, new Comparator<T>()
 		{
+			@Override
 			public int compare(T o1, T o2)
 			{
 				return o1.toString().compareTo(o2.toString());
@@ -574,6 +576,21 @@ public class GList<T> extends ArrayList<T>
 	 */
 	public String toString(String split)
 	{
+		if(isEmpty())
+		{
+			return "";
+		}
+		
+		if(size() == 1)
+		{
+			if(get(0) != null)
+			{
+				return get(0).toString();
+			}
+			
+			return "";
+		}
+		
 		String s = "";
 		
 		if(split == null)
@@ -609,6 +626,7 @@ public class GList<T> extends ArrayList<T>
 	/**
 	 * Comma, space, separated, list, representation
 	 */
+	@Override
 	public String toString()
 	{
 		return toString(", ");
