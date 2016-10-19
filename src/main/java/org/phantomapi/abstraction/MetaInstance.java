@@ -1,5 +1,7 @@
 package org.phantomapi.abstraction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 import org.phantomapi.clust.DataCluster;
 
@@ -44,4 +46,24 @@ public interface MetaInstance
 	 * @return the id
 	 */
 	public UUID getId();
+	
+	/**
+	 * Load in data from a file
+	 * 
+	 * @param file
+	 *            the file
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public void load(File file) throws IOException;
+	
+	/**
+	 * Save the data to a file
+	 * 
+	 * @param file
+	 *            the file
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public void save(File file) throws IOException;
 }
