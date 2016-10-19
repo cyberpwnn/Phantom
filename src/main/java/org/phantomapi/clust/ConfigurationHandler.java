@@ -36,7 +36,7 @@ public class ConfigurationHandler
 	 */
 	public static void toFields(Configurable c)
 	{
-		for(Field i : c.getClass().getDeclaredFields())
+		for(Field i : c.getClass().getFields())
 		{
 			if(i.isAnnotationPresent(Keyed.class))
 			{
@@ -102,7 +102,7 @@ public class ConfigurationHandler
 	 */
 	public static void fromFields(Configurable c)
 	{
-		for(Field i : c.getClass().getDeclaredFields())
+		for(Field i : c.getClass().getFields())
 		{
 			if(i.isAnnotationPresent(Keyed.class))
 			{
