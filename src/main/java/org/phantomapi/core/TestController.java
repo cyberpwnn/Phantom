@@ -2,6 +2,8 @@ package org.phantomapi.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -47,6 +49,7 @@ import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nest.Nest;
+import org.phantomapi.network.FileDownload;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
@@ -261,6 +264,24 @@ public class TestController extends Controller
 			public void run()
 			{
 				Nest.giveMap(Players.getAnyPlayer());
+			}
+		});
+		
+		tests.put("download", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					File download = new File(getPlugin().getDataFolder(), "test-download.zip");
+					FileDownload.download(new URL("http://mirror.cc.columbia.edu/pub/software/eclipse/technology/epp/downloads/release/neon/1a/eclipse-jee-neon-1a-win32-x86_64.zip"), download);
+				}
+				
+				catch(MalformedURLException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		});
 		
