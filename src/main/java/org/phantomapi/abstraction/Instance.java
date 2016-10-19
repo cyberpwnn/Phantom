@@ -15,10 +15,10 @@ import org.phantomapi.lang.GList;
  */
 public class Instance implements MetaInstance
 {
-	private final DataCluster data;
-	private final String type;
-	private final MetaInstance parent;
-	private final UUID id;
+	protected final DataCluster data;
+	protected final String type;
+	protected final MetaInstance parent;
+	protected final UUID id;
 	
 	/**
 	 * Create an instance
