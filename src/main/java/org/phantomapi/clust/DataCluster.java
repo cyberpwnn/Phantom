@@ -32,13 +32,18 @@ public class DataCluster implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * @author cyberpwn
 	 */
 	public enum ClusterDataType
 	{
-		INTEGER, DOUBLE, BOOLEAN, STRING, STRING_LIST, LONG;
+		INTEGER,
+		DOUBLE,
+		BOOLEAN,
+		STRING,
+		STRING_LIST,
+		LONG;
 	}
 	
 	private Map<String, Cluster> data;
@@ -56,8 +61,8 @@ public class DataCluster implements Serializable
 	 */
 	public DataCluster()
 	{
-		this.data = new HashMap<String, Cluster>();
-		this.comments = new HashMap<String, String>();
+		data = new HashMap<String, Cluster>();
+		comments = new HashMap<String, String>();
 		perm++;
 		totalClusters++;
 		bytes = 0;
@@ -147,7 +152,7 @@ public class DataCluster implements Serializable
 		this();
 		
 		this.data = data;
-		this.comments = new HashMap<String, String>();
+		comments = new HashMap<String, String>();
 	}
 	
 	/**
@@ -160,7 +165,7 @@ public class DataCluster implements Serializable
 	 */
 	public void comment(String key, String comment)
 	{
-		this.comments.put(key, comment);
+		comments.put(key, comment);
 	}
 	
 	/**
@@ -1161,5 +1166,76 @@ public class DataCluster implements Serializable
 	public DataCluster copy()
 	{
 		return new DataCluster(getData());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (bytes ^ (bytes >>> 32));
+		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + (int) (nodes ^ (nodes >>> 32));
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+		{
+			return true;
+		}
+		
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		
+		DataCluster other = (DataCluster) obj;
+		
+		if(bytes != other.bytes)
+		{
+			return false;
+		}
+		
+		if(comments == null)
+		{
+			if(other.comments != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!comments.equals(other.comments))
+		{
+			return false;
+		}
+		
+		if(data == null)
+		{
+			if(other.data != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!data.equals(other.data))
+		{
+			return false;
+		}
+		
+		if(nodes != other.nodes)
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
