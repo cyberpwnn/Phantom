@@ -40,6 +40,7 @@ import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
+import org.phantomapi.hud.ConfigurationUI;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
@@ -310,7 +311,21 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				new TestGui(new PhantomSender(Bukkit.getConsoleSender()));
+				DataCluster cc = new DataCluster();
+				
+				cc.set("entity.enabled", true, "Entity holds resources for use.");
+				cc.set("entity.visible", true, "Entity visible to players and active.");
+				cc.set("entity.name", "Dicksnout", "The entity name.");
+				cc.set("entity.code-name", "dick-snout", "The entity code name.");
+				cc.set("entity.max-health", 12.5, "The max health this entity can have");
+				cc.set("entity.regen-delay", 7.5, "Delay in seconds before regenerating after a delay.");
+				cc.set("entity.regen-interval", 1.65, "Regen interval in seconds");
+				cc.set("entity.regen-amount", 0.85, "The Regen amount");
+				cc.set("entity.max-instances", 128, "The maximum instances of this entity");
+				cc.set("entity.context.voice", new GList<String>().qadd("This is something i would say").qadd("This is also what i say").qadd("Somethig else?"));
+				
+				ConfigurationUI cui = new ConfigurationUI(cc);
+				cui.setVisible(true);
 			}
 		});
 		
