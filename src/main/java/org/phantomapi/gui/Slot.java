@@ -39,7 +39,7 @@ public class Slot
 		
 		this.x = x;
 		this.y = y;
-		this.s = getPosition(x, y);
+		s = getPosition(x, y);
 	}
 	
 	/**
@@ -51,8 +51,8 @@ public class Slot
 	public Slot(Integer s)
 	{
 		this.s = s;
-		this.y = (int) ((s / 9) + 1);
-		this.x = (s - ((y - 1) * 9)) - 4;
+		y = (int) ((s / 9) + 1);
+		x = (s - ((y - 1) * 9)) - 4;
 	}
 	
 	/**
@@ -100,8 +100,8 @@ public class Slot
 	public void setSlot(Integer s)
 	{
 		this.s = s;
-		this.y = (int) ((s / 9) + 1);
-		this.x = (s - ((y - 1) * 9)) - 4;
+		y = (int) ((s / 9) + 1);
+		x = (s - ((y - 1) * 9)) - 4;
 	}
 	
 	/**
@@ -146,19 +146,10 @@ public class Slot
 		s = getPosition(x, y);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "Slot[" + getX() + "," + getY() + " (" + getSlot() + ")]";
-	}
-	
-	public boolean equals(Object object)
-	{
-		if(object instanceof Slot)
-		{
-			return ((Slot) object).getSlot().equals(getSlot());
-		}
-		
-		return false;
 	}
 	
 	/**
@@ -169,5 +160,78 @@ public class Slot
 	public Slot copy()
 	{
 		return new Slot(getSlot());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((s == null) ? 0 : s.hashCode());
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = prime * result + ((y == null) ? 0 : y.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+		{
+			return true;
+		}
+		
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		
+		Slot other = (Slot) obj;
+		
+		if(s == null)
+		{
+			if(other.s != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!s.equals(other.s))
+		{
+			return false;
+		}
+		
+		if(x == null)
+		{
+			if(other.x != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!x.equals(other.x))
+		{
+			return false;
+		}
+		
+		if(y == null)
+		{
+			if(other.y != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!y.equals(other.y))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
