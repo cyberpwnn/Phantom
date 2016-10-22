@@ -30,7 +30,12 @@ public class D
 	
 	public enum DispatchType
 	{
-		INFO, SUCCESS, FAILURE, WARNING, VERBOSE, OVERBOSE
+		INFO,
+		SUCCESS,
+		FAILURE,
+		WARNING,
+		VERBOSE,
+		OVERBOSE
 	}
 	
 	protected static Boolean silent = false;
@@ -55,7 +60,7 @@ public class D
 		
 		if(fool)
 		{
-			tmg = StringUtils.repeat(" ", (int) (8 * Math.random())) + ChatColor.WHITE + C.getLastColors(msg) + StringUtils.reverse(C.stripColor(msg)) + ": " + C.DARK_GRAY + StringUtils.reverse(name)  + C.getLastColors(msg) + "|";
+			tmg = StringUtils.repeat(" ", (int) (8 * Math.random())) + ChatColor.WHITE + C.getLastColors(msg) + StringUtils.reverse(C.stripColor(msg)) + ": " + C.DARK_GRAY + StringUtils.reverse(name) + C.getLastColors(msg) + "|";
 		}
 		
 		if(Phantom.isAsync())
@@ -277,5 +282,50 @@ public class D
 	static
 	{
 		queue = new GList<String>();
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+		{
+			return true;
+		}
+		
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		
+		D other = (D) obj;
+		
+		if(name == null)
+		{
+			if(other.name != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!name.equals(other.name))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
