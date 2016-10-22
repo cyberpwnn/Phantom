@@ -73,7 +73,7 @@ public class Guis
 		
 		for(Slot i : slots)
 		{
-			x.add(i.getX());
+			x.add(i.getSlot());
 		}
 		
 		x.sort();
