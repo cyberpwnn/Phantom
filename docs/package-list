@@ -1,5 +1,4 @@
 org.phantomapi
-org.phantomapi.abstraction
 org.phantomapi.async
 org.phantomapi.block
 org.phantomapi.callable
@@ -14,6 +13,7 @@ org.phantomapi.ext
 org.phantomapi.filesystem
 org.phantomapi.game
 org.phantomapi.gui
+org.phantomapi.hud
 org.phantomapi.inventory
 org.phantomapi.lang
 org.phantomapi.multiblock
