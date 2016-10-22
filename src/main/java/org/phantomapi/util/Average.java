@@ -22,8 +22,8 @@ public class Average
 	public Average(int limit)
 	{
 		this.limit = limit;
-		this.data = new GList<Double>();
-		this.average = 0.0;
+		data = new GList<Double>();
+		average = 0.0;
 	}
 	
 	/**
@@ -104,5 +104,64 @@ public class Average
 	public double getAverage()
 	{
 		return average;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(average);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + limit;
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+		{
+			return true;
+		}
+		
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		
+		Average other = (Average) obj;
+		
+		if(Double.doubleToLongBits(average) != Double.doubleToLongBits(other.average))
+		{
+			return false;
+		}
+		
+		if(data == null)
+		{
+			if(other.data != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!data.equals(other.data))
+		{
+			return false;
+		}
+		
+		if(limit != other.limit)
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
