@@ -83,7 +83,7 @@ public class Guis
 		{
 			for(Slot j : slots)
 			{
-				if(i == j.getX())
+				if(i == j.getSlot())
 				{
 					s.add(j);
 				}
