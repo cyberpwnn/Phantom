@@ -3,6 +3,7 @@ package org.phantomapi.wraith;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
+import org.phantomapi.construct.Controllable;
 import org.phantomapi.lang.GList;
 
 /**
@@ -13,6 +14,7 @@ import org.phantomapi.lang.GList;
 public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHandled
 {
 	private GList<WraithHandler> handlers;
+	private Controllable c;
 	
 	/**
 	 * Creat a wraith
@@ -20,24 +22,28 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 	 * @param name
 	 *            the name
 	 */
-	public PhantomWraith(String name)
+	public PhantomWraith(String name, Controllable base)
 	{
 		super(name);
 		
+		c = base;
 		handlers = new GList<WraithHandler>();
 		Phantom.instance().getWraithController().registerWraith(this);
 	}
 	
+	@Override
 	public GList<WraithHandler> getHandlers()
 	{
 		return handlers;
 	}
 	
+	@Override
 	public void registerHandler(WraithHandler handler)
 	{
 		handlers.add(handler);
 	}
 	
+	@Override
 	public void unregisterHandler(WraithHandler handler)
 	{
 		handlers.remove(handler);
@@ -66,7 +72,7 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 		
 		super.tick();
 	}
-
+	
 	@Override
 	public void onInteract(Player p)
 	{
@@ -78,7 +84,7 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 			}
 		}
 	}
-
+	
 	@Override
 	public void onCollide(Entity p)
 	{
@@ -90,7 +96,7 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 			}
 		}
 	}
-
+	
 	@Override
 	public void onDamage(Entity damager, double damage)
 	{
@@ -101,5 +107,11 @@ public class PhantomWraith extends PhantomNPCWrapper implements Wraith, WraithHa
 				((DamagableHandle) i).onDamage(damager, damage);
 			}
 		}
+	}
+	
+	@Override
+	public Controllable getBase()
+	{
+		return c;
 	}
 }
