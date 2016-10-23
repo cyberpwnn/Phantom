@@ -14,6 +14,7 @@ import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.CommandResult;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
@@ -44,6 +45,17 @@ public class CommandRegistryController extends Controller implements Monitorable
 		for(Method i : c.getClass().getDeclaredMethods())
 		{
 			register(i);
+		}
+	}
+	
+	@EventHandler
+	public void on(ControllerStopEvent e)
+	{
+		unregister(e.getControllable());
+		
+		if(e.getControllable() instanceof CommandListener)
+		{
+			unregister((CommandListener) e.getControllable());
 		}
 	}
 	
