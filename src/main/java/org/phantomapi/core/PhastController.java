@@ -61,6 +61,7 @@ public class PhastController extends CommandController
 			
 			else
 			{
+				@SuppressWarnings("deprecation")
 				ItemStack is = sender.getPlayer().getItemInHand();
 				
 				if(is != null && is.getType().equals(Material.WRITTEN_BOOK))
