@@ -23,7 +23,7 @@ public class PhantomWorldQueue
 	{
 		if(!sessions.containsKey(world.getName()))
 		{
-			sessions.put(world.getName(), new PhantomEditSession(world));
+			sessions.put(world.getName(), new PhantomEditSession(new PhantomWorld(world)));
 		}
 		
 		return sessions.get(world.getName());
