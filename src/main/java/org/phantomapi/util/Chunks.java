@@ -68,7 +68,6 @@ public class Chunks
 	 *            nearby
 	 * @return true if the chunk unloaded
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean unload(Chunk chunk, boolean save, boolean safe)
 	{
 		return chunk.unload(save, safe);
