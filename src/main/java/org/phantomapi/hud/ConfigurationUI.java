@@ -1,5 +1,6 @@
 package org.phantomapi.hud;
 
+import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ public class ConfigurationUI extends JFrame
 	 */
 	public ConfigurationUI(DataCluster cc)
 	{
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ConfigurationUI.class.getResource("/org/phantomapi/phantom.png")));
 		HudUtil.setSystemUi();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 584, 538);
