@@ -15,6 +15,8 @@ import org.phantomapi.clust.HandledConfig;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.SyncStart;
+import org.phantomapi.event.ControllerStartEvent;
+import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.Network;
@@ -102,6 +104,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		Phantom.registerSilenced(d);
 		s("Started");
 		onStart();
+		callEvent(new ControllerStartEvent(this, getPlugin()));
 		
 		if(tx != null)
 		{
@@ -143,6 +146,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		Phantom.instance().getCommandRegistryController().unregister(this);
 		
 		onStop();
+		callEvent(new ControllerStopEvent(this, getPlugin()));
 	}
 	
 	@Override
@@ -660,120 +664,5 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	public Controllable getController(String name)
 	{
 		return Phantom.instance().getBinding(name);
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((controllers == null) ? 0 : controllers.hashCode());
-		result = prime * result + ((d == null) ? 0 : d.hashCode());
-		result = prime * result + ((instance == null) ? 0 : instance.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((parentController == null) ? 0 : parentController.hashCode());
-		result = prime * result + ((time == null) ? 0 : time.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj)
-	{
-		if(this == obj)
-		{
-			return true;
-		}
-		
-		if(obj == null)
-		{
-			return false;
-		}
-		
-		if(getClass() != obj.getClass())
-		{
-			return false;
-		}
-		
-		Controller other = (Controller) obj;
-		
-		if(controllers == null)
-		{
-			if(other.controllers != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!controllers.equals(other.controllers))
-		{
-			return false;
-		}
-		
-		if(d == null)
-		{
-			if(other.d != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!d.equals(other.d))
-		{
-			return false;
-		}
-		
-		if(instance == null)
-		{
-			if(other.instance != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!instance.equals(other.instance))
-		{
-			return false;
-		}
-		
-		if(name == null)
-		{
-			if(other.name != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!name.equals(other.name))
-		{
-			return false;
-		}
-		
-		if(parentController == null)
-		{
-			if(other.parentController != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!parentController.equals(other.parentController))
-		{
-			return false;
-		}
-		
-		if(time == null)
-		{
-			if(other.time != null)
-			{
-				return false;
-			}
-		}
-		
-		else if(!time.equals(other.time))
-		{
-			return false;
-		}
-		
-		return true;
 	}
 }
