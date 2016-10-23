@@ -1886,6 +1886,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msg.add("No. Stop it.");
 		msg.add("You are failing terribly.");
 		msg.add("You are interrupting my ability to tick controllers.");
+		msg.add("SUKAKOK");
+		msg.add("If I had a nickel for every time you fucked something up...");
+		msg.add("Seriously, learn to code.");
+		msg.add("Oh, isn't that just CUTE!?");
 		msg.add("Will you quit doing that?");
 		msg.add("What is wrong with you?");
 		msg.add("That's disgusting. Stop that at once.");
