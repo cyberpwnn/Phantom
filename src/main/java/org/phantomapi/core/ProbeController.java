@@ -13,6 +13,7 @@ import org.phantomapi.clust.DataCluster;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.lang.GList;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.stack.Stack;
@@ -76,6 +77,15 @@ public class ProbeController extends Controller
 		s.setName(C.LIGHT_PURPLE + "Probe");
 		s.setLore(new GList<String>().qadd(C.DARK_PURPLE + "Right click to probe"));
 		return s.toItemStack();
+	}
+	
+	@EventHandler
+	public void on(ControllerStopEvent e)
+	{
+		if(e.getControllable() instanceof Probe)
+		{
+			unRegisterProbe((Probe) e.getControllable());
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
