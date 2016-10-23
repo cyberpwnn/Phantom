@@ -20,6 +20,7 @@ import org.phantomapi.world.MaterialBlock;
  * 
  * @author cyberpwn
  */
+@SuppressWarnings("deprecation")
 public class Stack
 {
 	private MaterialBlock materialBlock;
@@ -145,7 +146,6 @@ public class Stack
 	 * @param is
 	 *            the itemstack
 	 */
-	@SuppressWarnings("deprecation")
 	public Stack(ItemStack is)
 	{
 		if(is == null)
@@ -252,7 +252,6 @@ public class Stack
 	 */
 	public ItemStack toItemStack()
 	{
-		@SuppressWarnings("deprecation")
 		ItemStack is = new ItemStack(getMaterialBlock().getMaterial(), amount, durability, getMaterialBlock().getData());
 		is.setDurability(durability);
 		
