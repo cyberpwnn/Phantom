@@ -2,6 +2,7 @@ package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -21,7 +22,7 @@ public class PhantomEditSession
 	 * 
 	 * @param world
 	 */
-	public PhantomEditSession(PhantomWorld world)
+	public PhantomEditSession(World world)
 	{
 		es = new EditSessionBuilder(world.getName()).fastmode(true).limitUnlimited().autoQueue(false).build();
 	}

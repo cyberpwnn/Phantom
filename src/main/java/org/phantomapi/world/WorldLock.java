@@ -30,7 +30,7 @@ public class WorldLock implements Listener
 	public WorldLock(World world)
 	{
 		this.world = world;
-		this.locked = false;
+		locked = false;
 	}
 	
 	/**
@@ -46,6 +46,7 @@ public class WorldLock implements Listener
 	/**
 	 * Lock the world
 	 */
+	@SuppressWarnings("deprecation")
 	public void lock()
 	{
 		Phantom.instance().registerListener(this);
