@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataCluster.ClusterDataType;
 import org.phantomapi.lang.GList;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.D;
 
 public class ConfigurationUI extends JFrame
@@ -62,6 +63,18 @@ public class ConfigurationUI extends JFrame
 					{
 						cc.set(i, toggle.toggle.isSelected());
 						d.v(i + " <> " + toggle.toggle.isSelected());
+						
+						toggle.setBackground(new Color(204, 255, 225));
+						
+						new TaskLater(1)
+						{
+							
+							@Override
+							public void run()
+							{
+								toggle.setBackground(Color.WHITE);
+							}
+						};
 					}
 				});
 				
@@ -89,6 +102,18 @@ public class ConfigurationUI extends JFrame
 					{
 						cc.set(i, toggle.textbox.getText());
 						d.v(i + " <> " + toggle.textbox.getText());
+						
+						toggle.setBackground(new Color(204, 255, 225));
+						
+						new TaskLater(1)
+						{
+							
+							@Override
+							public void run()
+							{
+								toggle.setBackground(Color.WHITE);
+							}
+						};
 					}
 					
 					@Override
@@ -124,12 +149,23 @@ public class ConfigurationUI extends JFrame
 						{
 							cc.set(i, Double.valueOf(toggle.textbox.getText()));
 							d.v(i + " <> " + toggle.textbox.getText());
-							toggle.setBackground(Color.WHITE);
+							
+							toggle.setBackground(new Color(204, 255, 225));
+							
+							new TaskLater(1)
+							{
+								
+								@Override
+								public void run()
+								{
+									toggle.setBackground(Color.WHITE);
+								}
+							};
 						}
 						
 						catch(Exception ex)
 						{
-							toggle.setBackground(Color.RED);
+							toggle.setBackground(new Color(255, 204, 204));
 						}
 					}
 					
@@ -171,6 +207,18 @@ public class ConfigurationUI extends JFrame
 						
 						cc.set(i, text);
 						d.v(i + " <> " + text.toString(", "));
+						
+						toggle.setBackground(new Color(204, 255, 225));
+						
+						new TaskLater(1)
+						{
+							
+							@Override
+							public void run()
+							{
+								toggle.setBackground(Color.WHITE);
+							}
+						};
 					}
 					
 					@Override
@@ -206,12 +254,22 @@ public class ConfigurationUI extends JFrame
 						{
 							cc.set(i, Integer.valueOf(toggle.textbox.getText()));
 							d.v(i + " <> " + toggle.textbox.getText());
-							toggle.setBackground(Color.WHITE);
+							toggle.setBackground(new Color(204, 255, 225));
+							
+							new TaskLater(1)
+							{
+								
+								@Override
+								public void run()
+								{
+									toggle.setBackground(Color.WHITE);
+								}
+							};
 						}
 						
 						catch(Exception ex)
 						{
-							toggle.setBackground(Color.RED);
+							toggle.setBackground(new Color(255, 204, 204));
 						}
 					}
 					
@@ -248,12 +306,22 @@ public class ConfigurationUI extends JFrame
 						{
 							cc.set(i, Long.valueOf(toggle.textbox.getText()));
 							d.v(i + " <> " + toggle.textbox.getText());
-							toggle.setBackground(Color.WHITE);
+							toggle.setBackground(new Color(204, 255, 225));
+							
+							new TaskLater(1)
+							{
+								
+								@Override
+								public void run()
+								{
+									toggle.setBackground(Color.WHITE);
+								}
+							};
 						}
 						
 						catch(Exception ex)
 						{
-							toggle.setBackground(Color.RED);
+							toggle.setBackground(new Color(255, 204, 204));
 						}
 					}
 					
