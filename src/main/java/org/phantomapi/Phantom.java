@@ -280,27 +280,27 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		if(!getEnvironmentData().contains("phantom-status-database-failure"))
 		{
-			setEnvironmentData(this, "status-database-failure", true);
+			setEnvironmentData(this, "status-database-failure", false);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-data-failure"))
 		{
-			setEnvironmentData(this, "status-data-failure", true);
+			setEnvironmentData(this, "status-data-failure", false);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-plugin-failure"))
 		{
-			setEnvironmentData(this, "status-plugin-failure", true);
+			setEnvironmentData(this, "status-plugin-failure", false);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-api-failure"))
 		{
-			setEnvironmentData(this, "status-api-failure", true);
+			setEnvironmentData(this, "status-api-failure", false);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-network-failure"))
 		{
-			setEnvironmentData(this, "status-network-failure", true);
+			setEnvironmentData(this, "status-network-failure", false);
 		}
 		
 		try
@@ -2029,6 +2029,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Well hello there dan from the future, fuck you.");
 		msgx.add("Welcome to the shadows");
 		msgx.add("The shadows win");
+		msgx.add("You're not the brightest dildo in the shoe factory, are ya?");
 		msgx.add("Light is voided shadows");
 		msgx.add("The Shadow of Bukkit");
 		msgx.add("A Shadow");
