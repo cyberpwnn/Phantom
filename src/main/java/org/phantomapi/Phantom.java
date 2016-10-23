@@ -280,27 +280,27 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		if(!getEnvironmentData().contains("phantom-status-database-failure"))
 		{
-			setEnvironmentData(this, "status-database-failure", false);
+			setEnvironmentData(this, "status-database-failure", true);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-data-failure"))
 		{
-			setEnvironmentData(this, "status-data-failure", false);
+			setEnvironmentData(this, "status-data-failure", true);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-plugin-failure"))
 		{
-			setEnvironmentData(this, "status-plugin-failure", false);
+			setEnvironmentData(this, "status-plugin-failure", true);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-api-failure"))
 		{
-			setEnvironmentData(this, "status-api-failure", false);
+			setEnvironmentData(this, "status-api-failure", true);
 		}
 		
 		if(!getEnvironmentData().contains("phantom-status-network-failure"))
 		{
-			setEnvironmentData(this, "status-network-failure", false);
+			setEnvironmentData(this, "status-network-failure", true);
 		}
 		
 		try
