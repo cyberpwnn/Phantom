@@ -766,7 +766,7 @@ public class TestController extends Controller
 					Long[] last = new Long[] {M.ms()};
 					Long[] lastd = new Long[] {M.ms()};
 					
-					Wraith wraith = new PhantomWraith(C.LIGHT_PURPLE + "Wraith")
+					Wraith wraith = new PhantomWraith(C.LIGHT_PURPLE + "Wraith", TestController.this)
 					{
 						@Override
 						public void onTick()
