@@ -879,6 +879,7 @@ public class W
 		
 		new RayTrace(e.getLocation(), e.getLocation().getDirection(), range, (double) 1)
 		{
+			@Override
 			public void onTrace(Location l)
 			{
 				Area a = new Area(l, doff);
