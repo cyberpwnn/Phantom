@@ -3,7 +3,6 @@ package org.phantomapi.inventory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -292,7 +291,6 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 		return i.getHelmet();
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack getItemInHand()
 	{
@@ -335,7 +333,6 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 		i.setHelmet(arg0);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setItemInHand(ItemStack arg0)
 	{
@@ -346,59 +343,5 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 	public void setLeggings(ItemStack arg0)
 	{
 		i.setLeggings(arg0);
-	}
-	
-	@Override
-	public ItemStack[] getExtraContents()
-	{
-		return i.getExtraContents();
-	}
-	
-	@Override
-	public ItemStack getItemInMainHand()
-	{
-		return i.getItemInMainHand();
-	}
-	
-	@Override
-	public ItemStack getItemInOffHand()
-	{
-		return i.getItemInOffHand();
-	}
-	
-	@Override
-	public void setExtraContents(ItemStack[] arg0)
-	{
-		i.setExtraContents(arg0);
-	}
-	
-	@Override
-	public void setItemInMainHand(ItemStack arg0)
-	{
-		i.setItemInMainHand(arg0);
-	}
-	
-	@Override
-	public void setItemInOffHand(ItemStack arg0)
-	{
-		i.setItemInOffHand(arg0);
-	}
-	
-	@Override
-	public Location getLocation()
-	{
-		return i.getLocation();
-	}
-	
-	@Override
-	public ItemStack[] getStorageContents()
-	{
-		return i.getStorageContents();
-	}
-	
-	@Override
-	public void setStorageContents(ItemStack[] arg0) throws IllegalArgumentException
-	{
-		i.setStorageContents(arg0);
 	}
 }
