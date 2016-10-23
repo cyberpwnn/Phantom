@@ -380,7 +380,6 @@ public class EventRippler extends Controller implements Monitorable
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerInteractEvent e)
 	{
