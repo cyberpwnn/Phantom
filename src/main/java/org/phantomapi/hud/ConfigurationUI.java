@@ -1,6 +1,11 @@
 package org.phantomapi.hud;
 
+import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,6 +52,16 @@ public class ConfigurationUI extends JFrame
 				toggle.toggle.setToolTipText("This field can either be true or false");
 				toggle.title.setText(i);
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.toggle.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						cc.set(i, toggle.toggle.isSelected());
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
@@ -57,6 +72,16 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setText(cc.getString(i));
 				toggle.textbox.setToolTipText("Can be any string of text");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.textbox.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						cc.set(i, toggle.textbox.getText());
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
@@ -67,6 +92,25 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setText(String.valueOf(cc.getDouble(i)));
 				toggle.textbox.setToolTipText("Must be a number with optional decimals. Example 2.12 or 0.004434");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.textbox.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						try
+						{
+							cc.set(i, Double.valueOf(toggle.textbox.getText()));
+							toggle.setBackground(Color.WHITE);
+						}
+						
+						catch(Exception ex)
+						{
+							toggle.setBackground(Color.RED);
+						}
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
@@ -77,6 +121,35 @@ public class ConfigurationUI extends JFrame
 				toggle.content.setToolTipText("Each new line (excluding word wrapping) denotes a new line");
 				toggle.content.setText(new GList<String>(cc.getStringList(i)).toString("\n"));
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.content.addKeyListener(new KeyListener()
+				{
+					@Override
+					public void keyTyped(KeyEvent e)
+					{
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e)
+					{
+						GList<String> text = new GList<String>();
+						
+						for(String j : toggle.content.getText().split("\n"))
+						{
+							text.add(j.trim());
+						}
+						
+						cc.set(i, text);
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
@@ -87,6 +160,25 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setText(String.valueOf(cc.getInt(i)));
 				toggle.textbox.setToolTipText("Must be a number without decimal points.");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.textbox.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						try
+						{
+							cc.set(i, Integer.valueOf(toggle.textbox.getText()));
+							toggle.setBackground(Color.WHITE);
+						}
+						
+						catch(Exception ex)
+						{
+							toggle.setBackground(Color.RED);
+						}
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
@@ -97,6 +189,25 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setToolTipText("Must be a number without decimal points. (OR REALLY BIG TOO)");
 				toggle.textbox.setText(String.valueOf(cc.getInt(i)));
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
+				
+				toggle.textbox.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						try
+						{
+							cc.set(i, Long.valueOf(toggle.textbox.getText()));
+							toggle.setBackground(Color.WHITE);
+						}
+						
+						catch(Exception ex)
+						{
+							toggle.setBackground(Color.RED);
+						}
+					}
+				});
+				
 				panel.add(toggle);
 			}
 			
