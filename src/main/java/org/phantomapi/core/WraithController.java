@@ -1,8 +1,10 @@
 package org.phantomapi.core;
 
+import org.bukkit.event.EventHandler;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.C;
 import org.phantomapi.wraith.Wraith;
@@ -20,7 +22,7 @@ public class WraithController extends Controller
 		
 		wraiths = new GList<Wraith>();
 	}
-
+	
 	@Override
 	public void onStart()
 	{
@@ -35,7 +37,21 @@ public class WraithController extends Controller
 			i.tick();
 		}
 	}
-
+	
+	@EventHandler
+	public void on(ControllerStopEvent e)
+	{
+		for(Wraith i : wraiths.copy())
+		{
+			if(i.getBase().equals(e.getControllable()))
+			{
+				i.despawn();
+				i.destroy();
+				unRegisterWraith(i);
+			}
+		}
+	}
+	
 	@Override
 	public void onStop()
 	{
@@ -68,7 +84,7 @@ public class WraithController extends Controller
 	{
 		wraiths.remove(wraith);
 	}
-
+	
 	public Wraith get(int entityID)
 	{
 		for(Wraith i : wraiths)
