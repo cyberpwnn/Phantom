@@ -13,7 +13,6 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -1002,21 +1001,6 @@ public class NMSX
 		for(Player i : Phantom.instance().onlinePlayers())
 		{
 			hideEntity(i, e);
-		}
-	}
-	
-	/**
-	 * Forces all audio channels to stop playing by forcing new fast sounds in
-	 * there instead
-	 * 
-	 * @param l
-	 *            the location to ear-rape
-	 */
-	public static void stopAudio(Location l)
-	{
-		for(int i = 0; i < 64; i++)
-		{
-			l.getWorld().playSound(l, Sound.ANVIL_LAND, 12f, 1.0f);
 		}
 	}
 	
