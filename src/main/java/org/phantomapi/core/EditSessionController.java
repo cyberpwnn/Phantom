@@ -11,6 +11,7 @@ import org.phantomapi.sync.S;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.PPAFormat;
 import org.phantomapi.world.PhantomEditSession;
+import org.phantomapi.world.PhantomWorld;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 
 @Ticked(0)
@@ -81,7 +82,7 @@ public class EditSessionController extends Controller
 	{
 		if(!sessions.containsKey(w))
 		{
-			sessions.put(w, new PhantomEditSession(w));
+			sessions.put(w, new PhantomEditSession(new PhantomWorld(w)));
 		}
 		
 		return sessions.get(w);
