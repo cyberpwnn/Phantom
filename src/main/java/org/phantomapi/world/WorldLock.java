@@ -46,7 +46,6 @@ public class WorldLock implements Listener
 	/**
 	 * Lock the world
 	 */
-	@SuppressWarnings("deprecation")
 	public void lock()
 	{
 		Phantom.instance().registerListener(this);
