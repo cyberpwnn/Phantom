@@ -175,6 +175,7 @@ public class TestController extends Controller
 		
 		tests.put("papyrus", new Runnable()
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run()
 			{
@@ -331,6 +332,7 @@ public class TestController extends Controller
 		
 		tests.put("read-book", new Runnable()
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run()
 			{
@@ -952,6 +954,7 @@ public class TestController extends Controller
 			{
 				new Task(0)
 				{
+					@SuppressWarnings("deprecation")
 					@Override
 					public void run()
 					{
