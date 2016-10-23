@@ -351,63 +351,54 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 	@Override
 	public ItemStack[] getExtraContents()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getExtraContents();
 	}
 	
 	@Override
 	public ItemStack getItemInMainHand()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getItemInMainHand();
 	}
 	
 	@Override
 	public ItemStack getItemInOffHand()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getItemInOffHand();
 	}
 	
 	@Override
 	public void setExtraContents(ItemStack[] arg0)
 	{
-		// TODO Auto-generated method stub
-		
+		i.setExtraContents(arg0);
 	}
 	
 	@Override
 	public void setItemInMainHand(ItemStack arg0)
 	{
-		// TODO Auto-generated method stub
-		
+		i.setItemInMainHand(arg0);
 	}
 	
 	@Override
 	public void setItemInOffHand(ItemStack arg0)
 	{
-		// TODO Auto-generated method stub
-		
+		i.setItemInOffHand(arg0);
 	}
 	
 	@Override
 	public Location getLocation()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getLocation();
 	}
 	
 	@Override
 	public ItemStack[] getStorageContents()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getStorageContents();
 	}
 	
 	@Override
 	public void setStorageContents(ItemStack[] arg0) throws IllegalArgumentException
 	{
-		// TODO Auto-generated method stub
-		
+		i.setStorageContents(arg0);
 	}
 }

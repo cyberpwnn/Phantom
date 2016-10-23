@@ -259,21 +259,18 @@ public class PhantomInventory implements PhantomInventoryWrapper
 	@Override
 	public Location getLocation()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getLocation();
 	}
 	
 	@Override
 	public ItemStack[] getStorageContents()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return i.getStorageContents();
 	}
 	
 	@Override
 	public void setStorageContents(ItemStack[] arg0) throws IllegalArgumentException
 	{
-		// TODO Auto-generated method stub
-		
+		i.setStorageContents(arg0);
 	}
 }

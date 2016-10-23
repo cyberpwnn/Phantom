@@ -1265,7 +1265,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.EXPLODE);
+				Audible a = new GSound(Sound.ENTITY_GENERIC_EXPLODE);
 				a.setPitch(0.3f);
 				a = new MFADistortion(4, 1.8f).distort(a);
 				
@@ -1281,7 +1281,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.SPLASH);
+				Audible a = new GSound(Sound.ENTITY_PLAYER_SPLASH);
 				a.setPitch(0.3f);
 				a = new MFADistortion(8, 1.4f).distort(a);
 				
@@ -1297,7 +1297,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.ANVIL_LAND);
+				Audible a = new GSound(Sound.BLOCK_ANVIL_LAND);
 				a.setPitch(0.6f);
 				a.setVolume(0.4f);
 				a = new MFADistortion(18, 1.4f).distort(a);
@@ -1314,7 +1314,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.SLIME_WALK2);
+				Audible a = new GSound(Sound.ENTITY_SLIME_SQUISH);
 				a.setPitch(0.2f);
 				a = new MFADistortion(12, 0.8f).distort(a);
 				
@@ -1337,7 +1337,7 @@ public class TestController extends Controller
 					@Override
 					public void run()
 					{
-						Audible a = new GSound(Sound.FIREWORK_LARGE_BLAST2);
+						Audible a = new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST);
 						a.setPitch(0.1f + ix[0]);
 						a.setVolume(ix[0]);
 						a = new MFADistortion(12, 1.0f).distort(a);
@@ -1358,7 +1358,7 @@ public class TestController extends Controller
 								@Override
 								public void run()
 								{
-									Audible a = new GSound(Sound.WITHER_DEATH);
+									Audible a = new GSound(Sound.ENTITY_WITHER_DEATH);
 									a.setPitch(0.7f);
 									a = new MFADistortion(4, 1.8f).distort(a);
 									
