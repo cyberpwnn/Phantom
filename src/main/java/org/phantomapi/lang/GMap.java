@@ -224,4 +224,56 @@ public class GMap<K, V> extends ConcurrentHashMap<K, V>
 			put(k, v);
 		}
 	}
+	
+	/**
+	 * Sort keys based on values sorted
+	 * 
+	 * @return the sorted keys
+	 */
+	public GList<K> sortK()
+	{
+		GList<K> k = new GList<K>();
+		GList<V> v = v();
+		
+		v.sort();
+		
+		for(V i : v)
+		{
+			for(K j : k())
+			{
+				if(get(j).equals(i))
+				{
+					k.add(j);
+				}
+			}
+		}
+		
+		return k;
+	}
+	
+	/**
+	 * Sort values based on keys sorted
+	 * 
+	 * @return the sorted values
+	 */
+	public GList<V> sortV()
+	{
+		GList<V> v = new GList<V>();
+		GList<K> k = k();
+		
+		k.sort();
+		
+		for(K i : k)
+		{
+			for(V j : v())
+			{
+				if(get(i).equals(j))
+				{
+					v.add(j);
+				}
+			}
+		}
+		
+		return v;
+	}
 }
