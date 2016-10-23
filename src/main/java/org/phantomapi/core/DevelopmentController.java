@@ -120,22 +120,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 						{
 							if(i.getName().equalsIgnoreCase("Phantom"))
 							{
-								new A()
-								{
-									@Override
-									public void async()
-									{
-										new S()
-										{
-											@Override
-											public void sync()
-											{
-												Bukkit.reload();
-											}
-										};
-									}
-								};
-								
+								Bukkit.reload();
 								return;
 							}
 							
