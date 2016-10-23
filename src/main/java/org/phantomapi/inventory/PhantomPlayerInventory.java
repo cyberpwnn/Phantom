@@ -3,6 +3,7 @@ package org.phantomapi.inventory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -291,6 +292,7 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 		return i.getHelmet();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack getItemInHand()
 	{
@@ -333,6 +335,7 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 		i.setHelmet(arg0);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setItemInHand(ItemStack arg0)
 	{
@@ -343,5 +346,68 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 	public void setLeggings(ItemStack arg0)
 	{
 		i.setLeggings(arg0);
+	}
+	
+	@Override
+	public ItemStack[] getExtraContents()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ItemStack getItemInMainHand()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ItemStack getItemInOffHand()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void setExtraContents(ItemStack[] arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setItemInMainHand(ItemStack arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setItemInOffHand(ItemStack arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public Location getLocation()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ItemStack[] getStorageContents()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void setStorageContents(ItemStack[] arg0) throws IllegalArgumentException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
