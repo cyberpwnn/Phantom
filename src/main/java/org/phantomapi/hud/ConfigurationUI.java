@@ -2,8 +2,8 @@ package org.phantomapi.hud;
 
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.BoxLayout;
@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.DataCluster.ClusterDataType;
 import org.phantomapi.lang.GList;
+import org.phantomapi.util.D;
 
 public class ConfigurationUI extends JFrame
 {
@@ -26,6 +27,7 @@ public class ConfigurationUI extends JFrame
 	 */
 	public ConfigurationUI(DataCluster cc)
 	{
+		D d = new D("Wormhole");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ConfigurationUI.class.getResource("/org/phantomapi/phantom.png")));
 		HudUtil.setSystemUi();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -53,12 +55,13 @@ public class ConfigurationUI extends JFrame
 				toggle.title.setText(i);
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
 				
-				toggle.toggle.addActionListener(new ActionListener()
+				toggle.toggle.addItemListener(new ItemListener()
 				{
 					@Override
-					public void actionPerformed(ActionEvent e)
+					public void itemStateChanged(ItemEvent e)
 					{
 						cc.set(i, toggle.toggle.isSelected());
+						d.v(i + " <> " + toggle.toggle.isSelected());
 					}
 				});
 				
@@ -73,12 +76,25 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setToolTipText("Can be any string of text");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
 				
-				toggle.textbox.addActionListener(new ActionListener()
+				toggle.textbox.addKeyListener(new KeyListener()
 				{
 					@Override
-					public void actionPerformed(ActionEvent e)
+					public void keyTyped(KeyEvent e)
+					{
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e)
 					{
 						cc.set(i, toggle.textbox.getText());
+						d.v(i + " <> " + toggle.textbox.getText());
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						
 					}
 				});
 				
@@ -93,14 +109,21 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setToolTipText("Must be a number with optional decimals. Example 2.12 or 0.004434");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
 				
-				toggle.textbox.addActionListener(new ActionListener()
+				toggle.textbox.addKeyListener(new KeyListener()
 				{
 					@Override
-					public void actionPerformed(ActionEvent e)
+					public void keyTyped(KeyEvent e)
+					{
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e)
 					{
 						try
 						{
 							cc.set(i, Double.valueOf(toggle.textbox.getText()));
+							d.v(i + " <> " + toggle.textbox.getText());
 							toggle.setBackground(Color.WHITE);
 						}
 						
@@ -108,6 +131,12 @@ public class ConfigurationUI extends JFrame
 						{
 							toggle.setBackground(Color.RED);
 						}
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						
 					}
 				});
 				
@@ -141,6 +170,7 @@ public class ConfigurationUI extends JFrame
 						}
 						
 						cc.set(i, text);
+						d.v(i + " <> " + text.toString(", "));
 					}
 					
 					@Override
@@ -161,14 +191,21 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setToolTipText("Must be a number without decimal points.");
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
 				
-				toggle.textbox.addActionListener(new ActionListener()
+				toggle.textbox.addKeyListener(new KeyListener()
 				{
 					@Override
-					public void actionPerformed(ActionEvent e)
+					public void keyTyped(KeyEvent e)
+					{
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e)
 					{
 						try
 						{
 							cc.set(i, Integer.valueOf(toggle.textbox.getText()));
+							d.v(i + " <> " + toggle.textbox.getText());
 							toggle.setBackground(Color.WHITE);
 						}
 						
@@ -176,6 +213,12 @@ public class ConfigurationUI extends JFrame
 						{
 							toggle.setBackground(Color.RED);
 						}
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						
 					}
 				});
 				
@@ -190,14 +233,21 @@ public class ConfigurationUI extends JFrame
 				toggle.textbox.setText(String.valueOf(cc.getInt(i)));
 				toggle.text.setText("[" + cc.getType(i) + "] " + cc.getComment(i));
 				
-				toggle.textbox.addActionListener(new ActionListener()
+				toggle.textbox.addKeyListener(new KeyListener()
 				{
 					@Override
-					public void actionPerformed(ActionEvent e)
+					public void keyTyped(KeyEvent e)
+					{
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e)
 					{
 						try
 						{
 							cc.set(i, Long.valueOf(toggle.textbox.getText()));
+							d.v(i + " <> " + toggle.textbox.getText());
 							toggle.setBackground(Color.WHITE);
 						}
 						
@@ -205,6 +255,12 @@ public class ConfigurationUI extends JFrame
 						{
 							toggle.setBackground(Color.RED);
 						}
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						
 					}
 				});
 				
