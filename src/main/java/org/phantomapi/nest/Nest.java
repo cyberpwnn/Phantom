@@ -78,6 +78,7 @@ public class Nest
 	 * @param p
 	 *            the player
 	 */
+	@SuppressWarnings("deprecation")
 	public static void giveMap(Player p)
 	{
 		ItemStack is = new ItemStack(Material.MAP);
