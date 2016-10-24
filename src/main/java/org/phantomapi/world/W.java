@@ -1,19 +1,23 @@
 package org.phantomapi.world;
 
 import java.util.Collection;
+import java.util.Iterator;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.material.MaterialData;
@@ -25,6 +29,15 @@ import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.GSound;
+import org.phantomapi.nms.NMSX;
+import org.phantomapi.physics.VectorMath;
+import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.FinalDouble;
+import org.phantomapi.util.FinalInteger;
+import org.phantomapi.util.M;
+import org.phantomapi.vfx.ParticleEffect;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.boydti.fawe.object.FawePlayer;
 import com.sk89q.worldedit.regions.Region;
@@ -936,5 +949,101 @@ public class W
 	public static double differenceOfVectors(Vector a, Vector b)
 	{
 		return a.distanceSquared(b);
+	}
+	
+	public static void createNovaExplosion(Location l, double power, int fuse, double random, double blockRatio)
+	{
+		GList<Entity> entities = new GList<Entity>();
+		Area a = new Area(l.clone(), power);
+		FinalInteger push = new FinalInteger(0);
+		FinalInteger k = new FinalInteger(0);
+		FinalDouble build = new FinalDouble(0);
+		Iterator<Block> blocks = a.toCuboid().iterator();
+		
+		while(blocks.hasNext())
+		{
+			Block b = blocks.next();
+			
+			if(b.getType().isSolid() && b.getLocation().distance(l.clone()) <= power * ((1.0 - random) + (Math.random() * random)))
+			{
+				if(M.r(blockRatio))
+				{
+					FallingBlock f = (FallingBlock) NMSX.createFallingBlock(b.getLocation());
+					f.setHurtEntities(true);
+					entities.add(f);
+				}
+				
+				b.setType(Material.AIR);
+			}
+		}
+		
+		for(Entity i : a.getNearbyEntities())
+		{
+			entities.add(i);
+		}
+		
+		new TaskLater(fuse)
+		{
+			@Override
+			public void run()
+			{
+				push.set(1);
+				
+				for(Entity i : entities)
+				{
+					i.setVelocity(VectorMath.direction(l.clone(), i.getLocation()).multiply(2.6));
+				}
+				
+				ParticleEffect.EXPLOSION_HUGE.display(4f, 4, l, 32);
+				new GSound(Sound.EXPLODE, 3.7f, 0.6f).play(l);
+				new GSound(Sound.EXPLODE, 3.7f, 0.2f).play(l);
+				new GSound(Sound.WITHER_DEATH, 3.7f, 0.5f + (float) build.get()).play(l);
+				new GSound(Sound.WITHER_DEATH, 3.7f, 0.566f + (float) build.get()).play(l);
+			}
+		};
+		
+		new Task(0)
+		{
+			@Override
+			public void run()
+			{
+				if(push.get() == 0)
+				{
+					k.add(1);
+					build.set((double) k.get() / (double) fuse);
+					
+					for(Entity i : entities)
+					{
+						if(!i.getLocation().getBlock().getType().equals(Material.AIR))
+						{
+							i.getLocation().getBlock().setType(Material.AIR);
+						}
+						
+						i.setVelocity(i.getVelocity().clone().add(VectorMath.direction(i.getLocation(), l.clone()).multiply(build.get() * 1.212)));
+					}
+					
+					new GSound(Sound.BAT_TAKEOFF, 2.0f, 0.4f + (float) build.get()).play(l);
+					
+					ParticleEffect.ENCHANTMENT_TABLE.display((float) (10.0 * build.get()), (int) (20.0 * build.get()), l, 32);
+				}
+				
+				else
+				{
+					cancel();
+				}
+			}
+		};
+	}
+	
+	public static void explodeBlocks(EntityExplodeEvent e)
+	{
+		for(Block i : e.blockList())
+		{
+			if(!i.isLiquid() && i.getType().isSolid() && !i.getType().equals(Material.TNT))
+			{
+				Entity f = NMSX.createFallingBlock(i.getLocation());
+				f.setVelocity(VectorMath.direction(e.getLocation(), f.getLocation()).setY(1).multiply(1.4 * e.getYield()));
+			}
+		}
 	}
 }
