@@ -2,7 +2,6 @@ package org.phantomapi.world;
 
 import java.util.HashSet;
 import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -38,6 +37,11 @@ public class Area
 	{
 		this.location = location;
 		this.radius = radius;
+	}
+	
+	public Cuboid toCuboid()
+	{
+		return new Cuboid(location.clone().add(radius, radius, radius), location.clone().subtract(radius, radius, radius));
 	}
 	
 	/**
@@ -106,6 +110,7 @@ public class Area
 	
 	/**
 	 * But does it have any entities?
+	 * 
 	 * @return
 	 */
 	public boolean hasEntities()
@@ -217,7 +222,6 @@ public class Area
 	 * Pick a random location in this radius
 	 * 
 	 * @return
-	 * 
 	 */
 	public Location random()
 	{
