@@ -23,6 +23,7 @@ import org.phantomapi.Phantom;
 import org.phantomapi.ext.Protocol;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.ExceptionUtil;
+import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
@@ -464,6 +465,33 @@ public class NMSX
 	public void resetTime(Player p)
 	{
 		p.resetPlayerTime();
+	}
+	
+	/**
+	 * Create a falling block
+	 * 
+	 * @param location
+	 *            the location
+	 * @param mb
+	 *            the materialblock
+	 * @return the falling entity
+	 */
+	@SuppressWarnings("deprecation")
+	public Entity createFallingBlock(Location location, MaterialBlock mb)
+	{
+		return location.getWorld().spawnFallingBlock(location, mb.getMaterial(), mb.getData());
+	}
+	
+	/**
+	 * Create a falling block
+	 * 
+	 * @param location
+	 *            the location
+	 * @return the falling block entity
+	 */
+	public Entity createFallingBlock(Location location)
+	{
+		return createFallingBlock(location, new MaterialBlock(location));
 	}
 	
 	/**
