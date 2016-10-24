@@ -17,6 +17,10 @@ import org.phantomapi.world.Area;
  */
 public class M
 {
+	private static final int precision = 128;
+	private static final int modulus = 360 * precision;
+	private static final float[] sin = new float[modulus];
+	
 	/**
 	 * Evaluates an expression using javascript engine and returns the double
 	 * 
@@ -346,6 +350,28 @@ public class M
 	}
 	
 	/**
+	 * Fast sin function
+	 * 
+	 * @param a
+	 *            the number
+	 * @return the sin
+	 */
+	public static float sin(float a)
+	{
+		return sinLookup((int) (a * precision + 0.5f));
+	}
+	
+	/**
+	 * 
+	 * @param a
+	 *            the number
+	 */
+	public static float cos(float a)
+	{
+		return sinLookup((int) ((a + 90f) * precision + 0.5f));
+	}
+	
+	/**
 	 * Biggest number
 	 * 
 	 * @param ints
@@ -403,5 +429,18 @@ public class M
 	public static boolean within(int from, int to, int is)
 	{
 		return is >= from && is <= to;
+	}
+	
+	static
+	{
+		for(int i = 0; i < sin.length; i++)
+		{
+			sin[i] = (float) Math.sin((i * Math.PI) / (precision * 180));
+		}
+	}
+	
+	private static float sinLookup(int a)
+	{
+		return a >= 0 ? sin[a % (modulus)] : -sin[-a % (modulus)];
 	}
 }
