@@ -362,9 +362,11 @@ public class M
 	}
 	
 	/**
+	 * Fast cos function
 	 * 
 	 * @param a
 	 *            the number
+	 * @return the cos
 	 */
 	public static float cos(float a)
 	{
