@@ -477,7 +477,7 @@ public class NMSX
 	 * @return the falling entity
 	 */
 	@SuppressWarnings("deprecation")
-	public Entity createFallingBlock(Location location, MaterialBlock mb)
+	public static Entity createFallingBlock(Location location, MaterialBlock mb)
 	{
 		return location.getWorld().spawnFallingBlock(location, mb.getMaterial(), mb.getData());
 	}
@@ -489,7 +489,7 @@ public class NMSX
 	 *            the location
 	 * @return the falling block entity
 	 */
-	public Entity createFallingBlock(Location location)
+	public static Entity createFallingBlock(Location location)
 	{
 		return createFallingBlock(location, new MaterialBlock(location));
 	}
