@@ -11,14 +11,13 @@ import org.phantomapi.sfx.Audible;
  * A GSound can play a sound
  * 
  * @author cyberpwn
- *
  */
 public class GSound implements Audible
 {
 	private String sound;
 	private Sound iSound;
-	private Float volume;
-	private Float pitch;
+	private float volume;
+	private float pitch;
 	
 	/**
 	 * Create a sound object
@@ -30,7 +29,7 @@ public class GSound implements Audible
 	 * @param pitch
 	 *            the pitch
 	 */
-	public GSound(String sound, Float volume, Float pitch)
+	public GSound(String sound, float volume, float pitch)
 	{
 		this.sound = sound;
 		this.volume = volume;
@@ -49,7 +48,7 @@ public class GSound implements Audible
 	 * @param pitch
 	 *            the pitch
 	 */
-	public GSound(Sound iSound, String sound, Float volume, Float pitch)
+	public GSound(Sound iSound, String sound, float volume, float pitch)
 	{
 		this.iSound = iSound;
 		this.sound = sound;
@@ -66,8 +65,8 @@ public class GSound implements Audible
 	public GSound(String sound)
 	{
 		this.sound = sound;
-		this.volume = 1f;
-		this.pitch = 1f;
+		volume = 1f;
+		pitch = 1f;
 	}
 	
 	/**
@@ -77,7 +76,7 @@ public class GSound implements Audible
 	 * @param volume
 	 * @param pitch
 	 */
-	public GSound(Sound iSound, Float volume, Float pitch)
+	public GSound(Sound iSound, float volume, float pitch)
 	{
 		this.iSound = iSound;
 		this.volume = volume;
@@ -93,8 +92,8 @@ public class GSound implements Audible
 	public GSound(Sound iSound)
 	{
 		this.iSound = iSound;
-		this.volume = 1f;
-		this.pitch = 1f;
+		volume = 1f;
+		pitch = 1f;
 	}
 	
 	public void prePlay()
@@ -110,6 +109,7 @@ public class GSound implements Audible
 	 * @param l
 	 *            the location
 	 */
+	@Override
 	public void play(Player p, Location l)
 	{
 		prePlay();
@@ -133,6 +133,7 @@ public class GSound implements Audible
 	 * @param p
 	 *            the player
 	 */
+	@Override
 	public void play(Player p)
 	{
 		play(p, p.getLocation());
@@ -141,6 +142,7 @@ public class GSound implements Audible
 	/**
 	 * clone it
 	 */
+	@Override
 	public Audible clone()
 	{
 		return new GSound(iSound, sound, volume, pitch);
@@ -152,6 +154,7 @@ public class GSound implements Audible
 	 * @param l
 	 *            the location
 	 */
+	@Override
 	public void play(Location l)
 	{
 		prePlay();
@@ -177,6 +180,7 @@ public class GSound implements Audible
 	 * @param v
 	 *            the vector related to the players location
 	 */
+	@Override
 	public void play(Player p, Vector v)
 	{
 		prePlay();
@@ -243,6 +247,7 @@ public class GSound implements Audible
 	 * 
 	 * @return the volume
 	 */
+	@Override
 	public Float getVolume()
 	{
 		return volume;
@@ -254,6 +259,7 @@ public class GSound implements Audible
 	 * @param volume
 	 *            the volume
 	 */
+	@Override
 	public void setVolume(Float volume)
 	{
 		this.volume = volume;
@@ -264,6 +270,7 @@ public class GSound implements Audible
 	 * 
 	 * @return the pitch
 	 */
+	@Override
 	public Float getPitch()
 	{
 		return pitch;
@@ -275,6 +282,7 @@ public class GSound implements Audible
 	 * @param pitch
 	 *            the pitch
 	 */
+	@Override
 	public void setPitch(Float pitch)
 	{
 		this.pitch = pitch;
