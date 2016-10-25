@@ -1,4 +1,4 @@
-# Phantom SHADOW
+# Phantom ENTROPY
 [![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
 [![](phantom-micro.png)](https://github.com/cyberpwnn/Phantom/releases)
 
