@@ -951,7 +951,23 @@ public class W
 		return a.distanceSquared(b);
 	}
 	
-	public static void createNovaExplosion(Location l, double power, int fuse, double random, double blockRatio)
+	/**
+	 * Drop a nova bomb
+	 * 
+	 * @param l
+	 *            the given location
+	 * @param power
+	 *            the power/radius
+	 * @param fuse
+	 *            the fuse in ticks
+	 * @param random
+	 *            the randomness of blocks pulled
+	 * @param blockRatio
+	 *            the ratio of entities to blocks
+	 * @param vol
+	 *            the volitility
+	 */
+	public static void createNovaExplosion(Location l, double power, int fuse, double random, double blockRatio, double vol)
 	{
 		GList<Entity> entities = new GList<Entity>();
 		Area a = new Area(l.clone(), power);
@@ -1019,7 +1035,7 @@ public class W
 							i.getLocation().getBlock().setType(Material.AIR);
 						}
 						
-						i.setVelocity(i.getVelocity().clone().add(VectorMath.direction(i.getLocation(), l.clone()).multiply(build.get() * 1.212)));
+						i.setVelocity(i.getVelocity().clone().add(VectorMath.direction(i.getLocation(), l.clone()).multiply(build.get() * vol)));
 					}
 					
 					new GSound(Sound.BAT_TAKEOFF, 2.0f, 0.4f + (float) build.get()).play(l);
