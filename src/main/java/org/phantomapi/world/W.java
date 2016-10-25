@@ -14,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -984,8 +983,7 @@ public class W
 			{
 				if(M.r(blockRatio))
 				{
-					FallingBlock f = (FallingBlock) NMSX.createFallingBlock(b.getLocation());
-					f.setHurtEntities(true);
+					Entity f = NMSX.createFallingBlock(b.getLocation());
 					entities.add(f);
 				}
 				
