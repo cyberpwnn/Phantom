@@ -151,8 +151,6 @@ public class NestController extends Controller implements Monitorable, Probe
 			{
 				ExceptionUtil.print(ex);
 			}
-			
-			save(c);
 		}
 		
 		Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
@@ -247,7 +245,6 @@ public class NestController extends Controller implements Monitorable, Probe
 			public void run()
 			{
 				Chunk i = e.getChunk();
-				GChunk gc = new GChunk(i);
 				File file = NestUtil.getChunkFile(new GChunk(i));
 				loading.add(i);
 				
@@ -268,7 +265,6 @@ public class NestController extends Controller implements Monitorable, Probe
 							catch(Exception e)
 							{
 								f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ());
-								nc = load(gc);
 							}
 							
 							if(nc != null)
@@ -397,8 +393,6 @@ public class NestController extends Controller implements Monitorable, Probe
 				{
 					ExceptionUtil.print(ex);
 				}
-				
-				save(c);
 			}
 		};
 	}
