@@ -3,6 +3,7 @@ package org.phantomapi.core;
 import java.io.File;
 import java.io.IOException;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,6 +12,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.JSONDataInput;
+import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -34,6 +37,7 @@ import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Probe;
+import org.phantomapi.world.W;
 
 /**
  * Loads nest chunks
@@ -147,9 +151,80 @@ public class NestController extends Controller implements Monitorable, Probe
 			{
 				ExceptionUtil.print(ex);
 			}
+			
+			save(c);
 		}
 		
 		Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
+	}
+	
+	public NestedChunk load(GChunk c)
+	{
+		NestedChunk nc = new NestedChunk(c);
+		DataCluster cc = new DataCluster();
+		
+		try
+		{
+			new JSONDataInput().load(cc, NestUtil.getChunkAuxFile(c));
+		}
+		
+		catch(IOException e)
+		{
+			return null;
+		}
+		
+		GSet<String> hashes = new GSet<String>();
+		DataCluster blocks = cc.crop("b");
+		
+		for(String i : blocks.keys())
+		{
+			if(i.contains("."))
+			{
+				hashes.add(i.split("\\.")[0]);
+			}
+		}
+		
+		for(String i : hashes)
+		{
+			int x = Integer.valueOf(i.split("\\.")[0]);
+			int y = Integer.valueOf(i.split("\\.")[1]);
+			int z = Integer.valueOf(i.split("\\.")[2]);
+			Location l = new Location(W.getAsyncWorld(c.getWorld()), x, y, z);
+			GLocation loc = new GLocation(l);
+			NestedBlock block = new NestedBlock(loc);
+			DataCluster bd = blocks.crop(i);
+			block.add(bd);
+			nc.getBlocks().put(loc, block);
+		}
+		
+		DataCluster chunk = cc.crop("c");
+		nc.add(chunk);
+		
+		return nc;
+	}
+	
+	public void save(NestedChunk c)
+	{
+		File file = NestUtil.getChunkAuxFile(c.getChunk());
+		DataCluster cc = new DataCluster();
+		cc.add(c, "c");
+		
+		for(GLocation i : c.getBlocks().k())
+		{
+			NestedBlock b = c.getBlocks().get(i);
+			String key = "b." + i.getBlockX() + "." + i.getBlockY() + "." + i.getBlockZ() + ".";
+			cc.add(b, key);
+		}
+		
+		try
+		{
+			new JSONDataOutput().save(cc, file);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -172,6 +247,7 @@ public class NestController extends Controller implements Monitorable, Probe
 			public void run()
 			{
 				Chunk i = e.getChunk();
+				GChunk gc = new GChunk(i);
 				File file = NestUtil.getChunkFile(new GChunk(i));
 				loading.add(i);
 				
@@ -182,9 +258,22 @@ public class NestController extends Controller implements Monitorable, Probe
 						@Override
 						public void async()
 						{
+							NestedChunk nc = null;
+							
 							try
 							{
-								NestedChunk nc = (NestedChunk) Serializer.deserializeFromFile(file);
+								nc = (NestedChunk) Serializer.deserializeFromFile(file);
+							}
+							
+							catch(Exception e)
+							{
+								f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ());
+								nc = load(gc);
+							}
+							
+							if(nc != null)
+							{
+								NestedChunk ff = nc;
 								
 								new S()
 								{
@@ -192,7 +281,7 @@ public class NestController extends Controller implements Monitorable, Probe
 									public void sync()
 									{
 										loading.remove(i);
-										chunks.put(i, nc);
+										chunks.put(i, ff);
 										
 										if(chunks.get(i) == null)
 										{
@@ -203,11 +292,6 @@ public class NestController extends Controller implements Monitorable, Probe
 										callEvent(new NestChunkLoadEvent(chunks.get(i)));
 									}
 								};
-							}
-							
-							catch(Exception e)
-							{
-								ExceptionUtil.print(e);
 							}
 						}
 					};
@@ -313,6 +397,8 @@ public class NestController extends Controller implements Monitorable, Probe
 				{
 					ExceptionUtil.print(ex);
 				}
+				
+				save(c);
 			}
 		};
 	}

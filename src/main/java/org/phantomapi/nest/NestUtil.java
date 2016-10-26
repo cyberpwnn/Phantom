@@ -22,4 +22,16 @@ public class NestUtil
 	{
 		return new File(new File(Worlds.getWorld(chunk.getWorld()).getWorldFolder(), "nest"), "n." + chunk.getX() + "." + chunk.getZ() + ".n");
 	}
+	
+	/**
+	 * Get the file name for a chunk nest
+	 * 
+	 * @param chunk
+	 *            the gchunk
+	 * @return the file representation
+	 */
+	public static File getChunkAuxFile(GChunk chunk)
+	{
+		return new File(new File(Worlds.getWorld(chunk.getWorld()).getWorldFolder(), "nest-aux"), "n." + chunk.getX() + "." + chunk.getZ() + ".n");
+	}
 }
