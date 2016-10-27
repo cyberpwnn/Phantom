@@ -34,7 +34,6 @@ import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
-import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Probe;
 import org.phantomapi.world.W;
@@ -102,7 +101,7 @@ public class NestController extends Controller implements Monitorable, Probe
 				
 				catch(Exception e)
 				{
-					ExceptionUtil.print(e);
+					f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
 					file.delete();
 					loading.remove(i);
 					chunks.put(i, new NestedChunk(new GChunk(i)));
@@ -149,7 +148,7 @@ public class NestController extends Controller implements Monitorable, Probe
 			
 			catch(IOException ex)
 			{
-				ExceptionUtil.print(ex);
+				f("Failed to save nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
 			}
 		}
 		
@@ -264,7 +263,7 @@ public class NestController extends Controller implements Monitorable, Probe
 							
 							catch(Exception e)
 							{
-								f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ());
+								f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ() + " > " + i.getWorld().getName());
 							}
 							
 							if(nc != null)
@@ -314,7 +313,7 @@ public class NestController extends Controller implements Monitorable, Probe
 			
 			catch(Exception e)
 			{
-				ExceptionUtil.print(e);
+				f("Failed to scrub nest chunk @ " + c.getChunk().getX() + " / " + c.getChunk().getZ() + " / " + c.getChunk().getWorld());
 			}
 		}
 		
@@ -329,7 +328,7 @@ public class NestController extends Controller implements Monitorable, Probe
 				
 				catch(Exception e)
 				{
-					ExceptionUtil.print(e);
+					f("Failed to scrub nest chunk @ " + c.getChunk().getX() + " / " + c.getChunk().getZ() + " / " + c.getChunk().getWorld());
 				}
 			}
 		}
@@ -391,7 +390,7 @@ public class NestController extends Controller implements Monitorable, Probe
 				
 				catch(IOException ex)
 				{
-					ExceptionUtil.print(ex);
+					f("Failed to save nest chunk @ " + c.getChunk().getX() + " / " + c.getChunk().getZ() + " / " + c.getChunk().getWorld());
 				}
 			}
 		};
