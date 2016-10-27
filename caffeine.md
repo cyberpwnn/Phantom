@@ -8,7 +8,7 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Math](#math)
  * [Dispatcher](#dispatcher)
  * [Timers](#timers)
-* [Threading & Scheduling](#threading--scheduling)
+ * [Threading & Scheduling](#threading-scheduling)
  * [Schedulers](#schedulers)
  * [Asynchronous Executions](#asynchronous-executions)
  * [Multithreading](#multithreading)
