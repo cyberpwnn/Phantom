@@ -14,6 +14,9 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftBlock;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -27,6 +30,7 @@ import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
+import net.minecraft.server.v1_8_R3.BlockPosition;
 
 /**
  * NMS Implementation for doing dirty things. Does not use craftbukkit. Consider
@@ -77,6 +81,30 @@ public class NMSX
 		modifiersField.setInt(f, f.getModifiers() & 0xFFFFFFEF);
 		
 		return f;
+	}
+	
+	/**
+	 * Update the block
+	 * 
+	 * @param i
+	 *            the block
+	 */
+	public static void updateBlock(Block i)
+	{
+		try
+		{
+			CraftWorld c = (CraftWorld) i.getWorld();
+			CraftBlock cb = (CraftBlock) i;
+			Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
+			method.setAccessible(true);
+			net.minecraft.server.v1_8_R3.Block b = (net.minecraft.server.v1_8_R3.Block) method.invoke(cb);
+			c.getHandle().applyPhysics(new BlockPosition(i.getX(), i.getY(), i.getZ()), b);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
 	}
 	
 	/**
