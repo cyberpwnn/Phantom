@@ -2,8 +2,16 @@ package org.phantomapi.util;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.phantomapi.async.A;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GLocation;
+import org.phantomapi.lang.GMap;
+import org.phantomapi.nms.NMSX;
+import org.phantomapi.sync.ExecutiveRunnable;
+import org.phantomapi.world.Blocks;
+import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 
 /**
@@ -13,6 +21,54 @@ import org.phantomapi.world.W;
  */
 public class Chunks
 {
+	/**
+	 * Update an entire chunk
+	 * 
+	 * @param c
+	 *            the chunk
+	 */
+	public static void update(Chunk c)
+	{
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				GMap<GLocation, MaterialBlock> k = W.getChunkBlocksAsync(new GChunk(c));
+				
+				for(GLocation i : k.k())
+				{
+					if(k.get(i).getMaterial().isSolid())
+					{
+						k.remove(i);
+					}
+				}
+				
+				for(GLocation i : k.k())
+				{
+					if(k.get(i).getMaterial().equals(org.bukkit.Material.AIR))
+					{
+						k.remove(i);
+					}
+				}
+				
+				for(GLocation i : k.k())
+				{
+					Blocks.update(i.toLocation().getBlock());
+				}
+			}
+		};
+		
+		W.getBlocks(c).schedule(new ExecutiveRunnable<Block>()
+		{
+			@Override
+			public void run()
+			{
+				NMSX.updateBlock(next());
+			}
+		});
+	}
+	
 	/**
 	 * Get all loaded chunks in the world
 	 * 
