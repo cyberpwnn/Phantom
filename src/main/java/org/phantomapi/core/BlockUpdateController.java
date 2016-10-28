@@ -50,14 +50,6 @@ public class BlockUpdateController extends Controller implements Monitorable
 		{
 			NMSX.updateBlock(queue.pop());
 			
-			if(queue.size() > 32)
-			{
-				for(int i = 0; i < 30; i++)
-				{
-					NMSX.updateBlock(queue.pop());
-				}
-			}
-			
 			if(queue.size() > 128)
 			{
 				for(int i = 0; i < 120; i++)
