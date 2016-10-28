@@ -15,6 +15,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -27,6 +29,7 @@ import org.phantomapi.clust.YAMLDataOutput;
 import org.phantomapi.command.Command;
 import org.phantomapi.command.CommandAlias;
 import org.phantomapi.command.CommandFilter;
+import org.phantomapi.command.CommandFilter.Permission;
 import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
@@ -111,11 +114,13 @@ import com.boydti.fawe.util.TaskManager;
 public class TestController extends Controller
 {
 	private GMap<String, Runnable> tests;
+	private GList<Player> phups;
 	
 	public TestController(Controllable parentController)
 	{
 		super(parentController);
 		
+		phups = new GList<Player>();
 		tests = new GMap<String, Runnable>();
 		
 		tests.put("channel-pool", new Runnable()
@@ -1802,6 +1807,42 @@ public class TestController extends Controller
 	public void testCommand(PhantomSender sender, PhantomCommand cmd)
 	{
 		sender.sendMessage(C.WHITE + "Tested");
+	}
+	
+	@Permission("phantom.god")
+	@Command("phup")
+	public void updateChecker(PhantomSender sender, PhantomCommand cmd)
+	{
+		if(phups.contains(sender.getPlayer()))
+		{
+			sender.sendMessage(C.RED + "Off");
+			phups.remove(sender.getPlayer());
+		}
+		
+		else
+		{
+			sender.sendMessage(C.GREEN + "On");
+			phups.add(sender.getPlayer());
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void on(BlockPhysicsEvent e)
+	{
+		for(Player i : phups)
+		{
+			i.sendBlockChange(e.getBlock().getLocation(), Material.STAINED_GLASS, (byte) 1);
+			
+			new TaskLater(2)
+			{
+				@Override
+				public void run()
+				{
+					i.sendBlockChange(e.getBlock().getLocation(), e.getBlock().getType(), e.getBlock().getData());
+				}
+			};
+		}
 	}
 	
 	public GMap<String, Runnable> getTests()
