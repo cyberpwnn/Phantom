@@ -64,4 +64,15 @@ public class Blocks
 	{
 		return Phantom.instance().getBlockCheckController().canModify(p, block);
 	}
+	
+	/**
+	 * Update the block physics
+	 * 
+	 * @param block
+	 *            the block
+	 */
+	public static void update(Block block)
+	{
+		Phantom.instance().getBlockUpdateController().update(block);
+	}
 }
