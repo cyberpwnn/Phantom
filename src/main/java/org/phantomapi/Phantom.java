@@ -26,6 +26,7 @@ import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.core.BlockCheckController;
+import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
@@ -140,6 +141,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PhastController phastController;
 	private BlockCheckController blockCheckController;
 	private UpdateController updateController;
+	private BlockUpdateController blockUpdateController;
 	
 	private Long nsx;
 	
@@ -198,6 +200,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		blockCheckController = new BlockCheckController(this);
 		updateController = new UpdateController(this);
 		saltpile = new SpeechMesh("saltpile");
+		blockUpdateController = new BlockUpdateController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -227,6 +230,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(phastController);
 		register(blockCheckController);
 		register(updateController);
+		register(blockUpdateController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1875,6 +1879,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public Economy getEcon()
 	{
 		return econ;
+	}
+	
+	public UpdateController getUpdateController()
+	{
+		return updateController;
+	}
+	
+	public BlockUpdateController getBlockUpdateController()
+	{
+		return blockUpdateController;
 	}
 	
 	private void buildSaltpile()
