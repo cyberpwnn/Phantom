@@ -41,6 +41,7 @@ public class PhotonController extends Controller implements Monitorable
 		
 	}
 	
+	@Override
 	public void onTick()
 	{
 		if(wait)
