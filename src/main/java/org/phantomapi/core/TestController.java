@@ -76,6 +76,7 @@ import org.phantomapi.text.ParameterAdapter;
 import org.phantomapi.text.Tabulator;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
+import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
@@ -169,6 +170,18 @@ public class TestController extends Controller
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
+				}
+			}
+		});
+		
+		tests.put("chunkupdate", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Chunks.update(i.getLocation().getChunk());
 				}
 			}
 		});
