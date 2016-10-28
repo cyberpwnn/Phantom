@@ -73,6 +73,6 @@ public class Blocks
 	 */
 	public static void update(Block block)
 	{
-		Phantom.instance().getBlockUpdateController().update(block);
+		Phantom.instance().getBlockUpdateController().update(W.toSync(block));
 	}
 }
