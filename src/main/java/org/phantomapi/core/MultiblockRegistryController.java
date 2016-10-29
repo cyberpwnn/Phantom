@@ -274,7 +274,6 @@ public class MultiblockRegistryController extends Controller implements Monitora
 					{
 						MultiblockInteractEvent evt = new MultiblockInteractEvent(e.getPlayer(), instances.get(i), e.getPlayer().getWorld(), e.getAction(), e.getClickedBlock());
 						callEvent(evt);
-						e.setCancelled(true);
 						return;
 					}
 				}
