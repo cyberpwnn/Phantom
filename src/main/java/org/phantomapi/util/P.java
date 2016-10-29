@@ -1,6 +1,8 @@
 package org.phantomapi.util;
 
+import java.util.Set;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -15,6 +17,20 @@ import org.phantomapi.world.Shape;
  */
 public class P
 {
+	/**
+	 * Get the target block
+	 * 
+	 * @param p
+	 *            the player
+	 * @param distance
+	 *            the max distance
+	 * @return the location
+	 */
+	public static Location targetBlock(Player p, int distance)
+	{
+		return p.getTargetBlock((Set<Material>) null, distance).getLocation().clone().add(0.5, 0.5, 0.5);
+	}
+	
 	/**
 	 * Get total experience
 	 * 
