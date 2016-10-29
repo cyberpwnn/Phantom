@@ -53,6 +53,12 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	}
 	
 	@Override
+	public D getDispatcher()
+	{
+		return d;
+	}
+	
+	@Override
 	public void onEnable()
 	{
 		controllers = new GList<Controllable>();
