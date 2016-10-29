@@ -1,8 +1,17 @@
 package org.phantomapi.multiblock;
 
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
+import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GSound;
+import org.phantomapi.nms.NMSX;
+import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.world.MaterialBlock;
+import org.phantomapi.world.PhantomWorldQueue;
 import org.phantomapi.world.VariableBlock;
 import org.phantomapi.world.VectorSchematic;
 
@@ -120,6 +129,95 @@ public class MultiblockStructure extends VectorSchematic
 		Phantom.instance().getMultiblockRegistryController().unRegisterStructure(this);
 	}
 	
+	/**
+	 * Quickly build the schematic at the given location
+	 * 
+	 * @param center
+	 *            the center point
+	 */
+	public void fastBuild(Location center)
+	{
+		PhantomWorldQueue wq = new PhantomWorldQueue();
+		
+		for(Vector i : getSchematic().k())
+		{
+			Location shift = center.clone().add(i);
+			wq.set(shift, getSchematic().get(i).getBlocks().pickRandom());
+		}
+		
+		wq.flush();
+	}
+	
+	/**
+	 * Slowly build the structure
+	 * 
+	 * @param center
+	 *            the structure
+	 */
+	public void build(Location center)
+	{
+		GList<Vector> v = getSchematic().k();
+		
+		new Task(1)
+		{
+			@SuppressWarnings("deprecation")
+			@Override
+			public void run()
+			{
+				if(v.isEmpty())
+				{
+					cancel();
+					return;
+				}
+				
+				Vector i = v.pop();
+				MaterialBlock mb = getSchematic().get(i).getBlocks().pickRandom();
+				Location shift = center.clone().add(i);
+				shift.getBlock().setType(mb.getMaterial());
+				shift.getBlock().setData(mb.getData());
+				NMSX.breakParticles(shift, mb.getMaterial(), 12);
+				new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+			}
+		};
+	}
+	
+	public void hallucinate(Location center, Player p)
+	{
+		GList<Vector> v = getSchematic().k();
+		
+		new Task(1)
+		{
+			@SuppressWarnings("deprecation")
+			@Override
+			public void run()
+			{
+				if(v.isEmpty())
+				{
+					cancel();
+					return;
+				}
+				
+				Vector i = v.pop();
+				MaterialBlock mb = getSchematic().get(i).getBlocks().pickRandom();
+				Location shift = center.clone().add(i);
+				p.sendBlockChange(shift, mb.getMaterial(), mb.getData());
+				NMSX.breakParticles(shift, mb.getMaterial(), 12);
+				new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+				
+				new TaskLater(350)
+				{
+					@Override
+					public void run()
+					{
+						p.sendBlockChange(shift, shift.getBlock().getType(), shift.getBlock().getData());
+						NMSX.breakParticles(shift, mb.getMaterial(), 12);
+						new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+					}
+				};
+			}
+		};
+	}
+	
 	@Override
 	public int hashCode()
 	{
@@ -133,19 +231,29 @@ public class MultiblockStructure extends VectorSchematic
 	public boolean equals(Object obj)
 	{
 		if(this == obj)
+		{
 			return true;
+		}
 		if(obj == null)
+		{
 			return false;
+		}
 		if(getClass() != obj.getClass())
+		{
 			return false;
+		}
 		MultiblockStructure other = (MultiblockStructure) obj;
 		if(type == null)
 		{
 			if(other.type != null)
+			{
 				return false;
+			}
 		}
 		else if(!type.equals(other.type))
+		{
 			return false;
+		}
 		return true;
 	}
 }
