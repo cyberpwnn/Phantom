@@ -47,6 +47,7 @@ import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
+import org.phantomapi.core.RebootController;
 import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SlateController;
@@ -142,6 +143,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private BlockCheckController blockCheckController;
 	private UpdateController updateController;
 	private BlockUpdateController blockUpdateController;
+	private RebootController rebootController;
 	
 	private Long nsx;
 	
@@ -201,6 +203,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		updateController = new UpdateController(this);
 		saltpile = new SpeechMesh("saltpile");
 		blockUpdateController = new BlockUpdateController(this);
+		rebootController = new RebootController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -231,6 +234,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(blockCheckController);
 		register(updateController);
 		register(blockUpdateController);
+		register(rebootController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1181,6 +1185,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						}
 					}
 					
+					else if(args[0].equalsIgnoreCase("reboot"))
+					{
+						if(sender.hasPermission("pha.rebootserver"))
+						{
+							rebootController.reboot();
+						}
+					}
+					
 					else
 					{
 						mb.message(sender, C.GRAY + saltpile.get("fail"));
@@ -1197,7 +1209,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom probe" + C.GRAY + " - Probe everything.");
 					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
-					mb.message(sender, C.GRAY + "/phantom inspect [controller/*]" + C.GRAY + " - Inspect Controllers");
+					mb.message(sender, C.GRAY + "/phantom reboot" + C.GRAY + " - Reboot the server (shut it down)");
 					mb.message(sender, C.GRAY + "/phantom update" + C.GRAY + " - Update modified plugins");
 					mb.message(sender, C.GRAY + "/phantom <un/load> [plugin]" + C.GRAY + " - Plugin Manager");
 					mb.message(sender, C.GRAY + "/phantom <dis/enable> [plugin]" + C.GRAY + " - Plugin Manager");
@@ -1890,6 +1902,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public BlockUpdateController getBlockUpdateController()
 	{
 		return blockUpdateController;
+	}
+	
+	public RebootController getRebootController()
+	{
+		return rebootController;
 	}
 	
 	private void buildSaltpile()
