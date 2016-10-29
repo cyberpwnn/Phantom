@@ -3,6 +3,7 @@ package org.phantomapi.util;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 
@@ -15,7 +16,9 @@ public class D
 {
 	public static boolean fool = false;
 	private String name;
+	private GList<Player> listeners;
 	public static GList<String> queue;
+	public static GList<Player> globalListeners;
 	
 	/**
 	 * Create a dispatcher
@@ -26,6 +29,7 @@ public class D
 	public D(String name)
 	{
 		this.name = name;
+		listeners = new GList<Player>();
 	}
 	
 	public enum DispatchType
@@ -39,6 +43,26 @@ public class D
 	}
 	
 	protected static Boolean silent = false;
+	
+	/**
+	 * Get listeners
+	 * 
+	 * @return the players listening on this dispatcher
+	 */
+	public GList<Player> getListeners()
+	{
+		return listeners;
+	}
+	
+	/**
+	 * Get the global listeners
+	 * 
+	 * @return the global listeners
+	 */
+	public static GList<Player> getGlobalListeners()
+	{
+		return globalListeners;
+	}
 	
 	private void log(DispatchType type, String s, String... o)
 	{
@@ -282,6 +306,7 @@ public class D
 	static
 	{
 		queue = new GList<String>();
+		globalListeners = new GList<Player>();
 	}
 	
 	@Override
