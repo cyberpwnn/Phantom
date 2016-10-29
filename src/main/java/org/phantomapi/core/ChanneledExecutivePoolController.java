@@ -65,7 +65,7 @@ public class ChanneledExecutivePoolController extends Controller implements Moni
 	{
 		if(!pools.containsKey(channel))
 		{
-			pools.put(channel, new ExecutivePool((double) 1, 0));
+			pools.put(channel, new ExecutivePool((double) 0.1, 0));
 		}
 		
 		pools.get(channel).add(it);
