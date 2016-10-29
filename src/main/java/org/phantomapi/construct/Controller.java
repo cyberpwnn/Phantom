@@ -65,6 +65,12 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	}
 	
 	@Override
+	public D getDispatcher()
+	{
+		return d;
+	}
+	
+	@Override
 	public void start()
 	{
 		if(getClass().isAnnotationPresent(SyncStart.class) && Phantom.isAsync())
