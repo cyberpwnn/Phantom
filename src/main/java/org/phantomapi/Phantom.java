@@ -1197,6 +1197,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					mb.message(sender, C.GRAY + "/phantom probe" + C.GRAY + " - Probe everything.");
 					mb.message(sender, C.GRAY + "/phantom v,version" + C.GRAY + " - Version of Phantom");
 					mb.message(sender, C.GRAY + "/phantom thrash" + C.GRAY + " - Reload Phantom");
+					mb.message(sender, C.GRAY + "/phantom inspect [controller/*]" + C.GRAY + " - Inspect Controllers");
 					mb.message(sender, C.GRAY + "/phantom update" + C.GRAY + " - Update modified plugins");
 					mb.message(sender, C.GRAY + "/phantom <un/load> [plugin]" + C.GRAY + " - Plugin Manager");
 					mb.message(sender, C.GRAY + "/phantom <dis/enable> [plugin]" + C.GRAY + " - Plugin Manager");
