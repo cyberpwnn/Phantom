@@ -30,20 +30,20 @@ public class MaterialBlock
 	public MaterialBlock(Material material)
 	{
 		this.material = material;
-		this.data = 0;
+		data = 0;
 	}
 	
 	@SuppressWarnings("deprecation")
 	public MaterialBlock(Location location)
 	{
-		this.material = location.getBlock().getType();
-		this.data = location.getBlock().getData();
+		material = location.getBlock().getType();
+		data = location.getBlock().getData();
 	}
 	
 	public MaterialBlock()
 	{
-		this.material = Material.AIR;
-		this.data = 0;
+		material = Material.AIR;
+		data = 0;
 	}
 	
 	public void apply(Location location)
@@ -71,6 +71,18 @@ public class MaterialBlock
 		this.data = data;
 	}
 	
+	@Override
+	public String toString()
+	{
+		if(getData() == 0)
+		{
+			return getMaterial().toString();
+		}
+		
+		return getMaterial().toString() + ":" + getData();
+	}
+	
+	@Override
 	public boolean equals(Object o)
 	{
 		if(o instanceof MaterialBlock)
