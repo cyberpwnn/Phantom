@@ -18,6 +18,7 @@ import org.phantomapi.event.BungeeConnectionEstablished;
 import org.phantomapi.lang.GList;
 import org.phantomapi.network.ForwardedPluginMessage;
 import org.phantomapi.network.Network;
+import org.phantomapi.network.NetworkedServer;
 import org.phantomapi.network.PhantomNetwork;
 import org.phantomapi.network.PluginMessage;
 import org.phantomapi.statistics.Monitorable;
@@ -31,7 +32,7 @@ import org.phantomapi.util.Timer;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
-@Ticked(200)
+@Ticked(100)
 public class BungeeController extends Controller implements PluginMessageListener, Monitorable
 {
 	private DataCluster cc;
@@ -45,6 +46,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	private Integer to;
 	private Timer t;
 	public static long linkSpeed = -1;
+	private GList<String> server;
 	
 	public BungeeController(Controllable parentController)
 	{
@@ -57,6 +59,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		sname = null;
 		queue = new GList<Transmission>();
 		network = new PhantomNetwork();
+		server = new GList<String>();
 		ti = 0;
 		to = 0;
 		t = new Timer();
@@ -99,6 +102,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void hit()
 	{
+		((Refreshable) network).refresh();
 		new PluginMessage(getPlugin(), "GetServers").send();
 		
 		if(cc.contains("servers"))
@@ -128,6 +132,24 @@ public class BungeeController extends Controller implements PluginMessageListene
 			catch(IOException e)
 			{
 				e.printStackTrace();
+			}
+		}
+		
+		for(NetworkedServer i : Phantom.instance().getNetwork().getServers())
+		{
+			if(i.getPlayers().isEmpty())
+			{
+				if(server.contains(i.getName()))
+				{
+					f("Connection to " + i.getName() + " lost");
+					server.remove(i.getName());
+				}
+			}
+			
+			else if(!server.contains(i.getName()))
+			{
+				server.add(i.getName());
+				s("Connection to " + i.getName() + " established");
 			}
 		}
 	}
