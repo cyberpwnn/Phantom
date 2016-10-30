@@ -137,7 +137,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		
 		for(NetworkedServer i : Phantom.instance().getNetwork().getServers())
 		{
-			if(i.getPlayers().isEmpty())
+			if(!cc.contains("server." + i.getName() + ".count") || cc.getInt("server." + i.getName() + ".count") == 0)
 			{
 				if(server.contains(i.getName()))
 				{
