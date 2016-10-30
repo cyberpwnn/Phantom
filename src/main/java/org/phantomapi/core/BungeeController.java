@@ -75,6 +75,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 		transmitters.remove(t);
 	}
 	
+	@Override
 	public void onTick()
 	{
 		new TaskLater((int) (Math.random() * 10))
@@ -138,7 +139,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	{
 		if(Phantom.getServers() == null)
 		{
-			f("Cannot Transmit " + t.getSource() + " :> " + t.getDestination() + " (NO ROUTE)");
+			queue.add(t);
 			return;
 		}
 		
@@ -167,7 +168,6 @@ public class BungeeController extends Controller implements PluginMessageListene
 		else
 		{
 			queue.add(t);
-			s(C.YELLOW + sname + " |> " + t.getDestination() + C.YELLOW + " [" + t.getType() + "]");
 		}
 	}
 	
@@ -188,7 +188,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 					 * 
 					 */
 					private static final long serialVersionUID = 1L;
-
+					
+					@Override
 					public void onResponse(Transmission t)
 					{
 						
@@ -339,7 +340,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 					 * 
 					 */
 					private static final long serialVersionUID = 1L;
-
+					
+					@Override
 					public void onResponse(Transmission t)
 					{
 						
@@ -362,7 +364,8 @@ public class BungeeController extends Controller implements PluginMessageListene
 						 * 
 						 */
 						private static final long serialVersionUID = 1L;
-
+						
+						@Override
 						public void onResponse(Transmission t)
 						{
 							
@@ -409,56 +412,57 @@ public class BungeeController extends Controller implements PluginMessageListene
 	{
 		return sname;
 	}
-
+	
 	public DataCluster getCc()
 	{
 		return cc;
 	}
-
+	
 	public GList<Transmitter> getTransmitters()
 	{
 		return transmitters;
 	}
-
+	
 	public GList<Transmission> getQueue()
 	{
 		return queue;
 	}
-
+	
 	public GList<Transmission> getResponders()
 	{
 		return responders;
 	}
-
+	
 	public Boolean getConnected()
 	{
 		return connected;
 	}
-
+	
 	public String getSname()
 	{
 		return sname;
 	}
-
+	
+	@Override
 	public Network getNetwork()
 	{
 		return network;
 	}
-
+	
 	public Integer getTi()
 	{
 		int too = ti;
 		ti = 0;
 		return too;
 	}
-
+	
 	public Integer getTo()
 	{
 		int too = to;
 		to = 0;
 		return too;
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
