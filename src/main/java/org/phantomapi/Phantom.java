@@ -906,6 +906,21 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						sender.sendMessage(getChatTag() + C.DARK_GRAY + "Down with " + C.LIGHT_PURPLE + C.BOLD + getDescription().getVersion() + "?");
 					}
 					
+					else if(args[0].equalsIgnoreCase("vb"))
+					{
+						if(!D.globalListeners.contains((Player) sender))
+						{
+							D.globalListeners.add((Player) sender);
+							sender.sendMessage(getChatTag() + C.DARK_GRAY + "Verbose " + C.LIGHT_PURPLE + C.BOLD + "enabled");
+						}
+						
+						else
+						{
+							D.globalListeners.remove((Player) sender);
+							sender.sendMessage(getChatTag() + C.DARK_GRAY + "Verbose " + C.RED + C.BOLD + "disabled");
+						}
+					}
+					
 					else if(args[0].equalsIgnoreCase("unload") || args[0].equalsIgnoreCase("disable"))
 					{
 						if(args.length == 2)
