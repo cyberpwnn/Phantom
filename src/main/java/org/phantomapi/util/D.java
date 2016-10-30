@@ -97,6 +97,16 @@ public class D
 		{
 			flush();
 			Bukkit.getServer().getConsoleSender().sendMessage(tmg);
+			
+			for(Player i : listeners)
+			{
+				i.sendMessage(tmg);
+			}
+			
+			for(Player i : globalListeners)
+			{
+				i.sendMessage(tmg);
+			}
 		}
 	}
 	
@@ -111,6 +121,11 @@ public class D
 					try
 					{
 						Bukkit.getServer().getConsoleSender().sendMessage(i);
+						
+						for(Player j : globalListeners)
+						{
+							j.sendMessage(i);
+						}
 					}
 					
 					catch(Exception e)
