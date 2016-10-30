@@ -114,6 +114,22 @@ public class BungeeController extends Controller implements PluginMessageListene
 			new PluginMessage(getPlugin(), "GetServer").send();
 			t.start();
 		}
+		
+		GList<Transmission> qq = queue.copy();
+		queue.clear();
+		
+		for(Transmission i : qq)
+		{
+			try
+			{
+				transmit(i);
+			}
+			
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public boolean canFire(Transmission t)
