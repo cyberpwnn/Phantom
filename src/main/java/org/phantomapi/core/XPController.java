@@ -39,4 +39,14 @@ public class XPController extends ConfigurableController
 	{
 		
 	}
+	
+	public ExperienceDataController getEdc()
+	{
+		return edc;
+	}
+	
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
 }
