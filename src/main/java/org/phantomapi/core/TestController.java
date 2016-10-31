@@ -103,6 +103,7 @@ import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
 import org.phantomapi.wraith.WraithEquipment;
 import org.phantomapi.wraith.WraithTarget;
+import org.phantomapi.xp.XP;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -187,6 +188,18 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					Chunks.update(i.getLocation().getChunk());
+				}
+			}
+		});
+		
+		tests.put("gxp", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					XP.give(i, 1 + (long) (Math.random() * 1000), "test");
 				}
 			}
 		});
