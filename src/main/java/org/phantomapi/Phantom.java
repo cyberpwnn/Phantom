@@ -55,6 +55,7 @@ import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WraithController;
+import org.phantomapi.core.XPController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.multiblock.Multiblock;
@@ -144,6 +145,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private UpdateController updateController;
 	private BlockUpdateController blockUpdateController;
 	private RebootController rebootController;
+	private XPController xpController;
 	
 	private Long nsx;
 	
@@ -204,6 +206,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		saltpile = new SpeechMesh("saltpile");
 		blockUpdateController = new BlockUpdateController(this);
 		rebootController = new RebootController(this);
+		xpController = new XPController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -235,6 +238,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(updateController);
 		register(blockUpdateController);
 		register(rebootController);
+		register(xpController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1922,6 +1926,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public RebootController getRebootController()
 	{
 		return rebootController;
+	}
+	
+	public XPController getXpController()
+	{
+		return xpController;
 	}
 	
 	private void buildSaltpile()
