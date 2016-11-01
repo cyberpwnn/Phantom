@@ -1435,7 +1435,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			
 			if(i.isTicked())
 			{
-				cc.set(key + ".ms", i.getTime());
+				cc.set(key + ".ms", i.getTime() / 1000000);
 			}
 			
 			if(i instanceof CommandListener && getCommandRegistryController().getRegistrants().contains(i))
