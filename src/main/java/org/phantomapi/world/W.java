@@ -889,7 +889,7 @@ public class W
 		final Double doff = off;
 		final Entity[] result = new Entity[1];
 		
-		new RayTrace(e.getLocation(), e.getLocation().getDirection(), range, (double) 1)
+		new RayTrace(e.getLocation().clone().add(0.5, 0.5, 0.5), e.getLocation().getDirection(), range, (double) 1)
 		{
 			@Override
 			public void onTrace(Location l)
