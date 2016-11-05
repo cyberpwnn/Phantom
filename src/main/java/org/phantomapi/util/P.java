@@ -3,11 +3,14 @@ package org.phantomapi.util;
 import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
+import org.phantomapi.world.Area;
+import org.phantomapi.world.RayTrace;
 import org.phantomapi.world.Shape;
 
 /**
@@ -29,6 +32,68 @@ public class P
 	public static Location targetBlock(Player p, int distance)
 	{
 		return p.getTargetBlock((Set<Material>) null, distance).getLocation().clone().add(0.5, 0.5, 0.5);
+	}
+	
+	/**
+	 * Get the target entity the player is looking at
+	 * 
+	 * @param p
+	 *            the player
+	 * @param distance
+	 *            the max distance
+	 * @return the entity or null
+	 */
+	public static Entity targetEntity(Player p, int distance)
+	{
+		return getEntityLookingAt(p, distance, 1);
+	}
+	
+	/**
+	 * Get the target entity of the player
+	 * 
+	 * @param e
+	 *            the player
+	 * @param range
+	 *            the max range
+	 * @param off
+	 *            the offset
+	 * @return the entity or null
+	 */
+	public static Entity getEntityLookingAt(Player e, double range, double off)
+	{
+		if(off < 1)
+		{
+			off = 1;
+		}
+		
+		if(range < 1)
+		{
+			range = 1;
+		}
+		
+		final Double doff = off;
+		final Entity[] result = new Entity[1];
+		
+		new RayTrace(e.getLocation().clone().add(0.5, 1.5, 0.5), e.getLocation().getDirection(), range, (double) 1)
+		{
+			@Override
+			public void onTrace(Location l)
+			{
+				Area a = new Area(l, doff);
+				
+				for(Entity i : a.getNearbyEntities())
+				{
+					if(!e.equals(i))
+					{
+						stop();
+						result[0] = i;
+						return;
+					}
+				}
+			}
+		}.trace();
+		
+		return result[0];
 	}
 	
 	/**
