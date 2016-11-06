@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
@@ -31,6 +32,7 @@ import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.S;
+import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
@@ -50,6 +52,7 @@ public class NestController extends Controller implements Monitorable, Probe
 	private GMap<Chunk, NestedChunk> chunks;
 	private GSet<Chunk> loading;
 	private GList<NestScrub> scrubs;
+	private boolean flush;
 	
 	public NestController(Controllable parentController)
 	{
@@ -58,6 +61,7 @@ public class NestController extends Controller implements Monitorable, Probe
 		chunks = new GMap<Chunk, NestedChunk>();
 		loading = new GSet<Chunk>();
 		scrubs = new GList<NestScrub>();
+		flush = false;
 	}
 	
 	@Override
@@ -118,6 +122,19 @@ public class NestController extends Controller implements Monitorable, Probe
 		}
 		
 		Phantom.instance().getProbeController().registerProbe(this);
+		
+		new Task(100)
+		{
+			@Override
+			public void run()
+			{
+				if(flush)
+				{
+					flush = false;
+					flush();
+				}
+			}
+		};
 	}
 	
 	@Override
@@ -198,6 +215,62 @@ public class NestController extends Controller implements Monitorable, Probe
 		nc.add(chunk);
 		
 		return nc;
+	}
+	
+	public void flush()
+	{
+		v("Flushing");
+		
+		for(NestedChunk i : chunks.v())
+		{
+			Chunk chunk = i.getChunk().toChunk();
+			File file = NestUtil.getChunkFile(i.getChunk());
+			
+			for(GLocation j : i.getBlocks().k())
+			{
+				if(i.getBlocks().get(j).size() == 0)
+				{
+					i.getBlocks().remove(j);
+				}
+			}
+			
+			if(i.size() == 0 && i.getBlocks().isEmpty())
+			{
+				chunks.remove(chunk);
+				file.delete();
+				continue;
+			}
+		}
+		
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				for(NestedChunk i : chunks.v())
+				{
+					try
+					{
+						File file = NestUtil.getChunkFile(i.getChunk());
+						
+						if(!file.exists())
+						{
+							file.getParentFile().mkdirs();
+							file.createNewFile();
+						}
+						
+						Serializer.serializeToFile(i, file);
+					}
+					
+					catch(IOException ex)
+					{
+						f("Failed to save nest chunk @ " + i.getChunk().getX() + " / " + i.getChunk().getZ() + " / " + i.getChunk().getWorld());
+					}
+				}
+				
+				v("Flushed");
+			}
+		};
 	}
 	
 	public void save(NestedChunk c)
@@ -332,6 +405,17 @@ public class NestController extends Controller implements Monitorable, Probe
 				}
 			}
 		}
+	}
+	
+	@EventHandler
+	public void on(WorldSaveEvent e)
+	{
+		requestFlush();
+	}
+	
+	public void requestFlush()
+	{
+		flush = true;
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
