@@ -29,8 +29,8 @@ import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.Task;
-import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
+import org.phantomapi.util.Chunks;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Probe;
 
@@ -40,7 +40,7 @@ import org.phantomapi.util.Probe;
  * @author cyberpwn
  */
 @SyncStart
-@Ticked(0)
+@Ticked(100)
 public class NestController extends Controller implements Monitorable, Probe
 {
 	private GMap<Chunk, NestedChunk> chunks;
@@ -223,7 +223,23 @@ public class NestController extends Controller implements Monitorable, Probe
 	@Override
 	public void onTick()
 	{
+		GList<Chunk> c = Chunks.getLoadedChunks();
+		GList<Chunk> m = chunks.k();
 		
+		new A()
+		{
+			@Override
+			public void async()
+			{
+				for(Chunk i : m)
+				{
+					if(!c.contains(i))
+					{
+						chunks.remove(i);
+					}
+				}
+			}
+		};
 	}
 	
 	public NestedChunk get(Chunk c)
@@ -234,15 +250,10 @@ public class NestController extends Controller implements Monitorable, Probe
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(ChunkLoadEvent e)
 	{
-		new TaskLater()
-		{
-			@Override
-			public void run()
-			{
-				load(e.getChunk());
-				callEvent(new NestChunkLoadEvent(chunks.get(e.getChunk())));
-			}
-		};
+		
+		load(e.getChunk());
+		callEvent(new NestChunkLoadEvent(chunks.get(e.getChunk())));
+		
 	}
 	
 	public void scrub(NestedChunk c)
@@ -295,6 +306,7 @@ public class NestController extends Controller implements Monitorable, Probe
 		{
 			save(chunks.get(e.getChunk()));
 			callEvent(new NestChunkUnloadEvent(chunks.get(e.getChunk())));
+			chunks.remove(e.getChunk());
 		}
 	}
 	
