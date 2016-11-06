@@ -3,7 +3,6 @@ package org.phantomapi.core;
 import java.io.File;
 import java.io.IOException;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,8 +12,6 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.DataCluster;
-import org.phantomapi.clust.JSONDataInput;
-import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -31,14 +28,11 @@ import org.phantomapi.nest.NestUtil;
 import org.phantomapi.nest.NestedBlock;
 import org.phantomapi.nest.NestedChunk;
 import org.phantomapi.statistics.Monitorable;
-import org.phantomapi.sync.S;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
-import org.phantomapi.util.Chunks;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Probe;
-import org.phantomapi.world.W;
 
 /**
  * Loads nest chunks
@@ -67,59 +61,7 @@ public class NestController extends Controller implements Monitorable, Probe
 	@Override
 	public void onStart()
 	{
-		for(Chunk i : Chunks.getLoadedChunks())
-		{
-			File file = NestUtil.getChunkFile(new GChunk(i));
-			loading.add(i);
-			
-			if(file.exists())
-			{
-				try
-				{
-					NestedChunk nc = (NestedChunk) Serializer.deserializeFromFile(file);
-					
-					new S()
-					{
-						@Override
-						public void sync()
-						{
-							loading.remove(i);
-							chunks.put(i, nc);
-							
-							new TaskLater(1)
-							{
-								@Override
-								public void run()
-								{
-									if(chunks.get(i) == null)
-									{
-										return;
-									}
-									
-									callEvent(new NestChunkLoadEvent(chunks.get(i)));
-								}
-							};
-						}
-					};
-				}
-				
-				catch(Exception e)
-				{
-					f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
-					file.delete();
-					loading.remove(i);
-					chunks.put(i, new NestedChunk(new GChunk(i)));
-					callEvent(new NestChunkLoadEvent(chunks.get(i)));
-				}
-			}
-			
-			else
-			{
-				loading.remove(i);
-				chunks.put(i, new NestedChunk(new GChunk(i)));
-				callEvent(new NestChunkLoadEvent(chunks.get(i)));
-			}
-		}
+		loadAll();
 		
 		Phantom.instance().getProbeController().registerProbe(this);
 		
@@ -140,87 +82,94 @@ public class NestController extends Controller implements Monitorable, Probe
 	@Override
 	public void onStop()
 	{
-		for(Chunk i : Chunks.getLoadedChunks())
-		{
-			File file = NestUtil.getChunkFile(new GChunk(i));
-			
-			NestedChunk c = chunks.get(i);
-			
-			if(c.size() == 0)
-			{
-				file.delete();
-				continue;
-			}
-			
-			try
-			{
-				if(!file.exists())
-				{
-					file.getParentFile().mkdirs();
-					file.createNewFile();
-				}
-				
-				Serializer.serializeToFile(c, file);
-			}
-			
-			catch(IOException ex)
-			{
-				f("Failed to save nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
-			}
-		}
+		saveAll();
 		
 		Phantom.instance().getProbeController().unRegisterProbe(NestController.this);
 	}
 	
-	public NestedChunk load(GChunk c)
+	public void saveAll()
 	{
-		NestedChunk nc = new NestedChunk(c);
-		DataCluster cc = new DataCluster();
-		
-		try
+		for(NestedChunk i : chunks.v())
 		{
-			new JSONDataInput().load(cc, NestUtil.getChunkAuxFile(c));
+			save(i);
 		}
-		
-		catch(IOException e)
+	}
+	
+	public void loadAll()
+	{
+		for(Chunk i : chunks.k())
 		{
-			return null;
+			load(i);
 		}
+	}
+	
+	public void load(Chunk i)
+	{
+		File file = NestUtil.getChunkFile(new GChunk(i));
+		loading.add(i);
 		
-		GSet<String> hashes = new GSet<String>();
-		DataCluster blocks = cc.crop("b");
-		
-		for(String i : blocks.keys())
+		if(file.exists())
 		{
-			if(i.contains("."))
+			try
 			{
-				hashes.add(i.split("\\.")[0]);
+				NestedChunk nc = (NestedChunk) Serializer.deserializeFromFile(file);
+				loading.remove(i);
+				chunks.put(i, nc);
+			}
+			
+			catch(Exception e)
+			{
+				f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
+				file.delete();
+				loading.remove(i);
+				chunks.put(i, new NestedChunk(new GChunk(i)));
 			}
 		}
 		
-		for(String i : hashes)
+		else
 		{
-			int x = Integer.valueOf(i.split("\\.")[0]);
-			int y = Integer.valueOf(i.split("\\.")[1]);
-			int z = Integer.valueOf(i.split("\\.")[2]);
-			Location l = new Location(W.getAsyncWorld(c.getWorld()), x, y, z);
-			GLocation loc = new GLocation(l);
-			NestedBlock block = new NestedBlock(loc);
-			DataCluster bd = blocks.crop(i);
-			block.add(bd);
-			nc.getBlocks().put(loc, block);
+			loading.remove(i);
+			chunks.put(i, new NestedChunk(new GChunk(i)));
 		}
 		
-		DataCluster chunk = cc.crop("c");
-		nc.add(chunk);
+		scrub(chunks.get(i));
+	}
+	
+	public void save(NestedChunk c)
+	{
+		if(c == null)
+		{
+			return;
+		}
 		
-		return nc;
+		Chunk i = c.getChunk().toChunk();
+		File file = NestUtil.getChunkFile(new GChunk(i));
+		
+		if(c.size() == 0)
+		{
+			file.delete();
+			return;
+		}
+		
+		try
+		{
+			if(!file.exists())
+			{
+				file.getParentFile().mkdirs();
+				file.createNewFile();
+			}
+			
+			Serializer.serializeToFile(c, file);
+		}
+		
+		catch(IOException ex)
+		{
+			f("Failed to save nest chunk @ " + i.getX() + " / " + i.getZ() + " / " + i.getWorld().getName());
+		}
 	}
 	
 	public void flush()
 	{
-		v("Flushing");
-		
 		for(NestedChunk i : chunks.v())
 		{
 			Chunk chunk = i.getChunk().toChunk();
@@ -267,34 +216,8 @@ public class NestController extends Controller implements Monitorable, Probe
 						f("Failed to save nest chunk @ " + i.getChunk().getX() + " / " + i.getChunk().getZ() + " / " + i.getChunk().getWorld());
 					}
 				}
-				
-				v("Flushed");
 			}
 		};
-	}
-	
-	public void save(NestedChunk c)
-	{
-		File file = NestUtil.getChunkAuxFile(c.getChunk());
-		DataCluster cc = new DataCluster();
-		cc.add(c, "c");
-		
-		for(GLocation i : c.getBlocks().k())
-		{
-			NestedBlock b = c.getBlocks().get(i);
-			String key = "b." + i.getBlockX() + "." + i.getBlockY() + "." + i.getBlockZ() + ".";
-			cc.add(b, key);
-		}
-		
-		try
-		{
-			new JSONDataOutput().save(cc, file);
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -316,61 +239,8 @@ public class NestController extends Controller implements Monitorable, Probe
 			@Override
 			public void run()
 			{
-				Chunk i = e.getChunk();
-				File file = NestUtil.getChunkFile(new GChunk(i));
-				loading.add(i);
-				
-				if(file.exists())
-				{
-					new A()
-					{
-						@Override
-						public void async()
-						{
-							NestedChunk nc = null;
-							
-							try
-							{
-								nc = (NestedChunk) Serializer.deserializeFromFile(file);
-							}
-							
-							catch(Exception e)
-							{
-								f("Failed to load nest chunk @ " + i.getX() + " / " + i.getZ() + " > " + i.getWorld().getName());
-							}
-							
-							if(nc != null)
-							{
-								NestedChunk ff = nc;
-								
-								new S()
-								{
-									@Override
-									public void sync()
-									{
-										loading.remove(i);
-										chunks.put(i, ff);
-										
-										if(chunks.get(i) == null)
-										{
-											return;
-										}
-										
-										scrub(chunks.get(i));
-										callEvent(new NestChunkLoadEvent(chunks.get(i)));
-									}
-								};
-							}
-						}
-					};
-				}
-				
-				else
-				{
-					loading.remove(i);
-					chunks.put(i, new NestedChunk(new GChunk(i)));
-					callEvent(new NestChunkLoadEvent(chunks.get(i)));
-				}
+				load(e.getChunk());
+				callEvent(new NestChunkLoadEvent(chunks.get(e.getChunk())));
 			}
 		};
 	}
@@ -421,63 +291,11 @@ public class NestController extends Controller implements Monitorable, Probe
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(ChunkUnloadEvent e)
 	{
-		File file = NestUtil.getChunkFile(new GChunk(e.getChunk()));
-		
-		if(!chunks.containsKey(e.getChunk()))
+		if(chunks.containsKey(e.getChunk()))
 		{
-			return;
+			save(chunks.get(e.getChunk()));
+			callEvent(new NestChunkUnloadEvent(chunks.get(e.getChunk())));
 		}
-		
-		Chunk chunk = e.getChunk();
-		NestedChunk c = chunks.get(e.getChunk());
-		
-		if(c == null)
-		{
-			f("Chunk " + chunk.getX() + "," + chunk.getZ() + " @" + chunk.getWorld().getName() + " unloaded invalid.");
-			return;
-		}
-		
-		for(GLocation i : c.getBlocks().k())
-		{
-			if(c.getBlocks().get(i).size() == 0)
-			{
-				c.getBlocks().remove(i);
-			}
-		}
-		
-		if(c.size() == 0 && c.getBlocks().isEmpty())
-		{
-			callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
-			chunks.remove(chunk);
-			file.delete();
-			return;
-		}
-		
-		callEvent(new NestChunkUnloadEvent(chunks.get(chunk)));
-		chunks.remove(chunk);
-		
-		new A()
-		{
-			@Override
-			public void async()
-			{
-				try
-				{
-					if(!file.exists())
-					{
-						file.getParentFile().mkdirs();
-						file.createNewFile();
-					}
-					
-					Serializer.serializeToFile(c, file);
-				}
-				
-				catch(IOException ex)
-				{
-					f("Failed to save nest chunk @ " + c.getChunk().getX() + " / " + c.getChunk().getZ() + " / " + c.getChunk().getWorld());
-				}
-			}
-		};
 	}
 	
 	@Override
