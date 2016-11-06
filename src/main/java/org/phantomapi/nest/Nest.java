@@ -57,6 +57,11 @@ public class Nest
 	 */
 	public static NestedChunk getChunk(Chunk c)
 	{
+		if(Phantom.instance().getNestController().get(c) == null)
+		{
+			Phantom.instance().getNestController().load(c);
+		}
+		
 		return Phantom.instance().getNestController().get(c);
 	}
 	
