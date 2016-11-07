@@ -1,4 +1,4 @@
-# Phantom ENTROPY
+# Phantom VORTEX
 [![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
 [![](phantom-micro.png)](https://github.com/cyberpwnn/Phantom/releases)
 
@@ -10,7 +10,8 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Entropy**](https://github.com/cyberpwnn/Phantom/releases/)
+* [**Vortex**](https://github.com/cyberpwnn/Phantom/releases/)
+* [Entropy](https://github.com/cyberpwnn/Phantom/releases/E9)
 * [Shadow](https://github.com/cyberpwnn/Phantom/releases/S9)
 * [Prism](https://github.com/cyberpwnn/Phantom/releases/P9)
 * [Wraith](https://github.com/cyberpwnn/Phantom/releases/W9)
