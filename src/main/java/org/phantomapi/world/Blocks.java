@@ -75,4 +75,20 @@ public class Blocks
 	{
 		Phantom.instance().getBlockUpdateController().update(W.toSync(block));
 	}
+	
+	/**
+	 * Update the block and the facing blocks (7 updates)
+	 * 
+	 * @param block
+	 *            the block
+	 */
+	public static void updateAround(Block block)
+	{
+		for(Block i : W.blockFaces(block))
+		{
+			update(i);
+		}
+		
+		update(block);
+	}
 }
