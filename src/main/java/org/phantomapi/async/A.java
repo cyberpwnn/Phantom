@@ -10,6 +10,7 @@ import org.phantomapi.Phantom;
  */
 public abstract class A
 {
+	public static long tick = 0;
 	public static int threads = 0;
 	
 	/**
@@ -19,23 +20,42 @@ public abstract class A
 	public A()
 	{
 		threads++;
-		if(Phantom.isAsync())
-		{
-			async();
-		}
 		
-		else
+		Phantom.async(new Runnable()
 		{
-			Phantom.async(new Runnable()
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
-				{
-					async();
-				}
-			});
-		}
+				async();
+			}
+		});
 	}
 	
 	public abstract void async();
+	
+	/**
+	 * Sleep until this thread is running parallel with the main thread
+	 */
+	public void rebase()
+	{
+		if(!Phantom.isAsync())
+		{
+			return;
+		}
+		
+		long ct = tick;
+		
+		while(tick == ct)
+		{
+			try
+			{
+				Thread.sleep(1);
+			}
+			
+			catch(InterruptedException e)
+			{
+				
+			}
+		}
+	}
 }
