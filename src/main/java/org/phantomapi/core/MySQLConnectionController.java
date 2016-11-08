@@ -2,6 +2,7 @@ package org.phantomapi.core;
 
 import java.sql.SQLException;
 import org.phantomapi.Phantom;
+import org.phantomapi.async.A;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
@@ -14,6 +15,7 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GTriset;
 import org.phantomapi.statistics.Monitorable;
+import org.phantomapi.sync.S;
 import org.phantomapi.util.C;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
@@ -51,10 +53,10 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	{
 		super(parentController);
 		
-		this.cc = new DataCluster();
-		this.queue = new GList<GTriset<SQLOperation, Configurable, Runnable>>();
-		this.sql = null;
-		this.qq = 0;
+		cc = new DataCluster();
+		queue = new GList<GTriset<SQLOperation, Configurable, Runnable>>();
+		sql = null;
+		qq = 0;
 	}
 	
 	public boolean testConnection()
@@ -96,11 +98,13 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		return true;
 	}
 	
+	@Override
 	public void onTick()
 	{
 		qq = 0;
 	}
 	
+	@Override
 	public void onStop()
 	{
 		try
@@ -137,35 +141,59 @@ public class MySQLConnectionController extends Controller implements Configurabl
 		{
 			return;
 		}
-				
+		
 		for(GTriset<SQLOperation, Configurable, Runnable> i : queue)
 		{
 			execute(i.getA(), i.getB(), i.getC());
 		}
-				
+		
 		queue.clear();
 	}
 	
 	public void execute(SQLOperation o, Configurable c, Runnable r) throws ClassNotFoundException, SQLException
 	{
-		if(!sql.checkConnection())
+		new A()
 		{
-			sql.openConnection();
-		}
-		
-		if(o.equals(SQLOperation.LOAD))
-		{
-			ConfigurationHandler.fromMysql(c, sql);
-		}
-		
-		else if(o.equals(SQLOperation.SAVE))
-		{
-			ConfigurationHandler.toMysql(c, sql);
-		}
-		
-		r.run();
+			@Override
+			public void async()
+			{
+				try
+				{
+					if(!sql.checkConnection())
+					{
+						sql.openConnection();
+					}
+					
+					if(o.equals(SQLOperation.LOAD))
+					{
+						ConfigurationHandler.fromMysql(c, sql);
+					}
+					
+					else if(o.equals(SQLOperation.SAVE))
+					{
+						ConfigurationHandler.toMysql(c, sql);
+					}
+					
+					new S()
+					{
+						
+						@Override
+						public void sync()
+						{
+							r.run();
+						}
+					};
+				}
+				
+				catch(Exception e)
+				{
+					
+				}
+			}
+		};
 	}
 	
+	@Override
 	public void onStart()
 	{
 		loadCluster(this);
@@ -195,7 +223,7 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	{
 		return "mysql";
 	}
-
+	
 	@Override
 	public String getMonitorableData()
 	{
