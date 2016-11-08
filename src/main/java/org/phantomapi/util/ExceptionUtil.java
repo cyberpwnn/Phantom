@@ -160,14 +160,14 @@ public class ExceptionUtil
 					
 					for(String i : errorsp.k())
 					{
-						d.f("  " + i + ": " + F.f(errorsp.get(i).size()) + " (" + F.pc((double) errorsp.get(i).size() / (double) errors.size(), 2) + ")");
+						d.f("  " + C.LIGHT_PURPLE + i + C.RED + ": " + F.f(errorsp.get(i).size()) + " (" + F.pc((double) errorsp.get(i).size() / (double) errors.size(), 2) + ")");
 					}
 					
 					d.w("Contains " + F.f(warnings.size()) + " Warnings");
 					
 					for(String i : warningsp.k())
 					{
-						d.w("  " + i + ": " + F.f(warningsp.get(i).size()) + " (" + F.pc((double) warningsp.get(i).size() / (double) warnings.size(), 2) + ")");
+						d.w("  " + C.LIGHT_PURPLE + i + C.YELLOW + ": " + F.f(warningsp.get(i).size()) + " (" + F.pc((double) warningsp.get(i).size() / (double) warnings.size(), 2) + ")");
 					}
 					
 					d.v("Contains " + F.f(locks.size()) + " Dead Locks");
