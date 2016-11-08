@@ -179,6 +179,15 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("rex", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ExceptionUtil.writeIssues(new File(Phantom.instance().getDataFolder(), "report"));
+			}
+		});
+		
 		tests.put("chunkupdate", new Runnable()
 		{
 			@Override
