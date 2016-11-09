@@ -843,11 +843,37 @@ public class W
 	{
 		GList<Chunk> cx = new GList<Chunk>();
 		
-		for(int i = c.getX() - rad; i < c.getX() + rad; i++)
+		for(int i = c.getX() - rad + 1; i < c.getX() + rad; i++)
 		{
-			for(int j = c.getZ() - rad; j < c.getZ() + rad; j++)
+			for(int j = c.getZ() - rad + 1; j < c.getZ() + rad; j++)
 			{
 				cx.add(c.getWorld().getChunkAt(i, j));
+			}
+		}
+		
+		cx.add(c);
+		
+		return cx;
+	}
+	
+	/**
+	 * Get a radius area of blocks around a given chunk
+	 * 
+	 * @param c
+	 *            the block center
+	 * @param rad
+	 *            the radius
+	 * @return the blocks including the center given block
+	 */
+	public static GList<Block> blockRadius(Block c, int rad)
+	{
+		GList<Block> cx = new GList<Block>();
+		
+		for(int i = c.getX() - rad + 1; i < c.getX() + rad; i++)
+		{
+			for(int j = c.getZ() - rad + 1; j < c.getZ() + rad; j++)
+			{
+				cx.add(c.getWorld().getBlockAt(i, c.getY(), j));
 			}
 		}
 		
