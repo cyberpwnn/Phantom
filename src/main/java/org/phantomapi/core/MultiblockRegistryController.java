@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
+import org.phantomapi.async.A;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -30,7 +31,6 @@ import org.phantomapi.multiblock.MultiblockStructure;
 import org.phantomapi.multiblock.MultiblockUtils;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.statistics.Monitorable;
-import org.phantomapi.sync.ExecutiveRunnable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
@@ -357,37 +357,38 @@ public class MultiblockRegistryController extends Controller implements Monitora
 	
 	public void validate()
 	{
-		instances.v().schedule(new ExecutiveRunnable<Multiblock>()
+		new A()
 		{
 			@Override
-			public void run()
+			public void async()
 			{
-				Multiblock next = next();
-				
-				if(!next.update())
+				for(Multiblock next : instances.v())
 				{
-					MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld(), null);
-					callEvent(mbd);
-					f("Destroying invalid multiblock: " + next.getType() + "." + next.getId());
-					Multiblock mb = next;
-					instances.remove(mb.getId());
-					MultiblockUtils.getFile(mb.getWorld(), mb.getId()).delete();
-					
-					for(Chunk j : instanceReference.k())
+					if(!next.update())
 					{
-						if(instanceReference.get(j) == mb.getId())
+						MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld(), null);
+						callEvent(mbd);
+						f("Destroying invalid multiblock: " + next.getType() + "." + next.getId());
+						Multiblock mb = next;
+						instances.remove(mb.getId());
+						MultiblockUtils.getFile(mb.getWorld(), mb.getId()).delete();
+						
+						for(Chunk j : instanceReference.k())
 						{
-							instanceReference.remove(j);
+							if(instanceReference.get(j) == mb.getId())
+							{
+								instanceReference.remove(j);
+							}
 						}
-					}
-					
-					for(Chunk j : mb.getChunks())
-					{
-						Nest.getChunk(j).remove("mb.i-" + mb.getId());
+						
+						for(Chunk j : mb.getChunks())
+						{
+							Nest.getChunk(j).remove("mb.i-" + mb.getId());
+						}
 					}
 				}
 			}
-		});
+		};
 	}
 	
 	public GMap<String, MultiblockStructure> getStructures()
