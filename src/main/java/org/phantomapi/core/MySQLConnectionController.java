@@ -2,7 +2,6 @@ package org.phantomapi.core;
 
 import java.sql.SQLException;
 import org.phantomapi.Phantom;
-import org.phantomapi.async.A;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
@@ -152,45 +151,38 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	
 	public void execute(SQLOperation o, Configurable c, Runnable r) throws ClassNotFoundException, SQLException
 	{
-		new A()
+		try
 		{
-			@Override
-			public void async()
+			if(!sql.checkConnection())
 			{
-				try
-				{
-					if(!sql.checkConnection())
-					{
-						sql.openConnection();
-					}
-					
-					if(o.equals(SQLOperation.LOAD))
-					{
-						ConfigurationHandler.fromMysql(c, sql);
-					}
-					
-					else if(o.equals(SQLOperation.SAVE))
-					{
-						ConfigurationHandler.toMysql(c, sql);
-					}
-					
-					new S()
-					{
-						
-						@Override
-						public void sync()
-						{
-							r.run();
-						}
-					};
-				}
-				
-				catch(Exception e)
-				{
-					
-				}
+				sql.openConnection();
 			}
-		};
+			
+			if(o.equals(SQLOperation.LOAD))
+			{
+				ConfigurationHandler.fromMysql(c, sql);
+			}
+			
+			else if(o.equals(SQLOperation.SAVE))
+			{
+				ConfigurationHandler.toMysql(c, sql);
+			}
+			
+			new S()
+			{
+				
+				@Override
+				public void sync()
+				{
+					r.run();
+				}
+			};
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
 	}
 	
 	@Override
