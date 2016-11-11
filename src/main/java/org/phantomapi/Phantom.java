@@ -703,9 +703,17 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		int c = 0;
 		
-		for(String i : instance.bungeeController.get().getStringList("servers"))
+		try
 		{
-			c += getNetworkCount(i);
+			for(String i : instance.bungeeController.get().getStringList("servers"))
+			{
+				c += getNetworkCount(i);
+			}
+		}
+		
+		catch(Exception e)
+		{
+			
 		}
 		
 		return c;
