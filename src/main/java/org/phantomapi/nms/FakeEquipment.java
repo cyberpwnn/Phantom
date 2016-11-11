@@ -252,10 +252,17 @@ public abstract class FakeEquipment
 					
 					if(previous != null)
 					{
+						try
+						{
+							packet = event.getPacket().deepClone();
+							sendingEvent.setSlot(previous);
+							sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
+						}
 						
-						packet = event.getPacket().deepClone();
-						sendingEvent.setSlot(previous);
-						sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
+						catch(Exception ee)
+						{
+							
+						}
 					}
 					
 					if(onEquipmentSending(sendingEvent))
