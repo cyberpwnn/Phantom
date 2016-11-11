@@ -72,7 +72,7 @@ map:
     transparency: 
       default: 0.3
   6-5:
-    default: sapling_big_oak
+    default: sapling_roofed_oak
     transparency: 
       default: 0.3
   7-0:
@@ -354,7 +354,7 @@ map:
   49-0:
     default: obsidian
   50-0:
-    default: planks_oak_top
+    default: planks_oak
     transparency: 
       default: 0.1
   51-0:
