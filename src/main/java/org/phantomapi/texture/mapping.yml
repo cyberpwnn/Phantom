@@ -5,7 +5,12 @@
 #     bottom: texture-file-name  (optional)
 #     side: texture-file-name    (optional)
 #     top: texture-file-name     (optional)
-#     transparency: 0.0 - 1.0    (optional)
+#     transparency:              (optional)
+#       default: 0.0 - 1.0       (required)
+#       bottom: 0.0 - 1.0        (optional)
+#       side: 0.0 - 1.0          (optional)
+#       top: 0.0 - 1.0           (optional)
+
 
 map:
   1-0: 
@@ -48,30 +53,38 @@ map:
     default: planks_big_oak
   6-0:
     default: sapling_oak
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   6-1:
     default: sapling_spruce
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   6-2:
     default: sapling_birch
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   6-3:
     default: sapling_jungle
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   6-4:
     default: sapling_acacia
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   6-5:
     default: sapling_big_oak
-    transparency: 0.3
+    transparency: 
+      default: 0.3
   7-0:
     default: bedrock
   8-0: 
     default: water_flow
-    transparency: 0.9
+    transparency: 
+      default: 0.9
   9-0: 
     default: water_still
-    transparency: 0.9
+    transparency: 
+      default: 0.9
   10-0: 
     default: lava_flow
   11-0: 
@@ -82,11 +95,11 @@ map:
     default: red_sand
   13-0:
     default: gravel
-  14: 
+  14-0: 
     default: stone
-  15:
+  15-0:
     default: stone
-  16: 
+  16-0: 
     default: stone
   17-0:
     default: log_oak
@@ -126,7 +139,8 @@ map:
     default: sponge_wet
   20-0:
     default: glass
-    transparency: 0.1
+    transparency: 
+      default: 0.1
   21-0:
     default: stone
   22-0:
@@ -145,10 +159,12 @@ map:
     default: bed_feet_top
   27-0:
     default: rail_golden_powered
-    transparency: 0.2
+    transparency: 
+      default: 0.2
   28-0:
     default: rail_detector_powered
-    transparency: 0.2
+    transparency: 
+      default: 0.2
   29-0: 
     default: cobblestone
     top: piston_top_sticky
@@ -156,19 +172,314 @@ map:
     default: wool_colored_white
   31-0: 
     default: deadbush
-    transparency: 0.5
+    transparency: 
+      default: 0.5
   31-1:
     default: tallgrass
-    transparency: 0.4
+    transparency: 
+      default: 0.4
   31-2: 
     default: tallgrass
-    transparency: 0.4
-  32: 
+    transparency: 
+      default: 0.4
+  32-0: 
     default: deadbush
-    transparency: 0.5
-  33:
+    transparency: 
+      default: 0.5
+  33-0:
     default: cobblestone
     top: piston_top_normal
-  34: 
+  34-0: 
     default: planks_oak
-    transparency: 0.2
+    transparency: 
+      default: 0.2
+  35-0:
+    default: wool_colored_white
+  35-1: 
+    default: wool_colored_orange
+  35-2: 
+    default: wool_colored_magenta
+  35-3: 
+    default: wool_colored_light_blue
+  35-4: 
+    default: wool_colored_yellow
+  35-5: 
+    default: wool_colored_lime
+  35-6: 
+    default: wool_colored_pink
+  35-7: 
+    default: wool_colored_gray
+  35-8:
+    default: wool_colored_silver
+  35-9: 
+    default: wool_colored_cyan
+  35-10: 
+    default: wool_colored_purple
+  35-11: 
+    default: wool_colored_blue
+  35-12: 
+    default: wool_colored_brown
+  35-13: 
+    default: wool_colored_green
+  35-14: 
+    default: wool_colored_red
+  35-15: 
+    default: wool_colored_black
+  37-0:
+    default: flower_dandelion
+    transparency: 
+      default: 0.2
+  38-0:
+    default: flower_rose
+    transparency: 
+      default: 0.2
+  38-1: 
+    default: flower_blue_orchid
+    transparency: 
+      default: 0.2
+  38-2: 
+    default: flower_allium
+    transparency: 
+      default: 0.2
+  38-3: 
+    default: flower_houstonia
+    transparency: 
+      default: 0.2
+  38-4: 
+    default: flower_tulip_red
+    transparency: 
+      default: 0.2
+  38-5: 
+    default: flower_tulip_orange
+    transparency: 
+      default: 0.2
+  38-6: 
+    default: flower_tulip_white
+    transparency: 
+      default: 0.2
+  38-7: 
+    default: flower_tulip_pink
+    transparency: 
+      default: 0.2
+  38-8: 
+    default: flower_oxeye_daisy
+    transparency: 
+      default: 0.2
+  39-0:
+    default: mushroom_brown
+    transparency: 
+      default: 0.2
+  40-0:
+    default: mushroom_red
+    transparency: 
+      default: 0.2
+  41-0:
+    default: gold_block
+  42-0:
+    default: iron_block
+  43-0:
+    default: stone_slab_top
+  43-1:
+    default: sandstone_top
+  43-2:
+    default: planks_oak
+  43-3:
+    default: cobblestone
+  43-4:
+    default: brick
+  43-5: 
+    default: stone
+  43-6:
+    default: nether_brick
+  43-7:
+    default: quartz_block_top
+  44-0: 
+    default: stone_slab_top
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-1: 
+    default: sandstone_top
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-2: 
+    default: planks_oak
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-3: 
+    default: cobblestone
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-4: 
+    default: brick
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-5: 
+    default: stone
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-6: 
+    default: nether_brick
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  44-7: 
+    default: quartz_block_top
+    transparency: 
+      default: 0.1
+      top: 1.0
+      bottom: 1.0
+  45-0:
+    default: brick
+  46-0: 
+    default: wool_colored_red
+  47-0:
+    default: wool_colored_brown
+    top: planks_oak
+    bottom: planks_oak
+  48-0:
+    default: cobblestone_mossy
+  49-0:
+    default: obsidian
+  50-0:
+    default: planks_oak_top
+    transparency: 
+      default: 0.1
+  51-0:
+    default: wool_colored_orange
+    transparency:
+      default: 0.7
+      top: 0.9
+  52-0:
+    default: obsidian
+    transparency:
+      default: 0.6
+  53-0:
+    default: planks_oak
+    transparency:
+      default: 0.75
+      top: 1.0
+      bottom: 1.0
+  54-0:
+    default: planks_oak
+    transparency:
+      default: 0.85
+  55-0: 
+    default: wool_colored_red
+    transparency: 
+      default: 0.01
+      top: 0.3
+      bottom: 0.0
+  56-0:
+    default: stone
+  57-0:
+    default: diamond_block
+  58-0:
+    default: crafting_table_side
+    top: crafting_table_top
+  59-0:
+    default: wheat_stage_0
+    transparency: 
+      default: 0.2
+  59-1:
+    default: wheat_stage_1
+    transparency: 
+      default: 0.3
+  59-2:
+    default: wheat_stage_2
+    transparency: 
+      default: 0.4
+  59-3:
+    default: wheat_stage_3
+    transparency: 
+      default: 0.5
+  59-4:
+    default: wheat_stage_4
+    transparency: 
+      default: 0.6
+  59-5:
+    default: wheat_stage_5
+    transparency: 
+      default: 0.7
+  59-6:
+    default: wheat_stage_6
+    transparency: 
+      default: 0.8
+  59-7:
+    default: wheat_stage_7
+    transparency: 
+      default: 0.86
+  60-0:
+    default: farmland_dry
+  60-1:
+    default: farmland_wet
+  61-0:
+    default: furnace_front_off
+  62-0:
+    default: furnace_front_off
+  63-0:
+    default: planks_oak
+    transparency: 
+      top: 0.2
+      bottom: 0.2
+      default: 0.4
+  64-0:
+    default: planks_oak
+    transparency:
+      default: 0.86
+  65-0:
+    default: planks_oak
+    transparency: 
+      top: 0.1
+      bottom: 0.1
+      side: 0.5
+  66-0: 
+    default: planks_oak
+    transparency: 
+      top: 0.3
+      bottom: 0.3
+      side: 0.0
+  67-0:
+    default: cobblestone
+    transparency: 
+      top: 1.0
+      bottom: 1.0
+      side: 0.75
+  68-0:
+    default: planks_oak
+    transparency: 
+      top: 0.2
+      bottom: 0.2
+      default: 0.75
+  69-0:
+    default: planks_oak
+    transparency: 
+      default: 0.15
+  70-0:
+    default: stone
+    transparency: 
+      top: 0.85
+      bottom: 0.85
+      default: 0.2
+  71-0:
+    default: iron_block
+    transparency: 
+      default: 0.86
+  72-0:
+    default: planks_oak
+    transparency: 
+      top: 0.85
+      bottom: 0.85
+      default: 0.2
