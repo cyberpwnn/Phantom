@@ -1,7 +1,10 @@
 package org.phantomapi.stack;
 
+import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.JSONObject;
 import org.phantomapi.inventory.PhantomPlayerInventory;
 import org.phantomapi.lang.GMap;
 
@@ -19,13 +22,18 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 	{
 		super(i);
 		
-		this.inventoryContents = new GMap<Integer, Stack>();
-		this.armorContents = new GMap<Integer, Stack>();
+		inventoryContents = new GMap<Integer, Stack>();
+		armorContents = new GMap<Integer, Stack>();
+		
+		pull();
 	}
 	
+	@Override
 	public GMap<Integer, Stack> getStacks()
 	{
 		thrash();
+		
+		inventoryContents.clear();
 		
 		for(int i = 0; i < 36; i++)
 		{
@@ -38,6 +46,7 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 	public GMap<Integer, Stack> getArmorStacks()
 	{
 		thrash();
+		armorContents.clear();
 		
 		armorContents.put(0, new Stack(getHelmet()));
 		armorContents.put(1, new Stack(getChestplate()));
@@ -47,6 +56,7 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 		return armorContents;
 	}
 	
+	@Override
 	public void setStacks(GMap<Integer, Stack> stacks)
 	{
 		inventoryContents = stacks;
@@ -99,11 +109,13 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 		thrash();
 	}
 	
+	@Override
 	public void setStack(int slot, Stack stack)
 	{
 		inventoryContents.put(slot, stack);
 	}
 	
+	@Override
 	public Stack getStack(int slot)
 	{
 		if(getItem(slot) != null)
@@ -117,6 +129,7 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 		}
 	}
 	
+	@Override
 	public void thrash()
 	{
 		for(int i : inventoryContents.k())
@@ -146,7 +159,66 @@ public class StackedPlayerInventory extends PhantomPlayerInventory implements St
 		{
 			setBoots(armorContents.get(3).toItemStack());
 		}
+	}
+	
+	@Override
+	public byte[] toData() throws IOException
+	{
+		DataCluster cc = new DataCluster();
+		
+		for(Integer i : inventoryContents.k())
+		{
+			cc.set("i-" + i, new DataCluster(inventoryContents.get(i).toData()).toJSON().toString());
+		}
+		
+		for(Integer i : armorContents.k())
+		{
+			cc.set("a-" + i, new DataCluster(armorContents.get(i).toData()).toJSON().toString());
+		}
+		
+		return cc.compress();
+	}
+	
+	@Override
+	public void fromData(byte[] data) throws IOException
+	{
+		DataCluster cc = new DataCluster(data);
+		inventoryContents.clear();
+		armorContents.clear();
+		
+		for(String i : cc.keys())
+		{
+			String s = i.split("-")[0];
+			Integer l = Integer.valueOf(i.split("-")[1]);
+			
+			Stack v = new Stack(Material.GLASS);
+			v.fromData(new DataCluster(new JSONObject(cc.getString(i))).compress());
+			
+			if(s.equals("i"))
+			{
+				inventoryContents.put(l, v);
+			}
+			
+			else if(s.equals("a"))
+			{
+				armorContents.put(l, v);
+			}
+		}
+	}
+	
+	@Override
+	public void pull()
+	{
+		armorContents.put(0, new Stack(getHelmet()));
+		armorContents.put(1, new Stack(getChestplate()));
+		armorContents.put(2, new Stack(getLeggings()));
+		armorContents.put(3, new Stack(getBoots()));
 		
 		inventoryContents.clear();
+		
+		for(int i = 0; i < 36; i++)
+		{
+			inventoryContents.put(i, new Stack(getItem(i)));
+		}
 	}
 }
