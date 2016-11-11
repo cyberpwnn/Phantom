@@ -1,5 +1,7 @@
 package org.phantomapi.core;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -42,6 +44,7 @@ import org.phantomapi.event.WraithCollideEvent;
 import org.phantomapi.event.WraithDamageEvent;
 import org.phantomapi.event.WraithInteractEvent;
 import org.phantomapi.statistics.Monitorable;
+import org.phantomapi.sync.I;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
@@ -60,6 +63,7 @@ import net.citizensnpcs.api.event.NPCCollisionEvent;
 @Ticked(0)
 public class EventRippler extends Controller implements Monitorable
 {
+	private static List<I> q = new CopyOnWriteArrayList<I>();
 	private long last;
 	private long diff;
 	private long hang;
@@ -168,6 +172,22 @@ public class EventRippler extends Controller implements Monitorable
 		}
 		
 		A.threads = (A.threads - (A.threads / 2)) - 1;
+		flush();
+	}
+	
+	public static void queue(I i)
+	{
+		q.add(i);
+	}
+	
+	public void flush()
+	{
+		while(!q.isEmpty())
+		{
+			I i = q.get(0);
+			i.i();
+			q.remove(0);
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
