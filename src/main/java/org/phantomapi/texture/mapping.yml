@@ -483,3 +483,74 @@ map:
       top: 0.85
       bottom: 0.85
       default: 0.2
+  73-0:
+    default: stone
+  74-0:
+    default: stone
+  75-0:
+    default: planks_oak
+    transparency: 
+      default: 0.15
+  76-0:
+    default: planks_oak
+    transparency: 
+      default: 0.15
+  77-0:
+    default: stone
+    transparency: 
+      default: 0.25
+  78-0:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.3
+  78-1:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.4
+  78-2:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.5
+  78-3:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.6
+  78-4:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.7
+  78-5:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.8
+  78-6:
+    default: snow
+    transparency: 
+      default: 1.0
+      side: 0.9
+  78-7:
+    default: snow
+    transparency: 
+      default: 1.0
+  79-0:
+    default: wool_colored_light_blue
+    transparency: 
+      default: 0.75
+  80-0:
+    default: snow
+  81-0:
+    default: cactus_top
+    transparency:
+      default: 0.8
+  82-0:
+    default: clay
+  83-0:
+    default: reeds
+    transparency: 
+      default: 0.5
