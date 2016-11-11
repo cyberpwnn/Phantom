@@ -1,13 +1,14 @@
 package org.phantomapi.stack;
 
+import org.phantomapi.clust.DataEntity;
 import org.phantomapi.lang.GMap;
 
 /**
  * Stacked inventory
+ * 
  * @author cyberpwn
- *
  */
-public interface StackedPhantomInventory
+public interface StackedPhantomInventory extends DataEntity
 {
 	/**
 	 * Get an editable set of stacks. Be sure to thrash(); once you have made
@@ -16,6 +17,11 @@ public interface StackedPhantomInventory
 	 * @return the live set of stacks
 	 */
 	public GMap<Integer, Stack> getStacks();
+	
+	/**
+	 * Pull inventory into stacked inventory
+	 */
+	public void pull();
 	
 	/**
 	 * Set the stacks of an inventory. Automatically thrashes cached stacks,
