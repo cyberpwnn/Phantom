@@ -190,6 +190,37 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("tarmor", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					i.sendMessage("0 = " + i.getInventory().getArmorContents()[0].getType().toString());
+				}
+			}
+		});
+		
+		tests.put("uparmor", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					new Task(2)
+					{
+						@Override
+						public void run()
+						{
+							NMSX.updateArmor(i);
+						}
+					};
+				}
+			}
+		});
+		
 		tests.put("chunkupdate", new Runnable()
 		{
 			@Override
