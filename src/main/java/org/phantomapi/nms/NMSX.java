@@ -17,6 +17,7 @@ import org.bukkit.WeatherType;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -31,6 +32,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 
 /**
  * NMS Implementation for doing dirty things. Does not use craftbukkit. Consider
@@ -81,6 +83,40 @@ public class NMSX
 		modifiersField.setInt(f, f.getModifiers() & 0xFFFFFFEF);
 		
 		return f;
+	}
+	
+	public static void updateArmor(Player p)
+	{
+		try
+		{
+			
+		}
+		
+		catch(Exception e)
+		{
+			for(Player observer : ProtocolLibrary.getProtocolManager().getEntityTrackers(p))
+			{
+				if(p.getInventory().getArmorContents()[3] != null)
+				{
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[3])));
+				}
+				
+				if(p.getInventory().getArmorContents()[2] != null)
+				{
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[2])));
+				}
+				
+				if(p.getInventory().getArmorContents()[1] != null)
+				{
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[1])));
+				}
+				
+				if(p.getInventory().getArmorContents()[0] != null)
+				{
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
+				}
+			}
+		}
 	}
 	
 	/**
