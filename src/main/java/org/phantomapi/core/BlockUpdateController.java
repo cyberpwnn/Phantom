@@ -1,12 +1,16 @@
 package org.phantomapi.core;
 
+import java.io.IOException;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.phantomapi.chromatic.ChromaticReference;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.statistics.Monitorable;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 
@@ -15,6 +19,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 {
 	private GList<Block> queue;
 	private String est;
+	private ChromaticReference chrome;
 	
 	public BlockUpdateController(Controllable parentController)
 	{
@@ -22,12 +27,34 @@ public class BlockUpdateController extends Controller implements Monitorable
 		
 		queue = new GList<Block>();
 		est = "";
+		try
+		{
+			chrome = new ChromaticReference();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(InvalidConfigurationException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void onStart()
 	{
-		
+		new TaskLater(80)
+		{
+			@Override
+			public void run()
+			{
+				s("Selected for Chromatic Host. Initiating Chromatic Builder");
+				chrome.start();
+			}
+		};
 	}
 	
 	public void update(Block block)
