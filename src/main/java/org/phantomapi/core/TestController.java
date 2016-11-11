@@ -68,6 +68,7 @@ import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.slate.PhantomSlate;
 import org.phantomapi.slate.Slate;
 import org.phantomapi.source.SourcePack;
+import org.phantomapi.stack.Stack;
 import org.phantomapi.stack.StackedPlayerInventory;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
@@ -83,6 +84,7 @@ import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Formula;
+import org.phantomapi.util.Items;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
 import org.phantomapi.util.Players;
@@ -523,6 +525,38 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					NMSX.showDemo(i);
+				}
+			}
+		});
+		
+		tests.put("item-da", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ItemStack is = Players.getAnyPlayer().getItemInHand();
+				
+				if(Items.is(is))
+				{
+					Stack s = new Stack(is);
+					
+					try
+					{
+						DataCluster cc = new DataCluster(s.toData());
+						s("JSON: " + C.stripColor(cc.toJSON().toString()));
+						w("RAW: " + cc.compress());
+						
+						s("Re-creating");
+						
+						Stack sc = new Stack(Material.GLASS);
+						sc.fromData(cc.compress());
+						Players.getAnyPlayer().getInventory().addItem(sc.toItemStack());
+					}
+					
+					catch(IOException e)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		});
