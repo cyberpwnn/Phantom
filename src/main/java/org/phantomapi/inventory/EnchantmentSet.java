@@ -1,6 +1,10 @@
 package org.phantomapi.inventory;
 
+import java.io.IOException;
 import org.bukkit.enchantments.Enchantment;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.DataEntity;
+import org.phantomapi.clust.JSONObject;
 import org.phantomapi.lang.GList;
 
 /**
@@ -8,7 +12,7 @@ import org.phantomapi.lang.GList;
  * 
  * @author cyberpwn
  */
-public class EnchantmentSet
+public class EnchantmentSet implements DataEntity
 {
 	private GList<EnchantmentLevel> levels;
 	
@@ -17,7 +21,7 @@ public class EnchantmentSet
 	 */
 	public EnchantmentSet()
 	{
-		this.levels = new GList<EnchantmentLevel>();
+		levels = new GList<EnchantmentLevel>();
 	}
 	
 	/**
@@ -204,5 +208,35 @@ public class EnchantmentSet
 	public void removeAllEnchantments()
 	{
 		levels.clear();
+	}
+	
+	@Override
+	public byte[] toData() throws IOException
+	{
+		DataCluster cc = new DataCluster();
+		GList<String> data = new GList<String>();
+		
+		for(EnchantmentLevel i : levels)
+		{
+			data.add(new DataCluster(i.toData()).toJSON().toString());
+		}
+		
+		cc.set("s", data);
+		
+		return cc.compress();
+	}
+	
+	@Override
+	public void fromData(byte[] data) throws IOException
+	{
+		DataCluster cc = new DataCluster(data);
+		levels.clear();
+		
+		for(String i : cc.getStringList("s"))
+		{
+			EnchantmentLevel el = new EnchantmentLevel(Enchantment.DURABILITY);
+			el.fromData(new DataCluster(new JSONObject(i)).compress());
+			levels.add(el);
+		}
 	}
 }
