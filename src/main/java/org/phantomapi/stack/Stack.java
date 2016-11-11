@@ -1,5 +1,6 @@
 package org.phantomapi.stack;
 
+import java.io.IOException;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -8,12 +9,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.DataEntity;
+import org.phantomapi.clust.JSONObject;
 import org.phantomapi.inventory.EnchantmentLevel;
 import org.phantomapi.inventory.EnchantmentSet;
 import org.phantomapi.inventory.PotionData;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.MaterialBlock;
+import org.phantomapi.world.W;
 
 /**
  * An itemstack wrapper
@@ -21,7 +27,7 @@ import org.phantomapi.world.MaterialBlock;
  * @author cyberpwn
  */
 @SuppressWarnings("deprecation")
-public class Stack
+public class Stack implements DataEntity
 {
 	private MaterialBlock materialBlock;
 	private String name;
@@ -433,5 +439,108 @@ public class Stack
 	public void setDyeColor(Color dyeColor)
 	{
 		this.dyeColor = dyeColor;
+	}
+	
+	/*
+	 * MaterialBlock materialBlock;
+	 * String name;
+	 * GList<String> lore;
+	 * Short durability;
+	 * EnchantmentSet enchantmentSet;
+	 * GList<ItemFlag> flags;
+	 * Integer amount;
+	 * PotionData potionData;
+	 * Color dyeColor;
+	 */
+	
+	@Override
+	public byte[] toData() throws IOException
+	{
+		DataCluster cc = new DataCluster();
+		cc.set("m", materialBlock.getMaterial().toString() + ":" + materialBlock.getData());
+		cc.set("e", new DataCluster(enchantmentSet.toData()).toJSON().toString());
+		cc.set("a", amount);
+		
+		if(potionData != null)
+		{
+			cc.set("p", new DataCluster(potionData.toData()).toJSON().toString());
+		}
+		
+		if(durability != 0)
+		{
+			cc.set("d", (int) durability);
+		}
+		
+		if(name != null)
+		{
+			cc.set("n", name);
+		}
+		
+		if(!lore.isEmpty())
+		{
+			cc.set("l", lore);
+		}
+		
+		if(!flags.isEmpty())
+		{
+			GList<String> f = new GList<String>();
+			
+			for(ItemFlag i : flags)
+			{
+				f.add(i.toString());
+			}
+			
+			cc.set("f", f);
+		}
+		
+		return cc.compress();
+	}
+	
+	@Override
+	public void fromData(byte[] data) throws IOException
+	{
+		DataCluster cc = new DataCluster(data);
+		EnchantmentSet es = new EnchantmentSet();
+		MaterialBlock mb = W.getMaterialBlock(cc.getString("m"));
+		
+		es.fromData(new DataCluster(new JSONObject(cc.getString("e"))).compress());
+		
+		setType(mb.getMaterial());
+		setData(mb.getData());
+		setAmount(cc.getInt("a"));
+		setEnchantmentSet(es);
+		
+		if(cc.contains("p"))
+		{
+			PotionData pd = new PotionData(false, 1, new GList<PotionEffect>());
+			pd.fromData(new DataCluster(new JSONObject(cc.getString("p"))).compress());
+		}
+		
+		if(cc.contains("d"))
+		{
+			setDurability(cc.getInt("d").shortValue());
+		}
+		
+		if(cc.contains("n"))
+		{
+			setName(cc.getString("n"));
+		}
+		
+		if(cc.contains("l"))
+		{
+			setLore(new GList<String>(cc.getStringList("l")));
+		}
+		
+		if(cc.contains("f"))
+		{
+			GList<ItemFlag> iff = new GList<ItemFlag>();
+			
+			for(String i : cc.getStringList("f"))
+			{
+				iff.add(ItemFlag.valueOf(i));
+			}
+			
+			setFlags(iff);
+		}
 	}
 }
