@@ -296,6 +296,50 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("inv-da", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				StackedPlayerInventory si = new StackedPlayerInventory(Players.getAnyPlayer().getInventory());
+				
+				try
+				{
+					DataCluster cc = new DataCluster(si.toData());
+					s("JSON: " + C.stripColor(cc.toJSON().toString()));
+					w("RAW: " + new String(cc.compress()));
+					
+					si.clear();
+					Players.getAnyPlayer().getInventory().clear();
+					
+					new TaskLater(20)
+					{
+						@Override
+						public void run()
+						{
+							s("Re-creating");
+							
+							try
+							{
+								si.fromData(cc.compress());
+								si.thrash();
+							}
+							
+							catch(IOException e)
+							{
+								e.printStackTrace();
+							}
+						}
+					};
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		tests.put("download", new Runnable()
 		{
 			@Override
@@ -544,7 +588,7 @@ public class TestController extends Controller
 					{
 						DataCluster cc = new DataCluster(s.toData());
 						s("JSON: " + C.stripColor(cc.toJSON().toString()));
-						w("RAW: " + cc.compress());
+						w("RAW: " + new String(cc.compress()));
 						
 						s("Re-creating");
 						
