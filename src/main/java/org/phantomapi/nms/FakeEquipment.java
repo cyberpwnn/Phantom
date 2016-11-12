@@ -265,21 +265,28 @@ public abstract class FakeEquipment
 						}
 					}
 					
-					if(onEquipmentSending(sendingEvent))
+					try
 					{
-						processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
+						if(onEquipmentSending(sendingEvent))
+						{
+							processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
+						}
+						
+						if(slot != sendingEvent.getSlot())
+						{
+							packet.getIntegers().write(1, slot.getId());
+						}
+						
+						if(equipment != sendingEvent.getEquipment())
+						{
+							packet.getItemModifier().write(0, sendingEvent.getEquipment());
+						}
 					}
 					
-					if(slot != sendingEvent.getSlot())
+					catch(Exception eex)
 					{
-						packet.getIntegers().write(1, slot.getId());
+						
 					}
-					
-					if(equipment != sendingEvent.getEquipment())
-					{
-						packet.getItemModifier().write(0, sendingEvent.getEquipment());
-					}
-					
 				}
 				else if(NAMED_ENTITY_SPAWN.equals(type))
 				{
