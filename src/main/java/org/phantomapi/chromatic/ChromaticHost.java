@@ -280,7 +280,20 @@ public class ChromaticHost
 	 */
 	public ChromaticBlock getBlock(MaterialBlock mb)
 	{
-		return colors.get(mb);
+		if(colors.get(mb) == null)
+		{
+			if(colors.get(new MaterialBlock(mb.getMaterial(), (byte) 0)) != null)
+			{
+				return colors.get(new MaterialBlock(mb.getMaterial(), (byte) 0));
+			}
+		}
+		
+		else
+		{
+			return colors.get(mb);
+		}
+		
+		return null;
 	}
 	
 	/**
