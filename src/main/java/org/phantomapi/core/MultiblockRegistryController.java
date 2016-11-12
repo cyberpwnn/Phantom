@@ -362,30 +362,38 @@ public class MultiblockRegistryController extends Controller implements Monitora
 			@Override
 			public void async()
 			{
-				for(Multiblock next : instances.v())
+				try
 				{
-					if(!next.update())
+					for(Multiblock next : instances.v())
 					{
-						MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld(), null);
-						callEvent(mbd);
-						f("Destroying invalid multiblock: " + next.getType() + "." + next.getId());
-						Multiblock mb = next;
-						instances.remove(mb.getId());
-						MultiblockUtils.getFile(mb.getWorld(), mb.getId()).delete();
-						
-						for(Chunk j : instanceReference.k())
+						if(!next.update())
 						{
-							if(instanceReference.get(j) == mb.getId())
+							MultiblockDestroyEvent mbd = new MultiblockDestroyEvent(null, next, next.getWorld(), null);
+							callEvent(mbd);
+							f("Destroying invalid multiblock: " + next.getType() + "." + next.getId());
+							Multiblock mb = next;
+							instances.remove(mb.getId());
+							MultiblockUtils.getFile(mb.getWorld(), mb.getId()).delete();
+							
+							for(Chunk j : instanceReference.k())
 							{
-								instanceReference.remove(j);
+								if(instanceReference.get(j) == mb.getId())
+								{
+									instanceReference.remove(j);
+								}
+							}
+							
+							for(Chunk j : mb.getChunks())
+							{
+								Nest.getChunk(j).remove("mb.i-" + mb.getId());
 							}
 						}
-						
-						for(Chunk j : mb.getChunks())
-						{
-							Nest.getChunk(j).remove("mb.i-" + mb.getId());
-						}
 					}
+				}
+				
+				catch(Exception e)
+				{
+					
 				}
 			}
 		};
