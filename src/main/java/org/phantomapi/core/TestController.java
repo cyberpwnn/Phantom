@@ -1,6 +1,5 @@
 package org.phantomapi.core;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,7 +37,6 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
-import org.phantomapi.event.EquipmentUpdateEvent;
 import org.phantomapi.filesystem.Serializer;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
@@ -58,13 +56,11 @@ import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.network.FileDownload;
-import org.phantomapi.nms.FakeEquipment.EquipmentSlot;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
-import org.phantomapi.physics.VectorMath;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -1964,52 +1960,6 @@ public class TestController extends Controller
 					i.sendBlockChange(e.getBlock().getLocation(), e.getBlock().getType(), e.getBlock().getData());
 				}
 			};
-		}
-	}
-	
-	@EventHandler
-	public void on(EquipmentUpdateEvent e)
-	{
-		if(e.getSlot().getEquipment(e.getEntity()) != null && e.getSlot().getEquipment(e.getEntity()).getType().toString().contains("LEATHER_"))
-		{
-			Color c = null;
-			
-			if(e.getSlot().equals(EquipmentSlot.HELMET))
-			{
-				c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.7, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.7, 0)), 12);
-			}
-			
-			if(e.getSlot().equals(EquipmentSlot.CHESTPLATE))
-			{
-				c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.4, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.4, 0)), 12);
-			}
-			
-			if(e.getSlot().equals(EquipmentSlot.LEGGINGS))
-			{
-				c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1, 0)), 12);
-			}
-			
-			if(e.getSlot().equals(EquipmentSlot.BOOTS))
-			{
-				c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 12);
-			}
-			
-			if(c == null)
-			{
-				long time = e.getEntity().getLocation().getWorld().getTime();
-				
-				if(time < 12300 || time > 23850)
-				{
-					c = new Color(123, 176, 255);
-				}
-				
-				else
-				{
-					c = Color.BLACK;
-				}
-			}
-			
-			W.colorArmor(e.getItem(), org.bukkit.Color.fromRGB(c.getRed(), c.getGreen(), c.getBlue()));
 		}
 	}
 	
