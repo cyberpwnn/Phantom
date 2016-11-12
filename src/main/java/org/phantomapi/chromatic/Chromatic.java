@@ -66,20 +66,20 @@ public class Chromatic
 			@Override
 			public void onTrace(Location location)
 			{
-				Block b = w.getBlockAt(location);
-				
-				if(!b.getType().equals(Material.AIR))
+				try
 				{
-					try
+					Block b = w.getBlockAt(location);
+					
+					if(!b.getType().equals(Material.AIR))
 					{
 						c[0] = Chromatic.getBlock(new MaterialBlock(b.getType(), b.getData())).getEffectiveColor(b, v);
 						stop();
 					}
+				}
+				
+				catch(Exception e)
+				{
 					
-					catch(Exception e)
-					{
-						
-					}
 				}
 			}
 		}.trace();
