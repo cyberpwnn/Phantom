@@ -29,7 +29,7 @@ map:
     default: stone_andesite_smooth
   2-0:
     default: dirt
-    top: tallgrass
+    top: foliage
   3-0:
     default: dirt
   3-1:
@@ -126,13 +126,13 @@ map:
     bottom: log_big_oak_top
     top: log_big_oak_top
   18-0:
-    default: leaves_oak
+    default: foliage
   18-1:
-    default: leaves_spruce
+    default: foliage
   18-2:
-    default: leaves_birch
+    default: foliage
   18-3:
-    default: leaves_jungle
+    default: foliage
   19-0:
     default: sponge
   19-1:
@@ -175,11 +175,11 @@ map:
     transparency: 
       default: 0.5
   31-1:
-    default: tallgrass
+    default: foliage
     transparency: 
       default: 0.4
   31-2: 
-    default: tallgrass
+    default: foliage
     transparency: 
       default: 0.4
   32-0: 
@@ -554,3 +554,755 @@ map:
     default: reeds
     transparency: 
       default: 0.5
+  84-0:
+    default: jukebox_side
+  85-0:
+    default: planks_oak
+    transparency:
+      default: 0.4
+      top: 0.34
+      bottom: 0.34
+  86-0:
+    default: pumpkin_side
+  87-0:
+    default: netherrack
+  88-0:
+    default: soul_sand
+  89-0:
+    default: glowstone
+  90-0:
+    default: portal
+    transparency: 
+      side: 0.8
+      default: 0.4
+  91-0:
+    default: pumpkin_side
+  92-0:
+    default: cake_top
+    bottom: cake_bottom
+    transparency: 
+      default: 0.3
+      top: 0.86
+      bottom: 0.86
+  93-0:
+    default: stone
+    transparency:
+      default: 1.0
+      side: 0.1
+  94-0:
+    default: stone
+    transparency:
+      default: 1.0
+      side: 0.1
+  95-0:
+    default: wool_colored_white
+    transparency: 
+      default: 0.3
+  95-1: 
+    default: wool_colored_orange
+    transparency: 
+      default: 0.3
+  95-2: 
+    default: wool_colored_magenta
+    transparency: 
+      default: 0.3
+  95-3: 
+    default: wool_colored_light_blue
+    transparency: 
+      default: 0.3
+  95-4: 
+    default: wool_colored_yellow
+    transparency: 
+      default: 0.3
+  95-5: 
+    default: wool_colored_lime
+    transparency: 
+      default: 0.3
+  95-6: 
+    default: wool_colored_pink
+    transparency: 
+      default: 0.3
+  95-7: 
+    default: wool_colored_gray
+    transparency: 
+      default: 0.3
+  95-8:
+    default: wool_colored_silver
+    transparency: 
+      default: 0.3
+  95-9: 
+    default: wool_colored_cyan
+    transparency: 
+      default: 0.3
+  95-10: 
+    default: wool_colored_purple
+    transparency: 
+      default: 0.3
+  95-11: 
+    default: wool_colored_blue
+    transparency: 
+      default: 0.3
+  95-12: 
+    default: wool_colored_brown
+    transparency: 
+      default: 0.3
+  95-13: 
+    default: wool_colored_green
+    transparency: 
+      default: 0.3
+  95-14: 
+    default: wool_colored_red
+    transparency: 
+      default: 0.3
+  95-15: 
+    default: wool_colored_black
+    transparency: 
+      default: 0.3
+  96-0:
+    default: planks_big_oak
+    transparency: 
+      default: 0.8
+      side: 0.2
+  97-0:
+    default: stonebrick
+  97-1:
+    default: stonebrick
+  97-2:
+    default: stonebrick
+  97-3:
+    default: stonebrick_mossy
+  97-4: 
+    default: stonebrick
+  97-5: 
+    default: stonebrick
+  98-0:
+    default: stonebrick
+  98-1: 
+    default: stonebrick_mossy
+  98-2: 
+    default: stonebrick
+  98-3: 
+    default: stonebrick
+  99-0: 
+    default: mushroom_block_skin_brown
+  100-0: 
+    default: mushroom_block_skin_red
+  101-0:
+    default: iron_bars
+    transparency:
+      default: 0.2
+      side: 0.35
+  102-0:
+    default: glass
+    transparency: 
+      default: 0.07
+      side: 0.1
+  103-0:
+    default: melon_side
+  104-0:
+    default: foliage
+  105-0:
+    default: foliage
+  106-0:
+    default: foliage
+    transparency: 
+      default: 0.6
+      top: 0.1
+      bottom: 0.1
+  107-0:
+    default: planks_oak
+    transparency: 
+      default: 0.6
+      top: 0.3
+      bottom: 0.3
+  108-0:
+    default: brick
+    transparency: 
+      default: 1.0
+      side: 0.75
+  109-0:
+    default: stonebrick
+    transparency: 
+      default: 1.0
+      side: 0.75
+  110-0:
+    default: dirt
+    top: mycelium_top
+  111-0: 
+    default: foliage
+    transparency: 
+      default: 0.85
+      side: 0.1
+  112-0:
+    default: nether_brick
+  113-0:
+    default: nether_brick
+    transparency:
+      default: 0.4
+      top: 0.34
+      bottom: 0.34
+  114-0:
+    default: nether_brick
+    transparency: 
+      default: 1.0
+      side: 0.75
+  115-0:
+    default: nether_wart_stage_0
+    transparency: 
+      default: 0.7
+      side: 0.1
+  115-1:
+    default: nether_wart_stage_1
+    transparency: 
+      default: 0.7
+      side: 0.3
+  115-2:
+    default: nether_wart_stage_2
+    transparency: 
+      default: 0.7
+      side: 0.7
+  116-0:
+    default: obsidian
+  117-0:
+    default: stone
+    transparency: 
+      default: 1.0
+      side: 0.75
+  118-0:
+    default: cauldron_side
+  119-0:
+    default: coal_block 
+  120-0: 
+    default: end_stone
+  121-0: 
+    default: end_stone
+  122-0:
+    default: obsidian
+    transparency: 
+      default: 0.75
+  123-0: 
+    default: redstone_lamp_off
+  124-0: 
+    default: redstone_lamp_on
+  125-0:
+    default: planks_oak
+  125-1:
+    default: planks_spruce
+  125-2:
+    default: planks_birch
+  125-3:
+    default: planks_jungle
+  125-4:
+    default: planks_acacia
+  125-5:
+    default: planks_big_oak
+  126-0:
+    default: planks_oak
+    transparency: 
+      default: 1.0
+      side: 0.4
+  126-1:
+    default: planks_spruce
+    transparency: 
+      default: 1.0
+      side: 0.4
+  126-2:
+    default: planks_birch
+    transparency: 
+      default: 1.0
+      side: 0.4
+  126-3:
+    default: planks_jungle
+    transparency: 
+      default: 1.0
+      side: 0.4
+  126-4:
+    default: planks_acacia
+    transparency: 
+      default: 1.0
+      side: 0.4
+  126-5:
+    default: planks_big_oak
+    transparency: 
+      default: 1.0
+      side: 0.4
+  127-0:
+    default: cocoa_stage_0
+    transparency: 
+      default: 0.35
+  127-1:
+    default: cocoa_stage_1
+    transparency: 
+      default: 0.45
+  127-2:
+    default: cocoa_stage_2
+    transparency: 
+      default: 0.65
+  128-0:
+    default: sandstone_top
+    transparency: 
+      default: 1.0
+      side: 0.75
+  129-0:
+    default: stone
+  130-0:
+    default: obsidian
+    transparency: 
+      default: 0.8
+  131-0:
+    default: planks_oak
+    transparency:
+      default: 0.3
+  132-0:
+    default: wool_colored_white
+    transparency:
+      default: 0.1
+  133-0:
+    default: emerald_block
+  134-0:
+    default: planks_spruce
+    transparency: 
+      default: 1.0
+      side: 0.75
+  135-0:
+    default: planks_birch
+    transparency: 
+      default: 1.0
+      side: 0.75
+  136-0:
+    default: planks_jungle
+    transparency: 
+      default: 1.0
+      side: 0.75
+  137-0:
+    default: command_block
+  138-0:
+    default: beacon
+    transparency: 
+      default: 1.0
+      side: 0.6
+  139-0:
+    default: cobblestone
+    transparency: 
+      default: 0.6
+      side: 0.8
+  139-1:
+    default: cobblestone_mossy
+    transparency: 
+      default: 0.6
+      side: 0.8
+  140-0:
+    default: flower_pot
+    transparency: 
+      default: 0.4
+  141-0:
+    default: carrots_stage_0
+    transparency: 
+      default: 0.4
+      side: 0.1
+  141-1:
+    default: carrots_stage_1
+    transparency: 
+      default: 0.4
+      side: 0.2
+  141-2:
+    default: carrots_stage_2
+    transparency: 
+      default: 0.4
+      side: 0.3
+  141-3:
+    default: carrots_stage_3
+    transparency: 
+      default: 0.4
+      side: 0.4
+  142-0:
+    default: potatoes_stage_0
+    transparency: 
+      default: 0.4
+      side: 0.1
+  142-1:
+    default: potatoes_stage_1
+    transparency: 
+      default: 0.4
+      side: 0.2
+  142-2:
+    default: potatoes_stage_2
+    transparency: 
+      default: 0.4
+      side: 0.3
+  142-3:
+    default: potatoes_stage_3
+    transparency: 
+      default: 0.4
+      side: 0.4
+  143-0:
+    default: planks_oak
+    transparency: 
+      default: 0.2
+  144-0:
+    default: wool_colored_silver
+    transparency: 
+      default: 0.3
+  145-0:
+    default: cauldron_side
+    transparency:
+      default: 0.8
+  146-0:
+    default: planks_oak
+    transparency:
+      default: 0.8
+  147-0:
+    default: gold_block
+    transparency: 
+      default: 0.8
+      side: 0.1
+  148-0:
+    default: iron_block
+    transparency: 
+      default: 0.8
+      side: 0.1
+  149-0:
+    default: stone
+    transparency: 
+      default: 1.0
+      side: 0.1
+  150-0:
+    default: stone
+    transparency: 
+      default: 1.0
+      side: 0.1
+  151-0:
+    default: daylight_detector_top
+    transparency: 
+      default: 1.0
+      transparency: 0.3
+  152-0:
+    default: redstone_block
+  153-0:
+    default: netherrack
+  154-0:
+    default: cauldron_side
+    transparency: 
+      default: 1.0
+      side: 0.8
+  155-0:
+    default: quartz_block_top
+  155-1:
+    default: quartz_block_top
+  155-2:
+    default: quartz_block_top
+  156-0:
+    default: quartz_block_top
+    transparency: 
+      default: 1.0
+      transparency: 0.75
+  157-0:
+    default: rail_activator
+  158-0:
+    default: cobblestone
+  159-0:
+    default: hardened_clay_stained_white
+  159-1: 
+    default: hardened_clay_stained_orange
+  159-2: 
+    default: hardened_clay_stained_magenta
+  159-3: 
+    default: hardened_clay_stained_light_blue
+  159-4: 
+    default: hardened_clay_stained_yellow
+  159-5: 
+    default: hardened_clay_stained_lime
+  159-6: 
+    default: hardened_clay_stained_pink
+  159-7: 
+    default: hardened_clay_stained_gray
+  159-8:
+    default: hardened_clay_stained_silver
+  159-9: 
+    default: hardened_clay_stained_cyan
+  159-10: 
+    default: hardened_clay_stained_purple
+  159-11: 
+    default: hardened_clay_stained_blue
+  159-12: 
+    default: hardened_clay_stained_brown
+  159-13: 
+    default: hardened_clay_stained_green
+  159-14: 
+    default: hardened_clay_stained_red
+  159-15: 
+    default: hardened_clay_stained_black
+  160-0:
+    default: wool_colored_white
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-1: 
+    default: wool_colored_orange
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-2: 
+    default: wool_colored_magenta
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-3: 
+    default: wool_colored_light_blue
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-4: 
+    default: wool_colored_yellow
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-5: 
+    default: wool_colored_lime
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-6: 
+    default: wool_colored_pink
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-7: 
+    default: wool_colored_gray
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-8:
+    default: wool_colored_silver
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-9: 
+    default: wool_colored_cyan
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-10: 
+    default: wool_colored_purple
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-11: 
+    default: wool_colored_blue
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-12: 
+    default: wool_colored_brown
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-13: 
+    default: wool_colored_green
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-14: 
+    default: wool_colored_red
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  160-15: 
+    default: wool_colored_black
+    transparency: 
+      default: 0.3
+      top: 0.1
+      bottom: 0.1
+  161:
+    default: foliage
+    transparency: 
+      default: 0.8
+  161-1:
+    default: foliage
+    transparency: 
+      default: 0.8
+  162-0:
+    default: log_acacia
+    top: log_acacia_top
+    bottom: log_acacia_top
+  162-1:
+    default: log_big_oak
+    top: log_big_oak_top
+    bottom: log_big_oak_top
+  163-0:
+    default: planks_acacia
+    transparency: 
+      default: 1.0
+      side: 0.75
+  164-0:
+    default: planks_big_oak
+    transparency: 
+      default: 1.0
+      side: 0.75
+  165-0:
+    default: slime
+    transparency: 
+      default: 0.8
+  167-0:
+    default: iron_block
+    transparency: 
+      default: 0.75
+      side: 0.2
+  168-0:
+    default: prismarine_rough
+  168-1:
+    default: prismarine_bricks
+  168-2:
+    default: prismarine_dark
+  169-0:
+    default: sea_lantern
+  170-0:
+    default: hay_block_top
+  171-0:
+    default: wool_colored_white
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-1: 
+    default: wool_colored_orange
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-2: 
+    default: wool_colored_magenta
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-3: 
+    default: wool_colored_light_blue
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-4: 
+    default: wool_colored_yellow
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-5: 
+    default: wool_colored_lime
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-6: 
+    default: wool_colored_pink
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-7: 
+    default: wool_colored_gray
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-8:
+    default: wool_colored_silver
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-9: 
+    default: wool_colored_cyan
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-10: 
+    default: wool_colored_purple
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-11: 
+    default: wool_colored_blue
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-12: 
+    default: wool_colored_brown
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-13: 
+    default: wool_colored_green
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-14: 
+    default: wool_colored_red
+    transparency: 
+      default: 1.0
+      side: 0.1
+  171-15: 
+    default: wool_colored_black
+    transparency: 
+      default: 1.0
+      side: 0.1
+  172-0:
+    default: hardened_clay
+  173-0:
+    default: coal_block
+  174-0:
+    default: ice_packed
+  175-0: 
+    default: wool_colored_yellow
+    transparency: 
+      default: 0.3
+  175-1: 
+    default: flower_houstonia
+    transparency: 
+      default: 0.3
+  175-2: 
+    default: foliage
+    transparency: 
+      default: 0.3
+  175-3: 
+    default: foliage
+    transparency: 
+      default: 0.3
+  175-4: 
+    default: flower_rose
+    transparency: 
+      default: 0.3
+  175-5: 
+    default: flower_houstonia
+    transparency: 
+      default: 0.3
+  178-0:
+    default: daylight_detector_top
+    transparency: 
+      default: 1.0
+      side: 0.3
+  179-0:
+    default: red_sandstone_top
+  179-1:
+    default: red_sandstone_top
+  179-2:
+    default: red_sandstone_top
+  180-0:
+    default: red_sandstone_top
+    transparency: 
+      default: 1.0
+      side: 0.75
+  181-0:
+    default: red_sandstone_top
+  182-0:
+    default: red_sandstone_top
+    transparency:
+      default: 1.0
+      side: 0.4
