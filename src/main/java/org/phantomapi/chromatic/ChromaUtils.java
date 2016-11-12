@@ -20,13 +20,13 @@ public class ChromaUtils
 {
 	public static DataCluster getMapping() throws FileNotFoundException, IOException, InvalidConfigurationException
 	{
-		InputStream resource = ChromaUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/chromatic/map.yml");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 		FileConfiguration fc = new YamlConfiguration();
 		DataCluster cluster = new DataCluster();
 		
 		try
 		{
+			InputStream resource = ChromaUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/chromatic/map.yml");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 			fc.load(reader);
 			
 			for(String i : fc.getKeys(true))
