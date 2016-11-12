@@ -46,7 +46,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 	@Override
 	public void onStart()
 	{
-		new TaskLater(80)
+		new TaskLater(1)
 		{
 			@Override
 			public void run()
@@ -120,5 +120,20 @@ public class BlockUpdateController extends Controller implements Monitorable
 	public String getMonitorableData()
 	{
 		return C.LIGHT_PURPLE + est;
+	}
+	
+	public GList<Block> getQueue()
+	{
+		return queue;
+	}
+	
+	public String getEst()
+	{
+		return est;
+	}
+	
+	public ChromaticReference getChrome()
+	{
+		return chrome;
 	}
 }
