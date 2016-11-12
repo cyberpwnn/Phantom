@@ -3,7 +3,7 @@ package org.phantomapi.core;
 import java.io.IOException;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.phantomapi.chromatic.ChromaticReference;
+import org.phantomapi.chromatic.ChromaticHost;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -19,7 +19,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 {
 	private GList<Block> queue;
 	private String est;
-	private ChromaticReference chrome;
+	private ChromaticHost chrome;
 	
 	public BlockUpdateController(Controllable parentController)
 	{
@@ -29,7 +29,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 		est = "";
 		try
 		{
-			chrome = new ChromaticReference();
+			chrome = new ChromaticHost();
 		}
 		
 		catch(IOException e)
@@ -132,7 +132,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 		return est;
 	}
 	
-	public ChromaticReference getChrome()
+	public ChromaticHost getChrome()
 	{
 		return chrome;
 	}
