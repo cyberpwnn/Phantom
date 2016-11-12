@@ -11,18 +11,50 @@ import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
 import org.phantomapi.world.W;
 
+/**
+ * Chromatic utilities
+ * 
+ * @author cyberpwn
+ */
 public class Chromatic
 {
+	/**
+	 * Get the given chromatic block
+	 * 
+	 * @param mb
+	 *            the materialblock
+	 * @return the chromatic block
+	 */
 	public static ChromaticBlock getBlock(MaterialBlock mb)
 	{
 		return Phantom.instance().getBlockUpdateController().getChrome().getBlock(mb);
 	}
 	
+	/**
+	 * Is there a chromatic reference for this block type
+	 * 
+	 * @param mb
+	 *            the materialblock
+	 * @return true if it does
+	 */
 	public static boolean hasBlock(MaterialBlock mb)
 	{
 		return Phantom.instance().getBlockUpdateController().getChrome().hasBlock(mb);
 	}
 	
+	/**
+	 * Get the visible color from the location with the given vector direction
+	 * with a max trace
+	 * 
+	 * @param l
+	 *            the location of the block in question
+	 * @param v
+	 *            the vector direction in case of transparency needed for
+	 *            blending
+	 * @param max
+	 *            the max distance to colorblend
+	 * @return the visible color or null
+	 */
 	public static Color getVisibleColor(Location l, Vector v, int max)
 	{
 		World w = W.toAsync(l.getWorld());
