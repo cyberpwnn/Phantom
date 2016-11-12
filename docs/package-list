@@ -2,6 +2,7 @@ org.phantomapi
 org.phantomapi.async
 org.phantomapi.block
 org.phantomapi.callable
+org.phantomapi.chromatic
 org.phantomapi.clust
 org.phantomapi.command
 org.phantomapi.construct
@@ -35,6 +36,7 @@ org.phantomapi.stack
 org.phantomapi.statistics
 org.phantomapi.sync
 org.phantomapi.text
+org.phantomapi.texture
 org.phantomapi.transmit
 org.phantomapi.util
 org.phantomapi.vfx
