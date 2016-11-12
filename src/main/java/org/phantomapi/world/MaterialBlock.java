@@ -83,15 +83,46 @@ public class MaterialBlock
 	}
 	
 	@Override
-	public boolean equals(Object o)
+	public int hashCode()
 	{
-		if(o instanceof MaterialBlock)
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + ((material == null) ? 0 : material.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
 		{
-			MaterialBlock mb = (MaterialBlock) o;
-			
-			return mb.getData() == getData() && mb.getMaterial().equals(getMaterial());
+			return true;
 		}
-		
-		return false;
+		if(obj == null)
+		{
+			return false;
+		}
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		MaterialBlock other = (MaterialBlock) obj;
+		if(data == null)
+		{
+			if(other.data != null)
+			{
+				return false;
+			}
+		}
+		else if(!data.equals(other.data))
+		{
+			return false;
+		}
+		if(material != other.material)
+		{
+			return false;
+		}
+		return true;
 	}
 }
