@@ -17,6 +17,11 @@ import org.phantomapi.util.F;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 
+/**
+ * Holds a reference of all chromatic blocks
+ * 
+ * @author cyberpwn
+ */
 public class ChromaticReference
 {
 	private DataCluster mapping;
@@ -24,6 +29,15 @@ public class ChromaticReference
 	private Boolean avalible;
 	private D d;
 	
+	/**
+	 * Creates a new reference based on the internal mapping or cached in
+	 * phantom's data folder if it isnt possible to load it internally
+	 * 
+	 * @throws IOException
+	 *             shit happens
+	 * @throws InvalidConfigurationException
+	 *             shit happens
+	 */
 	public ChromaticReference() throws IOException, InvalidConfigurationException
 	{
 		d = new D("Chromatic");
@@ -32,6 +46,9 @@ public class ChromaticReference
 		mapping = ChromaUtils.getMapping();
 	}
 	
+	/**
+	 * Start building the references based on the reference map
+	 */
 	public void start()
 	{
 		new A()
@@ -223,26 +240,56 @@ public class ChromaticReference
 		};
 	}
 	
+	/**
+	 * Get the cached mapping
+	 * 
+	 * @return the mapping
+	 */
 	public DataCluster getMapping()
 	{
 		return mapping;
 	}
 	
+	/**
+	 * Get the chromatic block mapping
+	 * 
+	 * @return the block mapping
+	 */
 	public GMap<MaterialBlock, ChromaticBlock> getColors()
 	{
 		return colors;
 	}
 	
+	/**
+	 * Does this host have avalible references
+	 * 
+	 * @return true if it does, false if it is either still async
+	 *         loading or not loaded yet
+	 */
 	public Boolean getAvalible()
 	{
 		return avalible;
 	}
 	
+	/**
+	 * Get the chromatic block for the given materialblock
+	 * 
+	 * @param mb
+	 *            the materialblock
+	 * @return the chromatic block or null
+	 */
 	public ChromaticBlock getBlock(MaterialBlock mb)
 	{
 		return colors.get(mb);
 	}
 	
+	/**
+	 * Does the given materialblock have a chromatic block?
+	 * 
+	 * @param mb
+	 *            the block
+	 * @return true if it does
+	 */
 	public boolean hasBlock(MaterialBlock mb)
 	{
 		return getBlock(mb) != null;
