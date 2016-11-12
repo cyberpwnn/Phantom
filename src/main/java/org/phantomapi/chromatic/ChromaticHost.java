@@ -22,7 +22,7 @@ import org.phantomapi.world.W;
  * 
  * @author cyberpwn
  */
-public class ChromaticReference
+public class ChromaticHost
 {
 	private DataCluster mapping;
 	private GMap<MaterialBlock, ChromaticBlock> colors;
@@ -38,12 +38,12 @@ public class ChromaticReference
 	 * @throws InvalidConfigurationException
 	 *             shit happens
 	 */
-	public ChromaticReference() throws IOException, InvalidConfigurationException
+	public ChromaticHost() throws IOException, InvalidConfigurationException
 	{
 		d = new D("Chromatic");
 		avalible = false;
 		colors = new GMap<MaterialBlock, ChromaticBlock>();
-		mapping = ChromaUtils.getMapping();
+		mapping = ChromaticUtils.getMapping();
 	}
 	
 	/**
@@ -114,8 +114,8 @@ public class ChromaticReference
 				{
 					try
 					{
-						BufferedImage bu = ChromaUtils.getTexture(i);
-						Color c = ChromaUtils.getProminentColor(bu);
+						BufferedImage bu = ChromaticUtils.getTexture(i);
+						Color c = ChromaticUtils.getProminentColor(bu);
 						colors.put(i, c);
 					}
 					
@@ -232,7 +232,7 @@ public class ChromaticReference
 					public void sync()
 					{
 						d.s("> Complete. Created " + F.f(blocks.size()) + " Chromatic Blocks");
-						ChromaticReference.this.colors = blocks;
+						ChromaticHost.this.colors = blocks;
 						avalible = true;
 					}
 				};
