@@ -149,6 +149,13 @@ public class ChromaticReference
 								cb.getColor().put(BlockFace.EAST, colors.get(c));
 							}
 							
+							cb.getTransparency().put(BlockFace.UP, 1.0);
+							cb.getTransparency().put(BlockFace.DOWN, 1.0);
+							cb.getTransparency().put(BlockFace.NORTH, 1.0);
+							cb.getTransparency().put(BlockFace.SOUTH, 1.0);
+							cb.getTransparency().put(BlockFace.WEST, 1.0);
+							cb.getTransparency().put(BlockFace.EAST, 1.0);
+							
 							if(cc.contains("transparency.default"))
 							{
 								Double dd = cc.getDouble("transparency.default");
