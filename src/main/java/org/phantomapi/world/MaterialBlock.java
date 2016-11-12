@@ -15,12 +15,25 @@ public class MaterialBlock
 	private Material material;
 	private Byte data;
 	
+	/**
+	 * Create a materialblock
+	 * 
+	 * @param material
+	 *            the material
+	 * @param data
+	 *            the data
+	 */
 	public MaterialBlock(Material material, Byte data)
 	{
 		this.material = material;
 		this.data = data;
 	}
 	
+	/**
+	 * Get the base block
+	 * 
+	 * @return the base block
+	 */
 	@SuppressWarnings("deprecation")
 	public BaseBlock toBase()
 	{
