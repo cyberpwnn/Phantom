@@ -21,7 +21,7 @@ import org.phantomapi.clust.YAMLDataOutput;
  * 
  * @author cyberpwn
  */
-public class ChromaUtils
+public class ChromaticUtils
 {
 	/**
 	 * Get the mapping either internally or from a cached version in phantom's
@@ -43,7 +43,7 @@ public class ChromaUtils
 		
 		try
 		{
-			InputStream resource = ChromaUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/chromatic/map.yml");
+			InputStream resource = ChromaticUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/chromatic/map.yml");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 			fc.load(reader);
 			
@@ -148,7 +148,7 @@ public class ChromaUtils
 	{
 		try
 		{
-			InputStream resource = ChromaUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/texture/" + name + ".png");
+			InputStream resource = ChromaticUtils.class.getClassLoader().getResourceAsStream("org/phantomapi/texture/" + name + ".png");
 			BufferedImage bu = ImageIO.read(resource);
 			File f = new File(Phantom.instance().getDataFolder(), "chromatic");
 			File k = new File(f, "texture");
