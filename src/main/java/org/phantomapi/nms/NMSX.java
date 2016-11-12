@@ -89,11 +89,6 @@ public class NMSX
 	{
 		try
 		{
-			
-		}
-		
-		catch(Exception e)
-		{
 			for(Player observer : ProtocolLibrary.getProtocolManager().getEntityTrackers(p))
 			{
 				if(p.getInventory().getArmorContents()[3] != null)
@@ -116,6 +111,11 @@ public class NMSX
 					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
 				}
 			}
+		}
+		
+		catch(Exception e)
+		{
+			
 		}
 	}
 	
