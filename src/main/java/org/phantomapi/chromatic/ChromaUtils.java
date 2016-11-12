@@ -16,8 +16,26 @@ import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.YAMLDataOutput;
 
+/**
+ * File utilities for chromatics
+ * 
+ * @author cyberpwn
+ */
 public class ChromaUtils
 {
+	/**
+	 * Get the mapping either internally or from a cached version in phantom's
+	 * data folder. If it reads it internally, it will also create a cache. DO
+	 * NOT USE THIS OFTEN (DISK)
+	 * 
+	 * @return
+	 * @throws FileNotFoundException
+	 *             cant find the file
+	 * @throws IOException
+	 *             shit happens
+	 * @throws InvalidConfigurationException
+	 *             shit happens
+	 */
 	public static DataCluster getMapping() throws FileNotFoundException, IOException, InvalidConfigurationException
 	{
 		FileConfiguration fc = new YamlConfiguration();
@@ -114,6 +132,18 @@ public class ChromaUtils
 		return cluster;
 	}
 	
+	/**
+	 * Get the buffered image of the given texture file name. If it cannot be
+	 * read internally, a cached version will be read from phantom's data
+	 * folder. If it is read internally, it will be overwritten to the data
+	 * folder for caching purposes. DO NOT USE THIS OFTEN (DISK)
+	 * 
+	 * @param name
+	 *            the name of the texture
+	 * @return the buffered image
+	 * @throws IOException
+	 *             shit happens
+	 */
 	public static BufferedImage getTexture(String name) throws IOException
 	{
 		try
@@ -149,11 +179,29 @@ public class ChromaUtils
 		return null;
 	}
 	
+	/**
+	 * Get the color of a given pixel
+	 * 
+	 * @param bu
+	 *            the buffered image
+	 * @param x
+	 *            the x
+	 * @param y
+	 *            the y
+	 * @return the pixel or null
+	 */
 	public static Color getColor(BufferedImage bu, int x, int y)
 	{
 		return new Color(bu.getRGB(x, y));
 	}
 	
+	/**
+	 * Get the prominent color in the entire buffered image ignoring alpha
+	 * 
+	 * @param bu
+	 *            the buffered image
+	 * @return the prominent color
+	 */
 	public static Color getProminentColor(BufferedImage bu)
 	{
 		double r = 0;
