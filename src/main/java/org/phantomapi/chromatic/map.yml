@@ -28,7 +28,7 @@ map:
   1-6: 
     default: stone_andesite_smooth
   2-0:
-    default: dirt
+    default: foliage
     top: foliage
   3-0:
     default: dirt
