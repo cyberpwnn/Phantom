@@ -16,7 +16,6 @@ import org.phantomapi.sync.ExecutiveTask;
  * A Notification controller
  * 
  * @author cyberpwn
- *
  */
 @Ticked(0)
 public class NotificationController extends Controller
@@ -29,11 +28,12 @@ public class NotificationController extends Controller
 	{
 		super(parentController);
 		
-		this.task = null;
-		this.holds = new GMap<Player, Integer>();
-		this.queue = new GMap<Player, GMap<Priority, GList<Notification>>>();
+		task = null;
+		holds = new GMap<Player, Integer>();
+		queue = new GMap<Player, GMap<Priority, GList<Notification>>>();
 	}
 	
+	@Override
 	public void onTick()
 	{
 		if(!queue.isEmpty())
@@ -42,6 +42,7 @@ public class NotificationController extends Controller
 			{
 				task = new ExecutiveTask<Player>(queue.k().iterator(new ExecutiveRunnable<Player>()
 				{
+					@Override
 					public void run()
 					{
 						Player p = next();
@@ -66,7 +67,30 @@ public class NotificationController extends Controller
 								
 								if(!queue.get(p).get(i).get(0).getOngoing())
 								{
-									holds.put(p, queue.get(p).get(i).get(0).getTitle().totalTime());
+									if(queue.get(p).get(i).size() > 40)
+									{
+										holds.put(p, 0);
+									}
+									
+									else if(queue.get(p).get(i).size() > 30)
+									{
+										holds.put(p, 1);
+									}
+									
+									else if(queue.get(p).get(i).size() > 20)
+									{
+										holds.put(p, 5);
+									}
+									
+									else if(queue.get(p).get(i).size() > 5)
+									{
+										holds.put(p, 10);
+									}
+									
+									else
+									{
+										holds.put(p, queue.get(p).get(i).get(0).getTitle().totalTime());
+									}
 								}
 								
 								queue.get(p).get(i).remove(0);
@@ -114,6 +138,7 @@ public class NotificationController extends Controller
 	{
 		new ExecutiveTask<Player>(Phantom.instance().onlinePlayers().iterator(new ExecutiveRunnable<Player>()
 		{
+			@Override
 			public void run()
 			{
 				queue(next(), n);
@@ -133,7 +158,7 @@ public class NotificationController extends Controller
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
