@@ -1,5 +1,7 @@
 package org.phantomapi.construct;
 
+import java.io.File;
+import java.sql.SQLException;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -133,6 +135,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 * @param finish
 	 *            the onFinish
 	 */
+	@Override
 	public void loadMysql(Configurable c, Runnable finish)
 	{
 		if(!ConfigurationHandler.hasTable(c))
@@ -152,6 +155,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 * @param c
 	 *            the configurable object
 	 */
+	@Override
 	public void loadMysql(Configurable c)
 	{
 		if(!ConfigurationHandler.hasTable(c))
@@ -178,6 +182,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 * @param connection
 	 *            the database connection data
 	 */
+	@Override
 	public void saveMysql(Configurable c)
 	{
 		if(!ConfigurationHandler.hasTable(c))
@@ -206,6 +211,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 * @param finish
 	 *            called when the data was saved
 	 */
+	@Override
 	public void saveMysql(Configurable c, Runnable finish)
 	{
 		if(!ConfigurationHandler.hasTable(c))
@@ -696,5 +702,55 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	public void o(String... o)
 	{
 		d.o(o);
+	}
+	
+	@Override
+	public void loadSqLite(Configurable c, File file)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		try
+		{
+			ConfigurationHandler.fromSQLite(c, file);
+		}
+		
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void saveSqLite(Configurable c, File file)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			d.f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		try
+		{
+			ConfigurationHandler.toSQLite(c, file);
+		}
+		
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
