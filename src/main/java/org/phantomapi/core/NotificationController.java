@@ -63,7 +63,10 @@ public class NotificationController extends Controller
 						{
 							if(queue.get(p).containsKey(i))
 							{
-								queue.get(p).get(i).get(0).play(p);
+								if(!(queue.get(p).get(i).size() > 3))
+								{
+									queue.get(p).get(i).get(0).play(p);
+								}
 								
 								if(!queue.get(p).get(i).get(0).getOngoing())
 								{
@@ -77,14 +80,9 @@ public class NotificationController extends Controller
 										holds.put(p, 1);
 									}
 									
-									else if(queue.get(p).get(i).size() > 20)
+									else if(queue.get(p).get(i).size() > 3)
 									{
-										holds.put(p, 5);
-									}
-									
-									else if(queue.get(p).get(i).size() > 5)
-									{
-										holds.put(p, 10);
+										holds.put(p, 2);
 									}
 									
 									else
