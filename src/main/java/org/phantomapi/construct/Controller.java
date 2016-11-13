@@ -72,6 +72,12 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	}
 	
 	@Override
+	public void closeSqLite(File file)
+	{
+		Phantom.instance().getSqLiteConnectionController().close(file);
+	}
+	
+	@Override
 	public void start()
 	{
 		if(getClass().isAnnotationPresent(SyncStart.class) && Phantom.isAsync())
