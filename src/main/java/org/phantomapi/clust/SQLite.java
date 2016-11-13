@@ -50,7 +50,7 @@ public class SQLite extends Database
 		}
 		
 		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:" + dbLocation + "/" + dbLocation);
+		connection = DriverManager.getConnection("jdbc:sqlite:" + dbLocation);
 		
 		return connection;
 	}
