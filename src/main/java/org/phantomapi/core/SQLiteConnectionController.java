@@ -23,6 +23,24 @@ public class SQLiteConnectionController extends Controller
 		return dbs.get(file);
 	}
 	
+	public void close(File file)
+	{
+		if(dbs.containsKey(file))
+		{
+			try
+			{
+				dbs.get(file).close();
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
+			
+			dbs.remove(file);
+		}
+	}
+	
 	public void purgeHandles()
 	{
 		for(File i : dbs.k())
