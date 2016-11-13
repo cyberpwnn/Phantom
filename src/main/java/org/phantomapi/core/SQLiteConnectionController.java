@@ -1,6 +1,7 @@
 package org.phantomapi.core;
 
 import java.io.File;
+import org.phantomapi.clust.SQLiteHandle;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GMap;
