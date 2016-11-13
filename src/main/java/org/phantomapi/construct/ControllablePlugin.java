@@ -753,4 +753,10 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void closeSqLite(File file)
+	{
+		Phantom.instance().getSqLiteConnectionController().close(file);
+	}
 }
