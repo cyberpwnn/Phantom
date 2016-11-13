@@ -553,17 +553,17 @@ public class ConfigurationHandler
 		SQLiteHandle sq = Phantom.instance().getSqLiteConnectionController().getHandle(file);
 		conn = sq.getConnection();
 		
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + "`" + getTable(c) + "`" + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE k=?;");
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
 		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("UPDATE " + getTable(c) + " SET d=? WHERE k=?;");
+			PreparedStatement stx = conn.prepareStatement("UPDATE " + "`" + getTable(c) + "`" + " SET d=? WHERE k=?;");
 			stx.setString(1, c.getConfiguration().toJSON().toString());
 			stx.setString(2, c.getCodeName());
 			stx.executeUpdate();
@@ -572,7 +572,7 @@ public class ConfigurationHandler
 		
 		else
 		{
-			PreparedStatement stx = conn.prepareStatement("INSERT INTO " + getTable(c) + " values(?,?);");
+			PreparedStatement stx = conn.prepareStatement("INSERT INTO " + "`" + getTable(c) + "`" + " values(?,?);");
 			stx.setString(1, c.getCodeName());
 			stx.setString(2, c.getConfiguration().toJSON().toString());
 			stx.executeUpdate();
@@ -603,17 +603,17 @@ public class ConfigurationHandler
 		SQLiteHandle sq = Phantom.instance().getSqLiteConnectionController().getHandle(file);
 		conn = sq.getConnection();
 		
-		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + getTable(c) + " (`k` TEXT, `d` TEXT);");
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + "`" + getTable(c) + "`" + " (`k` TEXT, `d` TEXT);");
 		s.execute();
 		s.close();
 		
-		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + getTable(c) + " WHERE k=?;");
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
 		st.setString(1, c.getCodeName());
 		ResultSet res = st.executeQuery();
 		
 		if(res.next())
 		{
-			PreparedStatement stx = conn.prepareStatement("SELECT `d` FROM " + getTable(c) + " WHERE k=?;");
+			PreparedStatement stx = conn.prepareStatement("SELECT `d` FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
 			stx.setString(1, c.getCodeName());
 			ResultSet resx = stx.executeQuery();
 			resx.next();
