@@ -1,9 +1,8 @@
-package org.phantomapi.core;
+package org.phantomapi.clust;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.phantomapi.clust.SQLite;
 
 public class SQLiteHandle
 {
