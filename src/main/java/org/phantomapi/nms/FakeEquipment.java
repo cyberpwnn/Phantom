@@ -1,24 +1,3 @@
-/*
- * The MIT License (MIT)
- * Copyright (c) 2014 Kristian S. Stangeland
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in
- * all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package org.phantomapi.nms;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ENTITY_EQUIPMENT;
@@ -54,11 +33,8 @@ public abstract class FakeEquipment
 	 */
 	public enum EquipmentSlot
 	{
-		HELD(0),
-		BOOTS(1),
-		LEGGINGS(2),
-		CHESTPLATE(3),
-		HELMET(4);
+		// http://wiki.vg/Protocol#Entity_Equipment_.280x05.29
+		HELD(0), BOOTS(1), LEGGINGS(2), CHESTPLATE(3), HELMET(4);
 		
 		private int id;
 		
@@ -219,11 +195,13 @@ public abstract class FakeEquipment
 		}
 	}
 	
+	// Necessary to detect duplicate
 	private Map<Object, EquipmentSlot> processedPackets = new MapMaker().weakKeys().makeMap();
 	
 	private Plugin plugin;
 	private ProtocolManager manager;
 	
+	// Current listener
 	private PacketListener listener;
 	
 	public FakeEquipment(Plugin plugin)
@@ -239,6 +217,7 @@ public abstract class FakeEquipment
 				PacketContainer packet = event.getPacket();
 				PacketType type = event.getPacketType();
 				
+				// The entity that is being displayed on the player's screen
 				LivingEntity visibleEntity = (LivingEntity) packet.getEntityModifier(event).read(0);
 				Player observingPlayer = event.getPlayer();
 				
@@ -248,51 +227,42 @@ public abstract class FakeEquipment
 					ItemStack equipment = packet.getItemModifier().read(0);
 					EquipmentSendingEvent sendingEvent = new EquipmentSendingEvent(observingPlayer, visibleEntity, slot, equipment);
 					
+					// Assume we process all packets - the overhead isn't that
+					// bad
 					EquipmentSlot previous = processedPackets.get(packet.getHandle());
 					
+					// See if this packet instance has already been processed
 					if(previous != null)
 					{
-						try
-						{
-							packet = event.getPacket().deepClone();
-							sendingEvent.setSlot(previous);
-							sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
-						}
-						
-						catch(Exception ee)
-						{
-							
-						}
+						// Clone it - otherwise, we'll loose the old
+						// modification
+						packet = event.getPacket().deepClone();
+						sendingEvent.setSlot(previous);
+						sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
 					}
 					
-					try
+					if(onEquipmentSending(sendingEvent))
 					{
-						if(onEquipmentSending(sendingEvent))
-						{
-							processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
-						}
-						
-						if(slot != sendingEvent.getSlot())
-						{
-							packet.getIntegers().write(1, slot.getId());
-						}
-						
-						if(equipment != sendingEvent.getEquipment())
-						{
-							packet.getItemModifier().write(0, sendingEvent.getEquipment());
-						}
+						processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
 					}
 					
-					catch(Exception eex)
+					// Save changes
+					if(slot != sendingEvent.getSlot())
 					{
-						
+						packet.getIntegers().write(1, slot.getId());
 					}
+					
+					if(equipment != sendingEvent.getEquipment())
+					{
+						packet.getItemModifier().write(0, sendingEvent.getEquipment());
+					}
+					
 				}
 				else if(NAMED_ENTITY_SPAWN.equals(type))
 				{
+					// Trigger updates?
 					onEntitySpawn(observingPlayer, visibleEntity);
 				}
-				
 				else
 				{
 					throw new IllegalArgumentException("Unknown packet type:" + type);
@@ -311,7 +281,7 @@ public abstract class FakeEquipment
 	 */
 	protected void onEntitySpawn(Player client, LivingEntity visibleEntity)
 	{
-		
+		// Update all the slots?
 	}
 	
 	/**
@@ -347,6 +317,7 @@ public abstract class FakeEquipment
 		equipmentPacket.getIntegers().write(0, visibleEntity.getEntityId()).write(1, slot.getId());
 		equipmentPacket.getItemModifier().write(0, slot.getEquipment(visibleEntity));
 		
+		// We have to send the packet AFTER named entity spawn has been sent
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 		{
 			@Override
@@ -356,7 +327,6 @@ public abstract class FakeEquipment
 				{
 					ProtocolLibrary.getProtocolManager().sendServerPacket(client, equipmentPacket);
 				}
-				
 				catch(InvocationTargetException e)
 				{
 					throw new RuntimeException("Unable to update slot.", e);

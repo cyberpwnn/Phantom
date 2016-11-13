@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.phantomapi.Phantom;
 import org.phantomapi.ext.Protocol;
@@ -33,6 +34,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSetSlot;
 
 /**
  * NMS Implementation for doing dirty things. Does not use craftbukkit. Consider
@@ -93,22 +95,22 @@ public class NMSX
 			{
 				if(p.getInventory().getArmorContents()[3] != null)
 				{
-					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[3])));
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[3])));
 				}
 				
 				if(p.getInventory().getArmorContents()[2] != null)
 				{
-					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[2])));
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[2])));
 				}
 				
 				if(p.getInventory().getArmorContents()[1] != null)
 				{
-					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[1])));
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[1])));
 				}
 				
 				if(p.getInventory().getArmorContents()[0] != null)
 				{
-					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
+					sendPacket(observer, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
 				}
 			}
 		}
@@ -119,28 +121,39 @@ public class NMSX
 		}
 	}
 	
+	public static void setItem(Player p, int slot, ItemStack is)
+	{
+		sendPacket(p, new PacketPlayOutSetSlot(0, slot, CraftItemStack.asNMSCopy(is)));
+	}
+	
 	public static void updateSelfArmor(Player p)
 	{
 		try
 		{
-			if(p.getInventory().getArmorContents()[3] != null)
+			for(ItemStack i : p.getInventory().getArmorContents())
 			{
-				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[3])));
-			}
-			
-			if(p.getInventory().getArmorContents()[2] != null)
-			{
-				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[2])));
-			}
-			
-			if(p.getInventory().getArmorContents()[1] != null)
-			{
-				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[1])));
-			}
-			
-			if(p.getInventory().getArmorContents()[0] != null)
-			{
-				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
+				if(i != null)
+				{
+					if(i.getType().toString().endsWith("_HELMET"))
+					{
+						sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(i)));
+					}
+					
+					if(i.getType().toString().endsWith("_CHESTPLATE"))
+					{
+						sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(i)));
+					}
+					
+					if(i.getType().toString().endsWith("_LEGGINGS"))
+					{
+						sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(i)));
+					}
+					
+					if(i.getType().toString().endsWith("_BOOTS"))
+					{
+						sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(i)));
+					}
+				}
 			}
 		}
 		
