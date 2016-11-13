@@ -50,6 +50,7 @@ import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RebootController;
 import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
+import org.phantomapi.core.SQLiteConnectionController;
 import org.phantomapi.core.SlateController;
 import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
@@ -117,6 +118,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private NotificationController notificationController;
 	private DevelopmentController developmentController;
 	private MySQLConnectionController mySQLConnectionController;
+	private SQLiteConnectionController sqLiteConnectionController;
 	private ProtocolController protocolController;
 	private ProbeController probeController;
 	private EventRippler eventRippler;
@@ -184,6 +186,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		probeController = new ProbeController(this);
 		protocolController = new ProtocolController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
+		sqLiteConnectionController = new SQLiteConnectionController(this);
 		eventRippler = new EventRippler(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
@@ -1930,6 +1933,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public RebootController getRebootController()
 	{
 		return rebootController;
+	}
+	
+	public SQLiteConnectionController getSqLiteConnectionController()
+	{
+		return sqLiteConnectionController;
 	}
 	
 	private void buildSaltpile()

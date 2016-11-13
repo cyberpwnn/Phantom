@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.core.SQLiteHandle;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
@@ -350,6 +351,7 @@ public class ConfigurationHandler
 	{
 		fromFields(c);
 		c.onNewConfig();
+		
 		Phantom.instance().loadSql(c, new Runnable()
 		{
 			@Override
@@ -530,5 +532,100 @@ public class ConfigurationHandler
 		st.close();
 		
 		return db;
+	}
+	
+	/**
+	 * Put data from the configurable object into the sqlite databse
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param file
+	 *            the file
+	 * @throws SQLException
+	 *             shit happens
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 */
+	public static void toSQLite(Configurable c, File file) throws SQLException, ClassNotFoundException
+	{
+		fromFields(c);
+		Connection conn = null;
+		SQLiteHandle sq = Phantom.instance().getSqLiteConnectionController().getHandle(file);
+		conn = sq.getConnection();
+		
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + "`" + getTable(c) + "`" + " (`k` TEXT, `d` TEXT);");
+		s.execute();
+		s.close();
+		
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
+		st.setString(1, c.getCodeName());
+		ResultSet res = st.executeQuery();
+		
+		if(res.next())
+		{
+			PreparedStatement stx = conn.prepareStatement("UPDATE " + "`" + getTable(c) + "`" + " SET d=? WHERE k=?;");
+			stx.setString(1, c.getConfiguration().toJSON().toString());
+			stx.setString(2, c.getCodeName());
+			stx.executeUpdate();
+			stx.close();
+		}
+		
+		else
+		{
+			PreparedStatement stx = conn.prepareStatement("INSERT INTO " + "`" + getTable(c) + "`" + " values(?,?);");
+			stx.setString(1, c.getCodeName());
+			stx.setString(2, c.getConfiguration().toJSON().toString());
+			stx.executeUpdate();
+			stx.close();
+		}
+		
+		res.close();
+		st.close();
+	}
+	
+	/**
+	 * Pull data from an sqlite database into the configurable object
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param file
+	 *            the file
+	 * @throws SQLException
+	 *             shit happens
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 */
+	public static void fromSQLite(Configurable c, File file) throws SQLException, ClassNotFoundException
+	{
+		c.onNewConfig();
+		fromFields(c);
+		Connection conn = null;
+		SQLiteHandle sq = Phantom.instance().getSqLiteConnectionController().getHandle(file);
+		conn = sq.getConnection();
+		
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + "`" + getTable(c) + "`" + " (`k` TEXT, `d` TEXT);");
+		s.execute();
+		s.close();
+		
+		PreparedStatement st = conn.prepareStatement("SELECT * FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
+		st.setString(1, c.getCodeName());
+		ResultSet res = st.executeQuery();
+		
+		if(res.next())
+		{
+			PreparedStatement stx = conn.prepareStatement("SELECT `d` FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
+			stx.setString(1, c.getCodeName());
+			ResultSet resx = stx.executeQuery();
+			resx.next();
+			JSONObject jso = new JSONObject(resx.getString("d"));
+			c.getConfiguration().addJson(jso);
+			toFields(c);
+			c.onReadConfig();
+			resx.close();
+			stx.close();
+		}
+		
+		res.close();
+		st.close();
 	}
 }

@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class SQLite extends Database
 {
-	private final String dbLocation;
+	private final File dbLocation;
 	
 	/**
 	 * Creates a new SQLite instance
@@ -22,7 +22,7 @@ public class SQLite extends Database
 	 * @param dbLocation
 	 *            Location of the Database (Must end in .db)
 	 */
-	public SQLite(String dbLocation)
+	public SQLite(File dbLocation)
 	{
 		this.dbLocation = dbLocation;
 	}
@@ -35,25 +35,23 @@ public class SQLite extends Database
 			return connection;
 		}
 		
-		File dataFolder = new File("sqlite-db/");
-		if(!dataFolder.exists())
-		{
-			dataFolder.mkdirs();
-		}
-		
-		File file = new File(dataFolder, dbLocation);
-		if(!(file.exists()))
+		if(!dbLocation.exists())
 		{
 			try
 			{
-				file.createNewFile();
-			} catch(IOException e)
+				dbLocation.getParentFile().mkdirs();
+				dbLocation.createNewFile();
+			}
+			
+			catch(IOException e)
 			{
-				System.out.println("Unable to create database!");
+				e.printStackTrace();
 			}
 		}
+		
 		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder + "/" + dbLocation);
+		connection = DriverManager.getConnection("jdbc:sqlite:" + dbLocation);
+		
 		return connection;
 	}
 }

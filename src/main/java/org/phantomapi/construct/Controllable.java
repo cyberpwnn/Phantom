@@ -1,6 +1,8 @@
 package org.phantomapi.construct;
 
+import java.io.File;
 import org.bukkit.event.Listener;
+import org.phantomapi.clust.Configurable;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.D;
 
@@ -55,6 +57,70 @@ public interface Controllable extends Listener, ControllerMessenger
 	 * doing. Override the onStop method
 	 */
 	public void stop();
+	
+	/**
+	 * Load the sqlite data into the cluster
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param file
+	 *            the file
+	 */
+	public void loadSqLite(Configurable c, File file);
+	
+	/**
+	 * Save cluster data into the sqlite db
+	 * 
+	 * @param c
+	 *            the cluster
+	 * @param file
+	 *            the sqlite db
+	 */
+	public void saveSqLite(Configurable c, File file);
+	
+	/**
+	 * Close and unlock the sqlite file
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	public void closeSqLite(File file);
+	
+	/**
+	 * Load mysql data into the given cluster
+	 * 
+	 * @param c
+	 *            the cluster
+	 * @param finish
+	 *            when its done
+	 */
+	public void loadMysql(Configurable c, Runnable finish);
+	
+	/**
+	 * Load the mysql data into the given cluster
+	 * 
+	 * @param c
+	 *            the cluster
+	 */
+	public void loadMysql(Configurable c);
+	
+	/**
+	 * Save cluster data into the mysql db
+	 * 
+	 * @param c
+	 *            the cluster
+	 */
+	public void saveMysql(Configurable c);
+	
+	/**
+	 * Save cluster data into the mysql db
+	 * 
+	 * @param c
+	 *            the cluster
+	 * @param finish
+	 *            when its done
+	 */
+	public void saveMysql(Configurable c, Runnable finish);
 	
 	/**
 	 * Reload the controller and all subcontrollers. Simply calls stop(), then
