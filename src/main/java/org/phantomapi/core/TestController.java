@@ -193,6 +193,18 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("crash", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					NMSX.crash(i);
+				}
+			}
+		});
+		
 		tests.put("tarmor", new Runnable()
 		{
 			@Override
