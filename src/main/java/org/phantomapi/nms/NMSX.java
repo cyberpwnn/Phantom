@@ -119,6 +119,37 @@ public class NMSX
 		}
 	}
 	
+	public static void updateSelfArmor(Player p)
+	{
+		try
+		{
+			if(p.getInventory().getArmorContents()[3] != null)
+			{
+				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 1, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[3])));
+			}
+			
+			if(p.getInventory().getArmorContents()[2] != null)
+			{
+				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 2, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[2])));
+			}
+			
+			if(p.getInventory().getArmorContents()[1] != null)
+			{
+				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 3, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[1])));
+			}
+			
+			if(p.getInventory().getArmorContents()[0] != null)
+			{
+				sendPacket(p, new PacketPlayOutEntityEquipment(p.getEntityId(), 4, CraftItemStack.asNMSCopy(p.getInventory().getArmorContents()[0])));
+			}
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Update the block
 	 * 
