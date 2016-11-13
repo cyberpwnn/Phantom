@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
-import org.phantomapi.core.SQLiteHandle;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
