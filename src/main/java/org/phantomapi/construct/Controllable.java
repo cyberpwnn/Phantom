@@ -79,6 +79,14 @@ public interface Controllable extends Listener, ControllerMessenger
 	public void saveSqLite(Configurable c, File file);
 	
 	/**
+	 * Close and unlock the sqlite file
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	public void closeSqLite(File file);
+	
+	/**
 	 * Load mysql data into the given cluster
 	 * 
 	 * @param c
