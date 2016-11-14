@@ -33,8 +33,11 @@ public abstract class FakeEquipment
 	 */
 	public enum EquipmentSlot
 	{
-		// http://wiki.vg/Protocol#Entity_Equipment_.280x05.29
-		HELD(0), BOOTS(1), LEGGINGS(2), CHESTPLATE(3), HELMET(4);
+		HELD(0),
+		BOOTS(1),
+		LEGGINGS(2),
+		CHESTPLATE(3),
+		HELMET(4);
 		
 		private int id;
 		
@@ -195,13 +198,9 @@ public abstract class FakeEquipment
 		}
 	}
 	
-	// Necessary to detect duplicate
 	private Map<Object, EquipmentSlot> processedPackets = new MapMaker().weakKeys().makeMap();
-	
 	private Plugin plugin;
 	private ProtocolManager manager;
-	
-	// Current listener
 	private PacketListener listener;
 	
 	public FakeEquipment(Plugin plugin)
@@ -217,7 +216,6 @@ public abstract class FakeEquipment
 				PacketContainer packet = event.getPacket();
 				PacketType type = event.getPacketType();
 				
-				// The entity that is being displayed on the player's screen
 				LivingEntity visibleEntity = (LivingEntity) packet.getEntityModifier(event).read(0);
 				Player observingPlayer = event.getPlayer();
 				
@@ -226,16 +224,10 @@ public abstract class FakeEquipment
 					EquipmentSlot slot = EquipmentSlot.fromId(packet.getIntegers().read(1));
 					ItemStack equipment = packet.getItemModifier().read(0);
 					EquipmentSendingEvent sendingEvent = new EquipmentSendingEvent(observingPlayer, visibleEntity, slot, equipment);
-					
-					// Assume we process all packets - the overhead isn't that
-					// bad
 					EquipmentSlot previous = processedPackets.get(packet.getHandle());
 					
-					// See if this packet instance has already been processed
 					if(previous != null)
 					{
-						// Clone it - otherwise, we'll loose the old
-						// modification
 						packet = event.getPacket().deepClone();
 						sendingEvent.setSlot(previous);
 						sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
@@ -246,7 +238,6 @@ public abstract class FakeEquipment
 						processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
 					}
 					
-					// Save changes
 					if(slot != sendingEvent.getSlot())
 					{
 						packet.getIntegers().write(1, slot.getId());
@@ -258,11 +249,12 @@ public abstract class FakeEquipment
 					}
 					
 				}
+				
 				else if(NAMED_ENTITY_SPAWN.equals(type))
 				{
-					// Trigger updates?
 					onEntitySpawn(observingPlayer, visibleEntity);
 				}
+				
 				else
 				{
 					throw new IllegalArgumentException("Unknown packet type:" + type);
@@ -281,7 +273,7 @@ public abstract class FakeEquipment
 	 */
 	protected void onEntitySpawn(Player client, LivingEntity visibleEntity)
 	{
-		// Update all the slots?
+		
 	}
 	
 	/**
@@ -317,7 +309,6 @@ public abstract class FakeEquipment
 		equipmentPacket.getIntegers().write(0, visibleEntity.getEntityId()).write(1, slot.getId());
 		equipmentPacket.getItemModifier().write(0, slot.getEquipment(visibleEntity));
 		
-		// We have to send the packet AFTER named entity spawn has been sent
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 		{
 			@Override
