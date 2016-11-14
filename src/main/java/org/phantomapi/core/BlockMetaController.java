@@ -7,6 +7,8 @@ import org.phantomapi.async.A;
 import org.phantomapi.blockmeta.ChunkMeta;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.event.MetaChunkLoadEvent;
+import org.phantomapi.event.MetaChunkUnloadEvent;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.sync.S;
@@ -53,7 +55,7 @@ public class BlockMetaController extends Controller
 					public void sync()
 					{
 						metaCache.put(chunk, cm);
-						// Call load event
+						callEvent(new MetaChunkLoadEvent(chunk.toChunk(), cm));
 					}
 				};
 			}
@@ -66,9 +68,7 @@ public class BlockMetaController extends Controller
 		GChunk chunk = new GChunk(e.getChunk());
 		ChunkMeta cm = metaCache.get(chunk);
 		cm.getConfiguration().flushLinks();
-		
-		// Call unload event
-		
+		callEvent(new MetaChunkUnloadEvent(e.getChunk(), cm));
 		cm.getConfiguration().flushLinks();
 		
 		metaCache.remove(chunk);
