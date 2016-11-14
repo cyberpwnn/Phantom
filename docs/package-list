@@ -1,6 +1,7 @@
 org.phantomapi
 org.phantomapi.async
 org.phantomapi.block
+org.phantomapi.blockmeta
 org.phantomapi.callable
 org.phantomapi.chromatic
 org.phantomapi.clust
