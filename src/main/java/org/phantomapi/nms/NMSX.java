@@ -29,7 +29,6 @@ import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 
@@ -86,21 +85,7 @@ public class NMSX
 	
 	public static void crash(Player p)
 	{
-		ProtocolManager mgr = ProtocolLibrary.getProtocolManager();
-		PacketContainer crashPacket = mgr.createPacket(PacketType.Play.Server.RESPAWN);
-		crashPacket.getIntegers().write(0, -1337);
-		crashPacket.getBytes().write(0, (byte) 0).write(1, (byte) 0);
-		crashPacket.getStrings().write(0, "default");
 		
-		try
-		{
-			mgr.sendServerPacket(p, crashPacket);
-		}
-		
-		catch(InvocationTargetException e)
-		{
-			System.out.println("Failed to crash " + p.getName());
-		}
 	}
 	
 	/**
