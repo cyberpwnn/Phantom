@@ -1,13 +1,10 @@
 package org.phantomapi.ext;
 
-import org.bukkit.Bukkit;
+import java.util.UUID;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
- * 
  * @author cyberpwn
- *
  */
 public class ViaVersionPluginConnector extends PluginConnector
 {
@@ -20,17 +17,17 @@ public class ViaVersionPluginConnector extends PluginConnector
 	{
 		if(exists())
 		{
-			Plugin instance = Bukkit.getServer().getPluginManager().getPlugin(pluginName);
-			
 			try
 			{
-				Class<?> vv = Class.forName("us.myles.ViaVersion.ViaVersionPlugin");
-				return (int) vv.getMethod("getPlayerVersion", Player.class).invoke(instance, player);
+				UUID id = player.getUniqueId();
+				Class<?> vv = Class.forName("us.myles.ViaVersion.api.Via");
+				Object api = vv.getMethod("getAPI").invoke(null);
+				return (int) api.getClass().getMethod("getPlayerVersion", UUID.class).invoke(api, id);
 			}
 			
 			catch(Exception e)
 			{
-				
+				e.printStackTrace();
 			}
 		}
 		
