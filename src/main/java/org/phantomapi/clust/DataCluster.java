@@ -32,6 +32,7 @@ public class DataCluster implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private GList<LinkedDataCluster> lcd;
 	
 	/**
 	 * @author cyberpwn
@@ -63,6 +64,7 @@ public class DataCluster implements Serializable
 	{
 		data = new HashMap<String, Cluster>();
 		comments = new HashMap<String, String>();
+		lcd = new GList<LinkedDataCluster>();
 		perm++;
 		totalClusters++;
 		bytes = 0;
@@ -108,6 +110,37 @@ public class DataCluster implements Serializable
 		this();
 		
 		addCompressed(data);
+	}
+	
+	/**
+	 * Crop a section out of the data cluster with a link for flushing data back
+	 * into this data cluster
+	 * 
+	 * @param sect
+	 *            the section to crop out
+	 * @return the linked data cluster
+	 */
+	public LinkedDataCluster linkSplit(String sect)
+	{
+		DataCluster cc = crop(sect);
+		LinkedDataCluster cl = new LinkedDataCluster(this, sect);
+		cl.setData(cc.getData());
+		lcd.add(cl);
+		
+		return cl;
+	}
+	
+	/**
+	 * Flush all linked data clusters into the parent (this)
+	 */
+	public void flushLinks()
+	{
+		for(LinkedDataCluster i : lcd)
+		{
+			i.flushParent();
+		}
+		
+		lcd.clear();
 	}
 	
 	/**
