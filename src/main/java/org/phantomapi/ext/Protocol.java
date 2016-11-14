@@ -48,7 +48,12 @@ public enum Protocol
 	/**
 	 * 1.10 - 1.10.2
 	 */
-	V110("1.10", 210);
+	V110("1.10", 210),
+	
+	/**
+	 * 1.11 - ?
+	 */
+	V111("1.11", 315);
 	
 	private String name;
 	private int version;
@@ -62,6 +67,7 @@ public enum Protocol
 	/**
 	 * Gets the formatted name of the protocol version
 	 */
+	@Override
 	public String toString()
 	{
 		return name;
