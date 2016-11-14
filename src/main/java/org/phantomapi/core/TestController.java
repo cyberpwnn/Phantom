@@ -217,25 +217,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("uparmor", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : onlinePlayers())
-				{
-					new Task(2)
-					{
-						@Override
-						public void run()
-						{
-							NMSX.updateArmor(i);
-						}
-					};
-				}
-			}
-		});
-		
 		tests.put("chunkupdate", new Runnable()
 		{
 			@Override
