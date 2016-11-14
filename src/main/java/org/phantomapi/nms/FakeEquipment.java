@@ -213,51 +213,59 @@ public abstract class FakeEquipment
 			@Override
 			public void onPacketSending(PacketEvent event)
 			{
-				PacketContainer packet = event.getPacket();
-				PacketType type = event.getPacketType();
-				
-				LivingEntity visibleEntity = (LivingEntity) packet.getEntityModifier(event).read(0);
-				Player observingPlayer = event.getPlayer();
-				
-				if(ENTITY_EQUIPMENT.equals(type))
+				try
 				{
-					EquipmentSlot slot = EquipmentSlot.fromId(packet.getIntegers().read(1));
-					ItemStack equipment = packet.getItemModifier().read(0);
-					EquipmentSendingEvent sendingEvent = new EquipmentSendingEvent(observingPlayer, visibleEntity, slot, equipment);
-					EquipmentSlot previous = processedPackets.get(packet.getHandle());
+					PacketContainer packet = event.getPacket();
+					PacketType type = event.getPacketType();
 					
-					if(previous != null)
+					LivingEntity visibleEntity = (LivingEntity) packet.getEntityModifier(event).read(0);
+					Player observingPlayer = event.getPlayer();
+					
+					if(ENTITY_EQUIPMENT.equals(type))
 					{
-						packet = event.getPacket().deepClone();
-						sendingEvent.setSlot(previous);
-						sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
+						EquipmentSlot slot = EquipmentSlot.fromId(packet.getIntegers().read(1));
+						ItemStack equipment = packet.getItemModifier().read(0);
+						EquipmentSendingEvent sendingEvent = new EquipmentSendingEvent(observingPlayer, visibleEntity, slot, equipment);
+						EquipmentSlot previous = processedPackets.get(packet.getHandle());
+						
+						if(previous != null)
+						{
+							packet = event.getPacket().deepClone();
+							sendingEvent.setSlot(previous);
+							sendingEvent.setEquipment(previous.getEquipment(visibleEntity).clone());
+						}
+						
+						if(onEquipmentSending(sendingEvent))
+						{
+							processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
+						}
+						
+						if(slot != sendingEvent.getSlot())
+						{
+							packet.getIntegers().write(1, slot.getId());
+						}
+						
+						if(equipment != sendingEvent.getEquipment())
+						{
+							packet.getItemModifier().write(0, sendingEvent.getEquipment());
+						}
+						
 					}
 					
-					if(onEquipmentSending(sendingEvent))
+					else if(NAMED_ENTITY_SPAWN.equals(type))
 					{
-						processedPackets.put(packet.getHandle(), previous != null ? previous : slot);
+						onEntitySpawn(observingPlayer, visibleEntity);
 					}
 					
-					if(slot != sendingEvent.getSlot())
+					else
 					{
-						packet.getIntegers().write(1, slot.getId());
+						throw new IllegalArgumentException("Unknown packet type:" + type);
 					}
-					
-					if(equipment != sendingEvent.getEquipment())
-					{
-						packet.getItemModifier().write(0, sendingEvent.getEquipment());
-					}
-					
 				}
 				
-				else if(NAMED_ENTITY_SPAWN.equals(type))
+				catch(Exception e)
 				{
-					onEntitySpawn(observingPlayer, visibleEntity);
-				}
-				
-				else
-				{
-					throw new IllegalArgumentException("Unknown packet type:" + type);
+					
 				}
 			}
 		});
