@@ -26,6 +26,7 @@ import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.core.BlockCheckController;
+import org.phantomapi.core.BlockMetaController;
 import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
@@ -79,6 +80,7 @@ import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
+import org.phantomapi.util.P;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
@@ -140,6 +142,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private ResourceController resourceController;
 	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
+	private BlockMetaController blockMetaController;
 	private SlateController slateController;
 	private PhastController phastController;
 	private BlockCheckController blockCheckController;
@@ -202,6 +205,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		nestController = new NestController(this);
+		blockMetaController = new BlockMetaController(this);
 		blockCheckController = new BlockCheckController(this);
 		updateController = new UpdateController(this);
 		saltpile = new SpeechMesh("saltpile");
@@ -231,6 +235,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(photonController);
 		register(resourceController);
 		register(nestController);
+		register(blockMetaController);
 		register(multiblockRegistryController);
 		register(slateController);
 		register(phastController);
@@ -447,6 +452,23 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			public void run()
 			{
 				sm += (double) (M.ns() - nsx) / 1000000;
+			}
+		};
+		
+		for(Player i : onlinePlayers())
+		{
+			P.showProgress(i, "Injecting Phantom;Finishing Up");
+		}
+		
+		new TaskLater(40)
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					P.clearProgress(i);
+				}
 			}
 		};
 	}
@@ -2105,5 +2127,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		saltpile.put("salt", msgx);
 		saltpile.put("fail", msg);
+	}
+	
+	public BlockMetaController getBlockMetaController()
+	{
+		return blockMetaController;
 	}
 }

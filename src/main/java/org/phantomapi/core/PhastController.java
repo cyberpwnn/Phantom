@@ -7,12 +7,13 @@ import java.io.IOException;
 import javax.script.ScriptException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.phantomapi.command.CommandController;
-import org.phantomapi.command.CommandFilter;
-import org.phantomapi.command.PhantomCommand;
-import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.command.PhantomSender;
+import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.phast.Phast;
 import org.phantomapi.phast.PhastAlertNode;
@@ -37,89 +38,15 @@ import org.phantomapi.util.C;
  * 
  * @author cyberpwn
  */
-public class PhastController extends CommandController
+public class PhastController extends Controller implements CommandExecutor
 {
 	private GList<PhastCommand> commands;
 	
 	public PhastController(org.phantomapi.construct.Controllable parentController)
 	{
-		super(parentController, "phast");
+		super(parentController);
 		
 		commands = new GList<PhastCommand>();
-	}
-	
-	@CommandFilter.Permission("phantom.phast")
-	@Override
-	public boolean onCommand(PhantomCommandSender sender, PhantomCommand command)
-	{
-		if(command.getArgs().length == 0)
-		{
-			if(sender.isConsole())
-			{
-				sender.sendMessage(C.RED + "Console cannot hold books");
-			}
-			
-			else
-			{
-				ItemStack is = sender.getPlayer().getItemInHand();
-				
-				if(is != null && is.getType().equals(Material.WRITTEN_BOOK))
-				{
-					String eval = GBook.read(is).toString(" ").replaceAll("\n", "");
-					
-					try
-					{
-						Phast.evaluate(eval, sender);
-					}
-					
-					catch(ScriptException e)
-					{
-						sender.sendMessage(C.RED + e.getMessage());
-					}
-				}
-			}
-		}
-		
-		else
-		{
-			if(command.getArgs().length == 1 && command.getArgs()[0].equalsIgnoreCase("help"))
-			{
-				for(PhastCommand i : commands)
-				{
-					sender.sendMessage(i.phastHelp());
-				}
-				
-				sender.sendMessage(commands.size() + " Commands");
-				
-				return true;
-			}
-			
-			String eval = new GList<String>(command.getArgs()).toString(" ");
-			
-			try
-			{
-				Phast.evaluate(eval, sender);
-			}
-			
-			catch(ScriptException e)
-			{
-				sender.sendMessage(C.RED + e.getMessage());
-			}
-		}
-		
-		return true;
-	}
-	
-	@Override
-	public String getChatTag()
-	{
-		return C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Phast" + C.DARK_GRAY + "]: " + C.GRAY;
-	}
-	
-	@Override
-	public String getChatTagHover()
-	{
-		return C.LIGHT_PURPLE + "Phast is a light weight scripting language.";
 	}
 	
 	public void registerPhast(PhastCommand cmd)
@@ -143,6 +70,7 @@ public class PhastController extends CommandController
 	@Override
 	public void onStart()
 	{
+		getPlugin().getCommand("phast").setExecutor(this);
 		registerPhast(new PhastLoadNode());
 		registerPhast(new PhastUnloadNode());
 		registerPhast(new PhastEnableNode());
@@ -301,5 +229,66 @@ public class PhastController extends CommandController
 	public void onStop()
 	{
 		
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command comand, String na, String[] args)
+	{
+		if(args.length == 0)
+		{
+			if(!(sender instanceof Player))
+			{
+				sender.sendMessage(C.RED + "Console cannot hold books");
+			}
+			
+			else
+			{
+				ItemStack is = ((Player) sender).getItemInHand();
+				
+				if(is != null && is.getType().equals(Material.WRITTEN_BOOK))
+				{
+					String eval = GBook.read(is).toString(" ").replaceAll("\n", "");
+					
+					try
+					{
+						Phast.evaluate(eval, new PhantomSender(sender));
+					}
+					
+					catch(ScriptException e)
+					{
+						sender.sendMessage(C.RED + e.getMessage());
+					}
+				}
+			}
+		}
+		
+		else
+		{
+			if(args.length == 1 && args[0].equalsIgnoreCase("help"))
+			{
+				for(PhastCommand i : commands)
+				{
+					sender.sendMessage(i.phastHelp());
+				}
+				
+				sender.sendMessage(commands.size() + " Commands");
+				
+				return true;
+			}
+			
+			String eval = new GList<String>(args).toString(" ");
+			
+			try
+			{
+				Phast.evaluate(eval, new PhantomSender(sender));
+			}
+			
+			catch(ScriptException e)
+			{
+				sender.sendMessage(C.RED + e.getMessage());
+			}
+		}
+		
+		return true;
 	}
 }

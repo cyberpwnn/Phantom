@@ -11,9 +11,12 @@ import org.phantomapi.event.MetaChunkLoadEvent;
 import org.phantomapi.event.MetaChunkUnloadEvent;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.S;
+import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 
-public class BlockMetaController extends Controller
+public class BlockMetaController extends Controller implements Monitorable
 {
 	private GMap<GChunk, ChunkMeta> metaCache;
 	
@@ -66,6 +69,12 @@ public class BlockMetaController extends Controller
 	public void on(ChunkUnloadEvent e)
 	{
 		GChunk chunk = new GChunk(e.getChunk());
+		
+		if(!metaCache.containsKey(chunk))
+		{
+			return;
+		}
+		
 		ChunkMeta cm = metaCache.get(chunk);
 		cm.getConfiguration().flushLinks();
 		callEvent(new MetaChunkUnloadEvent(e.getChunk(), cm));
@@ -81,5 +90,11 @@ public class BlockMetaController extends Controller
 				saveSqLite(cm, cm.getFile());
 			}
 		};
+	}
+	
+	@Override
+	public String getMonitorableData()
+	{
+		return "Chunks: " + C.LIGHT_PURPLE + F.f(metaCache.size());
 	}
 }

@@ -602,28 +602,31 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				ItemStack is = Players.getAnyPlayer().getItemInHand();
-				
-				if(Items.is(is))
+				for(Player i : onlinePlayers())
 				{
-					Stack s = new Stack(is);
+					ItemStack is = i.getItemInHand();
 					
-					try
+					if(Items.is(is))
 					{
-						DataCluster cc = new DataCluster(s.toData());
-						s("JSON: " + C.stripColor(cc.toJSON().toString()));
-						w("RAW: " + new String(cc.compress()));
+						Stack s = new Stack(is);
 						
-						s("Re-creating");
+						try
+						{
+							DataCluster cc = new DataCluster(s.toData());
+							s("JSON: " + C.stripColor(cc.toJSON().toString()));
+							w("RAW: " + new String(cc.compress()));
+							
+							s("Re-creating");
+							
+							Stack sc = new Stack(Material.GLASS);
+							sc.fromData(cc.compress());
+							i.getInventory().addItem(sc.toItemStack());
+						}
 						
-						Stack sc = new Stack(Material.GLASS);
-						sc.fromData(cc.compress());
-						Players.getAnyPlayer().getInventory().addItem(sc.toItemStack());
-					}
-					
-					catch(IOException e)
-					{
-						e.printStackTrace();
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 			}

@@ -12,3 +12,6 @@ commands:
   phantom:
     aliases: [ph, p, phan, pha, nova, nov, wraith, wra, wr, ghost, gh]
     description: The only damn command you need
+  phast:
+    aliases: [phaster]
+    description: Phast scripting
