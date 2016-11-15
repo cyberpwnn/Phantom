@@ -1,20 +1,21 @@
 package org.phantomapi.blockmeta;
 
+import java.io.File;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
-import org.phantomapi.clust.LinkedDataCluster;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GMCA;
+import org.phantomapi.util.Worlds;
 
 public class MCAMeta implements Configurable
 {
 	private String world;
 	private int x;
 	private int z;
-	private LinkedDataCluster cc;
+	private DataCluster cc;
 	private String codeName;
 	
-	public MCAMeta(GMCA gmca, LinkedDataCluster cc)
+	public MCAMeta(GMCA gmca, DataCluster cc)
 	{
 		world = gmca.getWorld();
 		x = gmca.getX();
@@ -50,6 +51,11 @@ public class MCAMeta implements Configurable
 	public boolean hasData()
 	{
 		return getConfiguration().keys().size() > 1;
+	}
+	
+	public File getFile()
+	{
+		return new File(new File(Worlds.getWorld(world).getWorldFolder(), "nest"), "r." + x + "." + z + ".pma");
 	}
 	
 	public ChunkMeta getChunk(GChunk chunk)
