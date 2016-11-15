@@ -9,7 +9,6 @@ import org.bukkit.Location;
  * A Chunk object which is serializable
  * 
  * @author cyberpwn
- *
  */
 public class GChunk implements Serializable
 {
@@ -56,25 +55,77 @@ public class GChunk implements Serializable
 		this.world = world;
 	}
 	
-	/**
-	 * Is the gchunk equal to another gchunk
-	 */
-	public boolean equals(Object o)
+	@Override
+	public int hashCode()
 	{
-		if(o != null)
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((world == null) ? 0 : world.hashCode());
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = prime * result + ((z == null) ? 0 : z.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
 		{
-			if(o instanceof GChunk)
+			return true;
+		}
+		
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(getClass() != obj.getClass())
+		{
+			return false;
+		}
+		
+		GChunk other = (GChunk) obj;
+		
+		if(world == null)
+		{
+			if(other.world != null)
 			{
-				GChunk gc = (GChunk) o;
-				
-				if(this.x == gc.x && this.z == gc.z && this.world.equals(gc.world))
-				{
-					return true;
-				}
+				return false;
 			}
 		}
 		
-		return false;
+		else if(!world.equals(other.world))
+		{
+			return false;
+		}
+		
+		if(x == null)
+		{
+			if(other.x != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!x.equals(other.x))
+		{
+			return false;
+		}
+		
+		if(z == null)
+		{
+			if(other.z != null)
+			{
+				return false;
+			}
+		}
+		
+		else if(!z.equals(other.z))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -86,7 +137,7 @@ public class GChunk implements Serializable
 	 */
 	public boolean isChunk(Chunk c)
 	{
-		if(this.x == c.getX() && this.z == c.getZ() && this.world.equals(c.getWorld().getName()))
+		if(x == c.getX() && z == c.getZ() && world.equals(c.getWorld().getName()))
 		{
 			return true;
 		}
@@ -170,6 +221,7 @@ public class GChunk implements Serializable
 	/**
 	 * String rep
 	 */
+	@Override
 	public String toString()
 	{
 		return "Chunk: " + world + " @ [" + x + "," + z + "]";
