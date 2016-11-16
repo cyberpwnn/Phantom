@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
@@ -46,6 +48,19 @@ public class P
 	public static Entity targetEntity(Player p, int distance)
 	{
 		return getEntityLookingAt(p, distance, 1);
+	}
+	
+	/**
+	 * Does the player have an inventory open
+	 * 
+	 * @param player
+	 *            the player
+	 * @return true if the player does
+	 */
+	public static boolean hasInventoryOpen(final Player player)
+	{
+		final InventoryView view = player.getOpenInventory();
+		return view != null && view.getType() != InventoryType.CRAFTING;
 	}
 	
 	/**
