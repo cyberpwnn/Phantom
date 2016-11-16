@@ -11,6 +11,8 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.text.SYM;
+import org.phantomapi.text.TXT;
 import org.phantomapi.util.C;
 import org.phantomapi.util.FinalInteger;
 import org.phantomapi.util.P;
@@ -59,11 +61,11 @@ public class RebootController extends ConfigurableController
 		
 		if(minute == minutes && hour == hours && !rebooting)
 		{
-			reboot();
+			reboot(seconds);
 		}
 	}
 	
-	public void reboot()
+	public void reboot(int mt)
 	{
 		if(rebooting)
 		{
@@ -98,11 +100,11 @@ public class RebootController extends ConfigurableController
 		
 		rebooting = true;
 		
-		FinalInteger fi = new FinalInteger(seconds);
+		FinalInteger fi = new FinalInteger(mt);
 		
 		for(Player i : onlinePlayers())
 		{
-			P.showProgress(i, C.LIGHT_PURPLE + "Reboot Incoming;Rebooting in " + seconds + " seconds.");
+			P.showProgress(i, C.GOLD + "" + SYM.SYMBOL_WARNING + C.RED + " Reboot;" + C.DARK_GRAY + "Rebooting in " + C.RED + mt + C.DARK_GRAY + " seconds.");
 		}
 		
 		new TaskLater(100)
@@ -145,7 +147,7 @@ public class RebootController extends ConfigurableController
 						{
 							for(Player i : onlinePlayers())
 							{
-								P.showProgress(i, C.LIGHT_PURPLE + "Rebooting in " + (fi.get() + 1) + " seconds;You will be sent to the hub.");
+								P.showProgress(i, C.GOLD + "" + SYM.SYMBOL_WARNING + C.RED + " Rebooting in " + C.GOLD + (fi.get() + 1) + "s;You will be sent to the hub.");
 							}
 						}
 						
@@ -153,7 +155,9 @@ public class RebootController extends ConfigurableController
 						{
 							for(Player i : onlinePlayers())
 							{
-								NMSX.sendActionBar(i, C.LIGHT_PURPLE + "Rebooting in " + C.RED + fi.get() + " seconds");
+								String v = TXT.getLine(C.GOLD, 44, (double) ((double) fi.get() / (double) mt), (fi.get() % 2 == 0 ? SYM.SYMBOL_WARNING + "" : SYM.SYMBOL_WARNING + ""), fi.get() + "s", (fi.get() % 2 == 0 ? SYM.SYMBOL_WARNING + "" : SYM.SYMBOL_WARNING + ""));
+								
+								NMSX.sendActionBar(i, v);
 							}
 						}
 					}
