@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.GSet;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.Paste;
 import com.google.common.io.ByteStreams;
@@ -389,6 +390,64 @@ public class DataCluster implements Serializable
 		}
 		
 		return comments;
+	}
+	
+	/**
+	 * Get all roots
+	 * 
+	 * @return the roots
+	 */
+	public GSet<String> getRoots()
+	{
+		return getRoots(null);
+	}
+	
+	/**
+	 * Get the roots from the prefix. If the prefix is null, returns all roots
+	 * 
+	 * @param pre
+	 *            the prefix
+	 * @return the roots
+	 */
+	public GSet<String> getRoots(String pre)
+	{
+		GSet<String> roots = new GSet<String>();
+		
+		for(String i : keys())
+		{
+			if(pre == null)
+			{
+				if(i.contains("."))
+				{
+					roots.add(i.split("\\.")[0]);
+				}
+				
+				else
+				{
+					roots.add(i);
+				}
+			}
+			
+			else
+			{
+				if(i.startsWith(pre + "."))
+				{
+					String mod = i.substring((pre + ".").length());
+					
+					if(mod.contains("."))
+					{
+						roots.add(mod.split("\\.")[0]);
+					}
+					
+					else
+					{
+						roots.add(mod);
+					}
+				}
+			}
+		}
+		
+		return roots;
 	}
 	
 	/**
