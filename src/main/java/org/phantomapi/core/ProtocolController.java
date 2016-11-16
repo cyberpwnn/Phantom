@@ -7,6 +7,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.event.EquipmentUpdateEvent;
 import org.phantomapi.ext.Protocol;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.nms.EntityHider;
 import org.phantomapi.nms.EntityHider.Policy;
@@ -27,6 +28,7 @@ public class ProtocolController extends Controller
 	private GMap<Player, Double> realPing;
 	private GMap<Player, Timer> timers;
 	private GMap<Integer, Player> waiting;
+	private GMap<Player, GList<Double>> pingHistory;
 	
 	public ProtocolController(Controllable parentController)
 	{
@@ -35,6 +37,7 @@ public class ProtocolController extends Controller
 		realPing = new GMap<Player, Double>();
 		timers = new GMap<Player, Timer>();
 		waiting = new GMap<Integer, Player>();
+		pingHistory = new GMap<Player, GList<Double>>();
 	}
 	
 	@Override
@@ -87,16 +90,36 @@ public class ProtocolController extends Controller
 			{
 				if(event.getPacketType().equals(PacketType.Play.Client.KEEP_ALIVE))
 				{
-					int id = event.getPacket().getIntegers().read(0);
-					Player player = event.getPlayer();
-					
-					if(waiting.containsKey(id) && waiting.get(id).equals(player))
+					try
 					{
-						waiting.remove(id);
-						Timer t = timers.get(player);
-						t.stop();
-						timers.remove(player);
-						realPing.put(player, (double) t.getTime());
+						int id = event.getPacket().getIntegers().read(0);
+						Player player = event.getPlayer();
+						
+						if(waiting.containsKey(id) && waiting.get(id).equals(player))
+						{
+							waiting.remove(id);
+							Timer t = timers.get(player);
+							t.stop();
+							timers.remove(player);
+							realPing.put(player, (double) t.getTime());
+							
+							if(!pingHistory.containsKey(player))
+							{
+								pingHistory.put(player, new GList<Double>());
+							}
+							
+							pingHistory.get(player).add(realPing.get(player));
+							
+							while(pingHistory.get(player).size() > 128)
+							{
+								pingHistory.get(player).pop();
+							}
+						}
+					}
+					
+					catch(Exception e)
+					{
+						
 					}
 				}
 			}
@@ -130,5 +153,45 @@ public class ProtocolController extends Controller
 	public FakeEquipment getFakeEquipment()
 	{
 		return fakeEquipment;
+	}
+	
+	public EntityHider getEntityHider()
+	{
+		return entityHider;
+	}
+	
+	public GMap<Player, Double> getRealPing()
+	{
+		return realPing;
+	}
+	
+	public GMap<Player, Timer> getTimers()
+	{
+		return timers;
+	}
+	
+	public GMap<Integer, Player> getWaiting()
+	{
+		return waiting;
+	}
+	
+	public GMap<Player, GList<Double>> getPingHistory()
+	{
+		return pingHistory;
+	}
+	
+	public GList<Double> getPingHistory(Player player)
+	{
+		return getPingHistory().get(player);
+	}
+	
+	public Double getPing(Player player)
+	{
+		return getRealPing().get(player) / 1000000.0;
+	}
+	
+	public long getPingNanos(Player player)
+	{
+		return getRealPing().get(player).longValue();
 	}
 }
