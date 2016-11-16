@@ -61,11 +61,6 @@ public class ChunkMeta implements Configurable
 			String cn = block.getX() + "-" + block.getY() + "-" + block.getZ();
 			getConfiguration().flushLinks();
 			
-			if(!getConfiguration().contains("blocks." + cn + ".b-" + cn))
-			{
-				getConfiguration().set("blocks." + cn + ".b-" + cn, true);
-			}
-			
 			return new BlockMeta(cn, getConfiguration().linkSplit("blocks." + cn));
 		}
 		
