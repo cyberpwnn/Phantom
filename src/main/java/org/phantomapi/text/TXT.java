@@ -69,7 +69,7 @@ public class TXT
 	 *            the centered text
 	 * @return the line
 	 */
-	public String getLine(C cc, int len, double percent, String l, String r, String f)
+	public static String getLine(C cc, int len, double percent, String l, String r, String f)
 	{
 		String k = cc + "" + C.UNDERLINE + l;
 		len = len < l.length() + r.length() + f.length() ? l.length() + r.length() + f.length() + 6 : len;
