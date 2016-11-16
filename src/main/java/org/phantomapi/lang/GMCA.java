@@ -1,16 +1,13 @@
 package org.phantomapi.lang;
 
 import java.io.Serializable;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 
 /**
- * A Chunk object which is serializable
+ * An MCA object which is serializable
  * 
  * @author cyberpwn
  */
-public class GChunk implements Serializable
+public class GMCA implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -19,27 +16,7 @@ public class GChunk implements Serializable
 	private String world;
 	
 	/**
-	 * Create a gchunk from an existing chunk
-	 * 
-	 * @param chunk
-	 */
-	public GChunk(Chunk chunk)
-	{
-		this(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
-	}
-	
-	/**
-	 * Get a GChunk from an existing location
-	 * 
-	 * @param location
-	 */
-	public GChunk(Location location)
-	{
-		this(location.getChunk().getX(), location.getChunk().getZ(), location.getChunk().getWorld().getName());
-	}
-	
-	/**
-	 * Create a GChunk from data
+	 * Create a GMCA from data
 	 * 
 	 * @param x
 	 *            the x
@@ -48,7 +25,7 @@ public class GChunk implements Serializable
 	 * @param world
 	 *            the world (NAME STRING)
 	 */
-	public GChunk(int x, int z, String world)
+	public GMCA(int x, int z, String world)
 	{
 		this.x = x;
 		this.z = z;
@@ -84,7 +61,7 @@ public class GChunk implements Serializable
 			return false;
 		}
 		
-		GChunk other = (GChunk) obj;
+		GMCA other = (GMCA) obj;
 		
 		if(world == null)
 		{
@@ -126,23 +103,6 @@ public class GChunk implements Serializable
 		}
 		
 		return true;
-	}
-	
-	/**
-	 * Is this chunk equal to an actual chunk
-	 * 
-	 * @param c
-	 *            the chunk
-	 * @return true if they are the same place
-	 */
-	public boolean isChunk(Chunk c)
-	{
-		if(x == c.getX() && z == c.getZ() && world.equals(c.getWorld().getName()))
-		{
-			return true;
-		}
-		
-		return false;
 	}
 	
 	/**
@@ -209,21 +169,11 @@ public class GChunk implements Serializable
 	}
 	
 	/**
-	 * Get a chunk object out of this gchunk
-	 * 
-	 * @return the chunk
-	 */
-	public Chunk toChunk()
-	{
-		return Bukkit.getServer().getWorld(world).getChunkAt(x, z);
-	}
-	
-	/**
 	 * String rep
 	 */
 	@Override
 	public String toString()
 	{
-		return "Chunk: " + world + " @ [" + x + "," + z + "]";
+		return "MCA: " + world + " @ [" + x + "," + z + "]";
 	}
 }

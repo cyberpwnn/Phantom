@@ -24,6 +24,8 @@ import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.blockmeta.BlockMeta;
+import org.phantomapi.blockmeta.PMeta;
 import org.phantomapi.chromatic.Chromatic;
 import org.phantomapi.chromatic.ChromaticBlock;
 import org.phantomapi.clust.DataCluster;
@@ -190,6 +192,32 @@ public class TestController extends Controller
 			public void run()
 			{
 				ExceptionUtil.writeIssues(new File(Phantom.instance().getDataFolder(), "report"));
+			}
+		});
+		
+		tests.put("block-meta", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Block block = P.targetBlock(Players.getAnyPlayer(), 128).getBlock();
+				BlockMeta bm = PMeta.getBlock(block);
+				bm.getConfiguration().set("test", "value");
+				bm.getConfiguration().set("test2", "value2");
+				bm.getConfiguration().set("test3", "value3");
+				bm.write();
+				
+				s("Data: " + PMeta.getChunk(block.getChunk()).getConfiguration().toJSON().toString());
+				
+				try
+				{
+					s("RAW: " + new String(PMeta.getChunk(block.getChunk()).getConfiguration().compress()));
+				}
+				
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		});
 		
