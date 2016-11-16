@@ -97,4 +97,9 @@ public class WraithController extends Controller
 		
 		return null;
 	}
+	
+	public int getCount()
+	{
+		return wraiths.size();
+	}
 }

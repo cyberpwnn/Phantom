@@ -12,7 +12,7 @@ public class PlaceholderHooker extends EZPlaceholderHook
 	{
 		super(plugin, placeholderName);
 	}
-
+	
 	@Override
 	public String onPlaceholderRequest(Player p, String q)
 	{
@@ -25,7 +25,7 @@ public class PlaceholderHooker extends EZPlaceholderHook
 			
 			if(q.equalsIgnoreCase("network_count"))
 			{
-				return Phantom.getNetworkCount() + "";
+				return (Phantom.getNetworkCount() - Phantom.instance().getWraithController().getCount()) + "";
 			}
 			
 			for(String i : Phantom.getServers())
