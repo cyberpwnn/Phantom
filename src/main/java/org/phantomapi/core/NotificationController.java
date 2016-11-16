@@ -11,6 +11,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.sync.ExecutiveRunnable;
 import org.phantomapi.sync.ExecutiveTask;
+import org.phantomapi.util.P;
 
 /**
  * A Notification controller
@@ -46,6 +47,11 @@ public class NotificationController extends Controller
 					public void run()
 					{
 						Player p = next();
+						
+						if(P.hasInventoryOpen(p))
+						{
+							return;
+						}
 						
 						if(holds.containsKey(p))
 						{
