@@ -1247,7 +1247,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					{
 						if(sender.hasPermission("pha.rebootserver"))
 						{
-							rebootController.reboot();
+							if(args.length > 1 && args[1].equalsIgnoreCase("-f"))
+							{
+								rebootController.reboot(20);
+							}
+							
+							else
+							{
+								rebootController.reboot(rebootController.seconds);
+							}
 						}
 					}
 					
