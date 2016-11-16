@@ -38,4 +38,9 @@ public class BlockMeta implements Configurable
 	{
 		return codeName;
 	}
+	
+	public void write()
+	{
+		cc.flushParent();
+	}
 }
