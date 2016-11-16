@@ -63,13 +63,13 @@ public class TXT
 	 *            the progress of the line
 	 * @param l
 	 *            the left text
-	 * @param r
-	 *            the right text
 	 * @param f
 	 *            the centered text
+	 * @param r
+	 *            the right text
 	 * @return the line
 	 */
-	public static String getLine(C cc, int len, double percent, String l, String r, String f)
+	public static String getLine(C cc, int len, double percent, String l, String f, String r)
 	{
 		String k = cc + "" + C.UNDERLINE + l;
 		len = len < l.length() + r.length() + f.length() ? l.length() + r.length() + f.length() + 6 : len;
