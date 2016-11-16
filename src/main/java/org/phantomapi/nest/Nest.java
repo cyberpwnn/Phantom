@@ -7,8 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
-import org.phantomapi.Phantom;
 import org.phantomapi.block.BlockHandler;
+import org.phantomapi.blockmeta.BlockMeta;
+import org.phantomapi.blockmeta.ChunkMeta;
+import org.phantomapi.blockmeta.PMeta;
 import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
@@ -55,14 +57,9 @@ public class Nest
 	 *            the chunk
 	 * @return the nested chunk or null if not loaded yet
 	 */
-	public static NestedChunk getChunk(Chunk c)
+	public static ChunkMeta getChunk(Chunk c)
 	{
-		if(Phantom.instance().getNestController().get(c) == null)
-		{
-			Phantom.instance().getNestController().load(c);
-		}
-		
-		return Phantom.instance().getNestController().get(c);
+		return PMeta.getChunk(c);
 	}
 	
 	/**
@@ -72,7 +69,7 @@ public class Nest
 	 *            the block
 	 * @return the nested block or null if not loaded yet
 	 */
-	public static NestedBlock getBlock(Block block)
+	public static BlockMeta getBlock(Block block)
 	{
 		return getChunk(block.getChunk()).getBlock(block);
 	}
