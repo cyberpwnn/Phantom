@@ -26,7 +26,6 @@ import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.core.BlockCheckController;
-import org.phantomapi.core.BlockMetaController;
 import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
@@ -142,7 +141,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private ResourceController resourceController;
 	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
-	private BlockMetaController blockMetaController;
 	private SlateController slateController;
 	private PhastController phastController;
 	private BlockCheckController blockCheckController;
@@ -205,7 +203,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
 		nestController = new NestController(this);
-		blockMetaController = new BlockMetaController(this);
 		blockCheckController = new BlockCheckController(this);
 		updateController = new UpdateController(this);
 		saltpile = new SpeechMesh("saltpile");
@@ -235,7 +232,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(photonController);
 		register(resourceController);
 		register(nestController);
-		register(blockMetaController);
 		register(multiblockRegistryController);
 		register(slateController);
 		register(phastController);
@@ -2127,10 +2123,5 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		saltpile.put("salt", msgx);
 		saltpile.put("fail", msg);
-	}
-	
-	public BlockMetaController getBlockMetaController()
-	{
-		return blockMetaController;
 	}
 }
