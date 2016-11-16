@@ -80,6 +80,7 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.GBook;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.ParameterAdapter;
+import org.phantomapi.text.SYM;
 import org.phantomapi.text.Tabulator;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
@@ -225,6 +226,18 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					Chunks.update(i.getLocation().getChunk());
+				}
+			}
+		});
+		
+		tests.put("sym", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					SYM.printSymbols(i);
 				}
 			}
 		});
