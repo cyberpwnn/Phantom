@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.lang.GChunk;
+import org.phantomapi.lang.GList;
 import org.phantomapi.util.Worlds;
 
 public class ChunkMeta implements Configurable
@@ -54,17 +55,26 @@ public class ChunkMeta implements Configurable
 		return !getConfiguration().keys().isEmpty();
 	}
 	
+	public GList<Block> getBlocks()
+	{
+		GList<String> roots = new GList<String>(getConfiguration().getRoots("blocks"));
+		GList<Block> blocks = new GList<Block>();
+		
+		for(String i : roots)
+		{
+			Block block = Worlds.getWorld(gc.getWorld()).getBlockAt(Integer.valueOf(i.split("-")[0]), Integer.valueOf(i.split("-")[1]), Integer.valueOf(i.split("-")[2]));
+			blocks.add(block);
+		}
+		
+		return blocks;
+	}
+	
 	public BlockMeta getBlock(Block block)
 	{
 		if(gc.getWorld().equals(block.getWorld().getName()) && gc.getX() == block.getChunk().getX() && gc.getZ() == block.getChunk().getZ())
 		{
 			String cn = block.getX() + "-" + block.getY() + "-" + block.getZ();
 			getConfiguration().flushLinks();
-			
-			if(!getConfiguration().contains("blocks." + cn + ".b-" + cn))
-			{
-				getConfiguration().set("blocks." + cn + ".b-" + cn, true);
-			}
 			
 			return new BlockMeta(cn, getConfiguration().linkSplit("blocks." + cn));
 		}
