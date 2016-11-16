@@ -127,7 +127,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 		{
 			GSet<Integer> ids = new GSet<Integer>();
 			
-			for(String i : Nest.getChunk(e.getChunk()).keys())
+			for(String i : Nest.getChunk(e.getChunk()).getConfiguration().keys())
 			{
 				if(i.startsWith("mb") && i.contains("."))
 				{
@@ -234,7 +234,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 								
 								for(Chunk j : mb.getChunks())
 								{
-									Nest.getChunk(j).set("mb.i-" + mb.getId(), mb.getType());
+									Nest.getChunk(j).getConfiguration().set("mb.i-" + mb.getId(), mb.getType());
 								}
 							}
 						}
@@ -317,7 +317,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 					
 					for(Chunk j : mb.getChunks())
 					{
-						Nest.getChunk(j).remove("mb.i-" + mb.getId());
+						Nest.getChunk(j).getConfiguration().remove("mb.i-" + mb.getId());
 					}
 				}
 				
@@ -385,7 +385,7 @@ public class MultiblockRegistryController extends Controller implements Monitora
 							
 							for(Chunk j : mb.getChunks())
 							{
-								Nest.getChunk(j).remove("mb.i-" + mb.getId());
+								Nest.getChunk(j).getConfiguration().remove("mb.i-" + mb.getId());
 							}
 						}
 					}
