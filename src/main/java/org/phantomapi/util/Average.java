@@ -14,6 +14,30 @@ public class Average
 	private double average;
 	
 	/**
+	 * Average the list by looping through them and mapping an average with a
+	 * limit
+	 * 
+	 * @param doubles
+	 *            the doubles
+	 * @param limit
+	 *            the limit
+	 * @return the doubles
+	 */
+	public static GList<Double> getFastAverage(GList<Double> doubles, int limit)
+	{
+		GList<Double> d = new GList<Double>();
+		Average a = new Average(limit);
+		
+		for(Double i : doubles)
+		{
+			a.put(i);
+			d.add(a.getAverage());
+		}
+		
+		return d;
+	}
+	
+	/**
 	 * Create an average with a limit to max data
 	 * 
 	 * @param limit

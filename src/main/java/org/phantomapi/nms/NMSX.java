@@ -1079,6 +1079,20 @@ public class NMSX
 	}
 	
 	/**
+	 * Get the raw ping by injecting into the keep-alive packets and getting raw
+	 * nanosecond timings from it. This is still measured in milliseconds, but
+	 * it is in double format. This ping is not averaged.
+	 * 
+	 * @param player
+	 *            the player
+	 * @return the raw ping
+	 */
+	public static double rawPing(Player player)
+	{
+		return Phantom.instance().getProtocolController().getPing(player);
+	}
+	
+	/**
 	 * Ping a player
 	 * 
 	 * @param player

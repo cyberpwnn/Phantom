@@ -80,6 +80,7 @@ import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
+import org.phantomapi.util.Players;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
@@ -916,6 +917,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 								thrash(sender);
 							}
 						};
+					}
+					
+					else if(args[0].equalsIgnoreCase("ping") && args.length == 2)
+					{
+						Player player = Players.getPlayer(args[1]);
+						
+						if(player != null)
+						{
+							double gate = (double) (150000000 - protocolController.getPingNanos(player)) / 1000000.0;
+							sender.sendMessage(getChatTag() + C.GRAY + "Ping: " + C.LIGHT_PURPLE + C.BOLD + F.f(protocolController.getPing(player), 2) + "ms");
+							sender.sendMessage(getChatTag() + C.GRAY + "Gate: " + C.GOLD + C.BOLD + F.f(gate, 2) + "ms");
+							sender.sendMessage(getChatTag() + C.GRAY + "Link: " + C.RED + C.BOLD + F.nsMs(BungeeController.linkSpeed, 2) + "ms");
+						}
 					}
 					
 					else if(args[0].equalsIgnoreCase("update"))
