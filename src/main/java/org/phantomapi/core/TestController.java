@@ -1178,8 +1178,8 @@ public class TestController extends Controller
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
-					Nest.getBlock(i.getLocation().getBlock()).getConfiguration().set("test", M.ms());
-					i.sendMessage(Nest.getBlock(i.getLocation().getBlock()).getConfiguration().toJSON().toString());
+					Nest.getBlock(i.getLocation().getBlock()).set("test", M.ms());
+					i.sendMessage(Nest.getBlock(i.getLocation().getBlock()).toJSON().toString());
 					i.sendMessage("" + Nest.getChunk(i.getLocation().getChunk()).getBlocks().size());
 				}
 			}
