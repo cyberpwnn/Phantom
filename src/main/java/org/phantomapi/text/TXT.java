@@ -51,4 +51,31 @@ public class TXT
 	{
 		return color + "" + C.STRIKETHROUGH + repeat(" ", len);
 	}
+	
+	/**
+	 * Get a fancy underline
+	 * 
+	 * @param cc
+	 *            the color
+	 * @param len
+	 *            the length of the line
+	 * @param percent
+	 *            the progress of the line
+	 * @param l
+	 *            the left text
+	 * @param r
+	 *            the right text
+	 * @param f
+	 *            the centered text
+	 * @return the line
+	 */
+	public String getLine(C cc, int len, double percent, String l, String r, String f)
+	{
+		String k = cc + "" + C.UNDERLINE + l;
+		len = len < l.length() + r.length() + f.length() ? l.length() + r.length() + f.length() + 6 : len;
+		int a = len - (l.length() + r.length() + f.length());
+		int b = (int) ((double) a * (double) percent);
+		int c = len - b;
+		return (percent == 0.0 ? ((k + C.DARK_GRAY + C.UNDERLINE + F.repeat(" ", c) + C.DARK_GRAY + C.UNDERLINE + r)) : (k + F.repeat(" ", b) + (percent == 1.0 ? r : (f + C.DARK_GRAY + C.UNDERLINE + F.repeat(" ", c) + C.DARK_GRAY + C.UNDERLINE + r))));
+	}
 }
