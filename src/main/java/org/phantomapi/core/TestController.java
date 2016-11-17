@@ -8,6 +8,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -1463,6 +1465,18 @@ public class TestController extends Controller
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
 					a.play(i);
+				}
+			}
+		});
+		
+		tests.put("firework-detonate", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					NMSX.launchFirework(i.getEyeLocation(), Color.WHITE, Color.WHITE, Type.BALL);
 				}
 			}
 		});
