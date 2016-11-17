@@ -1,21 +1,23 @@
 package org.phantomapi.stack;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.JSONObject;
 import org.phantomapi.inventory.PhantomInventory;
 import org.phantomapi.lang.GMap;
 
 public class StackedInventory extends PhantomInventory implements StackedPhantomInventory
 {
 	public GMap<Integer, Stack> inventoryContents;
+	private Inventory inventory;
 	
 	public StackedInventory(Inventory i)
 	{
 		super(i);
 		
+		inventory = i;
 		inventoryContents = new GMap<Integer, Stack>();
 		pull();
 	}
@@ -89,7 +91,7 @@ public class StackedInventory extends PhantomInventory implements StackedPhantom
 		
 		for(Integer i : inventoryContents.k())
 		{
-			cc.set("i-" + i, inventoryContents.get(i).toData() + "");
+			cc.set("i-" + i, new DataCluster(inventoryContents.get(i).toData()).toJSON().toString());
 		}
 		
 		return cc.compress();
@@ -103,11 +105,16 @@ public class StackedInventory extends PhantomInventory implements StackedPhantom
 		
 		for(String i : cc.keys())
 		{
+			String s = i.split("-")[0];
 			Integer l = Integer.valueOf(i.split("-")[1]);
 			
 			Stack v = new Stack(Material.GLASS);
-			v.fromData(cc.getString(i).getBytes(Charset.defaultCharset()));
-			inventoryContents.put(l, v);
+			v.fromData(new DataCluster(new JSONObject(cc.getString(i))).compress());
+			
+			if(s.equals("i"))
+			{
+				inventoryContents.put(l, v);
+			}
 		}
 	}
 	
@@ -116,7 +123,7 @@ public class StackedInventory extends PhantomInventory implements StackedPhantom
 	{
 		inventoryContents.clear();
 		
-		for(int i = 0; i < 36; i++)
+		for(int i = 0; i < inventory.getSize(); i++)
 		{
 			inventoryContents.put(i, new Stack(getItem(i)));
 		}
