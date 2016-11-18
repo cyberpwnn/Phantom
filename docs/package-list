@@ -14,6 +14,7 @@ org.phantomapi.event
 org.phantomapi.ext
 org.phantomapi.filesystem
 org.phantomapi.game
+org.phantomapi.graph
 org.phantomapi.gui
 org.phantomapi.hud
 org.phantomapi.inventory
