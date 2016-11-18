@@ -1,6 +1,9 @@
 package org.phantomapi.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,6 +32,8 @@ import org.phantomapi.async.A;
 import org.phantomapi.chromatic.Chromatic;
 import org.phantomapi.chromatic.ChromaticBlock;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.JSONArray;
+import org.phantomapi.clust.JSONObject;
 import org.phantomapi.clust.YAMLDataInput;
 import org.phantomapi.clust.YAMLDataOutput;
 import org.phantomapi.command.Command;
@@ -193,6 +198,112 @@ public class TestController extends Controller
 			public void run()
 			{
 				ExceptionUtil.writeIssues(new File(Phantom.instance().getDataFolder(), "report"));
+			}
+		});
+		
+		tests.put("perm-fix", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						try
+						{
+							s("Reading...");
+							File f = new File(getPlugin().getDataFolder(), "fix-perms.txt");
+							
+							if(!f.exists())
+							{
+								f("File: " + f.toString() + " does not exist");
+							}
+							
+							else
+							{
+								String json = "";
+								
+								try
+								{
+									BufferedReader bu = new BufferedReader(new FileReader(f));
+									
+									String line;
+									
+									while((line = bu.readLine()) != null)
+									{
+										json = json + line;
+									}
+									
+									bu.close();
+									
+									JSONObject js = new JSONObject(json);
+									JSONObject subjects = js.getJSONObject("subjects");
+									JSONObject users = subjects.getJSONObject("user");
+									
+									for(String i : users.keySet())
+									{
+										JSONArray uf = users.getJSONArray(i);
+										JSONObject user = uf.getJSONObject(0);
+										
+										if(user.length() == 3)
+										{
+											JSONObject permissions = user.getJSONObject("permissions");
+											
+											s("Removing " + permissions.keySet().size() + " permissions from " + i);
+											
+											for(String j : new GList<String>(permissions.keySet()))
+											{
+												permissions.remove(j);
+											}
+										}
+									}
+									
+									f.delete();
+									
+									FileWriter fw = new FileWriter(f);
+									fw.write(js.toString(4));
+									fw.close();
+									s("Complete");
+								}
+								
+								catch(Exception e)
+								{
+									e.printStackTrace();
+								}
+							}
+						}
+						
+						catch(Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
+			}
+		});
+		
+		tests.put("hopper-lag", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					for(int j = 0; j < 16; j++)
+					{
+						for(int k = 0; k < 256; k++)
+						{
+							for(int l = 0; l < 16; l++)
+							{
+								Block b = i.getLocation().getChunk().getBlock(j, k, l);
+								b.setType(Material.HOPPER);
+								b.getState().update();
+							}
+						}
+					}
+				}
 			}
 		});
 		
