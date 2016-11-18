@@ -1,5 +1,6 @@
 package org.phantomapi.graph;
 
+import java.awt.Color;
 import javax.script.ScriptException;
 import org.phantomapi.util.M;
 
@@ -29,9 +30,9 @@ public class EquationGraph extends PhantomGraph
 			{
 				double y = (M.evaluate(expression.replaceAll("x", (x * scaleX) + "")) * scaleY) + shiftY;
 				
-				if(y > holder.getGraphHeight() - 1)
+				if(y < holder.getGraphHeight() - 1 && y > 0)
 				{
-					// TODO do it
+					holder.drawGraph(x, (int) y, Color.RED);
 				}
 			}
 			
