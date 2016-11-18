@@ -1,6 +1,8 @@
 package org.phantomapi.papyrus;
 
+import java.awt.Color;
 import org.bukkit.map.MapView;
+import org.phantomapi.graph.GraphHolder;
 import org.phantomapi.world.Dimension;
 
 /**
@@ -8,7 +10,7 @@ import org.phantomapi.world.Dimension;
  * 
  * @author cyberpwn
  */
-public abstract class PapyrusRenderer extends ByteRenderer
+public abstract class PapyrusRenderer extends ByteRenderer implements GraphHolder
 {
 	/**
 	 * Papyrus renderer
@@ -48,4 +50,23 @@ public abstract class PapyrusRenderer extends ByteRenderer
 	
 	@Override
 	public abstract void render();
+	
+	@Override
+	public int getGraphWidth()
+	{
+		return 128;
+	}
+	
+	@Override
+	public int getGraphHeight()
+	{
+		return 128;
+	}
+	
+	@Override
+	public void drawGraph(int x, int y, Color color)
+	{
+		set(x, y, PaperColor.matchColor(color));
+	}
+	
 }
