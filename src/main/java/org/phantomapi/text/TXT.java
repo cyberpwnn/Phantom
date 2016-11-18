@@ -1,5 +1,7 @@
 package org.phantomapi.text;
 
+import org.apache.commons.lang.WordUtils;
+import org.phantomapi.lang.GList;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 
@@ -22,6 +24,28 @@ public class TXT
 	public static String repeat(String str, int len)
 	{
 		return F.repeat(str, len);
+	}
+	
+	/**
+	 * Wrap the text into lines
+	 * 
+	 * @param str
+	 *            the string
+	 * @param len
+	 *            the length
+	 * @return the strings
+	 */
+	public static GList<String> wrap(String str, int len)
+	{
+		String format = C.getLastColors(str);
+		GList<String> lines = new GList<String>();
+		
+		for(String i : WordUtils.wrap(str, len).split("\n"))
+		{
+			lines.add(format + C.getLastColors(i) + i.trim());
+		}
+		
+		return lines;
 	}
 	
 	/**
