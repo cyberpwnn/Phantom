@@ -2141,6 +2141,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		msgx.add("Vortex");
 		msgx.add("NOVABOMBS");
 		msgx.add("Vortexxed");
+		msgx.add("Vortexxxxxxxxed");
 		
 		msgx.add(msg);
 		
