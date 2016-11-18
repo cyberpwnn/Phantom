@@ -27,6 +27,8 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.phantomapi.Phantom;
 import org.phantomapi.ext.Protocol;
 import org.phantomapi.lang.GList;
+import org.phantomapi.text.RTX;
+import org.phantomapi.util.C;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
@@ -1130,6 +1132,13 @@ public class NMSX
 	public static void hideEntity(Player p, Entity e)
 	{
 		Phantom.instance().getProtocolController().getHider().hideEntity(p, e);
+	}
+	
+	public static void openURL(Player player, String referenceLink)
+	{
+		RTX rtx = new RTX();
+		rtx.addTextOpenURL("Click here to view in browser", referenceLink, C.AQUA);
+		rtx.tellRawTo(player);
 	}
 	
 	/**
