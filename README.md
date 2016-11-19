@@ -10,7 +10,8 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Vortex**](https://github.com/cyberpwnn/Phantom/releases/)
+* [**Kelvin**](https://github.com/cyberpwnn/Phantom/releases/)
+* [Vortex](https://github.com/cyberpwnn/Phantom/releases/V9)
 * [Entropy](https://github.com/cyberpwnn/Phantom/releases/E9)
 * [Shadow](https://github.com/cyberpwnn/Phantom/releases/S9)
 * [Prism](https://github.com/cyberpwnn/Phantom/releases/P9)
