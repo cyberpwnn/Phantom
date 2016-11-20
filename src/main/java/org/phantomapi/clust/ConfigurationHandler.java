@@ -439,6 +439,19 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Checks if the configurable object has a redis annotation for redis
+	 * purposes
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @return true if a table is defined
+	 */
+	public static boolean hasRedisTable(Configurable c)
+	{
+		return c.getClass().isAnnotationPresent(Redis.class);
+	}
+	
+	/**
 	 * Get the table defined in this tabled configurable object
 	 * 
 	 * @param c
