@@ -328,6 +328,41 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	}
 	
 	/**
+	 * Writes the configurable object's data to the redis db
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public void saveRedis(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		ConfigurationHandler.writeRedis(c);
+	}
+	
+	/**
+	 * Reads the configurable object's data from the redis db. If the data does
+	 * not exist, defaults will be created.
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public void readRedis(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		ConfigurationHandler.readRedis(c);
+	}
+	
+	/**
 	 * Load data from a mysql database. If it doesnt exists, nothing will be
 	 * added to the cluster, and nothing will be created in the database
 	 * Requires the Tabled annotation
