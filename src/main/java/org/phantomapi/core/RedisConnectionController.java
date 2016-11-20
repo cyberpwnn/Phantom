@@ -45,6 +45,11 @@ public class RedisConnectionController extends ConfigurableController
 		}
 	}
 	
+	public boolean hasKey(String key)
+	{
+		return read(key) != null;
+	}
+	
 	public void write(String key, String value)
 	{
 		r.set(key, value);
