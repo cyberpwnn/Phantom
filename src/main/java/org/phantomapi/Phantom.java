@@ -48,6 +48,7 @@ import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RebootController;
+import org.phantomapi.core.RedisConnectionController;
 import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SQLiteConnectionController;
@@ -148,6 +149,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private UpdateController updateController;
 	private BlockUpdateController blockUpdateController;
 	private RebootController rebootController;
+	private RedisConnectionController redisConnectionController;
 	
 	private Long nsx;
 	
@@ -187,6 +189,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		notificationController = new NotificationController(this);
 		probeController = new ProbeController(this);
 		protocolController = new ProtocolController(this);
+		redisConnectionController = new RedisConnectionController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		sqLiteConnectionController = new SQLiteConnectionController(this);
 		eventRippler = new EventRippler(this);
@@ -221,6 +224,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(channeledExecutivePoolController);
 		register(notificationController);
 		register(probeController);
+		register(redisConnectionController);
 		register(mySQLConnectionController);
 		register(dms);
 		register(eventRippler);
@@ -1978,6 +1982,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public SQLiteConnectionController getSqLiteConnectionController()
 	{
 		return sqLiteConnectionController;
+	}
+	
+	public RedisConnectionController getRedisConnectionController()
+	{
+		return redisConnectionController;
 	}
 	
 	private void buildSaltpile()

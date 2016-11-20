@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.core.RedisConnectionController;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
@@ -213,6 +214,43 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Read the configurable object from redis
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public static void readRedis(Configurable c)
+	{
+		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
+		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
+		fromFields(c);
+		c.onNewConfig();
+		
+		if(!r.hasKey(key))
+		{
+			writeRedis(c);
+		}
+		
+		c.getConfiguration().addJson(new JSONObject(r.read(key)));
+		toFields(c);
+		c.onReadConfig();
+	}
+	
+	/**
+	 * Write the configurable object to redis
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public static void writeRedis(Configurable c)
+	{
+		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
+		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
+		fromFields(c);
+		r.write(key, c.getConfiguration().toJSON().toString());
+	}
+	
+	/**
 	 * Handle reading in configs. Also adds new paths that do not exist in the
 	 * file from the onNewConfig(), and adds default values
 	 * 
@@ -398,6 +436,19 @@ public class ConfigurationHandler
 	public static boolean hasTable(Configurable c)
 	{
 		return c.getClass().isAnnotationPresent(Tabled.class);
+	}
+	
+	/**
+	 * Checks if the configurable object has a redis annotation for redis
+	 * purposes
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @return true if a table is defined
+	 */
+	public static boolean hasRedisTable(Configurable c)
+	{
+		return c.getClass().isAnnotationPresent(Redis.class);
 	}
 	
 	/**
