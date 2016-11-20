@@ -57,8 +57,6 @@ public class RebootController extends ConfigurableController
 		int minute = d.getMinutes();
 		int hour = d.getHours();
 		
-		s(hour + ":" + minute);
-		
 		if(minute == minutes && hour == hours && !rebooting)
 		{
 			reboot(seconds);
