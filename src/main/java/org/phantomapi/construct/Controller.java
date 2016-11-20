@@ -335,7 +335,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	 */
 	public void saveRedis(Configurable c)
 	{
-		if(!ConfigurationHandler.hasTable(c))
+		if(!ConfigurationHandler.hasRedisTable(c))
 		{
 			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
 			return;
@@ -353,7 +353,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	 */
 	public void readRedis(Configurable c)
 	{
-		if(!ConfigurationHandler.hasTable(c))
+		if(!ConfigurationHandler.hasRedisTable(c))
 		{
 			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
 			return;
