@@ -42,6 +42,7 @@ import org.phantomapi.core.MultiblockRegistryController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
+import org.phantomapi.core.PPAController;
 import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
@@ -127,6 +128,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private EventRippler eventRippler;
 	private CommandRegistryController commandRegistryController;
 	private DMS dms;
+	private PPAController ppaController;
 	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
@@ -192,6 +194,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		redisConnectionController = new RedisConnectionController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		sqLiteConnectionController = new SQLiteConnectionController(this);
+		ppaController = new PPAController(this);
 		eventRippler = new EventRippler(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
@@ -226,6 +229,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(probeController);
 		register(redisConnectionController);
 		register(mySQLConnectionController);
+		register(ppaController);
 		register(dms);
 		register(eventRippler);
 		register(protocolController);
@@ -505,6 +509,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			ExceptionUtil.print(e);
 		}
+	}
+	
+	public static String getPPAID()
+	{
+		return instance.ppaController.id;
 	}
 	
 	/**
@@ -1987,6 +1996,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public RedisConnectionController getRedisConnectionController()
 	{
 		return redisConnectionController;
+	}
+	
+	public PPAController getPpaController()
+	{
+		return ppaController;
 	}
 	
 	private void buildSaltpile()
