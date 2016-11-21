@@ -9,7 +9,6 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.RayTrace;
-import org.phantomapi.world.W;
 
 /**
  * Chromatic utilities
@@ -57,7 +56,7 @@ public class Chromatic
 	 */
 	public static Color getVisibleColor(Location l, Vector v, int max)
 	{
-		World w = W.toAsync(l.getWorld());
+		World w = l.getWorld();
 		Color[] c = new Color[] {null};
 		
 		new RayTrace(l, v, (double) max, 1.0)
