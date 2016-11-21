@@ -23,6 +23,13 @@ public class RedisConnectionController extends ConfigurableController
 		super(parentController, "redis");
 	}
 	
+	public Jedis createSplitConnection()
+	{
+		Jedis r = new Jedis(address, port);
+		r.auth(password);
+		return r;
+	}
+	
 	public void connect()
 	{
 		if(isConnected())
