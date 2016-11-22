@@ -68,6 +68,7 @@ import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
+import org.phantomapi.ppa.PPA;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -198,6 +199,18 @@ public class TestController extends Controller
 			public void run()
 			{
 				ExceptionUtil.writeIssues(new File(Phantom.instance().getDataFolder(), "report"));
+			}
+		});
+		
+		tests.put("ppa", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PPA ppa = new PPA();
+				ppa.set("testing", 423);
+				ppa.set("testval", "val");
+				Phantom.instance().getPpaController().send(ppa);
 			}
 		});
 		
