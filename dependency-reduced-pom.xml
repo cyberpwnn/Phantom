@@ -4,7 +4,7 @@
   <groupId>org.cyberpwn</groupId>
   <artifactId>phantom</artifactId>
   <name>Phantom</name>
-  <version>K2</version>
+  <version>K3</version>
   <description>Another Damn API</description>
   <build>
     <resources>
