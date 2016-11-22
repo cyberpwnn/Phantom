@@ -1,9 +1,9 @@
 package org.phantomapi.ppa;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.DataCluster;
+import org.phantomapi.util.Fingerprint;
+import org.phantomapi.util.M;
 
 public class PPA extends DataCluster
 {
@@ -15,6 +15,8 @@ public class PPA extends DataCluster
 		
 		set("ppad", destination);
 		set("ppas", Phantom.getPPAID());
+		set("ppaf", Fingerprint.randomFingerprint("ph1"));
+		set("ppat", M.ms());
 	}
 	
 	public PPA()
@@ -22,18 +24,23 @@ public class PPA extends DataCluster
 		this("all");
 	}
 	
-	public String getPPAData()
+	public String getDestination()
 	{
-		try
-		{
-			return new String(compress(), StandardCharsets.UTF_8);
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return null;
+		return getString("ppad");
+	}
+	
+	public String getSource()
+	{
+		return getString("ppas");
+	}
+	
+	public String getFingerprint()
+	{
+		return getString("ppaf");
+	}
+	
+	public long getTime()
+	{
+		return getLong("ppat");
 	}
 }
