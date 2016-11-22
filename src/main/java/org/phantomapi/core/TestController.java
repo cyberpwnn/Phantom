@@ -214,29 +214,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("ppa-bulk", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(int i = 0; i < 512; i++)
-				{
-					PPA ppa = new PPA();
-					ppa.set("testing", Math.random());
-					ppa.set("testval", "val");
-					Phantom.instance().getPpaController().send(ppa);
-					
-					if(M.r(0.5))
-					{
-						PPA ppa2 = new PPA("invalid");
-						ppa2.set("testing", Math.random());
-						ppa2.set("testval", "val");
-						Phantom.instance().getPpaController().send(ppa2);
-					}
-				}
-			}
-		});
-		
 		tests.put("perm-fix", new Runnable()
 		{
 			@Override
