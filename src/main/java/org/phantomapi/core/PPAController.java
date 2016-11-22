@@ -7,6 +7,7 @@ import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.PPAReceiveEvent;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.ppa.PPA;
@@ -141,7 +142,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 	{
 		for(PPA i : handles)
 		{
-			s(i.getDestination() + " -> " + i.getSource() + " : " + i.toJSON().toString());
+			callEvent(new PPAReceiveEvent(i));
 		}
 	}
 	
@@ -163,7 +164,6 @@ public class PPAController extends ConfigurableController implements Monitorable
 			return;
 		}
 		
-		w(ppa.getSource() + " -> " + ppa.getDestination() + " : " + ppa.toJSON().toString());
 		out.add(ppa);
 	}
 	
