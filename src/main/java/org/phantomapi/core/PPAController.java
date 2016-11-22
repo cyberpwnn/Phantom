@@ -8,6 +8,7 @@ import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GSet;
 import org.phantomapi.ppa.PPA;
 import org.phantomapi.ppa.PPAP;
 import org.phantomapi.statistics.Monitorable;
@@ -23,7 +24,11 @@ public class PPAController extends ConfigurableController implements Monitorable
 	@Comment("The identifier for this server.\nUse a human readable name such as the server name.")
 	public String id = "null";
 	
-	private GList<PPA> out;
+	@Keyed("identifiers")
+	@Comment("The list of all identifiers on the network. Keep THIS server's id in this list also.")
+	public GList<String> ids = new GList<String>().qadd("null");
+	
+	private GSet<PPA> out;
 	private Boolean running;
 	private Jedis r;
 	private int in = 0;
@@ -35,7 +40,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 		super(parentController, "ppa");
 		
 		running = false;
-		out = new GList<PPA>();
+		out = new GSet<PPA>();
 	}
 	
 	@Override
@@ -51,7 +56,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 	{
 		if(!running)
 		{
-			GList<PPA> o = out.copy();
+			GList<PPA> o = new GList<PPA>(out);
 			out.clear();
 			running = true;
 			
@@ -77,7 +82,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 					
 					for(PPA i : p.getPPAS().copy())
 					{
-						if(i.getDestination().equals(id) || i.getDestination().equals("all"))
+						if(i.getDestination().equals(id))
 						{
 							h.add(i);
 							p.getPPAS().remove(i);
@@ -142,6 +147,22 @@ public class PPAController extends ConfigurableController implements Monitorable
 	
 	public void send(PPA ppa)
 	{
+		if(ppa.getDestination().equals("all"))
+		{
+			for(String i : ids)
+			{
+				if(!id.equals(i))
+				{
+					PPA ppx = new PPA();
+					ppx.setData(ppa.copy().getData());
+					ppx.set("ppad", i);
+					send(ppx);
+				}
+			}
+			
+			return;
+		}
+		
 		w(ppa.getSource() + " -> " + ppa.getDestination() + " : " + ppa.toJSON().toString());
 		out.add(ppa);
 	}
@@ -149,6 +170,37 @@ public class PPAController extends ConfigurableController implements Monitorable
 	@Override
 	public void onStop()
 	{
+		String l = r.get("ppa:client");
+		
+		if(l != null)
+		{
+			GList<String> des = new GList<String>();
+			
+			if(l.contains(":"))
+			{
+				des = new GList<String>(l.split(":"));
+			}
+			
+			else
+			{
+				des.add(l);
+			}
+			
+			des.remove(id);
+			
+			if(des.isEmpty())
+			{
+				v("Unreg: FINAL");
+				r.del("ppa:client");
+			}
+			
+			else
+			{
+				v("Unreg: " + des.toString(":"));
+				r.set("ppa:client", des.toString(":"));
+			}
+		}
+		
 		r.disconnect();
 	}
 	
