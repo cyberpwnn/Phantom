@@ -24,6 +24,11 @@ public class PPA extends DataCluster
 		this("all");
 	}
 	
+	public void send()
+	{
+		Phantom.instance().getPpaController().send(this);
+	}
+	
 	public String getDestination()
 	{
 		return getString("ppad");
