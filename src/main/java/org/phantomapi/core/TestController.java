@@ -207,7 +207,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				PPA ppa = new PPA();
+				PPA ppa = new PPA("test");
 				ppa.set("testing", 423);
 				ppa.set("testval", "val");
 				Phantom.instance().getPpaController().send(ppa);
