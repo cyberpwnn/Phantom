@@ -210,7 +210,7 @@ public class TestController extends Controller
 				PPA ppa = new PPA("test");
 				ppa.set("testing", 423);
 				ppa.set("testval", "val");
-				Phantom.instance().getPpaController().send(ppa);
+				ppa.send();
 			}
 		});
 		
