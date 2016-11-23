@@ -26,7 +26,7 @@ public class PPAP
 		{
 			try
 			{
-				PPA ppa = new PPA();
+				PPA ppa = new PPA("?");
 				ppa.addJson(new JSONObject(i));
 				pas.add(ppa);
 			}
