@@ -154,7 +154,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 			{
 				if(!id.equals(i))
 				{
-					PPA ppx = new PPA();
+					PPA ppx = new PPA("?");
 					ppx.setData(ppa.copy().getData());
 					ppx.set("ppad", i);
 					send(ppx);
