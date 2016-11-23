@@ -66,6 +66,13 @@ public class PPAController extends ConfigurableController implements Monitorable
 				@Override
 				public void async()
 				{
+					if(r == null || !r.isConnected())
+					{
+						f("Lost Connection to Redis.");
+						f("Attempting to reconnect");
+						r = Phantom.instance().getRedisConnectionController().createSplitConnection();
+					}
+					
 					PPAP p = new PPAP();
 					String s = r.get("ppa:inbox");
 					GList<PPA> h = new GList<PPA>();
@@ -96,7 +103,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 					{
 						if((M.ms() - i.getTime()) > 10000)
 						{
-							f("Packet Timed Out: " + i.toJSON().toString());
+							f("Packet Timed Out: " + i.getSource() + " -- " + i.getDestination() + " (" + i.getType() + ")");
 							p.getPPAS().remove(i);
 						}
 					}
@@ -142,6 +149,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 	{
 		for(PPA i : handles)
 		{
+			s(i.getSource() + " -> " + i.getDestination() + " (" + i.getType() + ")");
 			callEvent(new PPAReceiveEvent(i));
 		}
 	}
@@ -163,6 +171,8 @@ public class PPAController extends ConfigurableController implements Monitorable
 			
 			return;
 		}
+		
+		s(ppa.getSource() + " -> " + ppa.getDestination() + " (" + ppa.getType() + ")");
 		
 		out.add(ppa);
 	}
