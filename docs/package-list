@@ -27,6 +27,7 @@ org.phantomapi.papyrus
 org.phantomapi.phast
 org.phantomapi.physics
 org.phantomapi.placeholder
+org.phantomapi.ppa
 org.phantomapi.queue
 org.phantomapi.refract
 org.phantomapi.registry
