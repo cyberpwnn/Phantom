@@ -9,19 +9,20 @@ public class PPA extends DataCluster
 {
 	private static final long serialVersionUID = 1L;
 	
-	public PPA(String destination)
+	public PPA(String type, String destination)
 	{
 		super();
 		
+		set("ppak", type);
 		set("ppad", destination);
 		set("ppas", Phantom.getPPAID());
 		set("ppaf", Fingerprint.randomFingerprint("ph1"));
 		set("ppat", M.ms());
 	}
 	
-	public PPA()
+	public PPA(String type)
 	{
-		this("all");
+		this(type, "all");
 	}
 	
 	public void send()
@@ -31,7 +32,7 @@ public class PPA extends DataCluster
 	
 	public PPA createResponse()
 	{
-		return new PPA(getSource());
+		return new PPA(getType(), getSource());
 	}
 	
 	public String getDestination()
@@ -47,6 +48,11 @@ public class PPA extends DataCluster
 	public String getFingerprint()
 	{
 		return getString("ppaf");
+	}
+	
+	public String getType()
+	{
+		return getString("ppak");
 	}
 	
 	public long getTime()
