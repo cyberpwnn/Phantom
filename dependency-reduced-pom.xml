@@ -61,7 +61,8 @@
             <configuration>
               <artifactSet>
                 <includes>
-                  <includes>redis.clients:jedis</includes>
+                  <include>redis.clients:jedis</include>
+                  <include>com.goebl:david-webb</include>
                 </includes>
               </artifactSet>
             </configuration>
