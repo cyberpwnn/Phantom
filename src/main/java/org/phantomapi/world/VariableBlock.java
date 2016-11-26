@@ -2,12 +2,16 @@ package org.phantomapi.world;
 
 import org.bukkit.Material;
 import org.phantomapi.lang.GList;
+import com.sk89q.worldedit.patterns.BlockChance;
+import com.sk89q.worldedit.patterns.Pattern;
+import com.sk89q.worldedit.patterns.RandomFillPattern;
 
 /**
  * Represents a block that can be multiple blocks (used for variable schematics)
  * 
  * @author cyberpwn
  */
+@SuppressWarnings("deprecation")
 public class VariableBlock
 {
 	private GList<MaterialBlock> blocks;
@@ -92,5 +96,70 @@ public class VariableBlock
 	public void removeBlock(MaterialBlock block)
 	{
 		blocks.remove(block);
+	}
+	
+	public Pattern toPattern()
+	{
+		if(blocks.isEmpty())
+		{
+			return null;
+		}
+		
+		GList<BlockChance> ch = new GList<BlockChance>();
+		Double prob = (double) (1.0 / (double) blocks.size());
+		
+		for(MaterialBlock i : blocks)
+		{
+			ch.add(new BlockChance(i.toBase(), prob));
+		}
+		
+		return new RandomFillPattern(ch);
+	}
+	
+	public void fromString(String string)
+	{
+		blocks.clear();
+		
+		if(string.contains(","))
+		{
+			for(String i : string.split(","))
+			{
+				try
+				{
+					blocks.add(W.getMaterialBlock(i));
+				}
+				
+				catch(Exception e)
+				{
+					
+				}
+			}
+		}
+		
+		else
+		{
+			try
+			{
+				blocks.add(W.getMaterialBlock(string));
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		GList<String> s = new GList<String>();
+		
+		for(MaterialBlock i : blocks)
+		{
+			s.add(i.toString());
+		}
+		
+		return s.toString(",");
 	}
 }
