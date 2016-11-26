@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -112,6 +113,7 @@ import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.PE;
 import org.phantomapi.world.W;
+import org.phantomapi.world.WQ;
 import org.phantomapi.world.WorldLock;
 import org.phantomapi.wraith.PhantomWraith;
 import org.phantomapi.wraith.Wraith;
@@ -365,6 +367,50 @@ public class TestController extends Controller
 				{
 					SYM.printSymbols(i);
 				}
+			}
+		});
+		
+		tests.put("shapes", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				WQ q = new WQ();
+				
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					q.makeSphere(i.getLocation(), new MaterialBlock(Material.STAINED_GLASS, (byte) 11), 36, 12, 36, false);
+					q.makeSphere(i.getLocation(), new MaterialBlock(Material.STAINED_GLASS, (byte) 5), 12, 36, 36, false);
+					q.makeSphere(i.getLocation(), new MaterialBlock(Material.STAINED_GLASS, (byte) 14), 36, 36, 12, false);
+					q.makeCylinder(i.getLocation().add(0, -42, 0), new MaterialBlock(Material.STAINED_GLASS, (byte) 15), 12, 84, false);
+					q.makePyramid(i.getLocation(), new MaterialBlock(Material.STAINED_GLASS, (byte) 4), 36, false);
+				}
+				
+				q.flush();
+			}
+		});
+		
+		tests.put("biome", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				WQ q = new WQ();
+				
+				for(Player p : Phantom.instance().onlinePlayers())
+				{
+					Chunk c = p.getLocation().getChunk();
+					
+					for(int i = 0; i < 16; i++)
+					{
+						for(int j = 0; j < 16; j++)
+						{
+							q.setBiome(c.getBlock(i, 0, j).getLocation(), new GList<Biome>(Biome.values()).pickRandom());
+						}
+					}
+				}
+				
+				q.flush();
 			}
 		});
 		
