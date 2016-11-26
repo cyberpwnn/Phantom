@@ -143,12 +143,26 @@ public class VectorSchematic
 	
 	public DataCluster toConfiguration()
 	{
+		DataCluster cc = new DataCluster();
 		
+		for(Vector i : schematic.k())
+		{
+			cc.set(i.getBlockX() + "-" + i.getBlockY() + "-" + i.getBlockZ(), schematic.get(i).toString());
+		}
+		
+		return cc;
 	}
 	
 	public void fromConfiguration(DataCluster cc)
 	{
+		schematic.clear();
 		
+		for(String i : cc.getRoots())
+		{
+			Vector v = new Vector(Integer.valueOf(i.split("-")[0]), Integer.valueOf(i.split("-")[1]), Integer.valueOf(i.split("-")[2]));
+			VariableBlock vb = new VariableBlock(cc.getString(i));
+			schematic.put(v, vb);
+		}
 	}
 	
 	@Override
