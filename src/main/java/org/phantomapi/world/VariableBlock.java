@@ -16,6 +16,18 @@ public class VariableBlock
 {
 	private GList<MaterialBlock> blocks;
 	
+	public VariableBlock()
+	{
+		blocks = new GList<MaterialBlock>();
+	}
+	
+	public VariableBlock(String data)
+	{
+		this();
+		
+		fromString(data);
+	}
+	
 	/**
 	 * Create a variable block
 	 * 
