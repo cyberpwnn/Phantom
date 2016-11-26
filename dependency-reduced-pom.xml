@@ -65,6 +65,11 @@
                   <include>com.goebl:david-webb</include>
                 </includes>
               </artifactSet>
+              <transformers>
+                <transformer>
+                  <mainClass>org.phantomapi.standalone.PhantomStandalone</mainClass>
+                </transformer>
+              </transformers>
             </configuration>
           </execution>
         </executions>
