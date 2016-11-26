@@ -78,6 +78,12 @@
 									<include>com.goebl:david-webb</include>
 								</includes>
 							</artifactSet>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>org.phantomapi.standalone.PhantomStandalone</mainClass>
+								</transformer>
+							</transformers>
 						</configuration>
 					</execution>
 				</executions>
