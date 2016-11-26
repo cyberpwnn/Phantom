@@ -8,7 +8,7 @@ import org.bukkit.block.Banner;
 import org.bukkit.block.Biome;
 
 /**
- * The World queue
+ * The World queue with enhancements
  * 
  * @author cyberpwn
  */
@@ -37,6 +37,14 @@ public class WQ extends PhantomWorldQueue
 		new MaterialBlock(location.getBlock().getType(), color.getData()).apply(location.getBlock().getLocation());
 	}
 	
+	/**
+	 * Set an entire chunk to a given biome
+	 * 
+	 * @param chunk
+	 *            the chunk
+	 * @param biome
+	 *            the biome
+	 */
 	public void setBiome(Chunk chunk, Biome biome)
 	{
 		for(int i = 0; i < 16; i++)
