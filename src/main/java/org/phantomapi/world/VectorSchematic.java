@@ -2,6 +2,7 @@ package org.phantomapi.world;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.phantomapi.clust.DataCluster;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 
@@ -19,7 +20,7 @@ public class VectorSchematic
 	 */
 	public VectorSchematic()
 	{
-		this.schematic = new GMap<Vector, VariableBlock>();
+		schematic = new GMap<Vector, VariableBlock>();
 	}
 	
 	/**
@@ -140,23 +141,43 @@ public class VectorSchematic
 		return result;
 	}
 	
+	public DataCluster toConfiguration()
+	{
+		
+	}
+	
+	public void fromConfiguration(DataCluster cc)
+	{
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj)
 	{
 		if(this == obj)
+		{
 			return true;
+		}
 		if(obj == null)
+		{
 			return false;
+		}
 		if(getClass() != obj.getClass())
+		{
 			return false;
+		}
 		VectorSchematic other = (VectorSchematic) obj;
 		if(schematic == null)
 		{
 			if(other.schematic != null)
+			{
 				return false;
+			}
 		}
 		else if(!schematic.equals(other.schematic))
+		{
 			return false;
+		}
 		return true;
 	}
 }
