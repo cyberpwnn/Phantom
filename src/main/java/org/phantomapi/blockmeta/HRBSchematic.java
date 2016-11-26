@@ -7,11 +7,22 @@ import org.phantomapi.clust.DataEntity;
 import org.phantomapi.clust.JSONObject;
 import org.phantomapi.world.VectorSchematic;
 
+/**
+ * Represents a schematic which holds block data and meta
+ * 
+ * @author cyberpwn
+ */
 public class HRBSchematic extends ConfigurableObject implements DataEntity
 {
 	private SchematicMeta meta;
 	private VectorSchematic schematic;
 	
+	/**
+	 * Create an hrb schematic
+	 * 
+	 * @param codeName
+	 *            give it a name
+	 */
 	public HRBSchematic(String codeName)
 	{
 		super(codeName);
@@ -20,11 +31,21 @@ public class HRBSchematic extends ConfigurableObject implements DataEntity
 		schematic = new VectorSchematic();
 	}
 	
+	/**
+	 * Get the schematic meta holder
+	 * 
+	 * @return the schematic meta instance
+	 */
 	public SchematicMeta getMeta()
 	{
 		return meta;
 	}
 	
+	/**
+	 * Get the vector schematic holding the actual blocks
+	 * 
+	 * @return the vector schematic
+	 */
 	public VectorSchematic getSchematic()
 	{
 		return schematic;
