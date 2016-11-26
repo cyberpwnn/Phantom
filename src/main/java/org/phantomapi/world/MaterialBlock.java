@@ -4,12 +4,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.phantomapi.core.EditSessionController;
 import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.patterns.Pattern;
+import com.sk89q.worldedit.patterns.SingleBlockPattern;
 
 /**
  * Material blocks
  * 
  * @author cyberpwn
  */
+@SuppressWarnings("deprecation")
 public class MaterialBlock
 {
 	private Material material;
@@ -34,7 +37,6 @@ public class MaterialBlock
 	 * 
 	 * @return the base block
 	 */
-	@SuppressWarnings("deprecation")
 	public BaseBlock toBase()
 	{
 		return new BaseBlock(getMaterial().getId(), getData());
@@ -46,7 +48,6 @@ public class MaterialBlock
 		data = 0;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public MaterialBlock(Location location)
 	{
 		material = location.getBlock().getType();
@@ -103,6 +104,11 @@ public class MaterialBlock
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((material == null) ? 0 : material.hashCode());
 		return result;
+	}
+	
+	public Pattern toPattern()
+	{
+		return new SingleBlockPattern(toBase());
 	}
 	
 	@Override
