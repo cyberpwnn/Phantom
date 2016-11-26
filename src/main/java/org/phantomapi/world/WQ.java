@@ -1,9 +1,11 @@
 package org.phantomapi.world;
 
+import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
+import org.bukkit.block.Biome;
 
 /**
  * The World queue
@@ -33,5 +35,16 @@ public class WQ extends PhantomWorldQueue
 		}
 		
 		new MaterialBlock(location.getBlock().getType(), color.getData()).apply(location.getBlock().getLocation());
+	}
+	
+	public void setBiome(Chunk chunk, Biome biome)
+	{
+		for(int i = 0; i < 16; i++)
+		{
+			for(int j = 0; j < 16; j++)
+			{
+				setBiome(chunk.getBlock(i, 0, j).getLocation(), biome);
+			}
+		}
 	}
 }
