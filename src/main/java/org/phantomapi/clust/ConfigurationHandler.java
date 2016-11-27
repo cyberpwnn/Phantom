@@ -344,6 +344,42 @@ public class ConfigurationHandler
 		};
 	}
 	
+	public static void compatRead(File base, Configurable c) throws IOException
+	{
+		File config = new File(base, c.getCodeName() + ".yml");
+		
+		if(!config.getParentFile().exists())
+		{
+			config.getParentFile().mkdirs();
+		}
+		
+		if(!config.exists())
+		{
+			config.createNewFile();
+		}
+		
+		if(config.isDirectory())
+		{
+			throw new IOException("Cannot read config (it's a folder)");
+		}
+		
+		fromFields(c);
+		c.onNewConfig();
+		new YAMLDataInput().load(c.getConfiguration(), config);
+		toFields(c);
+		c.onReadConfig();
+		
+		try
+		{
+			new YAMLDataOutput().save(c.getConfiguration(), config);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Handle saving configs
 	 * 
