@@ -77,7 +77,8 @@ public class PhantomStandalone
 		try
 		{
 			c.println("Starting Up");
-			
+			ServerThread st = new ServerThread(c);
+			st.start();
 		}
 		
 		catch(IOException e)
