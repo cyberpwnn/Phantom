@@ -344,6 +344,16 @@ public class ConfigurationHandler
 		};
 	}
 	
+	/**
+	 * Compat read for standalone applications
+	 * 
+	 * @param base
+	 *            the base file
+	 * @param c
+	 *            the configurable object
+	 * @throws IOException
+	 *             shit happens
+	 */
 	public static void compatRead(File base, Configurable c) throws IOException
 	{
 		File config = new File(base, c.getCodeName() + ".yml");
