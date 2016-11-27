@@ -36,6 +36,7 @@ org.phantomapi.sfx
 org.phantomapi.slate
 org.phantomapi.source
 org.phantomapi.stack
+org.phantomapi.standalone
 org.phantomapi.statistics
 org.phantomapi.sync
 org.phantomapi.text
