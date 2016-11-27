@@ -63,7 +63,10 @@
                 <includes>
                   <include>redis.clients:jedis</include>
                   <include>com.goebl:david-webb</include>
+                  <include>org.spigotmc:spigot-api</include>
+                  <include>org.yaml:snakeyaml</include>
                   <include>jline:jline</include>
+                  <include>commons-lang:commons-lang</include>
                 </includes>
               </artifactSet>
               <transformers>
