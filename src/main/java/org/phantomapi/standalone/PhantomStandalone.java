@@ -17,6 +17,8 @@ public class PhantomStandalone
 			
 			String line = null;
 			
+			startup(console);
+			
 			while((line = console.readLine()) != null)
 			{
 				GList<String> arg = new GList<String>();
@@ -67,6 +69,20 @@ public class PhantomStandalone
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public static void startup(ConsoleReader c)
+	{
+		try
+		{
+			c.println("Starting Up");
+			
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
