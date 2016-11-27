@@ -92,4 +92,12 @@ public class SchematicMeta implements Configurable
 		
 		return new BlockMeta(cn, getConfiguration().linkSplit("blocks." + cn));
 	}
+	
+	/**
+	 * Clear the data
+	 */
+	public void clear()
+	{
+		cc.clear();
+	}
 }
