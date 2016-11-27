@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.clust.DataCluster;
@@ -36,24 +37,34 @@ public class ServerThread extends Thread implements Configurable
 	{
 		try
 		{
-			c.println("[server]: Reading Configuration...");
-			File f = new File("server.yml");
-			ConfigurationHandler.read(f, this);
+			c.println("\n[server]: Reading Configuration...");
+			c.flush();
+			File f = new File(".");
+			ConfigurationHandler.compatRead(f, this);
 			c.println("[server]: Binding to *:" + port);
 			s = new ServerSocket(port);
 			s.setSoTimeout(50);
+			c.flush();
 			
 			while(!s.isClosed() && !Thread.interrupted())
 			{
-				Socket server = s.accept();
-				DataInputStream i = new DataInputStream(server.getInputStream());
-				String data = i.readUTF();
-				DataCluster auth = new DataCluster(new JSONObject(data));
-				String name = auth.getString("n");
-				ServerInstanceThread sit = new ServerInstanceThread(name, c, server);
-				sit.start();
-				connections.put(name, sit);
-				c.println("[server]: Accepted downstream connection from " + name + " @ " + server.getInetAddress().getHostAddress() + ":" + server.getPort());
+				try
+				{
+					Socket server = s.accept();
+					DataInputStream i = new DataInputStream(server.getInputStream());
+					String data = i.readUTF();
+					DataCluster auth = new DataCluster(new JSONObject(data));
+					String name = auth.getString("n");
+					ServerInstanceThread sit = new ServerInstanceThread(name, c, server);
+					sit.start();
+					connections.put(name, sit);
+					c.println("[server]: Accepted downstream connection from " + name + " @ " + server.getInetAddress().getHostAddress() + ":" + server.getPort());
+				}
+				
+				catch(SocketTimeoutException ee)
+				{
+					
+				}
 			}
 		}
 		
