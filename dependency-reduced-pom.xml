@@ -63,6 +63,7 @@
                 <includes>
                   <include>redis.clients:jedis</include>
                   <include>com.goebl:david-webb</include>
+                  <include>jline:jline</include>
                 </includes>
               </artifactSet>
               <transformers>
@@ -121,6 +122,21 @@
           <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.3.1</version>
+            <configuration>
+              <outputDirectory>${local.development}</outputDirectory>
+              <finalName>${project.name}</finalName>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>cli</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.3.1</version>
             <executions>
               <execution>
                 <id>default-jar</id>
@@ -129,13 +145,13 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</outputDirectory>
+                  <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/cli</outputDirectory>
                   <finalName>Phantom</finalName>
                 </configuration>
               </execution>
             </executions>
             <configuration>
-              <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</outputDirectory>
+              <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/cli</outputDirectory>
               <finalName>Phantom</finalName>
             </configuration>
           </plugin>
@@ -238,14 +254,15 @@
     </repository>
   </distributionManagement>
   <properties>
-    <github.maven.repository>file://C:\Users\cyberpwn\Documents\development\workspace\Phantom\repository</github.maven.repository>
-    <req.lib>C:\Users\cyberpwn\Documents\development\lib</req.lib>
     <local.root>C:\Users\cyberpwn\Documents\development\workspace\Phantom</local.root>
+    <github.maven.repository>file://C:\Users\cyberpwn\Documents\development\workspace\Phantom\repository</github.maven.repository>
+    <local.cli>C:/Users/cyberpwn/Documents/development/servers/dynamic/cli</local.cli>
     <local.release>C:/Users/cyberpwn/Documents/development/release/${project.name}</local.release>
-    <local.development>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</local.development>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <req.lib>C:\Users\cyberpwn\Documents\development\lib</req.lib>
+    <local.development>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</local.development>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 </project>
 
