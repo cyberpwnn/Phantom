@@ -194,4 +194,12 @@ public class VectorSchematic
 		}
 		return true;
 	}
+	
+	/**
+	 * Clear the schematic
+	 */
+	public void clear()
+	{
+		schematic.clear();
+	}
 }
