@@ -8,14 +8,19 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.phantomapi.async.A;
+import org.phantomapi.blockmeta.HRBSchematic;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
@@ -60,7 +65,9 @@ import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GSet;
 import org.phantomapi.multiblock.Multiblock;
+import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.placeholder.PlaceholderHooker;
@@ -87,7 +94,9 @@ import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
 import org.phantomapi.util.Timer;
+import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.PhantomEditSession;
+import org.phantomapi.world.W;
 import com.boydti.fawe.util.TaskManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -251,6 +260,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
+		registerListener(this);
 		
 		new A()
 		{
@@ -893,6 +903,143 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public boolean isPhantomPlugin(Plugin p)
 	{
 		return p instanceof PhantomPlugin;
+	}
+	
+	@EventHandler
+	public void on(PlayerCommandPreprocessEvent e)
+	{
+		if(e.getPlayer().hasPermission("phantom.developer"))
+		{
+			MessageBuilder mb = new MessageBuilder(this);
+			PhantomSender sender = new PhantomSender(e.getPlayer());
+			sender.setMessageBuilder(mb);
+			String message = e.getMessage();
+			String roots = message;
+			GList<String> rtz = new GList<String>(roots.split(" "));
+			String command = rtz.pop();
+			String[] args = rtz.toArray(new String[rtz.size()]);
+			
+			if(command.equalsIgnoreCase("//hrb"))
+			{
+				e.setCancelled(true);
+				File file = new File(getDataFolder(), "hrb");
+				
+				if(!file.exists())
+				{
+					file.mkdirs();
+				}
+				
+				if(args.length == 2)
+				{
+					String name = args[1];
+					Location point = e.getPlayer().getLocation();
+					
+					if(args[0].equalsIgnoreCase("save"))
+					{
+						Cuboid selection = W.getSelection(e.getPlayer());
+						HRBSchematic hrb = new HRBSchematic(name);
+						hrb.copy(selection, point);
+						
+						try
+						{
+							hrb.save(new File(file, name + ".hrb"));
+							sender.sendMessage("Saved HRB " + C.WHITE + C.BOLD + name + ".hrb");
+						}
+						
+						catch(IOException e1)
+						{
+							e1.printStackTrace();
+							sender.sendMessage("An error was encountered while saving " + C.RED + C.BOLD + name + ".hrb");
+						}
+					}
+					
+					else if(args[0].equalsIgnoreCase("load"))
+					{
+						HRBSchematic hrb = new HRBSchematic(name);
+						File load = new File(file, name + ".hrb");
+						
+						if(load.exists())
+						{
+							try
+							{
+								hrb.load(load);
+								hrb.paste(point);
+								sender.sendMessage("Pasted HRB " + C.WHITE + C.BOLD + name + ".hrb");
+							}
+							
+							catch(IOException e1)
+							{
+								e1.printStackTrace();
+								sender.sendMessage("An error was encountered while loading " + C.RED + C.BOLD + name + ".hrb");
+							}
+						}
+						
+						else
+						{
+							sender.sendMessage(C.RED + "" + C.BOLD + name + ".hrb " + C.GRAY + "Does not exist.");
+						}
+					}
+					
+					else
+					{
+						sender.sendMessage("Use //hrb for help");
+					}
+				}
+				
+				else if(args.length == 1 && args[0].equalsIgnoreCase("list"))
+				{
+					for(File i : file.listFiles())
+					{
+						sender.sendMessage(C.LIGHT_PURPLE + "" + C.BOLD + i.getName() + C.GRAY + " (" + F.fileSize(i.length()) + ")");
+					}
+					
+					sender.sendMessage("Listing " + file.listFiles().length + " HRB Schematics");
+				}
+				
+				else if(args.length == 1 && args[0].equalsIgnoreCase("wipe"))
+				{
+					Cuboid selection = W.getSelection(e.getPlayer());
+					GList<Block> blocks = new GList<Block>(selection.iterator());
+					
+					for(Block i : blocks)
+					{
+						Nest.getBlock(i).clear();
+					}
+					
+					sender.sendMessage("Wiped " + C.WHITE + F.f(blocks.size()) + C.GRAY + " HRB References");
+				}
+				
+				else if(args.length == 1 && args[0].equalsIgnoreCase("scrub"))
+				{
+					Cuboid selection = W.getSelection(e.getPlayer());
+					GList<Block> blocks = new GList<Block>(selection.iterator());
+					GSet<Chunk> chunks = new GSet<Chunk>();
+					Integer k = 0;
+					
+					for(Block i : blocks)
+					{
+						chunks.add(i.getChunk());
+					}
+					
+					for(Chunk i : chunks)
+					{
+						k += Nest.getChunk(i).getBlocks().size();
+						nestController.scrub(Nest.getChunk(i));
+					}
+					
+					sender.sendMessage("Scrubbed " + C.WHITE + F.f(k) + C.GRAY + " HRB References");
+				}
+				
+				else
+				{
+					sender.sendMessage("//hrb " + C.WHITE + "load <file> " + C.GRAY + "- Load and paste");
+					sender.sendMessage("//hrb " + C.WHITE + "save <file> " + C.GRAY + "- Save file");
+					sender.sendMessage("//hrb " + C.WHITE + "list " + C.GRAY + "- List HRB files");
+					sender.sendMessage("//hrb " + C.WHITE + "wipe " + C.GRAY + "- Wipe nest data");
+					sender.sendMessage("//hrb " + C.WHITE + "scrub " + C.GRAY + "- Scrub selection");
+				}
+			}
+		}
 	}
 	
 	@Override
