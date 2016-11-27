@@ -28,8 +28,8 @@ public class CommandBus
 		this.root = root;
 		this.args = args;
 		this.sender = sender;
-		this.result = CommandResult.NO_HANDLE;
-
+		result = CommandResult.NO_HANDLE;
+		
 		if(!c.getRegistry().containsKey(root.toLowerCase()))
 		{
 			return;
@@ -184,7 +184,7 @@ public class CommandBus
 	{
 		return result;
 	}
-
+	
 	public String getRoot()
 	{
 		return root;
