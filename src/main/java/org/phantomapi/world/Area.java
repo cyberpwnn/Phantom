@@ -119,6 +119,50 @@ public class Area
 	}
 	
 	/**
+	 * Get all nearby entities matching the given entity type
+	 * 
+	 * @param type
+	 *            the entity type
+	 * @return the nearby entities matching the given type
+	 */
+	public Entity[] getNearbyEntities(EntityType type)
+	{
+		GList<Entity> e = new GList<Entity>(getNearbyEntities());
+		
+		for(Entity i : e.copy())
+		{
+			if(!i.getType().equals(type))
+			{
+				e.remove(i);
+			}
+		}
+		
+		return e.toArray(new Entity[e.size()]);
+	}
+	
+	/**
+	 * Get nearby entities which match the following class
+	 * 
+	 * @param entityClass
+	 *            the entity class
+	 * @return the nearby entities assignable from the given class
+	 */
+	public Entity[] getNearbyEntities(Class<? extends Entity> entityClass)
+	{
+		GList<Entity> e = new GList<Entity>(getNearbyEntities());
+		
+		for(Entity i : e.copy())
+		{
+			if(!i.getClass().isAssignableFrom(entityClass))
+			{
+				e.remove(i);
+			}
+		}
+		
+		return e.toArray(new Entity[e.size()]);
+	}
+	
+	/**
 	 * Get ALL entities within the area. <STRONG>NOTE: This is EVERY entity, not
 	 * just LivingEntities. Drops, Particles, Mobs, Players, Everything</STRONG>
 	 * 
