@@ -257,6 +257,47 @@ public class DataCluster implements Serializable
 	}
 	
 	/**
+	 * Flatten out the datacluster into roots
+	 * 
+	 * @return the rooted nodes
+	 */
+	public GMap<String, DataCluster> makeNodes()
+	{
+		GMap<String, DataCluster> nodes = new GMap<String, DataCluster>();
+		
+		for(String i : keys())
+		{
+			if(i.contains("."))
+			{
+				String[] f = i.split("\\.");
+				String key = f[f.length - 1];
+				GList<String> ff = new GList<String>(f);
+				ff.remove(f.length - 1);
+				String root = ff.toString(".");
+				
+				if(!nodes.contains(root))
+				{
+					nodes.put(root, new DataCluster());
+				}
+				
+				nodes.get(root).getData().put(key, getData().get(i));
+			}
+			
+			else
+			{
+				if(!nodes.contains(""))
+				{
+					nodes.put("", new DataCluster());
+				}
+				
+				nodes.get("").getData().put(i, getData().get(i));
+			}
+		}
+		
+		return nodes;
+	}
+	
+	/**
 	 * Add the data within the json object to the datacluster
 	 * 
 	 * @param jso

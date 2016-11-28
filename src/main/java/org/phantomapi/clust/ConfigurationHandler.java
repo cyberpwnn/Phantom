@@ -423,6 +423,29 @@ public class ConfigurationHandler
 		new YAMLDataOutput().save(c.getConfiguration(), config);
 	}
 	
+	public static void savenc(File base, Configurable c) throws IOException
+	{
+		File config = base;
+		
+		if(!config.getParentFile().exists())
+		{
+			config.getParentFile().mkdirs();
+		}
+		
+		if(!config.exists())
+		{
+			config.createNewFile();
+		}
+		
+		if(config.isDirectory())
+		{
+			throw new IOException("Cannot save config (it's a folder)");
+		}
+		
+		fromFields(c);
+		new YAMLDataOutput().save(c.getConfiguration(), config);
+	}
+	
 	/**
 	 * Handle reading in configs. Also adds new paths that do not exist in the
 	 * file from the onNewConfig(), and adds default values
