@@ -97,6 +97,7 @@ public class HRBSchematic extends ConfigurableObject implements DataEntity
 	public void paste(Location point)
 	{
 		WQ q = new WQ();
+		point = point.clone().add(getReferencePoint()).add(1, 0, 1);
 		
 		for(Vector i : getSchematic().getSchematic().k())
 		{
