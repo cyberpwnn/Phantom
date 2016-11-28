@@ -31,7 +31,7 @@ public class ExceptionUtil
 	 */
 	public static void print(Throwable e)
 	{
-		e.printStackTrace();
+		
 	}
 	
 	public static void writeIssues(File destination)
