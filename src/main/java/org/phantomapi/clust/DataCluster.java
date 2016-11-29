@@ -932,6 +932,81 @@ public class DataCluster implements Serializable
 	}
 	
 	/**
+	 * Write a custom meta object to this data cluster
+	 * 
+	 * @param key
+	 *            the key
+	 * @param object
+	 *            the meta object
+	 */
+	public void set(String key, MetaObject object)
+	{
+		object.write(this, key);
+	}
+	
+	/**
+	 * Get a meta object from the given key and type
+	 * 
+	 * @param key
+	 *            the key
+	 * @param clazz
+	 *            the class of the meta object
+	 * @return the meta object or null. Exceptions are printed.
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends MetaObject> T getObject(String key, Class<T> clazz)
+	{
+		try
+		{
+			MetaObject v = clazz.newInstance();
+			v.read(this, key);
+			return (T) v;
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Set an enum
+	 * 
+	 * @param key
+	 *            the key
+	 * @param enumeration
+	 *            the enum
+	 */
+	public void set(String key, Enum<?> enumeration)
+	{
+		set(key, enumeration.name());
+	}
+	
+	/**
+	 * Get an enum from the given class
+	 * 
+	 * @param key
+	 *            the key
+	 * @param clazz
+	 *            the enum class
+	 * @return the enum or null
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> clazz)
+	{
+		for(T i : clazz.getEnumConstants())
+		{
+			if(i.name().equals(getString(key)))
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Sets the value to the path key defined
 	 * 
 	 * @param key
