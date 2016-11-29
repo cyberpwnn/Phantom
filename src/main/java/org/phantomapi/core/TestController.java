@@ -895,6 +895,26 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("meta-object", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				GLocation l = new GLocation(Players.getAnyPlayer().getLocation());
+				DataCluster cc = new DataCluster();
+				
+				s(l.toString());
+				
+				cc.set("my-location", l);
+				
+				w("RAW: " + cc.toJSON().toString());
+				
+				GLocation got = cc.getObject("my-location", GLocation.class);
+				
+				s(got.toString());
+			}
+		});
+		
 		tests.put("state-freak", new Runnable()
 		{
 			@Override
