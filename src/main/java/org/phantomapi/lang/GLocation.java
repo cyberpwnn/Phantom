@@ -3,13 +3,16 @@ package org.phantomapi.lang;
 import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.MetaObject;
+import org.phantomapi.util.Worlds;
 
 /**
  * Serializable generic location object
  * 
  * @author cyberpwn
  */
-public class GLocation implements Serializable
+public class GLocation implements Serializable, MetaObject
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -22,6 +25,25 @@ public class GLocation implements Serializable
 	private float yaw;
 	private float pitch;
 	private String world;
+	
+	@Override
+	public void write(DataCluster cc, String key)
+	{
+		cc.set(key, x + ";" + y + ";" + z + ";" + yaw + ";" + pitch + ";" + world);
+	}
+	
+	@Override
+	public void read(DataCluster cc, String key)
+	{
+		String v = cc.getString(key);
+		String[] params = v.split(";");
+		x = Double.valueOf(params[0]);
+		y = Double.valueOf(params[1]);
+		z = Double.valueOf(params[2]);
+		yaw = Float.valueOf(params[3]);
+		pitch = Float.valueOf(params[4]);
+		world = params[5];
+	}
 	
 	/**
 	 * Get a GLocation from a location
@@ -40,6 +62,11 @@ public class GLocation implements Serializable
 		yaw = location.getYaw();
 		pitch = location.getPitch();
 		world = location.getWorld().getName();
+	}
+	
+	public GLocation()
+	{
+		this(new Location(Worlds.getWorlds().pop(), 0, 0, 0));
 	}
 	
 	/**
@@ -308,5 +335,11 @@ public class GLocation implements Serializable
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return x + ";" + y + ";" + z + ";" + yaw + ";" + pitch + ";" + world;
 	}
 }
