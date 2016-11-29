@@ -2,13 +2,15 @@ package org.phantomapi.lang;
 
 import java.io.Serializable;
 import org.bukkit.util.Vector;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.MetaObject;
 
 /**
  * Serializable generic location object
  * 
  * @author cyberpwn
  */
-public class GVector implements Serializable
+public class GVector implements Serializable, MetaObject
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -33,6 +35,11 @@ public class GVector implements Serializable
 		blockX = vector.getBlockX();
 		blockY = vector.getBlockY();
 		blockZ = vector.getBlockZ();
+	}
+	
+	public GVector()
+	{
+		this(new Vector(0, 0, 0));
 	}
 	
 	/**
@@ -204,5 +211,22 @@ public class GVector implements Serializable
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public void write(DataCluster cc, String key)
+	{
+		cc.set(key, x + ";" + y + ";" + z);
+	}
+	
+	@Override
+	public void read(DataCluster cc, String key)
+	{
+		String v = cc.getString(key);
+		String[] param = v.split(";");
+		
+		x = Double.valueOf(param[0]);
+		y = Double.valueOf(param[1]);
+		z = Double.valueOf(param[2]);
 	}
 }
