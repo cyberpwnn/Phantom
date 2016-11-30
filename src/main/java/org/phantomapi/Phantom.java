@@ -40,6 +40,7 @@ import org.phantomapi.core.DefaultController;
 import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.EditSessionController;
 import org.phantomapi.core.EventRippler;
+import org.phantomapi.core.LanguageController;
 import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
 import org.phantomapi.core.MonitorController;
@@ -152,6 +153,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
 	private ResourceController resourceController;
+	private LanguageController languageController;
 	private MultiblockRegistryController multiblockRegistryController;
 	private NestController nestController;
 	private SlateController slateController;
@@ -215,6 +217,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		resourceController = new ResourceController(this);
 		slateController = new SlateController(this);
 		phastController = new PhastController(this);
+		languageController = new LanguageController(this);
 		multiblockRegistryController = new MultiblockRegistryController(this);
 		bindings = new GList<Controllable>();
 		msgx = new GList<String>();
@@ -257,6 +260,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(updateController);
 		register(blockUpdateController);
 		register(rebootController);
+		register(languageController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -2148,6 +2152,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public PPAController getPpaController()
 	{
 		return ppaController;
+	}
+	
+	public LanguageController getLanguageController()
+	{
+		return languageController;
 	}
 	
 	private void buildSaltpile()
