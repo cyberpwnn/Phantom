@@ -178,6 +178,11 @@ public class Items
 	 */
 	public static boolean hasEnchantment(ItemStack is, Enchantment e, int level)
 	{
+		if(!is(is))
+		{
+			return false;
+		}
+		
 		return hasEnchantment(is, e) && is.getEnchantmentLevel(e) == level;
 	}
 	
@@ -190,6 +195,11 @@ public class Items
 	 */
 	public static boolean hasEnchantments(ItemStack is)
 	{
+		if(!is(is))
+		{
+			return false;
+		}
+		
 		return !is.getEnchantments().isEmpty();
 	}
 	
@@ -209,6 +219,165 @@ public class Items
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Should the itemstack be broken?
+	 * 
+	 * @param is
+	 *            the itemStack
+	 * @return true if it should be broken
+	 */
+	public static boolean isBroken(ItemStack is)
+	{
+		return is(is) && getMaxDurability(is) == getDurability(is) && hasDurability(is);
+	}
+	
+	/**
+	 * Does this item have durability
+	 * 
+	 * @param is
+	 *            the item
+	 * @return true if it does
+	 */
+	public static boolean hasDurability(ItemStack is)
+	{
+		return is(is) && getMaxDurability(is) > 0;
+	}
+	
+	/**
+	 * Get the durability percent
+	 * 
+	 * @param is
+	 *            the itemstack
+	 * @return the percent
+	 */
+	public static double getDurabilityPercent(ItemStack is)
+	{
+		if(!is(is))
+		{
+			return 0.0;
+		}
+		
+		if(getMaxDurability(is) == 0)
+		{
+			return 1.0;
+		}
+		
+		return 1.0 - ((double) getDurability(is) / (double) getMaxDurability(is));
+	}
+	
+	/**
+	 * Set the durability percent
+	 * 
+	 * @param is
+	 *            the itemStack
+	 * @param pc
+	 *            the percent
+	 */
+	public static void setDurabilityPercent(ItemStack is, double pc)
+	{
+		if(!is(is))
+		{
+			return;
+		}
+		
+		pc = (pc > 1.0 ? 1.0 : (pc < 0.0 ? 0.0 : pc));
+		
+		if(getDurability(is) == 0)
+		{
+			return;
+		}
+		
+		setDurability(is, (int) ((double) getMaxDurability(is) * (1.0 - pc)));
+	}
+	
+	/**
+	 * Get the max durability
+	 * 
+	 * @param is
+	 *            the item
+	 * @return the item type's max durability
+	 */
+	public static short getMaxDurability(ItemStack is)
+	{
+		if(!is(is))
+		{
+			return 0;
+		}
+		
+		return is.getType().getMaxDurability();
+	}
+	
+	/**
+	 * Get the durability
+	 * 
+	 * @param is
+	 *            the item
+	 * @return the item durability
+	 */
+	public static short getDurability(ItemStack is)
+	{
+		if(!is(is))
+		{
+			return 0;
+		}
+		
+		return is.getDurability();
+	}
+	
+	/**
+	 * Set the durability (if higher than max, it will be set to the max)
+	 * 
+	 * @param is
+	 *            the item
+	 * @param dmg
+	 *            the durability
+	 */
+	public static void setDurability(ItemStack is, short dmg)
+	{
+		if(!is(is))
+		{
+			return;
+		}
+		
+		is.setDurability(dmg > getMaxDurability(is) ? getMaxDurability(is) : dmg);
+	}
+	
+	/**
+	 * Set the durability (if higher than max, it will be set to the max)
+	 * 
+	 * @param is
+	 *            the item
+	 * @param dmg
+	 *            the durability
+	 */
+	public static void setDurability(ItemStack is, int dmg)
+	{
+		if(!is(is))
+		{
+			return;
+		}
+		
+		setDurability(is, (short) dmg);
+	}
+	
+	/**
+	 * Damage an itemstack
+	 * 
+	 * @param is
+	 *            the item
+	 * @param amt
+	 *            the amount to damage
+	 */
+	public static void damage(ItemStack is, int amt)
+	{
+		if(!is(is))
+		{
+			return;
+		}
+		
+		setDurability(is, getDurability(is) + amt);
 	}
 	
 	/**
