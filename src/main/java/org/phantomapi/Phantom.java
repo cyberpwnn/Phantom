@@ -60,6 +60,7 @@ import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SQLiteConnectionController;
 import org.phantomapi.core.SlateController;
+import org.phantomapi.core.SpawnerController;
 import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
@@ -163,6 +164,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private BlockUpdateController blockUpdateController;
 	private RebootController rebootController;
 	private RedisConnectionController redisConnectionController;
+	private SpawnerController spawnerController;
 	
 	private Long nsx;
 	
@@ -227,6 +229,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		saltpile = new SpeechMesh("saltpile");
 		blockUpdateController = new BlockUpdateController(this);
 		rebootController = new RebootController(this);
+		spawnerController = new SpawnerController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -261,6 +264,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(blockUpdateController);
 		register(rebootController);
 		register(languageController);
+		register(spawnerController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -2157,6 +2161,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public LanguageController getLanguageController()
 	{
 		return languageController;
+	}
+	
+	public SpawnerController getSpawnerController()
+	{
+		return spawnerController;
 	}
 	
 	private void buildSaltpile()
