@@ -110,6 +110,11 @@ public class NestController extends Controller implements Monitorable, Probe
 	
 	public void load(Chunk i)
 	{
+		if(loading.contains(i))
+		{
+			return;
+		}
+		
 		File file = NestUtil.getChunkFile(new GChunk(i));
 		loading.add(i);
 		
