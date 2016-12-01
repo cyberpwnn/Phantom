@@ -27,7 +27,7 @@ public class PhantomSpawner
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			
 		}
 	}
 	
