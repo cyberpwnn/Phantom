@@ -35,6 +35,7 @@ org.phantomapi.schematic
 org.phantomapi.sfx
 org.phantomapi.slate
 org.phantomapi.source
+org.phantomapi.spawner
 org.phantomapi.stack
 org.phantomapi.standalone
 org.phantomapi.statistics
