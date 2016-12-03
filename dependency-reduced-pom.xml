@@ -194,6 +194,12 @@
       <artifactId>spigot</artifactId>
       <version>1.8.8-R0.1-SNAPSHOT</version>
       <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>minecraft-server</artifactId>
+          <groupId>org.spigotmc</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
