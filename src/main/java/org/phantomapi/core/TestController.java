@@ -346,6 +346,18 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("modify-playerdata", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					Phantom.instance().getPdm().get(i).getConfiguration().set("random-test", Math.random());
+				}
+			}
+		});
+		
 		tests.put("chunkupdate", new Runnable()
 		{
 			@Override
