@@ -221,4 +221,19 @@ public class MySQLConnectionController extends Controller implements Configurabl
 	{
 		return "Queued: " + C.LIGHT_PURPLE + F.f(qq);
 	}
+	
+	public DataCluster getCc()
+	{
+		return cc;
+	}
+	
+	public GList<GTriset<SQLOperation, Configurable, Runnable>> getQueue()
+	{
+		return queue;
+	}
+	
+	public MySQL getSql()
+	{
+		return sql;
+	}
 }
