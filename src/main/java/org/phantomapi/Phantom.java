@@ -52,6 +52,7 @@ import org.phantomapi.core.PPAController;
 import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlaceholderController;
+import org.phantomapi.core.PlayerDataManager;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RebootController;
@@ -165,6 +166,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private RebootController rebootController;
 	private RedisConnectionController redisConnectionController;
 	private SpawnerController spawnerController;
+	private PlayerDataManager pdm;
 	
 	private Long nsx;
 	
@@ -230,6 +232,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		blockUpdateController = new BlockUpdateController(this);
 		rebootController = new RebootController(this);
 		spawnerController = new SpawnerController(this);
+		pdm = new PlayerDataManager(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -265,6 +268,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(rebootController);
 		register(languageController);
 		register(spawnerController);
+		register(pdm);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -2336,5 +2340,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		saltpile.put("salt", msgx);
 		saltpile.put("fail", msg);
+	}
+	
+	public PlayerDataManager getPdm()
+	{
+		return pdm;
 	}
 }
