@@ -59,12 +59,29 @@ public class RedisConnectionController extends ConfigurableController
 	
 	public void write(String key, String value)
 	{
-		r.set(key, value);
+		try
+		{
+			r.set(key, value);
+		}
+		
+		catch(Exception e)
+		{
+			f("FAILED TO WRITE KEY: " + key + " > " + value);
+		}
 	}
 	
 	public String read(String key)
 	{
-		return r.get(key);
+		try
+		{
+			f("FAILED TO RETREIVE KEY: " + key);
+			return r.get(key);
+		}
+		
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 	
 	public boolean isConnected()
