@@ -6,7 +6,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.Keyed;
-import org.phantomapi.lang.GMap;
+import org.phantomapi.lang.GList;
 
 public class ConfigurableWorld extends ConfigurableObject
 {
@@ -14,13 +14,13 @@ public class ConfigurableWorld extends ConfigurableObject
 	public boolean keepInWorld = false;
 	
 	private World world;
-	private GMap<Entity, Integer> entityMapping;
+	private GList<Entity> entityMapping;
 	
 	public ConfigurableWorld(World world)
 	{
 		super(world.getName());
 		
-		entityMapping = new GMap<Entity, Integer>();
+		entityMapping = new GList<Entity>();
 		this.world = world;
 	}
 	
@@ -39,7 +39,7 @@ public class ConfigurableWorld extends ConfigurableObject
 				}
 			}
 			
-			entityMapping.put(i, i.getEntityId());
+			entityMapping.add(i);
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class ConfigurableWorld extends ConfigurableObject
 		return world;
 	}
 	
-	public GMap<Entity, Integer> getEntityMapping()
+	public GList<Entity> getEntityMapping()
 	{
 		return entityMapping;
 	}
