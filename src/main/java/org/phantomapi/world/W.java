@@ -100,6 +100,29 @@ public class W
 	}
 	
 	/**
+	 * Get the entity from the entity id
+	 * 
+	 * @param entityId
+	 *            the entity id
+	 * @return the entity or null
+	 */
+	public static Entity getEntity(int entityId)
+	{
+		for(World i : Bukkit.getWorlds())
+		{
+			for(Entity j : i.getEntities())
+			{
+				if(j.getEntityId() == entityId)
+				{
+					return j;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Get the player's world edit selection
 	 * 
 	 * @param p
