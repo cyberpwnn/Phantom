@@ -65,6 +65,7 @@ import org.phantomapi.core.SpawnerController;
 import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
+import org.phantomapi.core.WorldController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
@@ -167,6 +168,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private RedisConnectionController redisConnectionController;
 	private SpawnerController spawnerController;
 	private PlayerDataManager pdm;
+	private WorldController worldController;
 	
 	private Long nsx;
 	
@@ -233,6 +235,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		rebootController = new RebootController(this);
 		spawnerController = new SpawnerController(this);
 		pdm = new PlayerDataManager(this);
+		worldController = new WorldController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -269,6 +272,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(languageController);
 		register(spawnerController);
 		register(pdm);
+		register(worldController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
