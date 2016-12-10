@@ -532,31 +532,74 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		}
 	}
 	
+	/**
+	 * Register an event listener
+	 * 
+	 * @param listener
+	 *            the event listener
+	 */
 	public void registerListener(Listener listener)
 	{
 		getServer().getPluginManager().registerEvents(listener, this);
 	}
 	
+	/**
+	 * Unregister an event listener
+	 * 
+	 * @param listener
+	 *            the event listener
+	 */
 	public void unRegisterListener(Listener listener)
 	{
 		HandlerList.unregisterAll(listener);
 	}
 	
+	/**
+	 * Get the phantom network
+	 * 
+	 * @return the network
+	 */
 	public Network getNetwork()
 	{
 		return Phantom.getBungeeNetwork();
 	}
 	
+	/**
+	 * Schedule a repeating sync task
+	 * 
+	 * @param delay
+	 *            the delay
+	 * @param interval
+	 *            the interval
+	 * @param runnable
+	 *            the runnable
+	 * @return the task id
+	 */
 	public int scheduleSyncRepeatingTask(int delay, int interval, Runnable runnable)
 	{
 		return getServer().getScheduler().scheduleSyncRepeatingTask(this, runnable, delay, interval);
 	}
 	
+	/**
+	 * Schedule a sync task
+	 * 
+	 * @param delay
+	 *            the delay
+	 * @param runnable
+	 *            the runnable
+	 * @return the task id
+	 */
 	public int scheduleSyncTask(int delay, Runnable runnable)
 	{
 		return getServer().getScheduler().scheduleSyncDelayedTask(this, runnable, delay);
 	}
 	
+	/**
+	 * Cancel a task
+	 * 
+	 * @param tid
+	 *            the task id
+	 */
 	public void cancelTask(int tid)
 	{
 		getServer().getScheduler().cancelTask(tid);
