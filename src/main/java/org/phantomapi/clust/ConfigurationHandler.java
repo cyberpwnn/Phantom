@@ -538,19 +538,21 @@ public class ConfigurationHandler
 	}
 	
 	/**
-	 * Delete the mysql table
+	 * Check if the given row exists
 	 * 
-	 * @param c
-	 *            the configurable object
+	 * @param table
+	 *            the table
+	 * @param codeName
+	 *            the code name
 	 * @param db
 	 *            the database
-	 * @return the sql connection
+	 * @return true if it exists
+	 * @throws SQLException
+	 *             shit happens
 	 * @throws ClassNotFoundException
 	 *             shit happens
-	 * @throws SQLException
-	 *             really bad shit happens
 	 */
-	public static MySQL deleteTable(Configurable c, MySQL db) throws ClassNotFoundException, SQLException
+	public static boolean rowExists(String table, String codeName, MySQL db) throws SQLException, ClassNotFoundException
 	{
 		Connection conn = null;
 		
@@ -564,8 +566,88 @@ public class ConfigurationHandler
 			conn = db.getConnection();
 		}
 		
-		PreparedStatement st = conn.prepareStatement("DELETE FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
-		st.setString(1, c.getCodeName());
+		PreparedStatement ps = conn.prepareStatement("SELECT count(*) from " + table + " WHERE k = ?");
+		ps.setString(1, codeName);
+		ResultSet resultSet = ps.executeQuery();
+		
+		if(resultSet.next())
+		{
+			final int count = resultSet.getInt(1);
+			
+			return count > 0;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Check if the given row exists. Keep in mind this only checks the code
+	 * name, this does not compare the actual data
+	 * 
+	 * @param c
+	 *            the configurable object in a row
+	 * @param db
+	 *            the database
+	 * @return true if it contains the configurable object
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 * @throws SQLException
+	 *             shit happens
+	 */
+	public static boolean rowExists(Configurable c, MySQL db) throws ClassNotFoundException, SQLException
+	{
+		return rowExists(getTable(c), c.getCodeName(), db);
+	}
+	
+	/**
+	 * Delete the mysql table
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param db
+	 *            the database
+	 * @return the sql connection
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 * @throws SQLException
+	 *             really bad shit happens
+	 */
+	public static MySQL dropRow(Configurable c, MySQL db) throws ClassNotFoundException, SQLException
+	{
+		return dropRow(getTable(c), c.getCodeName(), db);
+	}
+	
+	/**
+	 * Drop the given row
+	 * 
+	 * @param table
+	 *            the table
+	 * @param codeName
+	 *            the code name
+	 * @param db
+	 *            the database
+	 * @return the sql
+	 * @throws SQLException
+	 *             shit happens
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 */
+	public static MySQL dropRow(String table, String codeName, MySQL db) throws SQLException, ClassNotFoundException
+	{
+		Connection conn = null;
+		
+		if(!db.checkConnection())
+		{
+			conn = db.openConnection();
+		}
+		
+		else
+		{
+			conn = db.getConnection();
+		}
+		
+		PreparedStatement st = conn.prepareStatement("DELETE FROM " + "`" + table + "`" + " WHERE k=?;");
+		st.setString(1, codeName);
 		st.executeUpdate();
 		
 		return db;
