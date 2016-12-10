@@ -10,6 +10,7 @@ import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
+import org.phantomapi.clust.MySQL;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.core.SyncStart;
 import org.phantomapi.lang.GList;
@@ -423,6 +424,16 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		{
 			
 		}
+	}
+	
+	/**
+	 * Get the current mysql connection
+	 * 
+	 * @return the connection
+	 */
+	public MySQL getSQL()
+	{
+		return Phantom.instance().getSQL();
 	}
 	
 	@Override
