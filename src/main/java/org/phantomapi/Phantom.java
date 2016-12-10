@@ -25,6 +25,7 @@ import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;
+import org.phantomapi.clust.MySQL;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.command.PhantomSender;
@@ -795,6 +796,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				i.reload();
 			}
 		}
+	}
+	
+	public MySQL getSQL()
+	{
+		return MySQL.get();
 	}
 	
 	/**
