@@ -3,6 +3,7 @@ package org.phantomapi.clust;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.phantomapi.Phantom;
 
 /**
  * Connects to and uses a MySQL database
@@ -55,7 +56,7 @@ public class MySQL extends Database
 		this.hostname = hostname;
 		this.port = port;
 		this.database = database;
-		this.user = username;
+		user = username;
 		this.password = password;
 	}
 	
@@ -67,14 +68,19 @@ public class MySQL extends Database
 			return connection;
 		}
 		
-		String connectionURL = "jdbc:mysql://" + this.hostname + ":" + this.port;
+		String connectionURL = "jdbc:mysql://" + hostname + ":" + port;
 		if(database != null)
 		{
-			connectionURL = connectionURL + "/" + this.database;
+			connectionURL = connectionURL + "/" + database;
 		}
 		
 		Class.forName("com.mysql.jdbc.Driver");
-		connection = DriverManager.getConnection(connectionURL, this.user, this.password);
+		connection = DriverManager.getConnection(connectionURL, user, password);
 		return connection;
+	}
+	
+	public static MySQL get()
+	{
+		return Phantom.instance().getMySQLConnectionController().getSql();
 	}
 }
