@@ -538,6 +538,40 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Delete the mysql table
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @param db
+	 *            the database
+	 * @return the sql connection
+	 * @throws ClassNotFoundException
+	 *             shit happens
+	 * @throws SQLException
+	 *             really bad shit happens
+	 */
+	public static MySQL deleteTable(Configurable c, MySQL db) throws ClassNotFoundException, SQLException
+	{
+		Connection conn = null;
+		
+		if(!db.checkConnection())
+		{
+			conn = db.openConnection();
+		}
+		
+		else
+		{
+			conn = db.getConnection();
+		}
+		
+		PreparedStatement st = conn.prepareStatement("DELETE FROM " + "`" + getTable(c) + "`" + " WHERE k=?;");
+		st.setString(1, c.getCodeName());
+		st.executeUpdate();
+		
+		return db;
+	}
+	
+	/**
 	 * Pull data from mysql into the configurable object
 	 * 
 	 * @param c
