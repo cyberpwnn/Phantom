@@ -1,17 +1,33 @@
 package org.phantomapi.world;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.util.Vector;
+import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.lang.GList;
 
 public class ConfigurableWorld extends ConfigurableObject
 {
-	@Keyed("entities.keep-in-world")
-	public boolean keepInWorld = false;
+	@Comment("Removes tnt and sand entities above the world height limit")
+	@Keyed("entities.tnt-height-nerf")
+	public boolean keepInWorld = true;
+	
+	@Comment("Prevents tnt from being pushed by water flow")
+	@Keyed("entities.tnt-ignores-water-flow")
+	public boolean ignoreWaterFlow = true;
+	
+	@Comment("Loads chunks in the direction tnt is moving")
+	@Keyed("entities.tnt-load-chunks")
+	public boolean loadNearbyChunks = true;
+	
+	@Keyed("entities.tnt-perfect-spawn")
+	public boolean tntPerfectSpawn = true;
 	
 	private World world;
 	private GList<Entity> entityMapping;
@@ -30,12 +46,44 @@ public class ConfigurableWorld extends ConfigurableObject
 		
 		for(Entity i : world.getEntities())
 		{
-			if(isKeepInWorld() && !(i instanceof Player) && !(i instanceof Item))
+			if(isKeepInWorld() && (i instanceof FallingBlock || i instanceof TNTPrimed))
 			{
 				if(i.getLocation().getY() > world.getMaxHeight())
 				{
 					i.remove();
 					continue;
+				}
+				
+				if(i instanceof TNTPrimed && tntPerfectSpawn)
+				{
+					if(i.getTicksLived() < 2)
+					{
+						i.teleport(i.getLocation().clone().getBlock().getLocation().clone().add(0.5, 0.5, 0.5));
+						i.setVelocity(new Vector(0, 0, 0));
+					}
+				}
+				
+				if(i instanceof TNTPrimed && ignoreWaterFlow)
+				{
+					Location l = i.getLocation();
+					
+					if(l.getBlock().isLiquid())
+					{
+						i.setVelocity(new Vector(0, i.getVelocity().getY(), 0));
+					}
+				}
+				
+				if(i instanceof TNTPrimed && loadNearbyChunks)
+				{
+					Location l = i.getLocation();
+					Vector v = i.getVelocity();
+					Location t = l.clone().add(v);
+					Chunk c = t.getChunk();
+					
+					for(Chunk j : W.chunkFaces(c))
+					{
+						j.load();
+					}
 				}
 			}
 			
