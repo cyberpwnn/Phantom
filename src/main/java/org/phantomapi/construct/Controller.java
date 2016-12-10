@@ -337,7 +337,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		
 		try
 		{
-			ConfigurationHandler.deleteTable(c, Phantom.instance().getMySQLConnectionController().getSql());
+			ConfigurationHandler.dropRow(c, Phantom.instance().getMySQLConnectionController().getSql());
 		}
 		
 		catch(ClassNotFoundException | SQLException e)
