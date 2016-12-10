@@ -81,6 +81,7 @@
 									<include>org.yaml:snakeyaml</include>
 									<include>jline:jline</include>
 									<include>commons-lang:commons-lang</include>
+									<include>com.google.guava:guava</include>
 								</includes>
 							</artifactSet>
 							<transformers>
@@ -201,6 +202,11 @@
 		</repository>
 	</distributionManagement>
 	<dependencies>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>20.0</version>
+		</dependency>
 		<dependency>
 			<groupId>jline</groupId>
 			<artifactId>jline</artifactId>

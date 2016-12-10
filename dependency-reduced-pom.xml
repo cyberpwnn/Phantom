@@ -67,6 +67,7 @@
                   <include>org.yaml:snakeyaml</include>
                   <include>jline:jline</include>
                   <include>commons-lang:commons-lang</include>
+                  <include>com.google.guava:guava</include>
                 </includes>
               </artifactSet>
               <transformers>
