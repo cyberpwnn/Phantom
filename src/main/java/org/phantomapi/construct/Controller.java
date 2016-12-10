@@ -327,6 +327,25 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		Phantom.instance().loadSql(c, finish);
 	}
 	
+	public void dropMysql(Configurable c)
+	{
+		if(!ConfigurationHandler.hasTable(c))
+		{
+			f("No Tabled annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
+			return;
+		}
+		
+		try
+		{
+			ConfigurationHandler.deleteTable(c, Phantom.instance().getMySQLConnectionController().getSql());
+		}
+		
+		catch(ClassNotFoundException | SQLException e)
+		{
+			
+		}
+	}
+	
 	/**
 	 * Writes the configurable object's data to the redis db
 	 * 
