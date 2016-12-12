@@ -70,6 +70,19 @@ public class RedisConnectionController extends ConfigurableController
 		}
 	}
 	
+	public void drop(String key)
+	{
+		try
+		{
+			r.del(key);
+		}
+		
+		catch(Exception e)
+		{
+			f("FAILED TO DELETE KEY: " + key + " > ");
+		}
+	}
+	
 	public String read(String key)
 	{
 		try
