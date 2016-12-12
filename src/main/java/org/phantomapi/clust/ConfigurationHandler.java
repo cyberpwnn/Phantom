@@ -237,6 +237,20 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Does the given configurable object reside in redis
+	 * 
+	 * @param c
+	 *            the configurable object
+	 * @return true if it exists
+	 */
+	public static boolean redisExists(Configurable c)
+	{
+		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
+		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
+		return r.hasKey(key);
+	}
+	
+	/**
 	 * Write the configurable object to redis
 	 * 
 	 * @param c
