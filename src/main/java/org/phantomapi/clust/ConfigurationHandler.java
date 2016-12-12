@@ -251,6 +251,19 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Delete redis key
+	 * 
+	 * @param c
+	 *            the configurable object
+	 */
+	public static void redisDelete(Configurable c)
+	{
+		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
+		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
+		r.drop(key);
+	}
+	
+	/**
 	 * Write the configurable object to redis
 	 * 
 	 * @param c
