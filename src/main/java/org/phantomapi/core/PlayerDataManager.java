@@ -5,7 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.Keyed;
 import org.phantomapi.clust.MySQL;
 import org.phantomapi.clust.PlayerData;
 import org.phantomapi.clust.PlayerDataHandler;
@@ -18,17 +21,24 @@ import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 
-@Ticked(20)
-public class PlayerDataManager extends PlayerDataHandler<PlayerData> implements Monitorable
+@Ticked(0)
+public class PlayerDataManager extends PlayerDataHandler<PlayerData> implements Monitorable, Configurable
 {
+	@Keyed("flush-interval")
+	public int interval = 20;
+	
+	private DataCluster cc;
 	private GMap<Player, String> snapshots;
 	private boolean flushing;
 	private MySQL sql;
+	private int inter;
 	
 	public PlayerDataManager(Controllable parentController)
 	{
 		super(parentController);
 		
+		inter = 0;
+		cc = new DataCluster();
 		snapshots = new GMap<Player, String>();
 		flushing = false;
 	}
@@ -36,14 +46,21 @@ public class PlayerDataManager extends PlayerDataHandler<PlayerData> implements 
 	@Override
 	public void onTick()
 	{
-		try
-		{
-			flush(true);
-		}
+		inter++;
 		
-		catch(Exception e)
+		if(inter >= interval)
 		{
-			flushing = false;
+			inter = 0;
+			
+			try
+			{
+				flush(true);
+			}
+			
+			catch(Exception e)
+			{
+				flushing = false;
+			}
 		}
 	}
 	
@@ -194,5 +211,29 @@ public class PlayerDataManager extends PlayerDataHandler<PlayerData> implements 
 	public String getMonitorableData()
 	{
 		return "Cached: " + C.LIGHT_PURPLE + snapshots.size() + " " + C.RED + ((flushing ? "FLUSHING" : ""));
+	}
+	
+	@Override
+	public void onNewConfig()
+	{
+		
+	}
+	
+	@Override
+	public void onReadConfig()
+	{
+		
+	}
+	
+	@Override
+	public DataCluster getConfiguration()
+	{
+		return cc;
+	}
+	
+	@Override
+	public String getCodeName()
+	{
+		return "pdm";
 	}
 }
