@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.phantomapi.async.AsyncUtil;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurationHandler;
 import org.phantomapi.lang.GList;
@@ -15,12 +16,13 @@ import org.phantomapi.util.ExceptionUtil;
  * A Phantom plugin which supports many things
  * 
  * @author cyberpwn
- *
  */
 public abstract class PhantomPlugin extends ControllablePlugin
 {
+	@Override
 	public abstract void enable();
 	
+	@Override
 	public abstract void disable();
 	
 	/**
@@ -65,7 +67,9 @@ public abstract class PhantomPlugin extends ControllablePlugin
 	
 	/**
 	 * Load a cluster
-	 * @param c the data cluster
+	 * 
+	 * @param c
+	 *            the data cluster
 	 */
 	public void loadCluster(Configurable c)
 	{
@@ -74,7 +78,9 @@ public abstract class PhantomPlugin extends ControllablePlugin
 	
 	/**
 	 * Load a cluster
-	 * @param c the data cluster
+	 * 
+	 * @param c
+	 *            the data cluster
 	 */
 	public void loadCluster(Configurable c, String category)
 	{
@@ -98,10 +104,12 @@ public abstract class PhantomPlugin extends ControllablePlugin
 	
 	/**
 	 * Online players
+	 * 
 	 * @return the player list
 	 */
 	public GList<Player> onlinePlayers()
 	{
+		AsyncUtil.enforceSync();
 		GList<Player> p = new GList<Player>();
 		p.addAll(Bukkit.getOnlinePlayers());
 		return p;
@@ -109,7 +117,9 @@ public abstract class PhantomPlugin extends ControllablePlugin
 	
 	/**
 	 * Could you get a player by searching the keyword
-	 * @param search the keyword
+	 * 
+	 * @param search
+	 *            the keyword
 	 * @return true if that player matches or somewhat matches
 	 */
 	public boolean canFindPlayer(String search)
@@ -119,7 +129,9 @@ public abstract class PhantomPlugin extends ControllablePlugin
 	
 	/**
 	 * Find a player. This can match cyb in cyberpwn
-	 * @param search the search key
+	 * 
+	 * @param search
+	 *            the search key
 	 * @return a player object or null if none can be found.
 	 */
 	public Player findPlayer(String search)

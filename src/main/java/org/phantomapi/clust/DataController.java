@@ -74,7 +74,7 @@ public abstract class DataController<T extends Configurable, V> extends Controll
 	@Override
 	public boolean contains(V identifier)
 	{
-		return cache.contains(identifier);
+		return cache.containsKey(identifier);
 	}
 	
 	@Override

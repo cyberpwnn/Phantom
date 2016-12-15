@@ -1204,6 +1204,11 @@ public class DataCluster implements Serializable
 			return ((ClusterDouble) get(key)).get();
 		}
 		
+		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER) && ((ClusterInteger) get(key)).get() == 0)
+		{
+			return 0.0;
+		}
+		
 		return null;
 	}
 	

@@ -19,6 +19,11 @@ public class PD
 	 */
 	public static PlayerData get(Player player)
 	{
+		if(player == null)
+		{
+			return null;
+		}
+		
 		return Phantom.instance().getPdm().get(player);
 	}
 }
