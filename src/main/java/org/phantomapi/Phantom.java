@@ -16,7 +16,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.phantomapi.async.A;
@@ -70,6 +72,7 @@ import org.phantomapi.core.WorldController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.nest.Nest;
@@ -691,6 +694,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		plugins.add(i);
 	}
 	
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void on(PlayerDropItemEvent e)
+	{
+		if(!e.getPlayer().isOnline())
+		{
+			e.setCancelled(true);
+		}
+	}
+	
 	/**
 	 * Schedule an iterator to be run
 	 * 
@@ -798,6 +810,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	@Override
 	public MySQL getSQL()
 	{
 		return MySQL.get();
@@ -1129,6 +1142,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					else if(args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v"))
 					{
 						sender.sendMessage(getChatTag() + C.DARK_GRAY + "Down with " + C.LIGHT_PURPLE + C.BOLD + getDescription().getVersion() + "?");
+					}
+					
+					else if(args[0].equalsIgnoreCase("threads") || args[0].equalsIgnoreCase("th"))
+					{
+						GMap<Integer, A> threads = A.tasks.copy();
+						sender.sendMessage(getChatTag() + C.DARK_GRAY + "Currently " + C.LIGHT_PURPLE + C.BOLD + threads.size() + C.DARK_GRAY + " Acrive threads.");
 					}
 					
 					else if(args[0].equalsIgnoreCase("vb"))
