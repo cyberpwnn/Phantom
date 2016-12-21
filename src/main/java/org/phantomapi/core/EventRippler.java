@@ -480,6 +480,16 @@ public class EventRippler extends Controller implements Monitorable
 	@Override
 	public String getMonitorableData()
 	{
-		return "Load: " + C.LIGHT_PURPLE + F.pc(load.getAverage());
+		int th = 0;
+		
+		for(Thread i : Thread.getAllStackTraces().keySet())
+		{
+			if(i.isAlive())
+			{
+				th++;
+			}
+		}
+		
+		return "Load: " + C.LIGHT_PURPLE + F.pc(load.getAverage()) + C.DARK_GRAY + " Threads: " + C.LIGHT_PURPLE + th + " (" + A.tasks.size() + ")";
 	}
 }
