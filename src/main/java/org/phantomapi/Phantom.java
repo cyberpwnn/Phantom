@@ -16,9 +16,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.phantomapi.async.A;
@@ -692,15 +690,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public void registerPlugin(Plugin i)
 	{
 		plugins.add(i);
-	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void on(PlayerDropItemEvent e)
-	{
-		if(!e.getPlayer().isOnline())
-		{
-			e.setCancelled(true);
-		}
 	}
 	
 	/**
