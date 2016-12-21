@@ -1,6 +1,7 @@
 package org.phantomapi.async;
 
 import org.phantomapi.Phantom;
+import org.phantomapi.lang.GMap;
 
 /**
  * Create a fast async execution. Will not create a new async thread if the
@@ -12,6 +13,8 @@ public abstract class A
 {
 	public static long tick = 0;
 	public static int threads = 0;
+	public static GMap<Integer, A> tasks = new GMap<Integer, A>();
+	public static int id = 0;
 	
 	/**
 	 * Create a fast async execution. Must implement the async() method
@@ -20,6 +23,10 @@ public abstract class A
 	public A()
 	{
 		threads++;
+		id++;
+		
+		int vid = id;
+		tasks.put(vid, this);
 		
 		Phantom.async(new Runnable()
 		{
@@ -27,6 +34,7 @@ public abstract class A
 			public void run()
 			{
 				async();
+				tasks.remove(vid);
 			}
 		});
 	}
