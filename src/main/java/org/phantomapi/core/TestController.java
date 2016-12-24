@@ -103,10 +103,13 @@ import org.phantomapi.util.P;
 import org.phantomapi.util.Players;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
+import org.phantomapi.vfx.ColoredParticleEffect;
+import org.phantomapi.vfx.LineParticleManipulator;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
 import org.phantomapi.vfx.VisualEffect;
+import org.phantomapi.world.Area;
 import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
@@ -331,6 +334,44 @@ public class TestController extends Controller
 				{
 					NMSX.crash(i);
 				}
+			}
+		});
+		
+		tests.put("color-line", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PhantomEffect orb = new PhantomEffect()
+				{
+					@Override
+					public void play(Location l)
+					{
+						new ColoredParticleEffect(Color.fromRGB((int) Math.random() * 120, (int) Math.random() * (int) 120, (int) (Math.random() * 120))).play(l);
+					}
+				};
+				
+				LineParticleManipulator line = new LineParticleManipulator()
+				{
+					@Override
+					public void play(Location l)
+					{
+						orb.play(l);
+					}
+				};
+				
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						for(Player i : onlinePlayers())
+						{
+							Area a = new Area(i.getLocation(), 8);
+							line.play(a.random(), a.random(), 12.0);
+						}
+					}
+				};
 			}
 		});
 		
