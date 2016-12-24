@@ -15,11 +15,10 @@ public class PhantomSpawner
 	
 	public void setType(EntityType type)
 	{
-		CreatureSpawner c = (CreatureSpawner) block.getState();
-		c.setSpawnedType(type);
-		
 		try
 		{
+			CreatureSpawner c = (CreatureSpawner) block.getState();
+			c.setSpawnedType(type);
 			Class<?> ct = Class.forName("org.bukkit.entity.CreatureType");
 			Object ctype = ct.getMethod("fromEntityType", EntityType.class).invoke(null, type);
 			c.getClass().getMethod("setCreatureType", ct).invoke(c, ctype);
@@ -33,8 +32,16 @@ public class PhantomSpawner
 	
 	public EntityType getType()
 	{
-		CreatureSpawner c = (CreatureSpawner) block.getState();
+		try
+		{
+			CreatureSpawner c = (CreatureSpawner) block.getState();
+			
+			return c.getSpawnedType();
+		}
 		
-		return c.getSpawnedType();
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 }
