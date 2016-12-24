@@ -22,6 +22,6 @@ public interface Hyve extends Configurable
 	public static boolean exists(Block block)
 	{
 		File file = new File(block.getWorld().getWorldFolder(), "block");
-		return new File(file, block.getWorld().getName() + "." + block.getX() + "." + block.getY() + "." + block.getZ()).exists();
+		return new File(file, "hyve-block." + block.getX() + "." + block.getY() + "." + block.getZ() + ".hy").exists();
 	}
 }
