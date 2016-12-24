@@ -41,6 +41,7 @@ import org.phantomapi.core.DefaultController;
 import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.EditSessionController;
 import org.phantomapi.core.EventRippler;
+import org.phantomapi.core.HyveController;
 import org.phantomapi.core.LanguageController;
 import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
@@ -155,6 +156,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private EditSessionController editSessionController;
 	private MonitorController monitorController;
 	private WraithController wraithController;
+	private HyveController hyveController;
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
 	private ResourceController resourceController;
@@ -237,6 +239,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		rebootController = new RebootController(this);
 		spawnerController = new SpawnerController(this);
 		pdm = new PlayerDataManager(this);
+		hyveController = new HyveController(this);
 		worldController = new WorldController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
@@ -275,6 +278,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(spawnerController);
 		register(pdm);
 		register(worldController);
+		register(hyveController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
