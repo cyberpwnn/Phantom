@@ -44,7 +44,7 @@ public class BaseHyve extends ConfigurableObject implements Hyve
 	{
 		try
 		{
-			ConfigurationHandler.save(path, this);
+			ConfigurationHandler.fastWrite(path, this);
 		}
 		
 		catch(IOException e)
@@ -58,7 +58,7 @@ public class BaseHyve extends ConfigurableObject implements Hyve
 	{
 		try
 		{
-			ConfigurationHandler.read(path, this);
+			ConfigurationHandler.fastRead(path, this);
 		}
 		
 		catch(IOException e)
