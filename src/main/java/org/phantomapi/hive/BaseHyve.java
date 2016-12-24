@@ -5,11 +5,26 @@ import java.io.IOException;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.ConfigurationHandler;
 
+/**
+ * Represents a hyve
+ * 
+ * @author cyberpwn
+ */
 public class BaseHyve extends ConfigurableObject implements Hyve
 {
 	protected HyveType type;
 	protected File path;
 	
+	/**
+	 * Create a base hyve
+	 * 
+	 * @param type
+	 *            the hyve type
+	 * @param id
+	 *            the id
+	 * @param path
+	 *            the path
+	 */
 	public BaseHyve(HyveType type, String id, File path)
 	{
 		super(id);
