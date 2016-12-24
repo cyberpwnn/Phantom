@@ -16,6 +16,7 @@ org.phantomapi.filesystem
 org.phantomapi.game
 org.phantomapi.graph
 org.phantomapi.gui
+org.phantomapi.hive
 org.phantomapi.hud
 org.phantomapi.inventory
 org.phantomapi.lang
