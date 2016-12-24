@@ -4,6 +4,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
+/**
+ * Phantom spawner setting
+ * 
+ * @author cyberpwn
+ */
 public class PhantomSpawner
 {
 	private Block block;
@@ -13,6 +18,12 @@ public class PhantomSpawner
 		this.block = block;
 	}
 	
+	/**
+	 * Set the type of the spawner
+	 * 
+	 * @param type
+	 *            the entity type
+	 */
 	public void setType(EntityType type)
 	{
 		try
@@ -30,6 +41,11 @@ public class PhantomSpawner
 		}
 	}
 	
+	/**
+	 * Get the type of the spawner
+	 * 
+	 * @return the entity type or null
+	 */
 	public EntityType getType()
 	{
 		try
