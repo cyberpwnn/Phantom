@@ -418,6 +418,100 @@ public class ConfigurationHandler
 	}
 	
 	/**
+	 * Fast read json
+	 * 
+	 * @param base
+	 *            the base file
+	 * @param c
+	 *            the configurable object
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public static void fastRead(File base, Configurable c) throws IOException
+	{
+		File config = new File(base, c.getCodeName() + ".json");
+		
+		if(!config.getParentFile().exists())
+		{
+			config.getParentFile().mkdirs();
+		}
+		
+		if(!config.exists())
+		{
+			config.createNewFile();
+		}
+		
+		if(config.isDirectory())
+		{
+			throw new IOException("Cannot read config (it's a folder)");
+		}
+		
+		fromFields(c);
+		c.onNewConfig();
+		new JSONDataInput().load(c.getConfiguration(), config);
+		toFields(c);
+		c.onReadConfig();
+		
+		new S()
+		{
+			@Override
+			public void sync()
+			{
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						try
+						{
+							new JSONDataOutput().save(c.getConfiguration(), config);
+						}
+						
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
+			}
+			
+		};
+	}
+	
+	/**
+	 * Fast write json
+	 * 
+	 * @param base
+	 *            the base file
+	 * @param c
+	 *            the configurable object
+	 * @throws IOException
+	 *             shit happens
+	 */
+	public static void fastWrite(File base, Configurable c) throws IOException
+	{
+		File config = new File(base, c.getCodeName() + ".json");
+		
+		if(!config.getParentFile().exists())
+		{
+			config.getParentFile().mkdirs();
+		}
+		
+		if(!config.exists())
+		{
+			config.createNewFile();
+		}
+		
+		if(config.isDirectory())
+		{
+			throw new IOException("Cannot save config (it's a folder)");
+		}
+		
+		fromFields(c);
+		new JSONDataOutput().save(c.getConfiguration(), config);
+	}
+	
+	/**
 	 * Handle saving configs
 	 * 
 	 * @param base
