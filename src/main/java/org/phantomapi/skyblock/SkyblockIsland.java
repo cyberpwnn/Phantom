@@ -1,5 +1,6 @@
 package org.phantomapi.skyblock;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 import org.bukkit.Chunk;
@@ -7,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.phantomapi.ext.SkyblockPluginConnector;
 
 /**
  * A structure for a wrapper island for skyblock
@@ -99,4 +101,22 @@ public interface SkyblockIsland
 	 * @return requires reflection to interact
 	 */
 	public Object getRawIsland();
+	
+	/**
+	 * Wrap an island
+	 * 
+	 * @param l
+	 *            the location
+	 * @return the island
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
+	public static SkyblockIsland wrap(Location l) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	{
+		return new WrapperIsland(new SkyblockPluginConnector().getIsland(l));
+	}
 }
