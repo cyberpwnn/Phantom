@@ -16,18 +16,18 @@ public class ConfigurableWorld extends ConfigurableObject
 {
 	@Comment("Removes tnt and sand entities above the world height limit")
 	@Keyed("entities.tnt-height-nerf")
-	public boolean keepInWorld = true;
+	public boolean keepInWorld = false;
 	
 	@Comment("Prevents tnt from being pushed by water flow")
 	@Keyed("entities.tnt-ignores-water-flow")
-	public boolean ignoreWaterFlow = true;
+	public boolean ignoreWaterFlow = false;
 	
 	@Comment("Loads chunks in the direction tnt is moving")
 	@Keyed("entities.tnt-load-chunks")
-	public boolean loadNearbyChunks = true;
+	public boolean loadNearbyChunks = false;
 	
 	@Keyed("entities.tnt-perfect-spawn")
-	public boolean tntPerfectSpawn = true;
+	public boolean tntPerfectSpawn = false;
 	
 	private World world;
 	private GList<Entity> entityMapping;
