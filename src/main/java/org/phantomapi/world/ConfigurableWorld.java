@@ -30,6 +30,18 @@ public class ConfigurableWorld extends ConfigurableObject
 	@Keyed("entities.tnt-perfect-spawn")
 	public boolean tntPerfectSpawn = false;
 	
+	@Comment("Limit redstone in a certain way")
+	@Keyed("limits.limit-redstone")
+	public boolean limitRedstone = false;
+	
+	@Comment("Define the routine section to limit.\nValues include;\n CHUNK\n ISLAND")
+	@Keyed("limits.redstone.routine")
+	public String limitRedstoneMethod = "CHUNK";
+	
+	@Comment("Define the interval (how much redstone per tick to allow) per routine")
+	@Keyed("limits.redstone.interval")
+	public int limitRedstoneInterval = 20;
+	
 	private World world;
 	private GList<Entity> entityMapping;
 	
