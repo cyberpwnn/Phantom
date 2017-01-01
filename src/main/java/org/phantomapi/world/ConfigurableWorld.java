@@ -26,6 +26,7 @@ public class ConfigurableWorld extends ConfigurableObject
 	@Keyed("entities.tnt-load-chunks")
 	public boolean loadNearbyChunks = false;
 	
+	@Comment("Spawn tnt perfectly in the block they were ignited from")
 	@Keyed("entities.tnt-perfect-spawn")
 	public boolean tntPerfectSpawn = false;
 	
