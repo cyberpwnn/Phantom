@@ -40,7 +40,7 @@ public class ConfigurableWorld extends ConfigurableObject
 	
 	@Comment("Define the interval (how much redstone per tick to allow) per routine")
 	@Keyed("limits.redstone.interval")
-	public int limitRedstoneInterval = 20;
+	public int limitRedstoneInterval = 36;
 	
 	private World world;
 	private GList<Entity> entityMapping;
