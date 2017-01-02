@@ -68,6 +68,8 @@
                   <include>jline:jline</include>
                   <include>commons-lang:commons-lang</include>
                   <include>com.google.guava:guava</include>
+                  <include>hue:sdk</include>
+                  <include>hue:res</include>
                 </includes>
               </artifactSet>
               <transformers>
