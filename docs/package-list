@@ -34,6 +34,7 @@ org.phantomapi.refract
 org.phantomapi.registry
 org.phantomapi.schematic
 org.phantomapi.sfx
+org.phantomapi.skyblock
 org.phantomapi.slate
 org.phantomapi.source
 org.phantomapi.spawner
