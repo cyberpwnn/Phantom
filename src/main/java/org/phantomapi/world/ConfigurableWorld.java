@@ -43,6 +43,10 @@ public class ConfigurableWorld extends ConfigurableObject
 	@Keyed("limits.redstone.interval")
 	public int limitRedstoneInterval = 36;
 	
+	@Comment("The bleed out speed (2.0 is twice as fast as normal)")
+	@Keyed("limits.redstone.bleed")
+	public double redstoneBleed = 2.0;
+	
 	private World world;
 	private GList<Entity> entityMapping;
 	private GMap<Chunk, Integer> cache;
