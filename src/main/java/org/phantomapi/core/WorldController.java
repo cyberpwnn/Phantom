@@ -56,7 +56,7 @@ public class WorldController extends Controller
 		{
 			if(!get(e.getBlock().getWorld()).updateRedstone(e.getBlock().getLocation()))
 			{
-				e.setNewCurrent(0);
+				e.setNewCurrent((int) (e.getNewCurrent() / get(e.getBlock().getWorld()).redstoneBleed));
 			}
 		}
 	}
