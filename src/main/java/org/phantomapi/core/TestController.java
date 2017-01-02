@@ -96,6 +96,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
+import org.phantomapi.util.FinalDouble;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.Items;
 import org.phantomapi.util.M;
@@ -104,7 +105,6 @@ import org.phantomapi.util.Players;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ColoredParticleEffect;
-import org.phantomapi.vfx.LineParticleManipulator;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.vfx.PhantomEffect;
 import org.phantomapi.vfx.SphereParticleManipulator;
@@ -342,21 +342,14 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
+				FinalDouble speed = new FinalDouble(0);
+				
 				PhantomEffect orb = new PhantomEffect()
 				{
 					@Override
 					public void play(Location l)
 					{
-						new ColoredParticleEffect(Color.fromRGB((int) Math.random() * 120, (int) Math.random() * (int) 120, (int) (Math.random() * 120))).play(l);
-					}
-				};
-				
-				LineParticleManipulator line = new LineParticleManipulator()
-				{
-					@Override
-					public void play(Location l)
-					{
-						orb.play(l);
+						new ColoredParticleEffect(Color.fromRGB(0, (int) (255 * speed.get()), (int) (255 * speed.get()))).play(l);
 					}
 				};
 				
@@ -367,8 +360,14 @@ public class TestController extends Controller
 					{
 						for(Player i : onlinePlayers())
 						{
-							Area a = new Area(i.getLocation(), 8);
-							line.play(a.random(), a.random(), 12.0);
+							Area a = new Area(i.getLocation(), 3);
+							
+							for(int jj = 0; jj < 12; jj++)
+							{
+								orb.play(a.random());
+							}
+							
+							speed.set((i.getHealth() / i.getMaxHealth()));
 						}
 					}
 				};
