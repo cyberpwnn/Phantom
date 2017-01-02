@@ -3,6 +3,8 @@ package org.phantomapi.core;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.phantomapi.construct.Controllable;
@@ -45,6 +47,18 @@ public class WorldController extends Controller
 	public void on(WorldLoadEvent e)
 	{
 		add(e.getWorld());
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void on(BlockRedstoneEvent e)
+	{
+		if(worlds.k().contains(e.getBlock().getWorld()))
+		{
+			if(!get(e.getBlock().getWorld()).updateRedstone(e.getBlock().getLocation()))
+			{
+				e.setNewCurrent(0);
+			}
+		}
 	}
 	
 	@Override
