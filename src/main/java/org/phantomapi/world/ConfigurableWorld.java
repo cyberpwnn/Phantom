@@ -11,6 +11,7 @@ import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
 
 public class ConfigurableWorld extends ConfigurableObject
 {
@@ -44,18 +45,41 @@ public class ConfigurableWorld extends ConfigurableObject
 	
 	private World world;
 	private GList<Entity> entityMapping;
+	private GMap<Chunk, Integer> cache;
 	
 	public ConfigurableWorld(World world)
 	{
 		super(world.getName());
 		
+		cache = new GMap<Chunk, Integer>();
 		entityMapping = new GList<Entity>();
 		this.world = world;
+	}
+	
+	public boolean updateRedstone(Location l)
+	{
+		if(limitRedstone && l.getWorld().equals(world))
+		{
+			if(!cache.contains(l.getChunk()))
+			{
+				cache.put(l.getChunk(), 0);
+			}
+			
+			if(cache.get(l.getChunk()) > limitRedstoneInterval)
+			{
+				return false;
+			}
+			
+			cache.put(l.getChunk(), cache.get(l.getChunk()) + 1);
+		}
+		
+		return true;
 	}
 	
 	public void update()
 	{
 		entityMapping.clear();
+		cache.clear();
 		
 		for(Entity i : world.getEntities())
 		{
