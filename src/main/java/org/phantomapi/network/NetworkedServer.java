@@ -53,4 +53,11 @@ public interface NetworkedServer
 	 * @return true if it is
 	 */
 	public boolean isLobby();
+	
+	/**
+	 * Get server properties
+	 * 
+	 * @return server properties
+	 */
+	public ServerProperties getProperties();
 }
