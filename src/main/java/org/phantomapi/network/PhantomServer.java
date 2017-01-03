@@ -15,12 +15,14 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 	private String name;
 	private GList<String> players;
 	private Network network;
+	private ServerProperties properties;
 	
 	public PhantomServer(Network network, String name)
 	{
 		this.network = network;
 		this.name = name;
-		this.players = new GList<String>();
+		properties = new ServerProperties();
+		players = new GList<String>();
 	}
 	
 	@Override
@@ -60,6 +62,7 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 		return !name.equals(Phantom.getServerName());
 	}
 	
+	@Override
 	public boolean equals(Object o)
 	{
 		if(o != null && o instanceof PhantomServer)
@@ -77,7 +80,8 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 			this.players = players.copy();
 		}
 	}
-
+	
+	@Override
 	public void sendPlayer(Player p)
 	{
 		if(isRemote())
@@ -86,6 +90,7 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 		}
 	}
 	
+	@Override
 	public boolean isLobby()
 	{
 		if(name.toLowerCase().contains("lobby") || name.toLowerCase().contains("hub"))
@@ -94,5 +99,11 @@ public abstract class PhantomServer implements NetworkedServer, Refreshable
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public ServerProperties getProperties()
+	{
+		return properties;
 	}
 }
