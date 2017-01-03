@@ -33,7 +33,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 @Ticked(100)
-public class BungeeController extends Controller implements PluginMessageListener, Monitorable
+public class BungeeController extends Controller implements PluginMessageListener, Monitorable, Transmitter
 {
 	private DataCluster cc;
 	private GList<Transmitter> transmitters;
@@ -410,6 +410,10 @@ public class BungeeController extends Controller implements PluginMessageListene
 						}
 					};
 					
+					tt.setData(t.getData());
+					tt.set("t.t", t.getType() + "-response");
+					tt.set("t.d", t.getSource());
+					tt.set("t.s", Phantom.getServerName());
 					tt.set("t.k", t.getString("t.r"));
 					tt.transmit();
 				}
@@ -505,5 +509,11 @@ public class BungeeController extends Controller implements PluginMessageListene
 	public String getMonitorableData()
 	{
 		return "IO: " + C.GREEN + getTi() + C.DARK_GRAY + "/" + C.RED + getTo() + C.DARK_GRAY + " Cache: " + C.LIGHT_PURPLE + queue.size();
+	}
+	
+	@Override
+	public void onTransmissionReceived(Transmission transmission)
+	{
+		
 	}
 }
