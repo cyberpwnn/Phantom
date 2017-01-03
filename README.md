@@ -1,4 +1,4 @@
-# Phantom DEATH
+# Phantom Zenith
 [![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
 [![](phantom-micro.png)](https://github.com/cyberpwnn/Phantom/releases)
 
@@ -10,7 +10,8 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Death**](https://github.com/cyberpwnn/Phantom/releases/)
+* [**Zenith**](https://github.com/cyberpwnn/Phantom/releases/)
+* [Death](https://github.com/cyberpwnn/Phantom/releases/D9)
 * [Kelvin](https://github.com/cyberpwnn/Phantom/releases/K9)
 * [Vortex](https://github.com/cyberpwnn/Phantom/releases/V9)
 * [Entropy](https://github.com/cyberpwnn/Phantom/releases/E9)
