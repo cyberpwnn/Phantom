@@ -68,6 +68,8 @@
                   <include>jline:jline</include>
                   <include>commons-lang:commons-lang</include>
                   <include>com.google.guava:guava</include>
+                  <include>org.cyberpwn:factionsuuid</include>
+                  <include>org.cyberpwn:askyblock</include>
                 </includes>
               </artifactSet>
               <transformers>
@@ -255,6 +257,18 @@
           <groupId>org.bukkit</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.cyberpwn</groupId>
+      <artifactId>factionsuuid</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cyberpwn</groupId>
+      <artifactId>askyblock</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <distributionManagement>
