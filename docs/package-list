@@ -12,6 +12,7 @@ org.phantomapi.currency
 org.phantomapi.entity
 org.phantomapi.event
 org.phantomapi.ext
+org.phantomapi.factions
 org.phantomapi.filesystem
 org.phantomapi.game
 org.phantomapi.graph
