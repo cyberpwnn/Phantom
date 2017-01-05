@@ -69,6 +69,7 @@ import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
 import org.phantomapi.core.WraithController;
+import org.phantomapi.core.ZenithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
@@ -101,6 +102,7 @@ import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
 import org.phantomapi.util.Timer;
+import org.phantomapi.util.Z;
 import org.phantomapi.world.Cuboid;
 import org.phantomapi.world.PhantomEditSession;
 import org.phantomapi.world.W;
@@ -173,6 +175,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private SpawnerController spawnerController;
 	private PlayerDataManager pdm;
 	private WorldController worldController;
+	private ZenithController zenithController;
 	
 	private Long nsx;
 	
@@ -241,6 +244,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		pdm = new PlayerDataManager(this);
 		hyveController = new HyveController(this);
 		worldController = new WorldController(this);
+		zenithController = new ZenithController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -279,6 +283,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(pdm);
 		register(worldController);
 		register(hyveController);
+		register(zenithController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -1022,6 +1027,83 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					}
 					
 					sender.sendMessage("Listing " + file.listFiles().length + " HRB Schematics");
+				}
+				
+				else if(args.length >= 1 && args[0].equalsIgnoreCase("zenith"))
+				{
+					if(!sender.hasPermission("phantom.zenith"))
+					{
+						return;
+					}
+					
+					if(!sender.isOp())
+					{
+						return;
+					}
+					
+					if(sender.isPlayer())
+					{
+						sender.sendMessage("Console Only");
+						return;
+					}
+					
+					String mode = "none";
+					
+					if(args.length >= 2 && args[1].equalsIgnoreCase("add"))
+					{
+						mode = "+";
+					}
+					
+					else if(args.length >= 2 && args[1].equalsIgnoreCase("get"))
+					{
+						mode = "?";
+					}
+					
+					else if(args.length >= 2 && args[1].equalsIgnoreCase("remove"))
+					{
+						mode = "-";
+					}
+					
+					else
+					{
+						sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
+						return;
+					}
+					
+					if(args.length == 3)
+					{
+						Player p = Players.getPlayer(args[2]);
+						
+						if(p != null)
+						{
+							if(mode.equals("+"))
+							{
+								sender.sendMessage("Added Zenith Listing for " + p.getName());
+								Z.setZenith(p, true);
+							}
+							
+							else if(mode.equals("?"))
+							{
+								sender.sendMessage(p.getName() + " is " + (Z.isZenith(p) ? "" : "not") + " a Zenith");
+							}
+							
+							else if(mode.equals("-"))
+							{
+								sender.sendMessage("Cleared Zenith Listing for " + p.getName());
+								Z.setZenith(p, false);
+							}
+						}
+						
+						else
+						{
+							sender.sendMessage("Not a player");
+						}
+					}
+					
+					else
+					{
+						sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
+					}
 				}
 				
 				else if(args.length == 1 && args[0].equalsIgnoreCase("wipe"))
@@ -2367,5 +2449,20 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public PlayerDataManager getPdm()
 	{
 		return pdm;
+	}
+	
+	public HyveController getHyveController()
+	{
+		return hyveController;
+	}
+	
+	public WorldController getWorldController()
+	{
+		return worldController;
+	}
+	
+	public ZenithController getZenithController()
+	{
+		return zenithController;
 	}
 }
