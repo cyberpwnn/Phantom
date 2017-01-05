@@ -34,6 +34,7 @@ import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.core.BlockCheckController;
 import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
+import org.phantomapi.core.CTNController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
 import org.phantomapi.core.DMS;
@@ -176,6 +177,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PlayerDataManager pdm;
 	private WorldController worldController;
 	private ZenithController zenithController;
+	private CTNController ctnController;
 	
 	private Long nsx;
 	
@@ -245,6 +247,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		hyveController = new HyveController(this);
 		worldController = new WorldController(this);
 		zenithController = new ZenithController(this);
+		ctnController = new CTNController(this);
 		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -284,6 +287,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(worldController);
 		register(hyveController);
 		register(zenithController);
+		register(ctnController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
@@ -2464,5 +2468,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public ZenithController getZenithController()
 	{
 		return zenithController;
+	}
+	
+	public CTNController getCtnController()
+	{
+		return ctnController;
 	}
 }
