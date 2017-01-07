@@ -956,6 +956,28 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			String command = rtz.pop();
 			String[] args = rtz.toArray(new String[rtz.size()]);
 			
+			if(command.equalsIgnoreCase("/ctn"))
+			{
+				if(sender.isConsole() || (sender.isPlayer() && Z.isZenith(sender.getPlayer())))
+				{
+					if(args.length == 0)
+					{
+						sender.sendMessage(C.RED + "/sync <command>");
+					}
+					
+					String cx = "";
+					
+					for(String i : args)
+					{
+						cx = cx + i + " ";
+					}
+					
+					cx.trim();
+					getCtnController().dispatchCommandOverNetwork(cx, "all", sender);
+					e.setCancelled(true);
+				}
+			}
+			
 			if(command.equalsIgnoreCase("//hrb"))
 			{
 				e.setCancelled(true);
@@ -1031,83 +1053,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					}
 					
 					sender.sendMessage("Listing " + file.listFiles().length + " HRB Schematics");
-				}
-				
-				else if(args.length >= 1 && args[0].equalsIgnoreCase("zenith"))
-				{
-					if(!sender.hasPermission("phantom.zenith"))
-					{
-						return;
-					}
-					
-					if(!sender.isOp())
-					{
-						return;
-					}
-					
-					if(sender.isPlayer())
-					{
-						sender.sendMessage("Console Only");
-						return;
-					}
-					
-					String mode = "none";
-					
-					if(args.length >= 2 && args[1].equalsIgnoreCase("add"))
-					{
-						mode = "+";
-					}
-					
-					else if(args.length >= 2 && args[1].equalsIgnoreCase("get"))
-					{
-						mode = "?";
-					}
-					
-					else if(args.length >= 2 && args[1].equalsIgnoreCase("remove"))
-					{
-						mode = "-";
-					}
-					
-					else
-					{
-						sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
-						return;
-					}
-					
-					if(args.length == 3)
-					{
-						Player p = Players.getPlayer(args[2]);
-						
-						if(p != null)
-						{
-							if(mode.equals("+"))
-							{
-								sender.sendMessage("Added Zenith Listing for " + p.getName());
-								Z.setZenith(p, true);
-							}
-							
-							else if(mode.equals("?"))
-							{
-								sender.sendMessage(p.getName() + " is " + (Z.isZenith(p) ? "" : "not") + " a Zenith");
-							}
-							
-							else if(mode.equals("-"))
-							{
-								sender.sendMessage("Cleared Zenith Listing for " + p.getName());
-								Z.setZenith(p, false);
-							}
-						}
-						
-						else
-						{
-							sender.sendMessage("Not a player");
-						}
-					}
-					
-					else
-					{
-						sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
-					}
 				}
 				
 				else if(args.length == 1 && args[0].equalsIgnoreCase("wipe"))
@@ -1191,6 +1136,83 @@ public class Phantom extends PhantomPlugin implements TagProvider
 								thrash(sender);
 							}
 						};
+					}
+					
+					else if(args.length >= 1 && args[0].equalsIgnoreCase("zenith"))
+					{
+						if(!sender.hasPermission("phantom.zenith"))
+						{
+							return true;
+						}
+						
+						if(!sender.isOp())
+						{
+							return true;
+						}
+						
+						if(sender instanceof Player)
+						{
+							sender.sendMessage("Console Only");
+							return true;
+						}
+						
+						String mode = "none";
+						
+						if(args.length >= 2 && args[1].equalsIgnoreCase("add"))
+						{
+							mode = "+";
+						}
+						
+						else if(args.length >= 2 && args[1].equalsIgnoreCase("get"))
+						{
+							mode = "?";
+						}
+						
+						else if(args.length >= 2 && args[1].equalsIgnoreCase("remove"))
+						{
+							mode = "-";
+						}
+						
+						else
+						{
+							sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
+							return true;
+						}
+						
+						if(args.length == 3)
+						{
+							Player p = Players.getPlayer(args[2]);
+							
+							if(p != null)
+							{
+								if(mode.equals("+"))
+								{
+									sender.sendMessage("Added Zenith Listing for " + p.getName());
+									Z.setZenith(p, true);
+								}
+								
+								else if(mode.equals("?"))
+								{
+									sender.sendMessage(p.getName() + " is " + (Z.isZenith(p) ? "" : "not") + " a Zenith");
+								}
+								
+								else if(mode.equals("-"))
+								{
+									sender.sendMessage("Cleared Zenith Listing for " + p.getName());
+									Z.setZenith(p, false);
+								}
+							}
+							
+							else
+							{
+								sender.sendMessage("Not a player");
+							}
+						}
+						
+						else
+						{
+							sender.sendMessage("Invalid. /pha zenith [add/remove/get] [player]");
+						}
 					}
 					
 					else if(args[0].equalsIgnoreCase("ping") && args.length == 2)
