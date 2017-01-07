@@ -32,7 +32,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 	private GSet<PPA> out;
 	private Boolean running;
 	private Jedis r;
-	private int in = 0;
+	private int invd = 0;
 	private int outt = 0;
 	private int wait = 0;
 	
@@ -76,7 +76,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 					PPAP p = new PPAP();
 					String s = r.get("ppa:inbox");
 					GList<PPA> h = new GList<PPA>();
-					in = o.size();
+					invd = o.size();
 					
 					if(s != null)
 					{
@@ -90,7 +90,7 @@ public class PPAController extends ConfigurableController implements Monitorable
 					
 					for(PPA i : p.getPPAS().copy())
 					{
-						if(i.getDestination().equals(id))
+						if(i.getDestination().equals(PPAController.this.id))
 						{
 							h.add(i);
 							p.getPPAS().remove(i);
@@ -217,6 +217,6 @@ public class PPAController extends ConfigurableController implements Monitorable
 	@Override
 	public String getMonitorableData()
 	{
-		return C.GREEN + "> " + in + C.YELLOW + " > " + wait + " > " + C.RED + outt + " >";
+		return C.GREEN + "> " + invd + C.YELLOW + " > " + wait + " > " + C.RED + outt + " >";
 	}
 }
