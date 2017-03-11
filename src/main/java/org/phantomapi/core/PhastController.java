@@ -243,7 +243,7 @@ public class PhastController extends Controller implements CommandExecutor
 			
 			else
 			{
-				ItemStack is = ((Player) sender).getItemInHand();
+				ItemStack is = ((Player) sender).getInventory().getItemInMainHand();
 				
 				if(is != null && is.getType().equals(Material.WRITTEN_BOOK))
 				{

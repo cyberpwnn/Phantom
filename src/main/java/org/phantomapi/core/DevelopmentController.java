@@ -22,14 +22,13 @@ import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
-import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
 
 /**
  * @author cyberpwn
  */
 @SyncStart
-@Ticked(60)
+@Ticked(20)
 public class DevelopmentController extends Controller implements Configurable, Monitorable
 {
 	private DataCluster cc;
@@ -62,6 +61,8 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Keyed("tests.enabled")
 	public boolean tests = true;
 	
+	private boolean running;
+	
 	public DevelopmentController(Controllable parentController)
 	{
 		super(parentController);
@@ -71,6 +72,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 		sizes = new GMap<Plugin, Long>();
 		task = null;
 		filePlugins = new GMap<String, String>();
+		running = false;
 		
 		new TaskLater(1)
 		{
@@ -92,8 +94,15 @@ public class DevelopmentController extends Controller implements Configurable, M
 			return;
 		}
 		
+		if(running)
+		{
+			return;
+		}
+		
 		if(task == null || !task.isRunning())
 		{
+			running = true;
+			
 			for(Plugin i : getPlugin().getServer().getPluginManager().getPlugins())
 			{
 				try
@@ -114,7 +123,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 					{
 						modifications.put(i, file.lastModified());
 						sizes.put(i, file.length());
-						s("File Modified");
+						s("Plugin Modified (" + file.getName() + ")");
 						
 						if(reloadOnChanged)
 						{
@@ -176,6 +185,8 @@ public class DevelopmentController extends Controller implements Configurable, M
 					
 				}
 			}
+			
+			running = false;
 		}
 	}
 	
@@ -252,6 +263,6 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Override
 	public String getMonitorableData()
 	{
-		return "Ticks: " + C.LIGHT_PURPLE + F.f(ticks) + C.DARK_GRAY + " Time: " + C.LIGHT_PURPLE + F.nsMsd(timex, 2) + "ms";
+		return C.LIGHT_PURPLE + "QPool: " + Phantom.executor.getPoolSize();
 	}
 }

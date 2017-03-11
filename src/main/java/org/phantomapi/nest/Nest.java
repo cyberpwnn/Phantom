@@ -89,14 +89,14 @@ public class Nest
 		ItemMeta im = is.getItemMeta();
 		im.setDisplayName(C.LIGHT_PURPLE + "Probe");
 		is.setItemMeta(im);
-		p.setItemInHand(is);
+		p.getInventory().setItemInMainHand(is);
 		
 		new TaskLater()
 		{
 			@Override
 			public void run()
 			{
-				MapView view = Maps.getView(p.getItemInHand());
+				MapView view = Maps.getView(p.getInventory().getItemInMainHand());
 				
 				new PapyrusRenderer(view)
 				{

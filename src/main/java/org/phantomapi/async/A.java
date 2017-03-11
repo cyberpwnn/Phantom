@@ -39,6 +39,9 @@ public abstract class A
 		});
 	}
 	
+	/**
+	 * Called and ran on a thread pool
+	 */
 	public abstract void async();
 	
 	/**

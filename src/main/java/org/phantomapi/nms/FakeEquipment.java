@@ -53,6 +53,7 @@ public abstract class FakeEquipment
 		 *            - the entity.
 		 * @return The equipment.
 		 */
+		@SuppressWarnings("deprecation")
 		public ItemStack getEquipment(LivingEntity entity)
 		{
 			switch(this)
