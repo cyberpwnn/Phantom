@@ -352,11 +352,6 @@ Seriously, the really good stuff. The stuff you actually need.
 The core contains several useful apis and ultilities for you to use while developing. 
 * [Raw Text](#raw-text)
 
-## World Utils
-Manipulate the world with loads of utilities
-* [Async Sync Objects](#async-sync-objects)
-* [Color Armor](#color-armor)
-
 ### Raw Text
 Make raw text easy with RTX.class.
 
@@ -374,6 +369,11 @@ rtx.toJSON();
 // Tell raw to a player for you
 rtx.tellRawTo(Players.getAnyPlayer());
 ```
+
+## World Utils
+Manipulate the world with loads of utilities
+* [Async Sync Objects](#async-sync-objects)
+* [Color Armor](#color-armor)
 
 ### Async Sync Objects
 Get the Async or Sync object from a world regardless if it is async or sync already. Keep in mind, if you have the async world instance, getting the chunk will return an async chunk, same for async chunks returning async blocks.
