@@ -113,10 +113,8 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
-import org.phantomapi.world.PE;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WQ;
-import org.phantomapi.world.WorldLock;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -472,14 +470,14 @@ public class TestController extends Controller
 					ItemMeta im = is.getItemMeta();
 					im.setDisplayName(C.LIGHT_PURPLE + "Papyrus");
 					is.setItemMeta(im);
-					i.setItemInHand(is);
+					i.getInventory().setItemInMainHand(is);
 					
 					new TaskLater()
 					{
 						@Override
 						public void run()
 						{
-							MapView view = Maps.getView(i.getItemInHand());
+							MapView view = Maps.getView(i.getInventory().getItemInMainHand());
 							
 							new PapyrusRenderer(view)
 							{
@@ -665,86 +663,11 @@ public class TestController extends Controller
 			{
 				for(Player i : onlinePlayers())
 				{
-					for(String j : GBook.read(i.getItemInHand()))
+					for(String j : GBook.read(i.getInventory().getItemInMainHand()))
 					{
 						i.sendMessage(j);
 					}
 				}
-			}
-		});
-		
-		tests.put("relock", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				World world = Bukkit.getWorld("world");
-				
-				for(Player i : world.getPlayers())
-				{
-					P.showProgress(i, "Locking World");
-					PE.BLINDNESS.a(63).d(12000).c(i);
-				}
-				
-				new TaskLater(20)
-				{
-					@Override
-					public void run()
-					{
-						for(Player i : world.getPlayers())
-						{
-							P.showProgress(i, "Locking World;Establishing Lock");
-						}
-						
-						WorldLock lock = new WorldLock(world);
-						
-						new TaskLater(10)
-						{
-							@Override
-							public void run()
-							{
-								for(Player i : world.getPlayers())
-								{
-									P.showProgress(i, "Locking World;Locking");
-								}
-								
-								lock.lock();
-								
-								new TaskLater(15)
-								{
-									@Override
-									public void run()
-									{
-										for(Player i : world.getPlayers())
-										{
-											P.showProgress(i, "Releasing World;Establishing Lock");
-										}
-										
-										new TaskLater(10)
-										{
-											@Override
-											public void run()
-											{
-												for(Player i : world.getPlayers())
-												{
-													P.showProgress(i, "Releasing World;Releasing");
-												}
-												
-												lock.release();
-												
-												for(Player i : world.getPlayers())
-												{
-													P.clearProgress(i);
-													P.clearEffects(i);
-												}
-											}
-										};
-									}
-								};
-							}
-						};
-					}
-				};
 			}
 		});
 		
@@ -836,7 +759,7 @@ public class TestController extends Controller
 			{
 				for(Player i : onlinePlayers())
 				{
-					ItemStack is = i.getItemInHand();
+					ItemStack is = i.getInventory().getItemInMainHand();
 					
 					if(Items.is(is))
 					{
@@ -1228,14 +1151,14 @@ public class TestController extends Controller
 						{
 							if(Math.random() > 0.3)
 							{
-								if(i.getItemInHand() == null || i.getItemInHand().getType().equals(Material.AIR))
+								if(i.getInventory().getItemInMainHand() == null || i.getInventory().getItemInMainHand().getType().equals(Material.AIR))
 								{
 									ParticleEffect.LAVA.display(0f, 1, P.getHand(i, -15, 10), i);
 								}
 								
 								else
 								{
-									if(i.getItemInHand().getType().isBlock())
+									if(i.getInventory().getItemInMainHand().getType().isBlock())
 									{
 										ParticleEffect.LAVA.display(0f, 1, P.getHand(i, -15, 20), i);
 									}

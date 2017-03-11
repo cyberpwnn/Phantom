@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 
 /**

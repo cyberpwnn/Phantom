@@ -292,6 +292,7 @@ public class PhantomPlayerInventory implements PhantomPlayerInventoryWrapper
 		return i.getHelmet();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack getItemInHand()
 	{

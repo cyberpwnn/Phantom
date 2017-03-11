@@ -46,6 +46,7 @@ import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
+import org.phantomapi.util.Players;
 import org.phantomapi.world.Area;
 
 /**
@@ -323,7 +324,7 @@ public class EventRippler extends Controller implements Monitorable
 	{
 		try
 		{
-			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType().equals(Material.FLINT_AND_STEEL))
+			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Players.getMainHand(e.getPlayer()).getType().equals(Material.FLINT_AND_STEEL))
 			{
 				new TaskLater()
 				{
