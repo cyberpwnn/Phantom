@@ -350,17 +350,12 @@ Seriously, the really good stuff. The stuff you actually need.
 
 ## Utilities
 The core contains several useful apis and ultilities for you to use while developing. 
-* [Event Listeners](#event-listeners)
-* [Networked Servers](#networked-servers)
-* [Formatting](#formatting)
-* [Math](#math)
-* [Dispatcher](#dispatcher)
-* [Timers](#timers)
-* [The Good Stuff](#the-good-stuff)
+* [Raw Text](#raw-text)
 
 ## World Utils
 Manipulate the world with loads of utilities
-* [Raw Text](#raw-text)
+* [Async Sync Objects](#async-sync-objects)
+* [Color Armor](#color-armor)
 
 ### Raw Text
 Make raw text easy with RTX.class.
