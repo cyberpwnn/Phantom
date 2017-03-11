@@ -678,6 +678,35 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return p.getTargetBlock((HashSet<Byte>) null, 512).getLocation();
 	}
 	
+	public static boolean check()
+	{
+		try
+		{
+			new TaskLater()
+			{
+				@Override
+				public void run()
+				{
+					new A()
+					{
+						@Override
+						public void async()
+						{
+							
+						}
+					};
+				}
+			};
+		}
+		
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Set environment variables
 	 * 
@@ -2141,19 +2170,20 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public static void sync(Runnable runnable)
 	{
-		sync(new RunVal<Boolean>()
-		{
-			@Override
-			public void run(Boolean arg0)
-			{
-				runnable.run();
-			}
-		});
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Phantom.instance, runnable);
 	}
 	
 	public static void async(Runnable runnable)
 	{
-		executor.execute(runnable);
+		try
+		{
+			executor.execute(runnable);
+		}
+		
+		catch(Exception e)
+		{
+			runnable.run();
+		}
 	}
 	
 	public static Long getThread()
