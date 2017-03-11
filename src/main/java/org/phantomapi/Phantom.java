@@ -91,6 +91,7 @@ import org.phantomapi.text.SpeechMesh;
 import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
+import org.phantomapi.util.APITest;
 import org.phantomapi.util.C;
 import org.phantomapi.util.CFS;
 import org.phantomapi.util.D;
@@ -1161,6 +1162,18 @@ public class Phantom extends PhantomPlugin implements TagProvider
 							public void sync()
 							{
 								thrash(sender);
+							}
+						};
+					}
+					
+					else if(args[0].equalsIgnoreCase("apitest"))
+					{
+						new S()
+						{
+							@Override
+							public void sync()
+							{
+								new APITest(new PhantomSender(sender));
 							}
 						};
 					}
