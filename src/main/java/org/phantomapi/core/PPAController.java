@@ -73,6 +73,12 @@ public class PPAController extends ConfigurableController implements Monitorable
 						r = Phantom.instance().getRedisConnectionController().createSplitConnection();
 					}
 					
+					if(r == null)
+					{
+						f("No Connection");
+						return;
+					}
+					
 					PPAP p = new PPAP();
 					String s = r.get("ppa:inbox");
 					GList<PPA> h = new GList<PPA>();

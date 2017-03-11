@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,7 +57,6 @@ import org.phantomapi.core.NotificationController;
 import org.phantomapi.core.PPAController;
 import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
-import org.phantomapi.core.PlaceholderController;
 import org.phantomapi.core.PlayerDataManager;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
@@ -69,7 +71,6 @@ import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
-import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GList;
@@ -79,7 +80,6 @@ import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
-import org.phantomapi.placeholder.PlaceholderHooker;
 import org.phantomapi.registry.GlobalRegistry;
 import org.phantomapi.slate.Slate;
 import org.phantomapi.sync.ExecutiveIterator;
@@ -128,6 +128,7 @@ import net.milkbowl.vault.economy.Economy;
 @SyncStart
 public class Phantom extends PhantomPlugin implements TagProvider
 {
+	public static ThreadPoolExecutor executor;
 	private static Long thread;
 	private static Phantom instance;
 	public static double am = 0;
@@ -155,10 +156,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private GlobalRegistry globalRegistry;
 	private DefaultController defaultController;
 	private BungeeController bungeeController;
-	private PlaceholderController placeholderController;
 	private EditSessionController editSessionController;
 	private MonitorController monitorController;
-	private WraithController wraithController;
 	private HyveController hyveController;
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
@@ -185,6 +184,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public void enable()
 	{
 		thread = Thread.currentThread().getId();
+		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		executor.setKeepAliveTime(30, TimeUnit.MINUTES);
 		setupEconomy();
 		nsx = M.ns();
 		instance = this;
@@ -224,10 +225,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		eventRippler = new EventRippler(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
-		placeholderController = new PlaceholderController(this);
 		bungeeController = new BungeeController(this);
 		editSessionController = new EditSessionController(this);
-		wraithController = new WraithController(this);
 		photonController = new PhotonController(this);
 		resourceController = new ResourceController(this);
 		slateController = new SlateController(this);
@@ -248,7 +247,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		worldController = new WorldController(this);
 		zenithController = new ZenithController(this);
 		ctnController = new CTNController(this);
-		new PlaceholderHooker(this, "phantom").hook();
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
@@ -268,9 +266,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(protocolController);
 		register(defaultController);
 		register(bungeeController);
-		register(placeholderController);
 		register(editSessionController);
-		register(wraithController);
 		register(photonController);
 		register(resourceController);
 		register(nestController);
@@ -541,6 +537,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStop()
 	{
+		executor.shutdown();
+		
 		try
 		{
 			new JSONDataOutput().save(environment, envFile);
@@ -2096,11 +2094,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return syncStart;
 	}
 	
-	public WraithController getWraithController()
-	{
-		return wraithController;
-	}
-	
 	public Long getNsx()
 	{
 		return nsx;
@@ -2129,11 +2122,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public DefaultController getDefaultController()
 	{
 		return defaultController;
-	}
-	
-	public PlaceholderController getPlaceholderController()
-	{
-		return placeholderController;
 	}
 	
 	public static Network getBungeeNetwork()
@@ -2165,7 +2153,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public static void async(Runnable runnable)
 	{
-		TaskManager.IMP.async(runnable);
+		executor.execute(runnable);
 	}
 	
 	public static Long getThread()
@@ -2305,167 +2293,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private void buildSaltpile()
 	{
 		GList<String> msg = new GList<String>();
-		msg.add("Yeah... Suuuurrreee... Ok...");
-		msg.add("Nope. You are terrible.");
-		msg.add(C.GREEN + "Success!" + C.GRAY + "Just kidding. Wrong again.");
-		msg.add("No. Stop it.");
-		msg.add("You are failing terribly.");
-		msg.add("You are interrupting my ability to tick controllers.");
-		msg.add("SUKAKOK");
-		msg.add("If I had a nickel for every time you fucked something up...");
-		msg.add("Seriously, learn to code.");
-		msg.add("Oh, isn't that just CUTE!?");
-		msg.add("Will you quit doing that?");
-		msg.add("What is wrong with you?");
-		msg.add("That's disgusting. Stop that at once.");
-		msg.add("Hell no. Im not doing that.");
-		msg.add("What are you talking about.");
-		msg.add("Go to bed.");
-		msg.add("The typo you just created almost killed me");
-		msg.add("Are you trying to create exceptions?");
-		msg.add("For the love of all that exists...");
-		msg.add("Wh... But.... Stop.");
-		msg.add("Bam! Wrong again.");
-		msg.add("Go back to school");
-		msg.add("SPEAK ENGLISH");
-		msg.add("Hmmmmmmm.... No");
-		msg.add("Nope.");
-		msg.add("Perhaps... Perhaps Not?");
-		msg.add("Are you sure you know the implications of that?");
-		msg.add("You really dont have any idea what your doing.");
-		msg.add("Are you going to keep bothering me?");
-		msg.add("Seriously, stop asking.");
-		msg.add("You Annoy me, therefore i wont reload for you.");
-		msg.add("Do it yourself. See what happens.");
-		msg.add("I'd love to see you try and fail horribly.");
-		msg.add("That's a terrible idea.");
-		msg.add("Go thrash youself");
+		msg.add("Unknown subcommand. Who knows what that means.");
+		msg.add("I don't understand.");
+		msg.add("Typo?");
 		
-		msgx.add("Dammit, let's do something already.");
-		msgx.add("Pump'd up and ready to fight.");
+		msgx.add("Let's do something already.");
+		msgx.add("Pump'd up and ready to go.");
 		msgx.add("Good to go. Lets do this.");
 		msgx.add("What do you have in mind?");
 		msgx.add("I'm ready. Are you?");
 		msgx.add("Get on my level.");
-		msgx.add("Hurry up already");
 		msgx.add("How can i assist?");
 		msgx.add("Need something?");
-		msgx.add("Stop doing that. I'm buisy.");
-		msgx.add("No one isn't salty.");
-		msgx.add("Caff'd up and ready to fight.");
-		msgx.add("Caff'd up and ready to brawl bukkit.");
 		msgx.add("Caff'd up with a hint of salt.");
-		msgx.add("Check my insides. Seriously. WTFPL");
-		msgx.add("Im Open source. REALLY Open source");
-		msgx.add("Get lost.");
-		msgx.add("Got something on your mind?");
-		msgx.add("Lets do this.");
-		msgx.add("Get it done.");
-		msgx.add("I Boo the Swift");
-		msgx.add("I only listen to cyberpwn");
-		msgx.add("You probobly dont even know.");
-		msgx.add("What are you doing...");
-		msgx.add("Seriously...");
-		msgx.add("You are doing it wrong man.");
-		msgx.add("That Word... I dont think you know the meaning.");
-		msgx.add("Stop bothering me.");
-		msgx.add("It'd be a real shame if i broke events.");
-		msgx.add("Who knows what power i have.");
-		msgx.add("So... What are you trying to do?");
-		msgx.add("Enjoy an empty help message to piss you off.");
-		msgx.add("I'm enjoying your confusion");
-		msgx.add("You know, you should listen more often.");
-		msgx.add("Put an X on it. Makes it cool");
-		msgx.add("Will you quit it.");
-		msgx.add("What is wrong with you?");
-		msgx.add("You need to be fixed. I clearly dont.");
-		msgx.add("Dont ask.");
-		msgx.add("You cant stop can you.");
-		msgx.add("That was the wrong command buddy.");
-		msgx.add("Welcome to hell.");
-		msgx.add("Ever seen a nova grenade?");
-		msgx.add("It'd be a real shame if i thrashed myself.");
-		msgx.add("I can't overclock you cpu. Stop asking.");
-		msgx.add("I'm buisy. Shut up.");
-		msgx.add("#BooSwift");
-		msgx.add("#YayAsh");
-		msgx.add("#CyberGod");
-		msgx.add("Looks like Ubuntu fucked up the disk cache again...");
-		msgx.add("What are you doing with your life?");
-		msgx.add("What is wrong with you?");
-		msgx.add("Seriously, you should stop doing that.");
-		msgx.add("I Know what you are thinking. Don't do it.");
-		msgx.add("Nova stands for NONE OF YOUR BUISNESS");
-		msgx.add("Who created me? It's salty down here.");
-		msgx.add("Uhh. You better scroll up in the console...");
-		msgx.add("Them 40 NPE's a second ago #BooSwift");
-		msgx.add("Salt??!?!? SALT?!?!?!?");
-		msgx.add("Why not...");
-		msgx.add("Go thrash yourself");
-		msgx.add("Plugged up and pissed off");
-		msgx.add("Let's start a fight.");
-		msgx.add("Bring it on");
-		msgx.add("SUPERFUCKINGNOVAS EVERYWHERE");
-		msgx.add("Take your timings report and eat it.");
-		msgx.add("Hits of salt everywhere");
-		msgx.add("Are you sick? You don't look ok.");
-		msgx.add("BOO!");
-		msgx.add("I AM A WRAITH");
-		msgx.add("Did you see that wraith?");
-		msgx.add("Caffd up and loaded up");
-		msgx.add("Simply loaded.");
-		msgx.add("READY TO GO");
-		msgx.add("Down with Wraith");
-		msgx.add("Paper should be crumpled and thrown out");
-		msgx.add("Paper Spigots cannot flow water. #Soggy");
-		msgx.add("Async Async Async");
-		msgx.add("Prism Bitch");
-		msgx.add("Feel the rays");
-		msgx.add("Can you cut light?");
-		msgx.add("I Cut light");
-		msgx.add("I Shread light rays");
-		msgx.add("I Destroy the spectrum");
-		msgx.add("I am the spectrum");
-		msgx.add("It's Prism Bro");
-		msgx.add("Pure Glass");
-		msgx.add("Ultraviolet");
-		msgx.add("I excrete photons constantly.");
-		msgx.add("Prism light");
-		msgx.add("I can turn anything into rainbow");
-		msgx.add("Prism Rules");
-		msgx.add("Stop asking");
-		msgx.add("Greased up and ready to wrestle");
-		msgx.add("Killing it. No, seriously. Check CPU");
-		msgx.add("Check the console");
-		msgx.add("Holy FAWELZ");
-		msgx.add("Eat Multicore TNT");
-		msgx.add("Eat Rainbows");
-		msgx.add("Eat Prisms");
-		msgx.add("Eat Glass");
-		msgx.add("Eat it all");
-		msgx.add("Take it all in");
-		msgx.add("Beautiful");
-		msgx.add("Cafd");
-		msgx.add("Just Buttfaced into a few exceptions there");
-		msgx.add("THE CROWWWWWWNNNNNNNNNNNNNNNNNN");
-		msgx.add("FAP is good.");
-		msgx.add("Im out");
-		msgx.add("Piss off");
-		msgx.add("Well hello there dan from the future, fuck you.");
-		msgx.add("Welcome to the shadows");
-		msgx.add("The shadows win");
-		msgx.add("You're not the brightest dildo in the shoe factory, are ya?");
-		msgx.add("Light is voided shadows");
-		msgx.add("The Shadow of Bukkit");
-		msgx.add("A Shadow");
-		msgx.add("Made of shadows");
-		msgx.add("Entropy");
-		msgx.add("Vortex");
-		msgx.add("NOVABOMBS");
-		msgx.add("Vortexxed");
-		msgx.add("Vortexxxxxxxxed");
-		msgx.add("Kelvin");
-		
 		msgx.add(msg);
 		
 		saltpile.put("salt", msgx);

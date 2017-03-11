@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GListAdapter;
@@ -41,6 +42,69 @@ public class Players
 	public static Player getPlayer(String player)
 	{
 		return Bukkit.getPlayer(player);
+	}
+	
+	/**
+	 * Get the off hand
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the item
+	 */
+	public static ItemStack getOffHand(Player p)
+	{
+		return p.getInventory().getItemInOffHand();
+	}
+	
+	/**
+	 * Get the main hand
+	 * 
+	 * @param p
+	 *            the player
+	 * @return the item
+	 */
+	public static ItemStack getMainHand(Player p)
+	{
+		return p.getInventory().getItemInMainHand();
+	}
+	
+	/**
+	 * Set off hand
+	 * 
+	 * @param p
+	 *            the player
+	 * @param is
+	 *            the item stack
+	 */
+	public static void setOffHand(Player p, ItemStack is)
+	{
+		p.getInventory().setItemInOffHand(is);
+	}
+	
+	/**
+	 * Set main hand
+	 * 
+	 * @param p
+	 *            the player
+	 * @param is
+	 *            the item stack
+	 */
+	public static void setMainHand(Player p, ItemStack is)
+	{
+		p.getInventory().setItemInMainHand(is);
+	}
+	
+	/**
+	 * Swap hands (off and main items)
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public static void swapHands(Player p)
+	{
+		ItemStack main = getMainHand(p).clone();
+		setMainHand(p, getOffHand(p));
+		setOffHand(p, main);
 	}
 	
 	/**

@@ -131,7 +131,7 @@ public class W
 	 */
 	public static Cuboid getSelection(Player p)
 	{
-		Region r = FawePlayer.wrap(p).getSelection();
+		Region r = (Region) FawePlayer.wrap(p).getSelection();
 		
 		return new Cuboid(new Location(p.getWorld(), r.getMaximumPoint().x, r.getMaximumPoint().y, r.getMaximumPoint().z), new Location(p.getWorld(), r.getMinimumPoint().x, r.getMinimumPoint().y, r.getMinimumPoint().z));
 	}
@@ -1058,10 +1058,10 @@ public class W
 				}
 				
 				ParticleEffect.EXPLOSION_HUGE.display(4f, 4, l, 32);
-				new GSound(Sound.EXPLODE, 3.7f, 0.6f).play(l);
-				new GSound(Sound.EXPLODE, 3.7f, 0.2f).play(l);
-				new GSound(Sound.WITHER_DEATH, 3.7f, 0.5f + (float) build.get()).play(l);
-				new GSound(Sound.WITHER_DEATH, 3.7f, 0.566f + (float) build.get()).play(l);
+				new GSound(Sound.ENTITY_GENERIC_EXPLODE, 3.7f, 0.6f).play(l);
+				new GSound(Sound.ENTITY_GENERIC_EXPLODE, 3.7f, 0.2f).play(l);
+				new GSound(Sound.ENTITY_WITHER_DEATH, 3.7f, 0.5f + (float) build.get()).play(l);
+				new GSound(Sound.ENTITY_WITHER_DEATH, 3.7f, 0.566f + (float) build.get()).play(l);
 			}
 		};
 		
@@ -1085,7 +1085,7 @@ public class W
 						i.setVelocity(i.getVelocity().clone().add(VectorMath.direction(i.getLocation(), l.clone()).multiply(build.get() * vol)));
 					}
 					
-					new GSound(Sound.BAT_TAKEOFF, 2.0f, 0.4f + (float) build.get()).play(l);
+					new GSound(Sound.ENTITY_BAT_TAKEOFF, 2.0f, 0.4f + (float) build.get()).play(l);
 					
 					ParticleEffect.ENCHANTMENT_TABLE.display((float) (10.0 * build.get()), (int) (20.0 * build.get()), l, 32);
 				}

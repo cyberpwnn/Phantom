@@ -12,7 +12,7 @@ import org.phantomapi.lang.GSound;
  */
 public enum Aud
 {
-	CLICK(new GSound(Sound.CLICK, 1f, 1.5f));
+	CLICK(new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.5f));
 	
 	private Audible aud;
 	

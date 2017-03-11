@@ -3,6 +3,7 @@ package org.phantomapi.inventory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -253,5 +254,23 @@ public class PhantomInventory implements PhantomInventoryWrapper
 		}
 		
 		return x;
+	}
+
+	@Override
+	public Location getLocation()
+	{
+		return i.getLocation();
+	}
+
+	@Override
+	public ItemStack[] getStorageContents()
+	{
+		return i.getStorageContents();
+	}
+
+	@Override
+	public void setStorageContents(ItemStack[] arg0) throws IllegalArgumentException
+	{
+		i.setStorageContents(arg0);
 	}
 }

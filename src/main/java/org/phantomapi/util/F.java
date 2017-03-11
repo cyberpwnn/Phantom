@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
-import org.phantomapi.placeholder.PlaceholderUtil;
 
 /**
  * Formatter
@@ -80,21 +79,6 @@ public class F
 		{
 			NF = NumberFormat.getInstance(Locale.US);
 		}
-	}
-	
-	/**
-	 * Formats the message with color codes
-	 * Formats the message with placeholders
-	 * 
-	 * @param p
-	 *            the player
-	 * @param s
-	 *            the string
-	 * @return the formatted message
-	 */
-	public static String p(Player p, String s)
-	{
-		return F.color(PlaceholderUtil.handle(p, s));
 	}
 	
 	/**

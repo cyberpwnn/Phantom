@@ -176,7 +176,7 @@ public class MultiblockStructure extends VectorSchematic
 				shift.getBlock().setType(mb.getMaterial());
 				shift.getBlock().setData(mb.getData());
 				NMSX.breakParticles(shift, mb.getMaterial(), 12);
-				new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+				new GSound(Sound.BLOCK_STONE_STEP, 1f, 1f).play(shift);
 			}
 		};
 	}
@@ -202,7 +202,7 @@ public class MultiblockStructure extends VectorSchematic
 				Location shift = center.clone().add(i);
 				p.sendBlockChange(shift, mb.getMaterial(), mb.getData());
 				NMSX.breakParticles(shift, mb.getMaterial(), 12);
-				new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+				new GSound(Sound.BLOCK_STONE_STEP, 1f, 1f).play(shift);
 				
 				new TaskLater(350)
 				{
@@ -211,7 +211,7 @@ public class MultiblockStructure extends VectorSchematic
 					{
 						p.sendBlockChange(shift, shift.getBlock().getType(), shift.getBlock().getData());
 						NMSX.breakParticles(shift, mb.getMaterial(), 12);
-						new GSound(Sound.STEP_STONE, 1f, 1f).play(shift);
+						new GSound(Sound.BLOCK_STONE_STEP, 1f, 1f).play(shift);
 					}
 				};
 			}

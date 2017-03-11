@@ -20,7 +20,6 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -118,10 +117,6 @@ import org.phantomapi.world.PE;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WQ;
 import org.phantomapi.world.WorldLock;
-import org.phantomapi.wraith.PhantomWraith;
-import org.phantomapi.wraith.Wraith;
-import org.phantomapi.wraith.WraithEquipment;
-import org.phantomapi.wraith.WraithTarget;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
 
@@ -1143,121 +1138,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("wraith", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : onlinePlayers())
-				{
-					Long[] last = new Long[] {M.ms()};
-					Long[] lastd = new Long[] {M.ms()};
-					
-					Wraith wraith = new PhantomWraith(C.LIGHT_PURPLE + "Wraith", TestController.this)
-					{
-						@Override
-						public void onTick()
-						{
-							if(hasTarget() && getLocation().distance(getTarget().getTarget()) < 4 && M.ms() - last[0] > 6000)
-							{
-								clearTarget();
-							}
-							
-							else if(!hasTarget() && getLocation().distance(i.getLocation()) > 9)
-							{
-								setTarget(i);
-							}
-						}
-						
-						@Override
-						public void onDamage(Entity e, double damage)
-						{
-							setTarget(e);
-							setFocus(e);
-							setEquipment(WraithEquipment.HAND, new ItemStack(Material.IRON_SWORD));
-							say("Bro, " + e.getName() + " what the fuck is your problem?", 12.4);
-							
-							new TaskLater(120)
-							{
-								@Override
-								public void run()
-								{
-									if(M.ms() - lastd[0] > 6000)
-									{
-										say("Alright, I'm good. I can resume drinking.", 12.7);
-										setEquipment(WraithEquipment.HAND, new ItemStack(Material.GLASS_BOTTLE));
-									}
-								}
-							};
-						}
-						
-						@Override
-						public void onCollide(Entity e)
-						{
-							if(M.ms() - last[0] > 3000)
-							{
-								last[0] = M.ms();
-								say(new GList<String>(new String[] {"What's your problem man?", "Back the fuck off dude.", "Bro, what is wrong with you?", "I said back off alright man?", "Get out of my face before I get in yours.", "You are way to close bro.", "Bruh, get out of my safe space", "Stop that, this is my space."}).pickRandom());
-								
-								setTarget(new WraithTarget(i.getLocation().add(new Vector(Math.random() * 6 - 3, 0, Math.random() * 6 - 3))));
-							}
-						}
-						
-						@Override
-						public void onInteract(Player p)
-						{
-							say(Phantom.instance().getMsgx().pickRandom());
-							
-							setSneaking(true);
-							
-							int[] k = new int[] {0};
-							
-							new Task(2)
-							{
-								@Override
-								public void run()
-								{
-									k[0]++;
-									
-									if(M.r(0.67))
-									{
-										setSneaking(!isSneaking());
-									}
-									
-									if(k[0] > 20)
-									{
-										cancel();
-										
-										if(isSneaking())
-										{
-											setSneaking(false);
-										}
-									}
-								}
-							};
-						}
-					};
-					
-					wraith.spawn(i.getLocation());
-					
-					new TaskLater()
-					{
-						@Override
-						public void run()
-						{
-							wraith.setProtected(false);
-							wraith.setTarget(i);
-							wraith.setFocus(i);
-							wraith.setEquipment(WraithEquipment.HAND, new ItemStack(Material.GLASS_BOTTLE));
-							wraith.setEquipment(WraithEquipment.LEGGINGS, new ItemStack(Material.LEATHER_LEGGINGS));
-							wraith.setEquipment(WraithEquipment.CHESTPLATE, new ItemStack(Material.LEATHER_CHESTPLATE));
-							wraith.say("What's up?", 12.8);
-						}
-					};
-				}
-			}
-		});
-		
 		tests.put("tabulator", new Runnable()
 		{
 			@Override
@@ -1651,7 +1531,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.EXPLODE);
+				Audible a = new GSound(Sound.ENTITY_GENERIC_EXPLODE);
 				a.setPitch(0.3f);
 				a = new MFADistortion(4, 1.8f).distort(a);
 				
@@ -1667,7 +1547,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.SPLASH);
+				Audible a = new GSound(Sound.ENTITY_GENERIC_SPLASH);
 				a.setPitch(0.3f);
 				a = new MFADistortion(8, 1.4f).distort(a);
 				
@@ -1683,7 +1563,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.ANVIL_LAND);
+				Audible a = new GSound(Sound.BLOCK_ANVIL_LAND);
 				a.setPitch(0.6f);
 				a.setVolume(0.4f);
 				a = new MFADistortion(18, 1.4f).distort(a);
@@ -1700,7 +1580,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.SLIME_WALK2);
+				Audible a = new GSound(Sound.ENTITY_SMALL_SLIME_SQUISH);
 				a.setPitch(0.2f);
 				a = new MFADistortion(12, 0.8f).distort(a);
 				
@@ -1735,7 +1615,7 @@ public class TestController extends Controller
 					@Override
 					public void run()
 					{
-						Audible a = new GSound(Sound.FIREWORK_LARGE_BLAST);
+						Audible a = new GSound(Sound.ENTITY_FIREWORK_BLAST);
 						a.setPitch(0.1f + ix[0]);
 						a.setVolume(ix[0]);
 						a = new MFADistortion(12, 1.0f).distort(a);
@@ -1756,7 +1636,7 @@ public class TestController extends Controller
 								@Override
 								public void run()
 								{
-									Audible a = new GSound(Sound.WITHER_DEATH);
+									Audible a = new GSound(Sound.ENTITY_WITHER_DEATH);
 									a.setPitch(0.7f);
 									a = new MFADistortion(4, 1.8f).distort(a);
 									

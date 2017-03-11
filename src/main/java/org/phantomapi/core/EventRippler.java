@@ -20,7 +20,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,9 +39,6 @@ import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
 import org.phantomapi.event.TNTDispenseEvent;
 import org.phantomapi.event.TNTPrimeEvent;
-import org.phantomapi.event.WraithCollideEvent;
-import org.phantomapi.event.WraithDamageEvent;
-import org.phantomapi.event.WraithInteractEvent;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.I;
 import org.phantomapi.sync.TaskLater;
@@ -51,9 +47,6 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
 import org.phantomapi.world.Area;
-import org.phantomapi.wraith.Wraith;
-import org.phantomapi.wraith.WraithUtil;
-import net.citizensnpcs.api.event.NPCCollisionEvent;
 
 /**
  * Ripple fire events for more specific events
@@ -86,27 +79,6 @@ public class EventRippler extends Controller implements Monitorable
 	{
 		try
 		{
-			if(e.getEntity().getType().equals(EntityType.PLAYER))
-			{
-				if(WraithUtil.isWraith((Player) e.getEntity()))
-				{
-					Wraith wraith = WraithUtil.getWraith((Player) e.getEntity());
-					WraithDamageEvent ev = new WraithDamageEvent(wraith, e.getDamager(), e.getCause(), e.getDamage());
-					
-					callEvent(ev);
-					
-					if(ev.isCancelled())
-					{
-						e.setCancelled(true);
-					}
-					
-					else
-					{
-						wraith.onDamage(ev.getDamager(), ev.getDamage());
-					}
-				}
-			}
-			
 			if(e.getDamager().getType().equals(EntityType.PLAYER))
 			{
 				if(e.getEntity().getType().equals(EntityType.PLAYER))
@@ -187,60 +159,6 @@ public class EventRippler extends Controller implements Monitorable
 			I i = q.get(0);
 			i.i();
 			q.remove(0);
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(NPCCollisionEvent e)
-	{
-		try
-		{
-			Wraith wraith = WraithUtil.getWraith(e.getNPC());
-			
-			if(wraith != null)
-			{
-				WraithCollideEvent ev = new WraithCollideEvent(wraith, e.getCollidedWith());
-				callEvent(ev);
-				wraith.onCollide(e.getCollidedWith());
-			}
-		}
-		
-		catch(Exception ex)
-		{
-			
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(PlayerInteractAtEntityEvent e)
-	{
-		try
-		{
-			if(e.getRightClicked().getType().equals(EntityType.PLAYER))
-			{
-				Wraith wraith = WraithUtil.getWraith((Player) e.getRightClicked());
-				
-				if(wraith != null)
-				{
-					WraithInteractEvent ev = new WraithInteractEvent(wraith, e.getPlayer());
-					callEvent(ev);
-					
-					if(ev.isCancelled() || e.isCancelled())
-					{
-						e.setCancelled(true);
-					}
-					
-					else
-					{
-						wraith.onInteract(e.getPlayer());
-					}
-				}
-			}
-		}
-		
-		catch(Exception ex)
-		{
-			
 		}
 	}
 	

@@ -122,6 +122,9 @@ public class ChromaticHost
 					catch(Exception e)
 					{
 						d.f("Invalid Texture: " + C.YELLOW + i + ".png");
+						
+						e.printStackTrace();
+						break;
 					}
 				}
 				

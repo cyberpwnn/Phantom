@@ -25,9 +25,17 @@ public class RedisConnectionController extends ConfigurableController
 	
 	public Jedis createSplitConnection()
 	{
-		Jedis r = new Jedis(address, port);
-		r.auth(password);
-		return r;
+		try
+		{
+			Jedis r = new Jedis(address, port);
+			r.auth(password);
+			return r;
+		}
+		
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 	
 	public void connect()
