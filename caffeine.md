@@ -14,6 +14,9 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [Multithreading](#multithreading)
  * [Executive Iterators](#executive-iterators)
  * [Executive Tasks](#executive-tasks)
+ * [The Good Stuff](#the-good-stuff)
+* [Utilities](#utilities)
+  * [Raw Text](#raw-text)
 * [World Utils](#world-utils)
  * [Async Sync Objects](#async-sync-objects)
  * [Color Armor](#color-armor)
@@ -26,6 +29,7 @@ The core contains several useful apis and ultilities for you to use while develo
 * [Math](#math)
 * [Dispatcher](#dispatcher)
 * [Timers](#timers)
+* [The Good Stuff](#the-good-stuff)
 
 ### Event Listeners
 You can easily register and unregister listeners. Remember, Controllers by default are event listeners and probobly registered.
@@ -320,10 +324,61 @@ ExecutiveTask<String> task = new ExecutiveTask<String>(it, 1.0, 0, new Runnable(
 
 from [ExecutiveTask](http://cyberpwnn.github.io/Phantom/org/phantomapi/sync/ExecutiveTask.html)
 
+
+### The Good Stuff
+Seriously, the really good stuff. The stuff you actually need.
+
+| File | Why it's so good. |
+|---|---|
+| W.class | World utilities & Helpers. Gain async access to worlds |
+| T.class | Timing utility for timing nanoseconds for some task to complete. |
+| F.class | Formatting utility for capitalization, word wrapping, color formatting & more |
+| C.class | Shorthand ChatColor enum. That's it. Trust me, you will get used to it |
+| D.class | Fantastic dispatching to the console & players, supports color & async | 
+| P.class | Tons of player utilities & more | 
+| CFS.class | Modify the effective ramdisk in phantom directly | 
+| Photon.class | Relight chunks, blocks or locations async | 
+| PE.class | Incredibly fast potion effect creation & applicator! | 
+| Area.class | Make the radius & center. Get entities, a random point & more! | 
+| WQ.class | The one and only world queue for dumping insane amounts of modifications to the world in it. | 
+| Chunks.class | Get a bunch of them, or just one. Get radii of them, or unload/update multiples | 
+| Explosion.class | Come on... ```new Explosion().pushBlocks().power(3f).boom(you.getLocation())``` | 
+| Transmission.class | Transmit stuff through bungee with ease | 
+| Chromatic.class | Get colors of blocks, raytrace the real color or even crazier things | 
+| Blocks.class | Implement custom block permission handlers for ease of access across plugins | 
+| RTX.class | Powerful JSON text builder, look above it's documented | 
+
+## Utilities
+The core contains several useful apis and ultilities for you to use while developing. 
+* [Event Listeners](#event-listeners)
+* [Networked Servers](#networked-servers)
+* [Formatting](#formatting)
+* [Math](#math)
+* [Dispatcher](#dispatcher)
+* [Timers](#timers)
+* [The Good Stuff](#the-good-stuff)
+
 ## World Utils
 Manipulate the world with loads of utilities
-* [Async Sync Objects](#async-sync-objects)
-* [Color Armor](#color-armor)
+* [Raw Text](#raw-text)
+
+### Raw Text
+Make raw text easy with RTX.class.
+
+``` java
+RTX rtx = new RTX();
+rtx.addText("Basic white text ");
+rtx.addText("Followed by green", C.GREEN);
+
+RTEX hover = new RTEX(new ColoredString(C.BLUE, "Hover is blue"));
+rtx.addTextFireHoverCommand("And a hover command (this is red)", hover, "/command to execute", C.RED);
+
+// To json raw
+rtx.toJSON();
+
+// Tell raw to a player for you
+rtx.tellRawTo(Players.getAnyPlayer());
+```
 
 ### Async Sync Objects
 Get the Async or Sync object from a world regardless if it is async or sync already. Keep in mind, if you have the async world instance, getting the chunk will return an async chunk, same for async chunks returning async blocks.
@@ -354,8 +409,3 @@ W.colorArmor(is, Color.BLACK);
 ```
 
 from [W](http://cyberpwnn.github.io/Phantom/org/phantomapi/world/W.html)
-
-### The Good Stuff
-Seriously, the really good stuff. The stuff you actually need.
-* W.class 
-* F.class
