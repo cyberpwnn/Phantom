@@ -37,8 +37,6 @@ import org.phantomapi.clust.JSONObject;
 import org.phantomapi.clust.YAMLDataInput;
 import org.phantomapi.clust.YAMLDataOutput;
 import org.phantomapi.command.Command;
-import org.phantomapi.command.CommandAlias;
-import org.phantomapi.command.CommandFilter;
 import org.phantomapi.command.CommandFilter.Permission;
 import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomSender;
@@ -1982,17 +1980,6 @@ public class TestController extends Controller
 				break;
 			}
 		}
-	}
-	
-	@CommandFilter.Tag("Tag")
-	@CommandFilter.TagHover("Tag Hover")
-	@CommandFilter.PlayerOnly
-	@CommandFilter.Permission("must.have.this")
-	@CommandAlias("testingalias")
-	@Command("testing")
-	public void testCommand(PhantomSender sender, PhantomCommand cmd)
-	{
-		sender.sendMessage(C.WHITE + "Tested");
 	}
 	
 	@Permission("phantom.god")
