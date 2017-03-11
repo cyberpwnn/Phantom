@@ -354,3 +354,8 @@ W.colorArmor(is, Color.BLACK);
 ```
 
 from [W](http://cyberpwnn.github.io/Phantom/org/phantomapi/world/W.html)
+
+### The Good Stuff
+Seriously, the really good stuff. The stuff you actually need.
+* W.class 
+* F.class
