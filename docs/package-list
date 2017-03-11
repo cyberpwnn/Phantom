@@ -12,7 +12,6 @@ org.phantomapi.currency
 org.phantomapi.entity
 org.phantomapi.event
 org.phantomapi.ext
-org.phantomapi.factions
 org.phantomapi.filesystem
 org.phantomapi.game
 org.phantomapi.graph
@@ -28,19 +27,16 @@ org.phantomapi.nms
 org.phantomapi.papyrus
 org.phantomapi.phast
 org.phantomapi.physics
-org.phantomapi.placeholder
 org.phantomapi.ppa
 org.phantomapi.queue
 org.phantomapi.refract
 org.phantomapi.registry
 org.phantomapi.schematic
 org.phantomapi.sfx
-org.phantomapi.skyblock
 org.phantomapi.slate
 org.phantomapi.source
 org.phantomapi.spawner
 org.phantomapi.stack
-org.phantomapi.standalone
 org.phantomapi.statistics
 org.phantomapi.sync
 org.phantomapi.text
@@ -49,4 +45,3 @@ org.phantomapi.transmit
 org.phantomapi.util
 org.phantomapi.vfx
 org.phantomapi.world
-org.phantomapi.wraith
