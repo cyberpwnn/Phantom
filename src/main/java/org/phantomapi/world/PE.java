@@ -23,6 +23,7 @@ public class PE extends PotionEffect
 	public static PE DAMAGE_RESISTANCE;
 	public static PE FAST_DIGGING;
 	public static PE FIRE_RESISTANCE;
+	public static PE GLOWING;
 	public static PE HARM;
 	public static PE HEAL;
 	public static PE HEALTH_BOOST;
@@ -30,6 +31,8 @@ public class PE extends PotionEffect
 	public static PE INCREASE_DAMAGE;
 	public static PE INVISIBILITY;
 	public static PE JUMP;
+	public static PE LEVITATION;
+	public static PE LUCK;
 	public static PE NIGHT_VISION;
 	public static PE POISON;
 	public static PE REGENERATION;
@@ -37,6 +40,7 @@ public class PE extends PotionEffect
 	public static PE SLOW;
 	public static PE SLOW_DIGGING;
 	public static PE SPEED;
+	public static PE UNLUCK;
 	public static PE WATER_BREATHING;
 	public static PE WEAKNESS;
 	public static PE WITHER;
@@ -181,6 +185,7 @@ public class PE extends PotionEffect
 		DAMAGE_RESISTANCE = defaulted(PotionEffectType.DAMAGE_RESISTANCE);
 		FAST_DIGGING = defaulted(PotionEffectType.FAST_DIGGING);
 		FIRE_RESISTANCE = defaulted(PotionEffectType.FIRE_RESISTANCE);
+		GLOWING = defaulted(PotionEffectType.GLOWING);
 		HARM = defaulted(PotionEffectType.HARM);
 		HEAL = defaulted(PotionEffectType.HEAL);
 		HEALTH_BOOST = defaulted(PotionEffectType.HEALTH_BOOST);
@@ -188,6 +193,8 @@ public class PE extends PotionEffect
 		INCREASE_DAMAGE = defaulted(PotionEffectType.INCREASE_DAMAGE);
 		INVISIBILITY = defaulted(PotionEffectType.INVISIBILITY);
 		JUMP = defaulted(PotionEffectType.JUMP);
+		LEVITATION = defaulted(PotionEffectType.LEVITATION);
+		LUCK = defaulted(PotionEffectType.LUCK);
 		NIGHT_VISION = defaulted(PotionEffectType.NIGHT_VISION);
 		POISON = defaulted(PotionEffectType.POISON);
 		REGENERATION = defaulted(PotionEffectType.REGENERATION);
@@ -195,6 +202,7 @@ public class PE extends PotionEffect
 		SLOW = defaulted(PotionEffectType.SLOW);
 		SLOW_DIGGING = defaulted(PotionEffectType.SLOW_DIGGING);
 		SPEED = defaulted(PotionEffectType.SPEED);
+		UNLUCK = defaulted(PotionEffectType.UNLUCK);
 		WATER_BREATHING = defaulted(PotionEffectType.WATER_BREATHING);
 		WEAKNESS = defaulted(PotionEffectType.WEAKNESS);
 		WITHER = defaulted(PotionEffectType.WITHER);
