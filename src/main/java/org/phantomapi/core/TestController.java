@@ -750,6 +750,29 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("particle19", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					new Task(0)
+					{
+						
+						@Override
+						public void run()
+						{
+							ParticleEffect.DRAGON_BREATH.display(0.3f, 1, i.getLocation(), 32);
+							ParticleEffect.SWEEP_ATTACK.display(4.7f, 1, i.getLocation(), 32);
+							ParticleEffect.END_ROD.display(0.3f, 1, i.getLocation(), 32);
+							ParticleEffect.DAMAGE_INDICATOR.display(0.3f, 1, i.getLocation(), 32);
+						}
+					};
+				}
+			}
+		});
+		
 		tests.put("item-da", new Runnable()
 		{
 			@Override
