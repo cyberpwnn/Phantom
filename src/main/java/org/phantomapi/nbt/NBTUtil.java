@@ -4,11 +4,40 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.nms.NMSX;
 
 public class NBTUtil
 {
+	
+	public static <T extends Object> NBTTagCompound getNBTTag(T entity)
+	{
+		NBTTagCompound compound = new NBTTagCompound();
+		
+		Class<? extends Object> clazz = entity.getClass();
+		Method[] methods = clazz.getDeclaredMethods();
+		
+		for(Method method : methods)
+		{
+			if((method.getName() == "b") && (method.getParameterTypes().length == 1) && (method.getParameterTypes()[0] == NBTTagCompound.class))
+			{
+				try
+				{
+					method.invoke(entity, compound);
+				}
+				
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		}
+		
+		return compound;
+	}
+	
 	public static NBTTagCompound getNBTTag(ItemStack is) throws Exception
 	{
 		try

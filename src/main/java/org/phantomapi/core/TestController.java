@@ -20,6 +20,9 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -59,6 +62,8 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.nbt.NBTTagCompound;
+import org.phantomapi.nbt.NBTUtil;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.network.FileDownload;
 import org.phantomapi.nms.NMSX;
@@ -553,7 +558,16 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				//TODO do
+				for(Player i : onlinePlayers())
+				{
+					Pig a = (Pig) i.getWorld().spawnEntity(i.getLocation(), EntityType.PIG);
+					NBTTagCompound k = NBTUtil.getNBTTag(a);
+					
+					for(Object j : k.getMap().keySet())
+					{
+						i.sendMessage(j.toString());
+					}
+				}
 			}
 		});
 		
