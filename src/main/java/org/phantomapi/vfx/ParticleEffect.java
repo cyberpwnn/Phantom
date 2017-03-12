@@ -420,6 +420,7 @@ public enum ParticleEffect
 	 * </ul>
 	 */
 	ITEM_TAKE("take", 40, 8),
+	
 	/**
 	 * A particle effect which is displayed by elder guardians:
 	 * <ul>
@@ -428,7 +429,27 @@ public enum ParticleEffect
 	 * <li>The offset values have no influence on this particle effect
 	 * </ul>
 	 */
-	MOB_APPEARANCE("mobappearance", 41, 8);
+	MOB_APPEARANCE("mobappearance", 41, 8),
+	
+	/**
+	 * A particle effect which is displayed by enderdragons
+	 */
+	DRAGON_BREATH("dragonbreath", 42, 9),
+	
+	/**
+	 * The end rod particle effect from end rods
+	 */
+	END_ROD("endrod", 43, 9),
+	
+	/**
+	 * A damage indicator particle effect
+	 */
+	DAMAGE_INDICATOR("damageindicator", 44, 9),
+	
+	/**
+	 * A swipe sword effect
+	 */
+	SWEEP_ATTACK("sweepttack", 45, 9);
 	
 	private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
 	private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
