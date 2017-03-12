@@ -49,6 +49,44 @@ public class TXT
 	}
 	
 	/**
+	 * Build a tag
+	 * 
+	 * @param brace
+	 *            the brace color
+	 * @param tag
+	 *            the tag color
+	 * @param colon
+	 *            the colon color
+	 * @param text
+	 *            the text color
+	 * @param tagName
+	 *            the tag name
+	 * @return the tag
+	 */
+	public static String makeTag(C brace, C tag, C colon, C text, String tagName)
+	{
+		return brace + "[" + tag + tagName + brace + "]" + colon + ": " + text;
+	}
+	
+	/**
+	 * Build a tag
+	 * 
+	 * @param brace
+	 *            the brace color
+	 * @param tag
+	 *            the tag color
+	 * @param text
+	 *            the text color
+	 * @param tagName
+	 *            the tag name
+	 * @return the tag
+	 */
+	public static String makeTag(C brace, C tag, C text, String tagName)
+	{
+		return brace + "[" + tag + tagName + brace + "]" + ": " + text;
+	}
+	
+	/**
 	 * Create a line
 	 * 
 	 * @param color
