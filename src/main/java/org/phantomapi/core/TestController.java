@@ -548,6 +548,15 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("fat", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				//TODO do
+			}
+		});
+		
 		tests.put("inv-da", new Runnable()
 		{
 			@Override

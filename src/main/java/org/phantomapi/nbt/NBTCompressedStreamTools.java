@@ -15,7 +15,6 @@ import java.util.zip.GZIPOutputStream;
 
 public class NBTCompressedStreamTools
 {
-	
 	public static NBTTagCompound read(byte[] abyte, NBTReadLimiter nbtreadlimiter) throws Exception
 	{
 		DataInputStream datainputstream = null;
