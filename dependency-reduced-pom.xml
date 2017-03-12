@@ -117,22 +117,9 @@
           <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.3.1</version>
-            <executions>
-              <execution>
-                <id>default-jar</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>C:/Users/cyberpwn/Documents/development/release/Phantom</outputDirectory>
-                  <finalName>Phantom-O</finalName>
-                </configuration>
-              </execution>
-            </executions>
             <configuration>
-              <outputDirectory>C:/Users/cyberpwn/Documents/development/release/Phantom</outputDirectory>
-              <finalName>Phantom-O</finalName>
+              <outputDirectory>${local.release}</outputDirectory>
+              <finalName>${project.name}-${project.version}</finalName>
             </configuration>
           </plugin>
         </plugins>
@@ -145,9 +132,22 @@
           <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.3.1</version>
+            <executions>
+              <execution>
+                <id>default-jar</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</outputDirectory>
+                  <finalName>Phantom</finalName>
+                </configuration>
+              </execution>
+            </executions>
             <configuration>
-              <outputDirectory>${local.development}</outputDirectory>
-              <finalName>${project.name}</finalName>
+              <outputDirectory>C:/Users/cyberpwn/Documents/development/servers/dynamic/plugins</outputDirectory>
+              <finalName>Phantom</finalName>
             </configuration>
           </plugin>
         </plugins>
