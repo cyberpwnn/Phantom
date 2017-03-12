@@ -1,5 +1,5 @@
-# Phantom Zenith
-[![](button.png)](https://github.com/cyberpwnn/Phantom/releases)
+# Phantom Orion
+[![](flame.png)](https://github.com/cyberpwnn/Phantom/releases)
 [![](phantom-micro.png)](https://github.com/cyberpwnn/Phantom/releases)
 
 [![codebeat badge](https://codebeat.co/badges/044134b4-fd2f-4441-8993-276b4b850b30)](https://codebeat.co/projects/github-com-cyberpwnn-phantom)
@@ -10,7 +10,8 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Zenith**](https://github.com/cyberpwnn/Phantom/releases/)
+* [**Orion**](https://github.com/cyberpwnn/Phantom/releases/)
+* [Zenith](https://github.com/cyberpwnn/Phantom/Z1)
 * [Death](https://github.com/cyberpwnn/Phantom/releases/D9)
 * [Kelvin](https://github.com/cyberpwnn/Phantom/releases/K9)
 * [Vortex](https://github.com/cyberpwnn/Phantom/releases/V9)
