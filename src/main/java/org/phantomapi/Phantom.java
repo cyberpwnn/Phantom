@@ -178,7 +178,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private WorldController worldController;
 	private ZenithController zenithController;
 	private CTNController ctnController;
-	
 	private Long nsx;
 	
 	@Override
@@ -514,6 +513,31 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				}
 			}
 		};
+		
+		for(Controllable i : getAllControllers())
+		{
+			try
+			{
+				LanguageController.scan(i.getClass(), i);
+			}
+			
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+				
+		loadCluster(languageController);
+		
+		try
+		{
+			languageController.modify();
+		}
+		
+		catch(IllegalArgumentException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean setupEconomy()
