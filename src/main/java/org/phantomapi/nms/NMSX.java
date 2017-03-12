@@ -17,8 +17,6 @@ import org.bukkit.WeatherType;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -37,9 +35,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import net.minecraft.server.v1_9_R2.BlockPosition;
-import net.minecraft.server.v1_9_R2.EntityPlayer;
 import net.minecraft.server.v1_9_R2.EnumItemSlot;
-import net.minecraft.server.v1_9_R2.PacketPlayOutAttachEntity;
 import net.minecraft.server.v1_9_R2.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_9_R2.PacketPlayOutSetSlot;
 
