@@ -11,10 +11,14 @@ import org.phantomapi.clust.PD;
 public class PDXCurrency implements Currency
 {
 	private String id;
+	private String prefix;
+	private String suffix;
 	
-	public PDXCurrency(String id)
+	public PDXCurrency(String id, String prefix, String suffix)
 	{
 		this.id = id;
+		this.prefix = prefix;
+		this.suffix = suffix;
 	}
 	
 	@Override
@@ -38,13 +42,13 @@ public class PDXCurrency implements Currency
 	@Override
 	public String getSuffix()
 	{
-		return "";
+		return suffix;
 	}
 	
 	@Override
 	public String getPrefix()
 	{
-		return "$";
+		return prefix;
 	}
 	
 	@Override
