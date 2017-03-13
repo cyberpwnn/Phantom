@@ -5,13 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.nms.NMSX;
 
 public class NBTUtil
 {
-	
 	public static <T extends Object> NBTTagCompound getNBTTag(T entity)
 	{
 		NBTTagCompound compound = new NBTTagCompound();
