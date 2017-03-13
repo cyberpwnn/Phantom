@@ -11,7 +11,7 @@
 
 # Latest Flagships
 * [**Orion**](https://github.com/cyberpwnn/Phantom/releases/)
-* [Zenith](https://github.com/cyberpwnn/Phantom/Z1)
+* [Zenith](https://github.com/cyberpwnn/Phantom/Z2)
 * [Death](https://github.com/cyberpwnn/Phantom/releases/D9)
 * [Kelvin](https://github.com/cyberpwnn/Phantom/releases/K9)
 * [Vortex](https://github.com/cyberpwnn/Phantom/releases/V9)
