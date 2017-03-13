@@ -39,4 +39,10 @@ public class VaultCurrency implements Currency
 	{
 		return "$";
 	}
+
+	@Override
+	public String getId()
+	{
+		return "vault";
+	}
 }

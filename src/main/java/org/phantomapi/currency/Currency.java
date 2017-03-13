@@ -51,4 +51,11 @@ public interface Currency
 	 * @return returns "" or a prefix
 	 */
 	public String getPrefix();
+	
+	/**
+	 * Get the identifier for this currency
+	 * 
+	 * @return
+	 */
+	public String getId();
 }

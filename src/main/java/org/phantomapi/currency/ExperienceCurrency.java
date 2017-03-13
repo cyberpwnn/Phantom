@@ -39,4 +39,10 @@ public class ExperienceCurrency implements Currency
 	{
 		return "";
 	}
+
+	@Override
+	public String getId()
+	{
+		return "xp";
+	}
 }
