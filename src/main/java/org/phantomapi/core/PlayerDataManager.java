@@ -158,7 +158,7 @@ public class PlayerDataManager extends PlayerDataHandler<PlayerData> implements 
 		
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 	}
 	
