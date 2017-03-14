@@ -16,9 +16,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.phantomapi.Phantom;
 import org.phantomapi.sync.Task;
 import org.phantomapi.util.ReflectionUtils;
 import org.phantomapi.util.ReflectionUtils.PackageType;
+import org.phantomapi.vfx.ParticleEffect.ParticleData;
 
 /**
  * <b>ParticleEffect Library</b>
@@ -49,6 +51,7 @@ import org.phantomapi.util.ReflectionUtils.PackageType;
  * @author DarkBlade12
  * @version 1.7
  */
+@SuppressWarnings("unused")
 public enum ParticleEffect
 {
 	/**
@@ -682,16 +685,20 @@ public enum ParticleEffect
 	{
 		if(!isSupported())
 		{
-			throw new ParticleVersionException("This particle effect is not supported by your server version");
+			Phantom.instance().getDispatcher().f("Particle Incompatible with this server version!");
+			return;
 		}
+		
 		if(hasProperty(ParticleProperty.REQUIRES_DATA))
 		{
 			throw new ParticleDataException("This particle effect requires additional data");
 		}
+		
 		if(hasProperty(ParticleProperty.REQUIRES_WATER) && !isWater(center))
 		{
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
+		
 		new ParticlePacket(this, 0, 0, 0, speed, amount, range > 256, null).sendTo(center, range);
 	}
 	
@@ -1850,24 +1857,38 @@ public enum ParticleEffect
 			{
 				return;
 			}
+			
 			try
 			{
-				version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
+				String ver = PackageType.getServerVersion();
+				int un1 = ver.indexOf("_") + 1;
+				int un2 = ver.lastIndexOf("_");
+				
+				version = Integer.parseInt(ver.substring(un1, un2));
+				
 				if(version > 7)
 				{
 					enumParticle = PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
 				}
+				
 				Class<?> packetClass = PackageType.MINECRAFT_SERVER.getClass(version < 7 ? "Packet63WorldParticles" : "PacketPlayOutWorldParticles");
 				packetConstructor = ReflectionUtils.getConstructor(packetClass);
 				getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
 				playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
 				sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
 			}
+			
 			catch(Exception exception)
 			{
-				throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
+				Phantom.instance().f("Particles incompatible with this server version!");
 			}
+			
 			initialized = true;
+			
+			if(initialized)
+			{
+				return;
+			}
 		}
 		
 		/**
