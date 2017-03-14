@@ -40,6 +40,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 	private ExecutiveTask<Plugin> task;
 	public static long ticks = 0;
 	public static long timex = 0;
+	private boolean reload = false;
 	
 	@Comment("Used for identifying this server TYPE.\nIf you have multiple servers of the same type, name it the same")
 	@Keyed("server-identifier")
@@ -89,6 +90,12 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Override
 	public void onTick()
 	{
+		if(reload)
+		{
+			Bukkit.reload();
+			return;
+		}
+		
 		if(!(reloadOnChanged || reloadEverything))
 		{
 			return;
@@ -129,7 +136,8 @@ public class DevelopmentController extends Controller implements Configurable, M
 						{
 							if(i.getName().equalsIgnoreCase("Phantom"))
 							{
-								Bukkit.reload();
+								reload = true;
+								
 								return;
 							}
 							
