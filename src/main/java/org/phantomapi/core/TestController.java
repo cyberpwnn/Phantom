@@ -210,6 +210,29 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("relock", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					P.disable(i);
+					P.showProgress(i, "Blindness;Looks like this");
+					
+					new TaskLater(100)
+					{
+						@Override
+						public void run()
+						{
+							P.clearProgress(i);
+							P.enable(i);
+						}
+					};
+				}
+			}
+		});
+		
 		tests.put("perm-fix", new Runnable()
 		{
 			@Override
