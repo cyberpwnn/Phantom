@@ -71,6 +71,21 @@ public class SlateUtil
 		return o;
 	}
 	
+	public static Objective newHeadObjective(Scoreboard board, String name)
+	{
+		Objective o = board.registerNewObjective("slate", "dummy");
+		
+		if(name.length() > 32)
+		{
+			name = name.substring(0, 29) + "...";
+		}
+		
+		o.setDisplayName(name);
+		o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+		
+		return o;
+	}
+	
 	/**
 	 * Create a new objective
 	 * 
