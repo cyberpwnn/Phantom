@@ -51,6 +51,8 @@ import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
+import org.phantomapi.hologram.Hologram;
+import org.phantomapi.hologram.PhantomHologram;
 import org.phantomapi.hud.ConfigurationUI;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -87,6 +89,7 @@ import org.phantomapi.text.GBook;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.text.ParameterAdapter;
 import org.phantomapi.text.SYM;
+import org.phantomapi.text.TXT;
 import org.phantomapi.text.Tabulator;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
@@ -94,6 +97,7 @@ import org.phantomapi.util.Chunks;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalDouble;
+import org.phantomapi.util.FinalFloat;
 import org.phantomapi.util.Formula;
 import org.phantomapi.util.Items;
 import org.phantomapi.util.M;
@@ -207,6 +211,121 @@ public class TestController extends Controller
 				ppa.set("testing", 423);
 				ppa.set("testval", "val");
 				ppa.send();
+			}
+		});
+		
+		tests.put("followhollo", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Player p = Players.getAnyPlayer();
+				Hologram h = new PhantomHologram(p.getLocation());
+				h.setDisplay(C.GREEN + "Some tag\n" + C.AQUA + "Another Tag");
+				p.setLeashHolder(h.getHandle());
+				
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						h.setLocation(p.getLocation().clone().add(p.getVelocity()));
+					}
+				};
+			}
+		});
+		
+		tests.put("holobounce", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Hologram h = new PhantomHologram(Players.getAnyPlayer().getLocation());
+				Location b = h.getLocation().clone();
+				FinalFloat t = new FinalFloat(0);
+				FinalDouble s = new FinalDouble(M.sin(t.get()));
+				
+				h.setDisplay(TXT.repeat(C.AQUA + TXT.repeat(SYM.SHAPE_SQUARE + "", (int) (((s.get() * 2) * 12) + 1)) + "\n", 12));
+				
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						h.setDisplay(TXT.repeat(C.AQUA + TXT.repeat(SYM.SHAPE_SQUARE + "", (int) (((s.get() * 2) * 12) + 1)) + "\n", (int)(((s.get() * 8) * 4))));
+						
+						t.add(5.95f);
+						s.set(M.sin(t.get()));
+						h.setLocation(b.clone().add(0, s.get() * 2, 0));
+					}
+				};
+			}
+		});
+		
+		tests.put("hologram", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					Hologram h = new PhantomHologram(i.getLocation());
+					h.setDisplay("This\nIs\n" + C.GREEN + "a test");
+					
+					new TaskLater(20)
+					{
+						@Override
+						public void run()
+						{
+							h.setDisplay("This\nIs\n" + C.GREEN + "a test\n" + C.RED + "With\nEven More stuff");
+							
+							new TaskLater(30)
+							{
+								@Override
+								public void run()
+								{
+									h.setDisplay("Or less?");
+									
+									new TaskLater(30)
+									{
+										@Override
+										public void run()
+										{
+											h.setDisplay("a\nb\nc\nd\ne\nf\ng");
+											
+											new TaskLater(30)
+											{
+												@Override
+												public void run()
+												{
+													h.setLocation(h.getLocation().clone().add(-2, 1, 3));
+												}
+											};
+											
+											new TaskLater(60)
+											{
+												@Override
+												public void run()
+												{
+													h.setLocation(h.getLocation().clone().add(2, -1, -3));
+												}
+											};
+											
+											new TaskLater(90)
+											{
+												@Override
+												public void run()
+												{
+													h.destroy();
+												}
+											};
+										}
+									};
+								}
+							};
+						}
+					};
+				}
 			}
 		});
 		
