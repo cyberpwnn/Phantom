@@ -1,7 +1,6 @@
 package org.phantomapi.gui;
 
 import java.util.UUID;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +11,6 @@ import org.phantomapi.lang.GList;
  * item within a window
  * 
  * @author cyberpwn
- *
  */
 public interface Element
 {
@@ -173,6 +171,21 @@ public interface Element
 	 *            the window this element resides in
 	 */
 	public void onClick(Player p, Click c, Window w);
+	
+	/**
+	 * Add a durability enchantment for enchantment glint
+	 * 
+	 * @param glow
+	 *            will glow if set to true
+	 */
+	public void setGlowing(boolean glow);
+	
+	/**
+	 * Does the element have an enchantment glint?
+	 * 
+	 * @return true if it does
+	 */
+	public boolean isGlowing();
 	
 	/**
 	 * Get the ID of this element
