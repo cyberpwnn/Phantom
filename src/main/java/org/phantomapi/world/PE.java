@@ -177,6 +177,16 @@ public class PE extends PotionEffect
 		l.addPotionEffect(new PE(getType(), getDuration(), getAmplifier(), false, false).c());
 	}
 	
+	public void crm(LivingEntity l)
+	{
+		l.addPotionEffect(new PE(getType(), getDuration(), getAmplifier(), false, false).c(), true);
+	}
+	
+	public void rm(LivingEntity l)
+	{
+		l.removePotionEffect(getType());
+	}
+	
 	static
 	{
 		ABSORPTION = defaulted(PotionEffectType.ABSORPTION);
