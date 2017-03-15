@@ -2,9 +2,11 @@ package org.phantomapi.core;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,6 +17,8 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.lang.GList;
+import org.phantomapi.nbt.NBTTagCompound;
+import org.phantomapi.nbt.NBTUtil;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.stack.Stack;
 import org.phantomapi.sync.Task;
@@ -216,6 +220,46 @@ public class ProbeController extends Controller
 		catch(Exception ex)
 		{
 			
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void on(PlayerInteractAtEntityEvent e)
+	{
+		if(!e.getPlayer().hasPermission("pha.god"))
+		{
+			return;
+		}
+		
+		ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
+		
+		if(is!= null && is.getType().equals(Material.TRIPWIRE_HOOK))
+		{
+			ItemMeta im = is.getItemMeta();
+			
+			if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
+			{
+				Entity en = e.getRightClicked();
+				
+				if(en != null)
+				{
+					MessageBuilder mb = new MessageBuilder();
+					PhantomSender s = new PhantomSender(e.getPlayer());
+					mb.setTag(C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Probe" + C.DARK_GRAY + "]: " + C.GRAY, C.LIGHT_PURPLE + "Probed information");
+					s.setMessageBuilder(mb);
+					
+					NBTTagCompound nbt = NBTUtil.getNBTTag(en);
+					
+					ParticleEffect.SPELL_WITCH.display(0.5f, 24, en.getLocation(), 32);
+					
+					s.sendMessage(C.WHITE + "Entity: " + C.GRAY + en.getType());
+					
+					for(Object i : nbt.c())
+					{
+						s.sendMessage(C.LIGHT_PURPLE + i.toString() + ": (" + C.GRAY + nbt.get(i.toString()).getTypeId() + ") " + C.WHITE + nbt.get(i.toString()).toString());
+					}
+				}
+			}
 		}
 	}
 }
