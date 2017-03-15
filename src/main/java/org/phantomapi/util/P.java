@@ -12,6 +12,7 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.Area;
+import org.phantomapi.world.PE;
 import org.phantomapi.world.RayTrace;
 import org.phantomapi.world.Shape;
 
@@ -22,6 +23,28 @@ import org.phantomapi.world.Shape;
  */
 public class P
 {
+	/**
+	 * Disable the player's ability to see
+	 * 
+	 * @param p
+	 *            the player to disable
+	 */
+	public static void disable(Player p)
+	{
+		PE.BLINDNESS.a(500).d(1024).c(p);
+	}
+	
+	/**
+	 * Remove disabled effect
+	 * 
+	 * @param p
+	 *            the player to remove it from
+	 */
+	public static void enable(Player p)
+	{
+		PE.BLINDNESS.a(500).d(20).rm(p);		
+	}
+	
 	/**
 	 * Get the target block
 	 * 
