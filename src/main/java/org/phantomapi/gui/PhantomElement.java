@@ -3,6 +3,7 @@ package org.phantomapi.gui;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,6 +24,7 @@ public class PhantomElement implements Element
 	protected Integer count;
 	protected Slot slot;
 	protected ItemStack stack;
+	protected boolean glowing;
 	protected final UUID id;
 	
 	/**
@@ -45,6 +47,7 @@ public class PhantomElement implements Element
 		this.durability = stack.getDurability();
 		this.count = stack.getAmount();
 		this.id = UUID.randomUUID();
+		this.glowing = false;
 	}
 	
 	/**
@@ -75,6 +78,7 @@ public class PhantomElement implements Element
 		this.text = text;
 		this.durability = durability;
 		this.count = count;
+		this.glowing = false;
 		
 		ItemStack stack = new ItemStack(type, count, durability, metadata);
 		ItemMeta im = stack.hasItemMeta() ? stack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(stack.getType());
@@ -319,6 +323,11 @@ public class PhantomElement implements Element
 			stack.setItemMeta(im);
 		}
 		
+		if(isGlowing())
+		{
+			stack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+		}
+		
 		setStack(stack);
 		
 		return this.stack;
@@ -361,5 +370,17 @@ public class PhantomElement implements Element
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void setGlowing(boolean glow)
+	{
+		glowing = glow;
+	}
+
+	@Override
+	public boolean isGlowing()
+	{
+		return glowing;
 	}
 }
