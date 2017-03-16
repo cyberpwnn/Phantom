@@ -48,4 +48,9 @@ public class DDouble implements DataHandle
 	{
 		return 5;
 	}
+	
+	public Double get()
+	{
+		return integer;
+	}
 }
