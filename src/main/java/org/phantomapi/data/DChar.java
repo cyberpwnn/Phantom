@@ -48,4 +48,9 @@ public class DChar implements DataHandle
 	{
 		return 4;
 	}
+	
+	public Character get()
+	{
+		return integer;
+	}
 }
