@@ -48,4 +48,9 @@ public class DString implements DataHandle
 	{
 		return 10;
 	}
+	
+	public String get()
+	{
+		return string;
+	}
 }
