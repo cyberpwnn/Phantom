@@ -38,6 +38,7 @@ import org.phantomapi.core.BlockCheckController;
 import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
 import org.phantomapi.core.CTNController;
+import org.phantomapi.core.CacheController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
 import org.phantomapi.core.DMS;
@@ -162,6 +163,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private HyveController hyveController;
 	private PhotonController photonController;
 	private SpeechMesh saltpile;
+	private CacheController cacheController;
 	private ResourceController resourceController;
 	private LanguageController languageController;
 	private MultiblockRegistryController multiblockRegistryController;
@@ -230,6 +232,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		photonController = new PhotonController(this);
 		resourceController = new ResourceController(this);
 		slateController = new SlateController(this);
+		cacheController = new CacheController(this);
 		phastController = new PhastController(this);
 		languageController = new LanguageController(this);
 		multiblockRegistryController = new MultiblockRegistryController(this);
@@ -266,6 +269,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(protocolController);
 		register(defaultController);
 		register(bungeeController);
+		register(cacheController);
 		register(editSessionController);
 		register(photonController);
 		register(resourceController);
@@ -2402,5 +2406,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public CTNController getCtnController()
 	{
 		return ctnController;
+	}
+
+	public static ThreadPoolExecutor getExecutor()
+	{
+		return executor;
+	}
+
+	public CacheController getCacheController()
+	{
+		return cacheController;
 	}
 }
