@@ -48,4 +48,9 @@ public class DBoolean implements DataHandle
 	{
 		return 1;
 	}
+	
+	public Boolean get()
+	{
+		return integer;
+	}
 }
