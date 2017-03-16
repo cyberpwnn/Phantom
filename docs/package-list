@@ -9,6 +9,7 @@ org.phantomapi.command
 org.phantomapi.construct
 org.phantomapi.core
 org.phantomapi.currency
+org.phantomapi.data
 org.phantomapi.entity
 org.phantomapi.event
 org.phantomapi.ext
@@ -17,6 +18,7 @@ org.phantomapi.game
 org.phantomapi.graph
 org.phantomapi.gui
 org.phantomapi.hive
+org.phantomapi.hologram
 org.phantomapi.hud
 org.phantomapi.inventory
 org.phantomapi.lang
