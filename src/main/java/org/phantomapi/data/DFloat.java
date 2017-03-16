@@ -48,4 +48,9 @@ public class DFloat implements DataHandle
 	{
 		return 6;
 	}
+	
+	public Float get()
+	{
+		return integer;
+	}
 }
