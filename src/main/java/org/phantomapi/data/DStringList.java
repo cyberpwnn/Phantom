@@ -64,4 +64,9 @@ public class DStringList implements DataHandle
 	{
 		return 11;
 	}
+	
+	public GList<String> get()
+	{
+		return string;
+	}
 }
