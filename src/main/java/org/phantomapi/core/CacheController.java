@@ -48,7 +48,6 @@ public class CacheController extends Controller
 			d.fromData(FileUtils.readFileToByteArray(i));
 			cc.fromDataPack(d);
 			caches.put(i.getName().split("\\.")[0], cc);
-			w("Loaded Cache" + i.getPath());
 		}
 	}
 	
@@ -64,6 +63,7 @@ public class CacheController extends Controller
 					try
 					{
 						saveCache();
+						dirty = false;
 					}
 					
 					catch(IOException e)
@@ -82,7 +82,6 @@ public class CacheController extends Controller
 			DataCluster cc = caches.get(i);
 			DataPack d = cc.toDataPack();
 			FileUtils.writeByteArrayToFile(new File(cache, i + ".ka"), d.toData());
-			w("Saved Cache" + new File(cache, i + ".ka").getPath());
 		}
 	}
 	
