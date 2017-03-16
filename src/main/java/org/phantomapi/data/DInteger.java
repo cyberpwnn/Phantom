@@ -48,4 +48,9 @@ public class DInteger implements DataHandle
 	{
 		return 7;
 	}
+	
+	public Integer get()
+	{
+		return integer;
+	}
 }
