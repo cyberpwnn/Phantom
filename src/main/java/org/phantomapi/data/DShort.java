@@ -48,4 +48,9 @@ public class DShort implements DataHandle
 	{
 		return 9;
 	}
+	
+	public Short get()
+	{
+		return integer;
+	}
 }
