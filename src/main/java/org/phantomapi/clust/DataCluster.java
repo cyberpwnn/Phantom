@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -14,6 +15,15 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.phantomapi.Phantom;
+import org.phantomapi.data.DBoolean;
+import org.phantomapi.data.DDouble;
+import org.phantomapi.data.DInteger;
+import org.phantomapi.data.DLong;
+import org.phantomapi.data.DString;
+import org.phantomapi.data.DStringList;
+import org.phantomapi.data.DataHandle;
+import org.phantomapi.data.DataPack;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
@@ -83,6 +93,130 @@ public class DataCluster implements Serializable
 		this();
 		
 		addJson(js);
+	}
+	
+	/**
+	 * Put data from the datapack back into the cluster
+	 * 
+	 * @param pack
+	 *            the pack
+	 */
+	public void fromDataPack(DataPack pack)
+	{
+		Iterator<DataHandle> h = pack.getEntities().iterator();
+		
+		while(h.hasNext())
+		{
+			DataHandle i = h.next();
+			
+			if(i instanceof DString)
+			{
+				String key = ((DString) i).get();
+				
+				if(h.hasNext())
+				{
+					DataHandle v = h.next();
+					
+					if(v instanceof DBoolean)
+					{
+						set(key, ((DBoolean) v).get());
+					}
+					
+					else if(v instanceof DInteger)
+					{
+						set(key, ((DInteger) v).get());
+					}
+					
+					else if(v instanceof DLong)
+					{
+						set(key, ((DLong) v).get());
+					}
+					
+					else if(v instanceof DDouble)
+					{
+						set(key, ((DDouble) v).get());
+					}
+					
+					else if(v instanceof DString)
+					{
+						set(key, ((DString) v).get());
+					}
+					
+					else if(v instanceof DStringList)
+					{
+						set(key, ((DStringList) v).get());
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Get the cluster data into a datapack
+	 * 
+	 * @return the datapack
+	 */
+	public DataPack toDataPack()
+	{
+		DataPack dp = new DataPack();
+		
+		for(String key : keys())
+		{
+			dp.put(new DString(key));
+			
+			if(getType(key).equals(ClusterDataType.BOOLEAN))
+			{
+				dp.put(new DBoolean(getBoolean(key)));
+			}
+			
+			else if(getType(key).equals(ClusterDataType.INTEGER))
+			{
+				dp.put(new DInteger(getInt(key)));
+			}
+			
+			else if(getType(key).equals(ClusterDataType.LONG))
+			{
+				dp.put(new DLong(getLong(key)));
+			}
+			
+			else if(getType(key).equals(ClusterDataType.DOUBLE))
+			{
+				dp.put(new DDouble(getDouble(key)));
+			}
+			
+			else if(getType(key).equals(ClusterDataType.STRING))
+			{
+				dp.put(new DString(getString(key)));
+			}
+			
+			else if(getType(key).equals(ClusterDataType.STRING_LIST))
+			{
+				dp.put(new DStringList(new GList<String>(getStringList(key))));
+			}
+		}
+		
+		return dp;
+	}
+	
+	/**
+	 * Pull a copy of the given cache to this cluster
+	 * 
+	 * @param name
+	 *            the name of the cache
+	 */
+	public void pullCache(String name)
+	{
+		this.setData(Phantom.instance().getCacheController().get(name).copy().getData());
+	}
+	
+	/**
+	 * Add a copy of this data cluster to a cache for later reading
+	 * 
+	 * @param name
+	 */
+	public void cache(String name)
+	{
+		Phantom.instance().getCacheController().update(name, this);
 	}
 	
 	/**
