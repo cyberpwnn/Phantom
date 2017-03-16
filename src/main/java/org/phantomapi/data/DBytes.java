@@ -48,4 +48,9 @@ public class DBytes implements DataHandle
 	{
 		return 3;
 	}
+	
+	public byte[] get()
+	{
+		return integer;
+	}
 }
