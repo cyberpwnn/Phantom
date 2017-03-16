@@ -193,6 +193,36 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("cachetest", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				DataCluster cc = new DataCluster();
+				
+				try
+				{
+					cc.pullCache("testing");
+					s("Got cache: " + cc.toJSON().toString());
+				}
+				
+				catch(Exception e)
+				{
+					f("Cache does not exist yet");
+					
+					cc.set("test", 3);
+					cc.set("tesgsddt", 3.4);
+					cc.set("tegggst", "Tesf");
+					cc.set("tffest", 2);
+					cc.set("tesfat", false);
+					cc.set("test234", 4.433333);
+					cc.set("tes44t", "-13");
+					cc.cache("testing");
+					s("Wrote to cache");
+				}
+			}
+		});
+		
 		tests.put("rex", new Runnable()
 		{
 			@Override
@@ -252,7 +282,7 @@ public class TestController extends Controller
 					@Override
 					public void run()
 					{
-						h.setDisplay(TXT.repeat(C.AQUA + TXT.repeat(SYM.SHAPE_SQUARE + "", (int) (((s.get() * 2) * 12) + 1)) + "\n", (int)(((s.get() * 8) * 4))));
+						h.setDisplay(TXT.repeat(C.AQUA + TXT.repeat(SYM.SHAPE_SQUARE + "", (int) (((s.get() * 2) * 12) + 1)) + "\n", (int) (((s.get() * 8) * 4))));
 						
 						t.add(5.95f);
 						s.set(M.sin(t.get()));
