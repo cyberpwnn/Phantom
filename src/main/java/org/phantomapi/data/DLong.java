@@ -48,4 +48,9 @@ public class DLong implements DataHandle
 	{
 		return 8;
 	}
+	
+	public Long get()
+	{
+		return integer;
+	}
 }
