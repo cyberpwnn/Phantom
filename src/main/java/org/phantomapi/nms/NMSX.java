@@ -14,6 +14,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.block.CraftBlock;
@@ -88,6 +89,57 @@ public class NMSX
 		modifiersField.setInt(f, f.getModifiers() & 0xFFFFFFEF);
 		
 		return f;
+	}
+	
+	/**
+	 * Change a chest state from open or closed
+	 * 
+	 * @param location
+	 *            the location of the chest
+	 * @param open
+	 *            the state
+	 */
+	public static void setChestState(Location location, boolean open)
+	{
+		try
+		{
+			Class<?> cNmsWorld = getNMSClass("World");
+			Class<?> cCraftWorld = getCraftClass("CraftWorld");
+			Class<?> cBPosition = getNMSClass("BlockPosition");
+			Class<?> cBlock = getNMSClass("Block");
+			Class<?> cChestTile = getNMSClass("TileEntityChest");
+			World world = location.getWorld();
+			Object nmsworld = cCraftWorld.getMethod("getHandle").invoke(world);
+			Object position = cBPosition.getConstructor(double.class, double.class, double.class).newInstance(location.getX(), location.getY(), location.getZ());
+			Object tileChest = cNmsWorld.getMethod("getTileEntity", cBPosition).invoke(nmsworld, position);
+			Object tileBlock = cChestTile.getMethod("getBlock").invoke(tileChest);
+			
+			cNmsWorld.getMethod("playBlockAction", cBPosition, cBlock, int.class, int.class).invoke(nmsworld, position, tileBlock, 1, open ? 1 : 0);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static Class<?> getCraftClass(String className)
+	{
+		final String fullName = "org.bukkit.craftbukkit." + getVersion() + className;
+		
+		Class<?> clazz = null;
+		
+		try
+		{
+			clazz = Class.forName(fullName);
+		}
+		
+		catch(final Exception e)
+		{
+			
+		}
+		
+		return clazz;
 	}
 	
 	public static void updateArmor(Player p)

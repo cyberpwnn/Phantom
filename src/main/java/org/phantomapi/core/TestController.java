@@ -193,6 +193,28 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("copenc", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Block b = P.targetBlock(i, 12).getBlock();
+					NMSX.setChestState(b.getLocation(), true);
+					
+					new TaskLater(20)
+					{
+						@Override
+						public void run()
+						{
+							NMSX.setChestState(b.getLocation(), false);
+						}
+					};
+				}
+			}
+		});
+		
 		tests.put("cachetest", new Runnable()
 		{
 			@Override
