@@ -14,7 +14,7 @@ import org.phantomapi.clust.JSONObject;
 public class Paste
 {
 	/**
-	 * Paste to paste.phantomapi.org/
+	 * Paste to throw.volmit.com/
 	 * 
 	 * @param s
 	 *            the paste text (use newline chars for new lines)
@@ -24,7 +24,7 @@ public class Paste
 	 */
 	public static String paste(String s) throws Exception
 	{
-		URL url = new URL("http://paste.phantomapi.org/documents");
+		URL url = new URL("http://throw.volmit.com/documents");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("POST");
@@ -32,6 +32,6 @@ public class Paste
 		BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
 		JSONObject jso = new JSONObject(in.readLine());
 		
-		return "http://paste.phantomapi.org/" + jso.getString("key");
+		return "http://throw.volmit.com/" + jso.getString("key");
 	}
 }

@@ -48,6 +48,8 @@ import com.sk89q.worldedit.regions.Region;
  */
 public class W
 {
+	private static WQ qq = null;
+	
 	/**
 	 * Checks if a given player can modify a given block
 	 * 
@@ -82,6 +84,16 @@ public class W
 		}
 		
 		return false;
+	}
+	
+	public static WQ q()
+	{
+		if(qq == null)
+		{
+			qq = new WQ();
+		}
+		
+		return qq;
 	}
 	
 	/**

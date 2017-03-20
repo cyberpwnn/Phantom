@@ -178,6 +178,11 @@ public class M
 		return sb.toString();
 	}
 	
+	public static int rand(int f, int t)
+	{
+		return f + (int) (Math.random() * ((t - f) + 1));
+	}
+	
 	/**
 	 * Get the number representation from roman numerals.
 	 * 

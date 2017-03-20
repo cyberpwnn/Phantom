@@ -78,7 +78,16 @@ public class NestController extends Controller implements Monitorable, Probe
 				if(flush)
 				{
 					flush = false;
-					flush();
+					
+					try
+					{
+						flush();
+					}
+					
+					catch(Exception e)
+					{
+						cancel();
+					}
 				}
 			}
 		};
@@ -94,17 +103,33 @@ public class NestController extends Controller implements Monitorable, Probe
 	
 	public void saveAll()
 	{
-		for(NestedChunk i : chunks.v())
+		try
 		{
-			save(i);
+			for(NestedChunk i : chunks.v())
+			{
+				save(i);
+			}
+		}
+		
+		catch(Exception e)
+		{
+			
 		}
 	}
 	
 	public void loadAll()
 	{
-		for(Chunk i : chunks.k())
+		try
 		{
-			load(i);
+			for(Chunk i : chunks.k())
+			{
+				load(i);
+			}
+		}
+		
+		catch(Exception e)
+		{
+			
 		}
 	}
 	
@@ -116,6 +141,7 @@ public class NestController extends Controller implements Monitorable, Probe
 		}
 		
 		File file = NestUtil.getChunkFile(new GChunk(i));
+		
 		loading.add(i);
 		
 		if(file.exists())
@@ -262,7 +288,16 @@ public class NestController extends Controller implements Monitorable, Probe
 	public void on(ChunkLoadEvent e)
 	{
 		
-		load(e.getChunk());
+		try
+		{
+			load(e.getChunk());
+		}
+		
+		catch(Exception ee)
+		{
+			return;
+		}
+		
 		callEvent(new NestChunkLoadEvent(chunks.get(e.getChunk())));
 		
 	}
@@ -375,11 +410,19 @@ public class NestController extends Controller implements Monitorable, Probe
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(ChunkUnloadEvent e)
 	{
-		if(chunks.containsKey(e.getChunk()))
+		try
 		{
-			save(chunks.get(e.getChunk()));
-			callEvent(new NestChunkUnloadEvent(chunks.get(e.getChunk())));
-			chunks.remove(e.getChunk());
+			if(chunks.containsKey(e.getChunk()))
+			{
+				save(chunks.get(e.getChunk()));
+				callEvent(new NestChunkUnloadEvent(chunks.get(e.getChunk())));
+				chunks.remove(e.getChunk());
+			}
+		}
+		
+		catch(Exception ee)
+		{
+			
 		}
 	}
 	
