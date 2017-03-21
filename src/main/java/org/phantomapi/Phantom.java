@@ -530,7 +530,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				e.printStackTrace();
 			}
 		}
-				
+		
 		loadCluster(languageController);
 		
 		try
@@ -2407,12 +2407,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return ctnController;
 	}
-
+	
 	public static ThreadPoolExecutor getExecutor()
 	{
 		return executor;
 	}
-
+	
 	public CacheController getCacheController()
 	{
 		return cacheController;
