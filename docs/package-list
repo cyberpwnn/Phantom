@@ -2,6 +2,9 @@ org.phantomapi
 org.phantomapi.async
 org.phantomapi.block
 org.phantomapi.blockmeta
+org.phantomapi.brush
+org.phantomapi.builder
+org.phantomapi.builds
 org.phantomapi.callable
 org.phantomapi.chromatic
 org.phantomapi.clust
@@ -41,6 +44,7 @@ org.phantomapi.source
 org.phantomapi.spawner
 org.phantomapi.stack
 org.phantomapi.statistics
+org.phantomapi.structure
 org.phantomapi.sync
 org.phantomapi.text
 org.phantomapi.texture
