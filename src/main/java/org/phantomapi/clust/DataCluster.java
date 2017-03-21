@@ -206,7 +206,7 @@ public class DataCluster implements Serializable
 	 */
 	public void pullCache(String name)
 	{
-		this.setData(Phantom.instance().getCacheController().get(name).copy().getData());
+		setData(Phantom.instance().getCacheController().get(name).copy().getData());
 	}
 	
 	/**
@@ -1333,14 +1333,15 @@ public class DataCluster implements Serializable
 	public Double getDouble(String key)
 	{
 		perm++;
+		
 		if(contains(key) && getType(key).equals(ClusterDataType.DOUBLE))
 		{
 			return ((ClusterDouble) get(key)).get();
 		}
 		
-		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER) && ((ClusterInteger) get(key)).get() == 0)
+		if(contains(key) && getType(key).equals(ClusterDataType.INTEGER))
 		{
-			return 0.0;
+			return (double) ((ClusterInteger) get(key)).get();
 		}
 		
 		return null;
