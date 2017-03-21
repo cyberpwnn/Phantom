@@ -73,6 +73,11 @@ public class VariableBlock
 		return blocks;
 	}
 	
+	public MaterialBlock random()
+	{
+		return blocks.pickRandom();
+	}
+	
 	/**
 	 * Is the given block this block? Does the variable block contain this block
 	 * 
