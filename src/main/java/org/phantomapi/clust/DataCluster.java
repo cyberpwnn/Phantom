@@ -206,7 +206,15 @@ public class DataCluster implements Serializable
 	 */
 	public void pullCache(String name)
 	{
-		setData(Phantom.instance().getCacheController().get(name).copy().getData());
+		try
+		{
+			setData(Phantom.instance().getCacheController().get(name).copy().getData());
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
 	}
 	
 	/**
