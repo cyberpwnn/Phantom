@@ -1,11 +1,15 @@
 package org.phantomapi.world;
 
+import java.util.Iterator;
 import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.phantomapi.builder.Brush;
+import org.phantomapi.world.Cuboid.CuboidDirection;
 
 /**
  * The World queue with enhancements
@@ -53,6 +57,66 @@ public class WQ extends PhantomWorldQueue
 			{
 				setBiome(chunk.getBlock(i, 0, j).getLocation(), biome);
 			}
+		}
+	}
+	
+	public void outline(Cuboid c, Brush b)
+	{
+		set(c.getFace(CuboidDirection.Up), b);
+		set(c.getFace(CuboidDirection.Down), b);
+		set(c.getFace(CuboidDirection.North), b);
+		set(c.getFace(CuboidDirection.South), b);
+		set(c.getFace(CuboidDirection.East), b);
+		set(c.getFace(CuboidDirection.West), b);
+	}
+	
+	public void outline(Cuboid c, MaterialBlock b)
+	{
+		set(c.getFace(CuboidDirection.Up), b);
+		set(c.getFace(CuboidDirection.Down), b);
+		set(c.getFace(CuboidDirection.North), b);
+		set(c.getFace(CuboidDirection.South), b);
+		set(c.getFace(CuboidDirection.East), b);
+		set(c.getFace(CuboidDirection.West), b);
+	}
+	
+	public void walls(Cuboid c, Brush b)
+	{
+		set(c.getFace(CuboidDirection.North), b);
+		set(c.getFace(CuboidDirection.South), b);
+		set(c.getFace(CuboidDirection.East), b);
+		set(c.getFace(CuboidDirection.West), b);
+	}
+	
+	public void walls(Cuboid c, MaterialBlock b)
+	{
+		set(c.getFace(CuboidDirection.North), b);
+		set(c.getFace(CuboidDirection.South), b);
+		set(c.getFace(CuboidDirection.East), b);
+		set(c.getFace(CuboidDirection.West), b);
+	}
+	
+	public void set(Cuboid c, MaterialBlock mb)
+	{
+		VariableBlock v = new VariableBlock(mb);
+		set(c, new Brush()
+		{
+			@Override
+			public VariableBlock brush(Location location)
+			{
+				return v;
+			}
+		});
+	}
+	
+	public void set(Cuboid c, Brush brush)
+	{
+		Iterator<Block> it = c.iterator();
+		
+		while(it.hasNext())
+		{
+			Block b = it.next();
+			set(b.getLocation(), brush.brush(b.getLocation()).random());
 		}
 	}
 }
