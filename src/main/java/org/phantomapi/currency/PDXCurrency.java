@@ -1,6 +1,7 @@
 package org.phantomapi.currency;
 
 import org.bukkit.entity.Player;
+import org.phantomapi.clust.DataCluster.ClusterDataType;
 import org.phantomapi.clust.PD;
 
 /**
@@ -24,7 +25,7 @@ public class PDXCurrency implements Currency
 	@Override
 	public double get(Player p)
 	{
-		return PD.get(p).getConfiguration().contains("cu." + id) ? PD.get(p).getConfiguration().getDouble("cu." + id) : 0;
+		return PD.get(p).getConfiguration().contains("cu." + id) ? PD.get(p).getConfiguration().getType("cu." + id).equals(ClusterDataType.DOUBLE) ? PD.get(p).getConfiguration().getDouble("cu." + id) : PD.get(p).getConfiguration().getInt("cu." + id) : 0;
 	}
 	
 	@Override

@@ -32,6 +32,17 @@ public abstract class DataController<T extends Configurable, V> extends Controll
 			load(identifier);
 		}
 		
+		if(cache.get(identifier) == null)
+		{
+			cache.remove(identifier);
+			load(identifier);
+		}
+		
+		if(cache.get(identifier) == null)
+		{
+			f("Warning: NULL");
+		}
+		
 		return cache.get(identifier);
 	}
 	
