@@ -73,7 +73,7 @@ public class OC
 	 */
 	public static String fromLocation(Location l)
 	{
-		return l.getWorld().toString() + C + l.getX() + C + l.getY() + C + l.getZ() + C + l.getYaw() + C + l.getPitch();
+		return fromWorld(l.getWorld()) + C + l.getX() + C + l.getY() + C + l.getZ() + C + l.getYaw() + C + l.getPitch();
 	}
 	
 	/**
