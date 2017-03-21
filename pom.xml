@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>O7</version>
+	<version>O8</version>
 	<name>Phantom</name>
 	<description>Another Damn API</description>
 	<properties>
@@ -37,6 +37,11 @@
 				<filtering>false</filtering>
 				<includes>
 					<include>**/*.zip</include>
+					<include>**/*.so</include>
+					<include>**/*.dll</include>
+					<include>**/*.lib</include>
+					<include>**/*.dylib</include>
+					<include>**/*.sl</include>
 				</includes>
 				<excludes>
 					<exclude>*.sql</exclude>
@@ -88,6 +93,7 @@
 									<include>com.comphenix.protocol:protocollib</include>
 									<include>com.sk89q:worldedit</include>
 									<include>net.citizensapi:citizens</include>
+									<include>hyp.sigar:sigar</include>
 								</includes>
 							</artifactSet>
 							<transformers>
@@ -258,6 +264,13 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 			<version>2.9.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>hyp.sigar</groupId>
+			<artifactId>sigar</artifactId>
+			<version>1.6.4</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
