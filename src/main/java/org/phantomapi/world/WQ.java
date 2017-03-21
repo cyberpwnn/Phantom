@@ -60,6 +60,11 @@ public class WQ extends PhantomWorldQueue
 		}
 	}
 	
+	public void clearTile(Location l)
+	{
+		set(l, new MaterialBlock(l));
+	}
+	
 	public void outline(Cuboid c, Brush b)
 	{
 		set(c.getFace(CuboidDirection.Up), b);
