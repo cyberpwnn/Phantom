@@ -1,440 +1,251 @@
 package org.phantomapi.nbt;
 
-import java.io.DataInput;
-import java.io.DataOutput;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
+import java.util.Map.Entry;
+import org.phantomapi.lang.GMap;
 
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
-public class NBTTagCompound extends NBTBase implements Cloneable
+public final class NBTTagCompound extends NBTBase
 {
-	static NBTBase createNBTBase(byte type, String s, DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws Exception
+	
+	private static Method _getByte;
+	private static Method _getShort;
+	private static Method _getInt;
+	private static Method _getLong;
+	private static Method _getFloat;
+	private static Method _getDouble;
+	private static Method _getString;
+	private static Field _mapField;
+	
+	private static Method _tagSerializeStream;
+	private static Method _tagUnserializeStream;
+	
+	static void prepareReflectionz() throws SecurityException, NoSuchMethodException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException
 	{
-		NBTBase nbtbase = NBTBase.createTag(type);
-		nbtbase.load(datainput, i, nbtreadlimiter);
-		return nbtbase;
+		_getByte = _nbtTagCompoundClass.getMethod("getByte", String.class);
+		_getShort = _nbtTagCompoundClass.getMethod("getShort", String.class);
+		_getInt = _nbtTagCompoundClass.getMethod("getInt", String.class);
+		_getLong = _nbtTagCompoundClass.getMethod("getLong", String.class);
+		_getFloat = _nbtTagCompoundClass.getMethod("getFloat", String.class);
+		_getDouble = _nbtTagCompoundClass.getMethod("getDouble", String.class);
+		_getString = _nbtTagCompoundClass.getMethod("getString", String.class);
+		_mapField = _nbtTagCompoundClass.getDeclaredField("map");
+		_mapField.setAccessible(true);
+		
+		Class<?> nbtCompressedStreamToolsClass = BukkitReflect.getMinecraftClass("NBTCompressedStreamTools");
+		_tagSerializeStream = nbtCompressedStreamToolsClass.getMethod("a", _nbtTagCompoundClass, OutputStream.class);
+		_tagUnserializeStream = nbtCompressedStreamToolsClass.getMethod("a", InputStream.class);
 	}
 	
-	static Map getDataAsMap(NBTTagCompound nbttagcompound)
-	{
-		return nbttagcompound.getMap();
-	}
-	
-	private static void writeTag(String s, NBTBase nbtbase, DataOutput dataoutput) throws Exception
-	{
-		try
-		{
-			dataoutput.writeByte(nbtbase.getTypeId());
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		if(nbtbase.getTypeId() != 0)
-		{
-			try
-			{
-				dataoutput.writeUTF(s);
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-			nbtbase.write(dataoutput);
-		}
-	}
-	
-	private static String readString(DataInput datainput, NBTReadLimiter nbtreadlimiter)
-	{
-		try
-		{
-			return datainput.readUTF();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	private static byte readByte(DataInput datainput, NBTReadLimiter nbtreadlimiter)
-	{
-		try
-		{
-			return datainput.readByte();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-			return 0x00;
-		}
-	}
-	
-	private Map map = new HashMap();
+	Map<String, Object> _map;
 	
 	public NBTTagCompound()
 	{
+		this(BukkitReflect.newInstance(_nbtTagCompoundClass));
 	}
 	
-	public byte getNBTBaseType(String s)
+	@SuppressWarnings("unchecked")
+	NBTTagCompound(Object handle)
 	{
-		NBTBase nbtbase = (NBTBase) this.getMap().get(s);
-		return nbtbase != null ? nbtbase.getTypeId() : 0;
+		super(handle);
+		_map = (Map<String, Object>) BukkitReflect.getFieldValue(handle, _mapField);
 	}
 	
-	public Set c()
+	public byte getByte(String key)
 	{
-		return this.getMap().keySet();
+		return (Byte) invokeMethod(_getByte, key);
 	}
 	
-	@Override
-	public NBTBase clone()
+	public short getShort(String key)
 	{
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		Iterator iterator = this.getMap().keySet().iterator();
-		
-		while(iterator.hasNext())
-		{
-			String s = (String) iterator.next();
-			
-			nbttagcompound.set(s, ((NBTBase) this.getMap().get(s)).clone());
-		}
-		
-		return nbttagcompound;
+		return (Short) invokeMethod(_getShort, key);
 	}
 	
-	@Override
-	public boolean equals(Object object)
+	public int getInt(String key)
 	{
-		if(super.equals(object))
-		{
-			NBTTagCompound nbttagcompound = (NBTTagCompound) object;
-			
-			return this.getMap().entrySet().equals(nbttagcompound.getMap().entrySet());
-		}
-		else
-		{
-			return false;
-		}
+		return (Integer) invokeMethod(_getInt, key);
 	}
 	
-	public NBTBase get(String s)
+	public long getLong(String key)
 	{
-		return (NBTBase) this.getMap().get(s);
+		return (Long) invokeMethod(_getLong, key);
 	}
 	
-	public boolean getBoolean(String s)
+	public float getFloat(String key)
 	{
-		return this.getByte(s) != 0;
+		return (Float) invokeMethod(_getFloat, key);
 	}
 	
-	public byte getByte(String s)
+	public Double getDouble(String key)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? 0 : ((NBTNumber) this.getMap().get(s)).asByte();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return (byte) 0;
-		}
+		return (Double) invokeMethod(_getDouble, key);
 	}
 	
-	public byte[] getByteArray(String s)
+	public String getString(String key)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? new byte[0] : ((NBTTagByteArray) this.getMap().get(s)).getData();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			throw new RuntimeException();
-		}
+		return (String) invokeMethod(_getString, key);
 	}
 	
-	public NBTTagCompound getCompound(String s)
+	public NBTTagCompound getCompound(String key)
 	{
-		try
+		Object obj = _map.get(key);
+		if(obj != null && _nbtTagCompoundClass.isInstance(obj))
 		{
-			return !this.getMap().containsKey(s) ? new NBTTagCompound() : (NBTTagCompound) this.getMap().get(s);
+			return new NBTTagCompound(obj);
 		}
-		catch(ClassCastException classcastexception)
-		{
-			throw new RuntimeException();
-		}
+		return null;
 	}
 	
-	public double getDouble(String s)
+	public NBTTagList getList(String key)
 	{
-		try
+		Object obj = _map.get(key);
+		if(obj != null && _nbtTagListClass.isInstance(obj))
 		{
-			return !this.getMap().containsKey(s) ? 0.0D : ((NBTNumber) this.getMap().get(s)).asDouble();
+			return new NBTTagList(obj);
 		}
-		catch(ClassCastException classcastexception)
-		{
-			return 0.0D;
-		}
+		return null;
 	}
 	
-	public float getFloat(String s)
+	public Object[] getListAsArray(String key)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? 0.0F : ((NBTNumber) this.getMap().get(s)).asFloat();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return 0.0F;
-		}
+		NBTTagList list = getList(key);
+		return (list == null ? null : list.getAsArray());
 	}
 	
-	public int getInt(String s)
+	public void setByte(String key, byte value)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? 0 : ((NBTNumber) this.getMap().get(s)).asInt();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return 0;
-		}
+		set(key, value);
 	}
 	
-	public int[] getIntArray(String s)
+	public void setShort(String key, short value)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? new int[0] : ((NBTTagIntArray) this.getMap().get(s)).getData();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			throw new RuntimeException();
-		}
+		set(key, value);
 	}
 	
-	public NBTTagList getList(String s)
+	public void setInt(String key, int value)
 	{
-		try
-		{
-			if(this.getNBTBaseType(s) != 9)
-			{
-				return new NBTTagList();
-			}
-			else
-			{
-				NBTTagList nbttaglist = (NBTTagList) this.getMap().get(s);
-				
-				return nbttaglist;
-			}
-		}
-		catch(ClassCastException classcastexception)
-		{
-			throw new RuntimeException();
-		}
+		set(key, value);
 	}
 	
-	public long getLong(String s)
+	public void setLong(String key, long value)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? 0L : ((NBTNumber) this.getMap().get(s)).asLong();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return 0L;
-		}
+		set(key, value);
 	}
 	
-	public short getShort(String s)
+	public void setFloat(String key, float value)
 	{
-		try
-		{
-			return !this.getMap().containsKey(s) ? 0 : ((NBTNumber) this.getMap().get(s)).asShort();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return (short) 0;
-		}
+		set(key, value);
 	}
 	
-	public String getString(String s)
+	public void setDouble(String key, double value)
 	{
-		String str = "";
-		try
-		{
-			str = !this.getMap().containsKey(s) ? "" : ((NBTBase) this.getMap().get(s)).toString();
-		}
-		catch(ClassCastException classcastexception)
-		{
-			return "";
-		}
-		
-		return str.replaceAll("\"", "");
+		set(key, value);
 	}
 	
-	@Override
-	public byte getTypeId()
+	public void setString(String key, String value)
 	{
-		return (byte) 10;
+		set(key, value);
 	}
 	
-	@Override
-	public int hashCode()
+	public void setCompound(String key, NBTTagCompound value)
 	{
-		return super.hashCode() ^ this.getMap().hashCode();
+		set(key, value);
 	}
 	
-	public boolean hasKey(String s)
+	public void setList(String key, NBTTagList value)
 	{
-		return this.getMap().containsKey(s);
+		set(key, value);
 	}
 	
-	public boolean hasKeyOfType(String s, int i)
+	public void setList(String key, Object... objects)
 	{
-		byte b0 = this.getNBTBaseType(s);
-		
-		return b0 == i ? true : i != 99 ? false : b0 == 1 || b0 == 2 || b0 == 3 || b0 == 4 || b0 == 5 || b0 == 6;
+		set(key, new NBTTagList(objects));
+	}
+	
+	public GMap<String, Object> getMap()
+	{
+		return new GMap<String, Object>(_map);
+	}
+	
+	private void set(String key, Object value)
+	{
+		_map.put(key, NBTTypes.toInternal(value));
+	}
+	
+	public boolean hasKey(String key)
+	{
+		return _map.containsKey(key);
+	}
+	
+	public void remove(String key)
+	{
+		_map.remove(key);
+	}
+	
+	public int size()
+	{
+		return _map.size();
 	}
 	
 	public boolean isEmpty()
 	{
-		return this.getMap().isEmpty();
+		return _map.isEmpty();
 	}
 	
-	@Override
-	void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws Exception
+	public void clear()
 	{
-		if(i > 512)
-		{
-			throw new RuntimeException("Tried to read NBT tag with too high complexity, depth > 512");
-		}
-		else
-		{
-			this.getMap().clear();
-			
-			byte b0;
-			
-			while((b0 = readByte(datainput, nbtreadlimiter)) != 0)
-			{
-				String s = readString(datainput, nbtreadlimiter);
-				
-				nbtreadlimiter.readBytes(16 * s.length());
-				NBTBase nbtbase = createNBTBase(b0, s, datainput, i + 1, nbtreadlimiter);
-				
-				this.getMap().put(s, nbtbase);
-			}
-		}
+		_map.clear();
 	}
 	
-	public void remove(String s)
+	public byte[] serialize()
 	{
-		this.getMap().remove(s);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		serialize(out);
+		return out.toByteArray();
 	}
 	
-	public void set(String s, NBTBase nbtbase)
+	public void serialize(OutputStream outputStream)
 	{
-		this.getMap().put(s, nbtbase);
+		BukkitReflect.invokeMethod(null, _tagSerializeStream, _handle, outputStream);
 	}
 	
-	public void setBoolean(String s, boolean flag)
+	public static NBTTagCompound unserialize(byte[] data)
 	{
-		this.setByte(s, (byte) (flag ? 1 : 0));
-	}
-	
-	public void setByte(String s, byte b0)
-	{
-		this.getMap().put(s, new NBTTagByte(b0));
-	}
-	
-	public void setByteArray(String s, byte[] abyte)
-	{
-		this.getMap().put(s, new NBTTagByteArray(abyte));
-	}
-	
-	public void setDouble(String s, double d0)
-	{
-		this.getMap().put(s, new NBTTagDouble(d0));
-	}
-	
-	public void setFloat(String s, float f)
-	{
-		this.getMap().put(s, new NBTTagFloat(f));
-	}
-	
-	public void setInt(String s, int i)
-	{
-		this.getMap().put(s, new NBTTagInt(i));
-	}
-	
-	public void setIntArray(String s, int[] aint)
-	{
-		this.getMap().put(s, new NBTTagIntArray(aint));
-	}
-	
-	public void setLong(String s, long i)
-	{
-		this.getMap().put(s, new NBTTagLong(i));
-	}
-	
-	public void setShort(String s, short short1)
-	{
-		this.getMap().put(s, new NBTTagShort(short1));
-	}
-	
-	public void setString(String s, String s1)
-	{
-		this.getMap().put(s, new NBTTagString(s1));
-	}
-	
-	@Override
-	public String toString()
-	{
-		String s = "{";
-		
-		String s1;
-		
-		for(Iterator iterator = this.getMap().keySet().iterator(); iterator.hasNext(); s = s + s1 + ':' + this.getMap().get(s1) + ',')
-		{
-			s1 = (String) iterator.next();
-		}
-		
-		return s + "}";
-	}
-	
-	@Override
-	void write(DataOutput dataoutput) throws Exception
-	{
-		Iterator iterator = this.getMap().keySet().iterator();
-		
-		while(iterator.hasNext())
-		{
-			String s = (String) iterator.next();
-			NBTBase nbtbase = (NBTBase) this.getMap().get(s);
-			
-			writeTag(s, nbtbase, dataoutput);
-		}
-		
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		NBTTagCompound tag = unserialize(in);
 		try
 		{
-			dataoutput.writeByte(0);
+			in.close();
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+		}
+		return tag;
+	}
+	
+	public static NBTTagCompound unserialize(InputStream inputStream)
+	{
+		return new NBTTagCompound(BukkitReflect.invokeMethod(null, _tagUnserializeStream, inputStream));
+	}
+	
+	public void merge(NBTTagCompound other)
+	{
+		for(Entry<String, Object> tag : other._map.entrySet())
+		{
+			_map.put(tag.getKey(), NBTBase.clone(tag.getValue()));
 		}
 	}
-
-	public Map getMap()
+	
+	@Override
+	public NBTTagCompound clone()
 	{
-		return map;
+		return (NBTTagCompound) super.clone();
 	}
-
-	public void setMap(Map map)
-	{
-		this.map = map;
-	}
+	
 }

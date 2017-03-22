@@ -20,7 +20,10 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Squid;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -189,6 +192,54 @@ public class TestController extends Controller
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
+				}
+			}
+		});
+		
+		tests.put("nbt", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					AreaEffectCloud sb1 = (AreaEffectCloud) i.getWorld().spawnEntity(i.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+					NMSX.hideEntity(i, sb1);
+					sb1.setCustomName(C.RED + "SB1");
+					sb1.setCustomNameVisible(true);
+					sb1.setInvulnerable(true);
+					sb1.setRadius(0f);
+					sb1.setRadiusPerTick(0f);
+					sb1.setRadiusOnUse(0f);
+					
+					AreaEffectCloud sb2 = (AreaEffectCloud) i.getWorld().spawnEntity(i.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+					NMSX.hideEntity(i, sb2);
+					sb2.setCustomName(C.RED + "SB2");
+					sb2.setCustomNameVisible(true);
+					sb2.setInvulnerable(true);
+					sb2.setRadius(0f);
+					sb2.setRadiusPerTick(0f);
+					sb2.setRadiusOnUse(0f);
+					
+					Squid sb3 = (Squid) i.getWorld().spawnEntity(i.getLocation(), EntityType.SQUID);
+					NMSX.hideEntity(i, sb3);
+					sb3.setInvulnerable(true);
+					sb3.setGlowing(true);
+					
+					Squid sb4 = (Squid) i.getWorld().spawnEntity(i.getLocation(), EntityType.SQUID);
+					NMSX.hideEntity(i, sb4);
+					sb4.setInvulnerable(true);
+					sb4.setGlowing(true);
+					
+					NMSX.hideEntity(i, sb1);
+					NMSX.hideEntity(i, sb2);
+					NMSX.hideEntity(i, sb3);
+					NMSX.hideEntity(i, sb4);
+					
+					NMSX.addPassenger(sb3, sb4);
+					NMSX.addPassenger(i, sb4);
+					NMSX.addPassenger(i, sb1);
+					NMSX.addPassenger(sb3, sb2);
 				}
 			}
 		});

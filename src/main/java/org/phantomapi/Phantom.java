@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,6 +79,8 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.multiblock.Multiblock;
+import org.phantomapi.nbt.BukkitReflect;
+import org.phantomapi.nbt.NBTBase;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
@@ -305,6 +308,18 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		if(new File(getDataFolder(), "fool").exists())
 		{
 			D.fool = true;
+		}
+		
+		try
+		{
+			BukkitReflect.prepareReflection();
+			NBTBase.prepareReflection();
+		}
+		
+		catch(Throwable e)
+		{
+			getLogger().log(Level.SEVERE, "Error preparing reflection objects", e);
+			getLogger().severe("This version of NBTEditor is not compatible with this version of Bukkit");
 		}
 	}
 	

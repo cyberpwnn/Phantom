@@ -1,93 +1,178 @@
 package org.phantomapi.nbt;
 
-import java.io.DataInput;
-import java.io.DataOutput;
+import java.lang.reflect.Method;
+import java.util.Map.Entry;
 
-public abstract class NBTBase
+public class NBTBase
 {
 	
-	public static final String[] types = new String[] {"END", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "BYTE[]", "STRING", "LIST", "COMPOUND", "INT[]"};
+	private static boolean _isPrepared = false;
 	
-	protected static NBTBase createTag(byte type)
+	protected static Class<?> _nbtBaseClass;
+	protected static Class<?> _nbtTagCompoundClass;
+	protected static Class<?> _nbtTagListClass;
+	protected static Class<?> _nbtTagStringClass;
+	
+	private static Method _getTypeId;
+	private static Method _clone;
+	
+	final Object _handle;
+	
+	public static final void prepareReflection()
 	{
-		if(type > 11 || type < 0)
-			throw new IllegalArgumentException("type must be: 11 <= type >= 0");
-		switch(type)
+		if(!_isPrepared)
 		{
-			case 0:
-				return new NBTTagEnd();
-			
-			case 1:
-				return new NBTTagByte();
-			
-			case 2:
-				return new NBTTagShort();
-			
-			case 3:
-				return new NBTTagInt();
-			
-			case 4:
-				return new NBTTagLong();
-			
-			case 5:
-				return new NBTTagFloat();
-			
-			case 6:
-				return new NBTTagDouble();
-			
-			case 7:
-				return new NBTTagByteArray();
-			
-			case 8:
-				return new NBTTagString();
-			
-			case 9:
-				return new NBTTagList();
-			
-			case 10:
-				return new NBTTagCompound();
-			
-			case 11:
-				return new NBTTagIntArray();
-			default:
-				return null;
+			_nbtBaseClass = BukkitReflect.getMinecraftClass("NBTBase");
+			_nbtTagCompoundClass = BukkitReflect.getMinecraftClass("NBTTagCompound");
+			_nbtTagListClass = BukkitReflect.getMinecraftClass("NBTTagList");
+			_nbtTagStringClass = BukkitReflect.getMinecraftClass("NBTTagString");
+			try
+			{
+				_getTypeId = _nbtBaseClass.getMethod("getTypeId");
+				_clone = _nbtBaseClass.getMethod("clone");
+				NBTTagCompound.prepareReflectionz();
+				NBTTagList.prepareReflectionz();
+				NBTTypes.prepareReflection();
+				NBTUtils.prepareReflection();
+			}
+			catch(Exception e)
+			{
+				throw new RuntimeException("Error while preparing NBT wrapper classes.", e);
+			}
+			_isPrepared = true;
 		}
 	}
 	
-	protected NBTBase()
+	// Wraps any Minecraft tags in MyLib tags.
+	// Primitives and strings are wrapped with NBTBase.
+	protected static final NBTBase wrap(Object object)
 	{
-	}
-	
-	@Override
-	public abstract NBTBase clone();
-	
-	@Override
-	public boolean equals(Object object)
-	{
-		if(!(object instanceof NBTBase))
+		if(_nbtTagCompoundClass.isInstance(object))
 		{
-			return false;
+			return new NBTTagCompound(object);
+		}
+		else if(_nbtTagListClass.isInstance(object))
+		{
+			return new NBTTagList(object);
+		}
+		else if(_nbtBaseClass.isInstance(object))
+		{
+			return new NBTBase(object);
 		}
 		else
 		{
-			NBTBase nbtbase = (NBTBase) object;
-			
-			return this.getTypeId() == nbtbase.getTypeId();
+			throw new RuntimeException(object.getClass() + " is not a valid NBT tag type.");
 		}
 	}
 	
-	public abstract byte getTypeId();
-	
-	@Override
-	public int hashCode()
+	// Helper method for NBTTagCompoundWrapper.merge().
+	// Clones any internal Minecraft tags.
+	protected static final Object clone(Object nbtBaseObject)
 	{
-		return this.getTypeId();
+		return BukkitReflect.invokeMethod(nbtBaseObject, _clone);
 	}
 	
-	abstract void load(DataInput datainput, int i, NBTReadLimiter nbtreadlimiter) throws Exception;
+	protected NBTBase(Object handle)
+	{
+		_handle = handle;
+	}
+	
+	protected final Object invokeMethod(Method method, Object... args)
+	{
+		return BukkitReflect.invokeMethod(_handle, method, args);
+	}
+	
+	static byte getTypeId(Object handle)
+	{
+		return (Byte) BukkitReflect.invokeMethod(handle, _getTypeId);
+	}
 	
 	@Override
-	public abstract String toString();
+	public NBTBase clone()
+	{
+		return wrap(invokeMethod(_clone));
+	}
 	
-	abstract void write(DataOutput dataoutput) throws Exception;
+	private String toStringAny(Object object)
+	{
+		// Some "dirty" code to fix the internal Mojanson encoder.
+		StringBuilder buffer = new StringBuilder();
+		if(_nbtTagCompoundClass.isInstance(object))
+		{
+			// We need this to force using this method on all compound values.
+			buffer.append("{");
+			int i = 0;
+			for(Entry<String, Object> entry : (new NBTTagCompound(object))._map.entrySet())
+			{
+				if(i++ != 0)
+				{
+					buffer.append(",");
+				}
+				buffer.append(entry.getKey());
+				buffer.append(":");
+				buffer.append(toStringAny(entry.getValue()));
+			}
+			buffer.append("}");
+		}
+		else if(_nbtTagListClass.isInstance(object))
+		{
+			// We need this to force using this method on all list values.
+			// Mojang, WHY do lists need to be numbered!?!?.
+			// Strings with ':' on unnumbered lists break the parser.
+			// The numbers don't even determine the position on the list.
+			// Le sigh.
+			buffer.append("[");
+			int i = 0;
+			for(Object obj : (new NBTTagList(object))._list)
+			{
+				if(i != 0)
+				{
+					buffer.append(",");
+				}
+				buffer.append(i++);
+				buffer.append(":");
+				buffer.append(toStringAny(obj));
+			}
+			buffer.append("]");
+		}
+		else if(_nbtTagStringClass.isInstance(object))
+		{
+			// This is the actual fix.
+			// The " character on Strings needs to be escaped.
+			String str = (String) NBTTypes.fromInternal(object);
+			buffer.append('"');
+			int j = 0, l = str.length();
+			for(int i = 0; i < l; ++i)
+			{
+				char c = str.charAt(i);
+				// There is a problem with the internal decoder, it does not
+				// recognize \\ as an escaped \.
+				// It's not possible to encode strings that end with \. Mojang,
+				// fix it.
+				if(/* c == '\' || */c == '"')
+				{
+					buffer.append(str.substring(j, i));
+					buffer.append("\\" + c);
+					j = i + 1;
+				}
+			}
+			if(j != l)
+			{
+				buffer.append(str.substring(j, l));
+			}
+			buffer.append('"');
+		}
+		else
+		{
+			return object.toString();
+		}
+		return buffer.toString();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return toStringAny(_handle);
+	}
+	
 }

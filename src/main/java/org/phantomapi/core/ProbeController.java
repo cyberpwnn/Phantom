@@ -18,11 +18,12 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.event.ControllerStopEvent;
 import org.phantomapi.lang.GList;
 import org.phantomapi.nbt.NBTTagCompound;
-import org.phantomapi.nbt.NBTUtil;
+import org.phantomapi.nbt.NBTUtils;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.stack.Stack;
 import org.phantomapi.sync.Task;
 import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.text.TXT;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
@@ -233,30 +234,36 @@ public class ProbeController extends Controller
 		
 		ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
 		
-		if(is!= null && is.getType().equals(Material.TRIPWIRE_HOOK))
+		if(is != null && is.getType().equals(Material.TRIPWIRE_HOOK))
 		{
 			ItemMeta im = is.getItemMeta();
 			
 			if(im.getDisplayName().equals(C.LIGHT_PURPLE + "Probe"))
 			{
-				Entity en = e.getRightClicked();
+				Entity entity = e.getRightClicked();
 				
-				if(en != null)
+				if(entity != null)
 				{
 					MessageBuilder mb = new MessageBuilder();
 					PhantomSender s = new PhantomSender(e.getPlayer());
 					mb.setTag(C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Probe" + C.DARK_GRAY + "]: " + C.GRAY, C.LIGHT_PURPLE + "Probed information");
 					s.setMessageBuilder(mb);
 					
-					NBTTagCompound nbt = NBTUtil.getNBTTag(en);
+					ParticleEffect.SPELL_WITCH.display(0.5f, 24, entity.getLocation(), 32);
 					
-					ParticleEffect.SPELL_WITCH.display(0.5f, 24, en.getLocation(), 32);
+					NBTTagCompound nbt = NBTUtils.getEntityNBTData(entity);
 					
-					s.sendMessage(C.WHITE + "Entity: " + C.GRAY + en.getType());
+					s.sendMessage(TXT.line(C.RED, 23));
+					s.sendMessage(C.WHITE + "Entity: " + C.GRAY + entity.getType());
 					
-					for(Object i : nbt.c())
+					for(String i : nbt.getMap().k())
 					{
-						s.sendMessage(C.LIGHT_PURPLE + i.toString() + ": (" + C.GRAY + nbt.get(i.toString()).getTypeId() + ") " + C.WHITE + nbt.get(i.toString()).toString());
+						s.sendMessage(C.WHITE + i + ": " + C.GRAY + nbt.getMap().get(i).toString() + C.DARK_GRAY + " (" + nbt.getMap().get(i).getClass().getSimpleName() + ")");
+						
+						if(i.equalsIgnoreCase("passengers"))
+						{
+							s(nbt.getMap().get(i).toString());
+						}
 					}
 				}
 			}

@@ -1,10 +1,26 @@
 package org.phantomapi.lang;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GMap<K, V> extends ConcurrentHashMap<K, V>
 {
 	private static final long serialVersionUID = 1527847670799761130L;
+	
+	public GMap()
+	{
+		super();
+	}
+	
+	public GMap(Map<K, V> map)
+	{
+		super();
+		
+		for(K i : map.keySet())
+		{
+			put(i, map.get(i));
+		}
+	}
 	
 	/**
 	 * Copy the map

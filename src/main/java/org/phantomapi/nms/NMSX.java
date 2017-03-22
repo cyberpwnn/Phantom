@@ -18,6 +18,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -36,6 +38,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import net.minecraft.server.v1_9_R2.BlockPosition;
+import net.minecraft.server.v1_9_R2.EntityPlayer;
 import net.minecraft.server.v1_9_R2.EnumItemSlot;
 import net.minecraft.server.v1_9_R2.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_9_R2.PacketPlayOutSetSlot;
@@ -58,6 +61,44 @@ public class NMSX
 		final String name = Bukkit.getServer().getClass().getPackage().getName();
 		final String version = name.substring(name.lastIndexOf('.') + 1) + ".";
 		return version;
+	}
+	
+	public static EntityPlayer getEntityPlayer(Player p)
+	{
+		return ((CraftPlayer) p).getHandle();
+	}
+	
+	public static net.minecraft.server.v1_9_R2.Entity getEntity(Entity e)
+	{
+		return ((CraftEntity) e).getHandle();
+	}
+	
+	public static void clearPassengers(Entity entity)
+	{
+		for(net.minecraft.server.v1_9_R2.Entity i : getEntity(entity).passengers)
+		{
+			i.dead = true;
+		}
+		
+		getEntity(entity).passengers.clear();
+	}
+	
+	public static void addPassenger(Entity entity, Entity... passengers)
+	{
+		for(Entity i : passengers)
+		{
+			addPassenger(entity, i);
+		}
+	}
+	
+	public static void makeInvincible(Entity e)
+	{
+		e.setInvulnerable(true);
+	}
+	
+	public static void addPassenger(Entity entity, Entity passenger)
+	{
+		getEntity(entity).passengers.add(getEntity(passenger));
 	}
 	
 	public static Object serializeChat(String msg)
