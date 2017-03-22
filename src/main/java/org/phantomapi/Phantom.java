@@ -60,6 +60,7 @@ import org.phantomapi.core.PPAController;
 import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlayerDataManager;
+import org.phantomapi.core.PlayerTagController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RebootController;
@@ -183,6 +184,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private WorldController worldController;
 	private ZenithController zenithController;
 	private CTNController ctnController;
+	private PlayerTagController playerTagController;
 	private Long nsx;
 	
 	@Override
@@ -253,6 +255,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		worldController = new WorldController(this);
 		zenithController = new ZenithController(this);
 		ctnController = new CTNController(this);
+		playerTagController = new PlayerTagController(this);
 		
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
@@ -2431,5 +2434,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public CacheController getCacheController()
 	{
 		return cacheController;
+	}
+	
+	public PlayerTagController getPlayerTagController()
+	{
+		return playerTagController;
 	}
 }
