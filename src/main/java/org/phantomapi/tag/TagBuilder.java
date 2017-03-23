@@ -55,15 +55,18 @@ public class TagBuilder
 	{
 		Entity last = base;
 		
+		int k = 3;
+		
 		for(String i : context)
 		{
-			locks.put(i, (AreaEffectCloud) base.getWorld().spawnEntity(base.getLocation(), EntityType.AREA_EFFECT_CLOUD));
+			k++;
+			locks.put(i, (AreaEffectCloud) base.getWorld().spawnEntity(base.getLocation().clone().add(0, k * 0.343, 0), EntityType.AREA_EFFECT_CLOUD));
 			locks.get(i).setRadius(0f);
 			locks.get(i).setRadiusOnUse(0f);
 			locks.get(i).setRadiusPerTick(0f);
 			locks.get(i).setParticle(Particle.SUSPENDED);
 			locks.get(i).setInvulnerable(true);
-			locks.get(i).setDuration(Integer.MAX_VALUE);
+			locks.get(i).setDuration(Integer.MAX_VALUE / 20);
 			locks.get(i).setCustomName(i);
 			locks.get(i).setCustomNameVisible(true);
 			NMSX.addPassenger(last, locks.get(i));
@@ -80,7 +83,13 @@ public class TagBuilder
 	{
 		for(String i : context)
 		{
-			locks.get(i).setDuration(Integer.MAX_VALUE);
+			locks.get(i).setDuration(Integer.MAX_VALUE / 20);
+			
+			if(locks.get(i).isDead())
+			{
+				rebuild();
+				return;
+			}
 		}
 	}
 	
