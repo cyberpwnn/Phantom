@@ -78,6 +78,19 @@ public class TagBuilder
 			{
 				NMSX.hideEntity((Player) base, locks.get(i));
 			}
+			
+			try
+			{
+				if(context.get(context.size() - 1).equals(i))
+				{
+					NMSX.hideEntity(locks.get(i));
+				}
+			}
+			
+			catch(Exception e)
+			{
+				
+			}
 		}
 	}
 	
