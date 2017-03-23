@@ -24,6 +24,7 @@ org.phantomapi.hive
 org.phantomapi.hologram
 org.phantomapi.hud
 org.phantomapi.inventory
+org.phantomapi.kernel
 org.phantomapi.lang
 org.phantomapi.multiblock
 org.phantomapi.nbt
@@ -46,6 +47,7 @@ org.phantomapi.stack
 org.phantomapi.statistics
 org.phantomapi.structure
 org.phantomapi.sync
+org.phantomapi.tag
 org.phantomapi.text
 org.phantomapi.texture
 org.phantomapi.transmit
