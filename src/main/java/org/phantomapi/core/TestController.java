@@ -57,6 +57,7 @@ import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
 import org.phantomapi.hud.ConfigurationUI;
+import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
@@ -193,6 +194,16 @@ public class TestController extends Controller
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
 				}
+			}
+		});
+		
+		tests.put("platformt", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				s(Platform.CPU.getCoreLoad(0) + " Load");
+				s(Platform.CPU.getProcessorModel());
 			}
 		});
 		
