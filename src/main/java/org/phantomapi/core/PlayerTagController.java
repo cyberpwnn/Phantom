@@ -9,21 +9,28 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.tag.TaggedPlayer;
 import org.phantomapi.tag.Tagger;
+import org.phantomapi.util.Average;
+import org.phantomapi.util.C;
+import org.phantomapi.util.F;
+import org.phantomapi.util.Timer;
 
-@Ticked(5)
-public class PlayerTagController extends Controller
+@Ticked(0)
+public class PlayerTagController extends Controller implements Monitorable
 {
 	private GList<Tagger> taggers;
 	private GMap<Player, TaggedPlayer> tags;
 	private GMap<Player, GList<Player>> hr;
 	private GMap<Player, GList<Player>> hrc;
+	private Average performance;
 	
 	public PlayerTagController(Controllable parentController)
 	{
 		super(parentController);
 		
+		performance = new Average(64);
 		tags = new GMap<Player, TaggedPlayer>();
 		taggers = new GList<Tagger>();
 		hr = new GMap<Player, GList<Player>>();
@@ -51,6 +58,9 @@ public class PlayerTagController extends Controller
 	@Override
 	public void onTick()
 	{
+		Timer t = new Timer();
+		t.start();
+		
 		for(Player i : onlinePlayers())
 		{
 			if(tags.containsKey(i))
@@ -121,6 +131,9 @@ public class PlayerTagController extends Controller
 				}
 			}
 		}
+		
+		t.stop();
+		performance.put(t.getTime());
 	}
 	
 	public void registerTagger(Tagger t)
@@ -150,5 +163,11 @@ public class PlayerTagController extends Controller
 	public void on(PlayerQuitEvent e)
 	{
 		q(e.getPlayer());
+	}
+	
+	@Override
+	public String getMonitorableData()
+	{
+		return C.DARK_GRAY + "Time: " + C.LIGHT_PURPLE + F.nsMs((long) performance.getAverage(), 2) + "ms " + C.DARK_GRAY + "@" + C.GRAY + " 4.85ghz";
 	}
 }
