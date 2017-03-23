@@ -15,30 +15,35 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.tag.TaggedPlayer;
-import org.phantomapi.tag.Tagger;
+import org.phantomapi.tag.PlayerTagHandler;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
+import org.phantomapi.util.M;
 import org.phantomapi.util.Timer;
 
 @Ticked(0)
 public class PlayerTagController extends Controller implements Monitorable
 {
-	private GList<Tagger> taggers;
+	private GList<PlayerTagHandler> taggers;
 	private GMap<Player, TaggedPlayer> tags;
 	private GMap<Player, GList<Player>> hr;
 	private GMap<Player, GList<Player>> hrc;
 	private Average performance;
+	private Average usage;
+	private GList<Player> pq;
 	
 	public PlayerTagController(Controllable parentController)
 	{
 		super(parentController);
 		
-		performance = new Average(64);
+		usage = new Average(12);
+		performance = new Average(32);
 		tags = new GMap<Player, TaggedPlayer>();
-		taggers = new GList<Tagger>();
+		taggers = new GList<PlayerTagHandler>();
 		hr = new GMap<Player, GList<Player>>();
 		hrc = new GMap<Player, GList<Player>>();
+		pq = new GList<Player>();
 	}
 	
 	@Override
@@ -72,14 +77,28 @@ public class PlayerTagController extends Controller implements Monitorable
 	{
 		Timer t = new Timer();
 		t.start();
+		long ns = M.ns();
 		
-		for(Player i : onlinePlayers())
+		while(((double) (M.ns() - ns)) / 1000000.0 < 0.3)
 		{
+			if(pq.isEmpty())
+			{
+				pq.add(onlinePlayers());
+				
+				double used = ((double) (M.ns() - ns)) / 1000000.0;
+				double max = used / 0.3;
+				usage.put(max);
+				
+				break;
+			}
+			
+			Player i = pq.popRandom();
+			
 			if(tags.containsKey(i))
 			{
-				for(Tagger j : taggers)
+				for(PlayerTagHandler j : taggers)
 				{
-					j.updateTagger(tags.get(i));
+					j.updateTag(tags.get(i));
 				}
 				
 				tags.get(i).update();
@@ -148,7 +167,7 @@ public class PlayerTagController extends Controller implements Monitorable
 		performance.put(t.getTime());
 	}
 	
-	public void registerTagger(Tagger t)
+	public void registerTagger(PlayerTagHandler t)
 	{
 		taggers.remove(t);
 		taggers.add(t);
@@ -180,6 +199,6 @@ public class PlayerTagController extends Controller implements Monitorable
 	@Override
 	public String getMonitorableData()
 	{
-		return C.DARK_GRAY + "Time: " + C.LIGHT_PURPLE + F.nsMs((long) performance.getAverage(), 2) + "ms " + C.DARK_GRAY + "@" + C.GRAY + " 4.85ghz";
+		return C.DARK_GRAY + "Time: " + C.LIGHT_PURPLE + F.nsMs((long) performance.getAverage(), 2) + "ms " + C.DARK_GRAY + "Usage: " + C.LIGHT_PURPLE + F.pc(usage.getAverage());
 	}
 }
