@@ -1,5 +1,9 @@
 package org.phantomapi.core;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,6 +44,14 @@ public class PlayerTagController extends Controller implements Monitorable
 	@Override
 	public void onStart()
 	{
+		for(World i : Bukkit.getWorlds())
+		{
+			for(Entity j : i.getEntitiesByClass(AreaEffectCloud.class))
+			{
+				j.remove();
+			}
+		}
+		
 		for(Player i : onlinePlayers())
 		{
 			j(i);
