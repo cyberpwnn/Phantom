@@ -58,6 +58,7 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	 */
 	public Controller(Controllable parentController)
 	{
+		D.d(this, "Initializing Controller (Define parent, sub and instance data)");
 		controllers = new GList<Controllable>();
 		this.parentController = parentController;
 		name = getClass().getSimpleName();
@@ -81,6 +82,8 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	@Override
 	public void start()
 	{
+		D.d(this, "Starting Controller");
+		
 		if(getClass().isAnnotationPresent(SyncStart.class) && Phantom.isAsync())
 		{
 			new S()
@@ -88,12 +91,16 @@ public abstract class Controller implements Controllable, ControllerMessenger
 				@Override
 				public void sync()
 				{
+					D.d(this, "Sync Start forced, scheduled for sync");
+					
 					start();
 				}
 			};
 			
 			return;
 		}
+		
+		D.d(this, "Starting Sub Controllers");
 		
 		for(Controllable i : controllers)
 		{
@@ -114,29 +121,38 @@ public abstract class Controller implements Controllable, ControllerMessenger
 			};
 		}
 		
+		D.d(this, "Register Plugin Event Listener");
 		getPlugin().registerListener(this);
+		D.d(this, "Register Phantom DMS Debugger");
 		Phantom.registerSilenced(d);
+		D.d(this, "Start sequence finishing");
 		s("Started");
+		D.d(this, "All subcontrollers started, calling onStart");
 		onStart();
+		D.d(this, "Calling controller start event");
 		callEvent(new ControllerStartEvent(this, getPlugin()));
 		
 		if(tx != null)
 		{
 			tx.stop();
 		}
+		D.d(this, "Start sequence finished");
 	}
 	
 	@Override
 	public void stop()
 	{
+		D.d(this, "Stopping controller");
 		for(Controllable i : controllers)
 		{
 			i.stop();
 		}
 		
+		D.d(this, "Destroy event listener");
 		getPlugin().unRegisterListener(this);
 		s(ChatColor.RED + "Stopped");
 		
+		D.d(this, "Destroy phantom bindings");
 		try
 		{
 			Phantom.instance().unbindController(this);
@@ -144,22 +160,26 @@ public abstract class Controller implements Controllable, ControllerMessenger
 		
 		catch(Exception e)
 		{
-			
+			D.d(this, "Failed? " + e.getMessage());
 		}
 		
 		if(this instanceof Probe)
 		{
+			D.d(this, "Destroy Probe Registry");
 			Phantom.instance().getProbeController().unRegisterProbe((Probe) this);
 		}
 		
 		if(this instanceof CommandListener)
 		{
+			D.d(this, "Destroy Command Registry");
 			Phantom.instance().getCommandRegistryController().unregister((CommandListener) this);
 		}
 		
 		Phantom.instance().getCommandRegistryController().unregister(this);
 		
+		D.d(this, "SubControllers stopped, calling onStop");
 		onStop();
+		D.d(this, "Controller Stop event called");
 		callEvent(new ControllerStopEvent(this, getPlugin()));
 	}
 	

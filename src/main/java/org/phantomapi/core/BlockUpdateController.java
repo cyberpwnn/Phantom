@@ -12,6 +12,7 @@ import org.phantomapi.nms.NMSX;
 import org.phantomapi.statistics.Monitorable;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 import org.phantomapi.util.F;
 
 @Ticked(0)
@@ -25,6 +26,7 @@ public class BlockUpdateController extends Controller implements Monitorable
 	{
 		super(parentController);
 		
+		D.d(this, "Setting up blockqueue");
 		queue = new GList<Block>();
 		est = "";
 		try

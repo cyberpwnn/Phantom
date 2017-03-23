@@ -56,6 +56,7 @@ public class ChromaticHost
 			@Override
 			public void async()
 			{
+				D.d(this, "Start chromatic processing");
 				d.v("== Building Chromatic Reference ==");
 				
 				GSet<String> keys = new GSet<String>();

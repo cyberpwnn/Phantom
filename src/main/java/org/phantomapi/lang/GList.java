@@ -678,4 +678,18 @@ public class GList<T> extends ArrayList<T>
 		remove(0);
 		return t;
 	}
+	
+	public T popRandom()
+	{
+		GList<T> tx = shuffleCopy();
+		
+		if(tx.isEmpty())
+		{
+			return null;
+		}
+		
+		T t = tx.get(0);
+		remove(t);
+		return t;
+	}
 }

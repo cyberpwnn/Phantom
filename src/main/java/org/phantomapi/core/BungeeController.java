@@ -26,6 +26,7 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.Refreshable;
 import org.phantomapi.util.Timer;
@@ -52,7 +53,9 @@ public class BungeeController extends Controller implements PluginMessageListene
 	{
 		super(parentController);
 		
+		D.d(this, "Setup Bungeecontroller");
 		cc = new DataCluster();
+		D.d(this, "Build network and transmitters");
 		responders = new GList<Transmission>();
 		transmitters = new GList<Transmitter>();
 		connected = false;
@@ -64,17 +67,20 @@ public class BungeeController extends Controller implements PluginMessageListene
 		to = 0;
 		t = new Timer();
 		
+		D.d(this, "Register bungee messenger");
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
 	}
 	
 	public void registerTransmitter(Transmitter t)
 	{
+		D.d(this, "Registered transmitter " + t.getClass().getSimpleName());
 		transmitters.add(t);
 	}
 	
 	public void unregisterTransmitter(Transmitter t)
 	{
+		D.d(this, "Removed transmitter " + t.getClass().getSimpleName());
 		transmitters.remove(t);
 	}
 	
@@ -175,6 +181,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	
 	public void transmit(Transmission t) throws IOException
 	{
+		D.d(this, "Transmit packet " + t.toJSON().toString());
 		if(Phantom.getServers() == null)
 		{
 			queue.add(t);
@@ -212,6 +219,7 @@ public class BungeeController extends Controller implements PluginMessageListene
 	@Override
 	public void onStart()
 	{
+		D.d(this, "Starting bungeecontroller");
 		File df = new File(Phantom.instance().getDataFolder(), "transmission-queue");
 		
 		if(df.exists())

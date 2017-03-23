@@ -11,6 +11,7 @@ import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.data.DataPack;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.util.D;
 
 @Ticked(100)
 public class CacheController extends Controller
@@ -22,7 +23,7 @@ public class CacheController extends Controller
 	public CacheController(Controllable parentController)
 	{
 		super(parentController);
-		
+		D.d(this, "Setting up cache");
 		dirty = false;
 		cache = new File(Phantom.instance().getDataFolder(), "cache");
 		cache.mkdirs();
@@ -41,8 +42,11 @@ public class CacheController extends Controller
 	
 	public void loadCache() throws IOException
 	{
+		D.d(this, "LOAD CACHE");
+		
 		for(File i : cache.listFiles())
 		{
+			D.d(this, "LOAD " + i.toString());
 			DataPack d = new DataPack();
 			DataCluster cc = new DataCluster();
 			d.fromData(FileUtils.readFileToByteArray(i));
@@ -51,6 +55,7 @@ public class CacheController extends Controller
 		}
 	}
 	
+	@Override
 	public void onTick()
 	{
 		if(dirty)
@@ -77,8 +82,10 @@ public class CacheController extends Controller
 	
 	public void saveCache() throws IOException
 	{
+		D.d(this, "SAVE CACHE");
 		for(String i : caches.k())
 		{
+			D.d(this, "SAVE" + i.toString());
 			DataCluster cc = caches.get(i);
 			DataPack d = cc.toDataPack();
 			FileUtils.writeByteArrayToFile(new File(cache, i + ".ka"), d.toData());
@@ -90,13 +97,13 @@ public class CacheController extends Controller
 		caches.put(s, cc.copy());
 		dirty = true;
 	}
-
+	
 	@Override
 	public void onStart()
 	{
 		
 	}
-
+	
 	@Override
 	public void onStop()
 	{
@@ -110,7 +117,7 @@ public class CacheController extends Controller
 			e.printStackTrace();
 		}
 	}
-
+	
 	public DataCluster get(String name)
 	{
 		return caches.get(name);

@@ -28,6 +28,7 @@ import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.PhantomSpinner;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 import org.phantomapi.util.F;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.ServerState;
@@ -59,6 +60,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	{
 		super(parentController);
 		
+		D.d(this, "STARTING DMS");
 		address = null;
 		hasInternet = null;
 		sname = "Unknown";
@@ -70,9 +72,11 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 		progressing = new GMap<Player, String>();
 		spinner = new PhantomSpinner();
 		
+		D.d(this, "Register HLC & Backups");
 		register(hotLoadController);
 		register(configurationBackupController);
 		
+		D.d(this, "Set state");
 		if(Bukkit.getOnlinePlayers().isEmpty())
 		{
 			state = ServerState.START;
@@ -83,6 +87,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 			state = ServerState.ENABLE;
 		}
 		
+		D.d(this, "Register messager");
 		getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(getPlugin(), "BungeeCord");
 		getPlugin().getServer().getMessenger().registerIncomingPluginChannel(getPlugin(), "BungeeCord", this);
 		
@@ -115,6 +120,8 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	{
 		if(e.getMessage().equalsIgnoreCase("/stop"))
 		{
+			D.d(this, "STOP COMMAND CAUGHT");
+			
 			if(e.getPlayer().hasPermission("bukkit.command.stop"))
 			{
 				state = ServerState.STOP;
@@ -125,6 +132,8 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	@EventHandler
 	public void on(ServerCommandEvent e)
 	{
+		D.d(this, "STOP COMMAND CAUGHT");
+		
 		if(e.getCommand().equalsIgnoreCase("stop"))
 		{
 			state = ServerState.STOP;
@@ -184,7 +193,9 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 			@Override
 			public void run()
 			{
+				D.d(this, "Building Environment");
 				Phantom.splash("", "", "", "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom());
+				D.d(this, "Splash, get environment");
 				s("-------- Environment --------");
 				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
 				testInternetConnection();
@@ -209,6 +220,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 					}
 				}
 				
+				D.d(this, "Get Boot times");
 				s("> " + C.LIGHT_PURPLE + "Async Boot Time: " + C.AQUA + F.f(Phantom.am / 1000.0, 3) + "s " + C.YELLOW + F.pc(Phantom.am / (Phantom.am + Phantom.sm), 1));
 				s("> " + C.LIGHT_PURPLE + "Sync Boot Time: " + C.AQUA + F.f(Phantom.sm / 1000.0, 3) + "s " + C.YELLOW + F.pc(Phantom.sm / (Phantom.am + Phantom.sm), 1));
 			}
@@ -226,6 +238,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	
 	public void showDiskSpace()
 	{
+		D.d(this, "Showing disk space");
 		s(C.YELLOW + "! " + C.AQUA + "Max  Memory: " + C.GREEN + F.memSize(Runtime.getRuntime().maxMemory()));
 		s(C.YELLOW + "! " + C.AQUA + "Logic Cores: " + C.GREEN + Runtime.getRuntime().availableProcessors());
 		s(C.YELLOW + "! " + C.AQUA + "At Location: " + C.GREEN + getPlugin().getDataFolder().getParentFile().getAbsolutePath());
@@ -236,6 +249,7 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	
 	public boolean testMySqlConnection()
 	{
+		D.d(this, "Test SQL");
 		w("> " + C.AQUA + "Testing MySQL Connection...");
 		
 		if(((Phantom) getPlugin()).getMySQLConnectionController().testConnection())

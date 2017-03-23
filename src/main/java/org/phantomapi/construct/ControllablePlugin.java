@@ -66,29 +66,43 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void onEnable()
 	{
+		if(new File(getDataFolder(), "signal-debug").exists())
+		{
+			D.rdebug = true;
+		}
+		
+		D.d(this, "Initial Setup (controllers, timers, live timiers and root dispatchers)");
+		
 		controllers = new GList<Controllable>();
 		timings = new GMap<Controllable, Integer>();
 		liveTimings = new GMap<Controllable, Integer>();
 		time = new Average(12);
 		d = new D(getName());
 		
+		D.d(this, "Checking DMSRequire Flags");
+		
 		if(getClass().isAnnotationPresent(DMSRequire.class))
 		{
+			D.d(this, "DMSRequire flag identified, processing...");
 			DMSRequire dms = getClass().getAnnotation(DMSRequire.class);
 			
 			if(dms.value().equals(DMSRequirement.SQL))
 			{
+				D.d(this, "DMSRequire flagged (SQL REQUIRED PLUGIN IDENTIFIED)");
 				Phantom.instance().getDms().needsSQL(this);
 			}
 		}
 		
+		D.d(this, "SIGNAL Plugin Controller enable");
 		enable();
+		D.d(this, "SIGNAL Plugin Controller start");
 		start();
-		
 		registerTicked(this);
+		D.d(this, "PHANTOM Register Plugin " + getName() + " to phantom");
 		Phantom.instance().registerPlugin(this);
+		D.d(this, "PHANDOM Binding Root Controller to phantom");
 		Phantom.instance().bindController(this);
-		
+		D.d(this, getName() + " Started");
 		d.s("Started");
 	}
 	
@@ -233,6 +247,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		if(t != null)
 		{
 			int v = t.value();
+			D.d(this, "Registering " + c.getClass().getSimpleName() + " as Ticked (v: " + v + ")");
 			
 			if(v <= 0)
 			{
@@ -253,18 +268,26 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void onDisable()
 	{
+		D.d(this, "STOPPING SIGNAL (Shutting down plugin)");
 		STOPPING = true;
+		D.d(this, "Destroying Plugin tasks");
 		Bukkit.getScheduler().cancelTasks(getPlugin());
+		D.d(this, "SIGNAL Plugin Controller disable");
 		disable();
+		D.d(this, "SIGNAL Plugin Controller stop");
 		stop();
+		D.d(this, "Stopped " + getName());
 		d.s(ChatColor.RED + "Stopped");
 	}
 	
 	@Override
 	public void start()
 	{
+		D.d(this, "Initiating Start Sequence");
+		
 		if(getClass().isAnnotationPresent(SyncStart.class) || Phantom.syncStart())
 		{
+			D.d(this, "Starting Controllers Sync");
 			T tx = new T()
 			{
 				@Override
@@ -274,13 +297,17 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 				}
 			};
 			
+			D.d(this, "Starting Children Controllers");
+			
 			for(Controllable i : controllers)
 			{
 				i.start();
 			}
 			
+			D.d(this, "SubControllers started, invoking onStart()");
 			onStart();
 			
+			D.d(this, "Starting ticking system for " + getName());
 			new TaskLater(1)
 			{
 				@Override
@@ -317,6 +344,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 		
 		else
 		{
+			D.d(this, "Starting Controllers Async");
 			T tx = new T()
 			{
 				@Override
@@ -332,6 +360,8 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 				@Override
 				public void async()
 				{
+					D.d(this, "Async Starting Controllers");
+					
 					for(Controllable i : controllers)
 					{
 						try
@@ -367,6 +397,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 						@Override
 						public void sync()
 						{
+							D.d(this, "Starting sync tick system");
 							onStart();
 							
 							task = new Task(ControllablePlugin.this, 0)
@@ -399,15 +430,21 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 				}
 			};
 		}
+		
+		D.d(this, "Start sequence complete");
 	}
 	
 	@Override
 	public void stop()
 	{
+		D.d(this, "Stopping Plugin");
+		
 		try
 		{
+			D.d(this, "Cancelling tick cycle task for subcontrollers");
 			task.cancel();
 			
+			D.d(this, "Stopping controllers");
 			for(Controllable i : controllers)
 			{
 				try
@@ -421,6 +458,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 				}
 			}
 			
+			D.d(this, "Invoking onStop (all controllers stopped)");
 			onStop();
 		}
 		

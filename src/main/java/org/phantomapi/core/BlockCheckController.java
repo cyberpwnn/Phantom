@@ -7,6 +7,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 
 /**
  * Checks blocks
@@ -21,6 +22,7 @@ public class BlockCheckController extends Controller
 	{
 		super(parentController);
 		
+		D.d(this, "Setting up handlers");
 		handlers = new GList<BlockHandler>();
 	}
 	

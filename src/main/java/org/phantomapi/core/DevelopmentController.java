@@ -22,6 +22,7 @@ import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
+import org.phantomapi.util.D;
 import org.phantomapi.util.PluginUtil;
 
 /**
@@ -92,7 +93,11 @@ public class DevelopmentController extends Controller implements Configurable, M
 	{
 		if(reload)
 		{
-			Bukkit.reload();
+			D.d(this, "Reload signal received. Attempting to put the blame on someone else");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "reload");//
+			
+			reload = false;
+			
 			return;
 		}
 		
@@ -130,17 +135,21 @@ public class DevelopmentController extends Controller implements Configurable, M
 					{
 						modifications.put(i, file.lastModified());
 						sizes.put(i, file.length());
+						D.d(this, "FILE MODIFICATION");
 						s("Plugin Modified (" + file.getName() + ")");
 						
 						if(reloadOnChanged)
 						{
+							D.d(this, "RELOADING ON CHANGED");
 							if(i.getName().equalsIgnoreCase("Phantom"))
 							{
+								D.d(this, "ITS PHANTOM, NOT SOME RANDOM PLUGIN");
 								reload = true;
 								
 								return;
 							}
 							
+							D.d(this, "Notify hotload");
 							MessageBuilder mb = new MessageBuilder(Phantom.instance());
 							
 							for(Player p : Phantom.instance().onlinePlayers())
@@ -150,6 +159,7 @@ public class DevelopmentController extends Controller implements Configurable, M
 							
 							if(reloadEverything)
 							{
+								D.d(this, "Reload everything enabled");
 								s("Reloading All Plugins");
 								
 								new A()

@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
+import org.phantomapi.sync.S;
 
 /**
  * Dispatcher
@@ -14,11 +15,52 @@ import org.phantomapi.lang.GList;
  */
 public class D
 {
+	public static boolean rdebug = true;
 	public static boolean fool = false;
 	private String name;
 	private GList<Player> listeners;
 	public static GList<String> queue;
 	public static GList<Player> globalListeners;
+	
+	public static void d(Object inst, String s)
+	{
+		if(!rdebug)
+		{
+			return;
+		}
+		
+		try
+		{
+			if(Phantom.isAsync())
+			{
+				new S()
+				{
+					@Override
+					public void sync()
+					{
+						d(inst, s + C.WHITE + " (ASYNC)");
+					}
+				};
+				
+				return;
+			}
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		d(inst.getClass(), s);
+	}
+	
+	public static void d(Class<?> inst, String s)
+	{
+		if(rdebug)
+		{
+			Bukkit.getServer().getConsoleSender().sendMessage(C.RED + "DEBUG<" + C.WHITE + inst.getSimpleName() + C.RED + ">" + C.WHITE + s);
+		}
+	}
 	
 	/**
 	 * Create a dispatcher

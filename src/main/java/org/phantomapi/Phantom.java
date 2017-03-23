@@ -192,19 +192,26 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void enable()
 	{
+		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
+		D.d(this, "Initialize Thread pool executor");
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		executor.setKeepAliveTime(30, TimeUnit.MINUTES);
+		D.d(this, "Setup Economy");
 		setupEconomy();
 		nsx = M.ns();
 		instance = this;
 		syncStart = true;
+		D.d(this, "Initialize Sigar injection...");
 		loadSigar();
+		D.d(this, "Success! Sigar ready.");
 		
 		File f = new File(getDataFolder(), "async");
 		
 		if(f.exists() && f.isDirectory())
 		{
+			D.d(this, "Found async folder, attempting to async boot");
+			
 			new TaskLater()
 			{
 				@Override
@@ -217,6 +224,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			syncStart = false;
 		}
 		
+		D.d(this, "Initialize Controllers");
 		registryController = new RegistryController(this);
 		developmentController = new DevelopmentController(this);
 		environment = new DataCluster();
@@ -260,8 +268,10 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
 		
+		D.d(this, "Bungeecord messenger registry");
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
+		D.d(this, "Register controllers");
 		register(registryController);
 		register(developmentController);
 		register(monitorController);
@@ -299,7 +309,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(ctnController);
 		register(playerTagController);
 		
+		D.d(this, "Build Environment file");
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
+		D.d(this, "Create global registry");
 		globalRegistry = new GlobalRegistry();
 		registerListener(this);
 		
@@ -308,19 +320,23 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			@Override
 			public void async()
 			{
+				D.d(this, "Building saltpile");
 				buildSaltpile();
 			}
 		};
 		
 		if(new File(getDataFolder(), "fool").exists())
 		{
+			D.d(this, "!ahahahahahahahahahahaH");
 			D.fool = true;
 		}
 		
 		try
 		{
+			D.d(this, "Setting up NBT Reflectors");
 			BukkitReflect.prepareReflection();
 			NBTBase.prepareReflection();
+			D.d(this, "NBT Ready!");
 		}
 		
 		catch(Throwable e)
@@ -382,30 +398,41 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStart()
 	{
+		D.d(this, "===============================");
+		D.d(this, "STARTING PHANTOM");
+		D.d(this, "===============================");
+		
 		try
 		{
+			D.d(this, "Load environment file");
 			new JSONDataInput().load(environment, envFile);
 		}
 		
 		catch(IOException e)
 		{
+			D.d(this, "Failed?");
 			ExceptionUtil.print(e);
 		}
 		
 		GList<String> plx = new GList<String>();
 		GList<String> pln = new GList<String>();
 		
+		D.d(this, "Finding Plugins which depend on phantom...");
 		for(Plugin i : Bukkit.getPluginManager().getPlugins())
 		{
 			if(i.getDescription().getDepend().contains("Phantom"))
 			{
+				D.d(this, "Found Plugin " + i.getName() + " DEPENDS ON PHANTOM");
 				plx.add(i.getName() + " v" + i.getDescription().getVersion());
+				D.d(this, "Registering plugin " + i.getName() + " as subplugin");
 				registerPlugin(i);
 			}
 			
+			D.d(this, "Reference plugin version " + i.getName() + " " + i.getDescription().getVersion());
 			pln.add(i.getName() + " v" + i.getDescription().getVersion());
 		}
 		
+		D.d(this, "Build environment data");
 		setEnvironmentData(this, "depending-plugins", plx);
 		setEnvironmentData(this, "all-plugins", pln);
 		setEnvironmentData(this, "api-revision", getDescription().getVersion());
@@ -437,6 +464,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		try
 		{
+			D.d(this, "Flush environment");
 			new JSONDataOutput().save(environment, envFile);
 		}
 		
@@ -445,16 +473,19 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			ExceptionUtil.print(e);
 		}
 		
+		D.d(this, "Schedule cbinder");
 		new TaskLater(5)
 		{
 			@Override
 			public void run()
 			{
+				D.d(this, "Running cbinder");
 				for(Controllable i : bindings)
 				{
 					commandRegistryController.register(i);
 					monitorController.register(i);
 				}
+				D.d(this, "CBinder finished");
 			}
 		};
 		
@@ -571,6 +602,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			}
 		};
 		
+		D.d(this, "Showing injection progress");
+		
 		for(Player i : onlinePlayers())
 		{
 			P.showProgress(i, "Injecting Phantom;Finishing Up");
@@ -581,6 +614,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			@Override
 			public void run()
 			{
+				D.d(this, "Clearing Injection progress");
 				for(Player i : onlinePlayers())
 				{
 					P.clearProgress(i);
@@ -588,6 +622,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			}
 		};
 		
+		D.d(this, "READING ALL CONTROLLERS FOR LANGUAGE PROCESSING");
 		for(Controllable i : getAllControllers())
 		{
 			try
@@ -601,10 +636,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			}
 		}
 		
+		D.d(this, "Loading language controller cluster");
 		loadCluster(languageController);
 		
 		try
 		{
+			D.d(this, "Modifying language controller data");
 			languageController.modify();
 		}
 		
@@ -618,6 +655,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		if(getPlugin().getServer().getPluginManager().getPlugin("Vault") == null)
 		{
+			D.d(this, "Vault doesnt exist!");
 			return false;
 		}
 		
@@ -625,9 +663,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		if(rsp == null)
 		{
+			D.d(this, "Failed. Cannot find vault service");
 			return false;
 		}
 		
+		D.d(this, "Registering economy service provider");
 		econ = rsp.getProvider();
 		
 		return econ != null;
