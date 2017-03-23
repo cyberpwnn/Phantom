@@ -1,4 +1,4 @@
-package org.phantomapi.util;
+package org.phantomapi.kernel;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
