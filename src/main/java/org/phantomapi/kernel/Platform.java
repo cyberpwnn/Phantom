@@ -2,6 +2,8 @@ package org.phantomapi.kernel;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
 import com.sun.management.OperatingSystemMXBean;
 
 @SuppressWarnings("restriction")
@@ -195,6 +197,64 @@ public class Platform
 	
 	public static class CPU
 	{
+		public static double getCoreLoad(int core)
+		{
+			Sigar s = new Sigar();
+			double r = -1;
+			
+			try
+			{
+				r = s.getCpuList()[core].getUser();
+			}
+			
+			catch(SigarException e)
+			{
+				e.printStackTrace();
+			}
+			
+			s.close();
+			return r;
+		}
+		
+		public static int getCoreMhz(int core)
+		{
+			Sigar s = new Sigar();
+			int r = -1;
+			
+			try
+			{
+				r = s.getCpuInfoList()[core].getMhz();
+			}
+			
+			catch(SigarException e)
+			{
+				e.printStackTrace();
+			}
+			
+			s.close();
+			return r;
+		}
+		
+		public static String getProcessorModel()
+		{
+			Sigar s = new Sigar();
+			String r = "UNKNOWN";
+			
+			try
+			{
+				r = s.getCpuInfoList()[0].getVendor() + " " + s.getCpuInfoList()[0].getModel();
+			}
+			
+			catch(SigarException e)
+			{
+				e.printStackTrace();
+			}
+			
+			s.close();
+			
+			return r;
+		}
+		
 		public static int getAvailableProcessors()
 		{
 			if(!ENABLE)
