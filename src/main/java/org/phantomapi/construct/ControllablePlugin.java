@@ -2,6 +2,7 @@ package org.phantomapi.construct;
 
 import java.io.File;
 import java.sql.SQLException;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -44,6 +45,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	protected D d;
 	protected Task task;
 	private Average time;
+	public static boolean STOPPING = false;
 	
 	public void enable()
 	{
@@ -251,6 +253,8 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	@Override
 	public void onDisable()
 	{
+		STOPPING = true;
+		Bukkit.getScheduler().cancelTasks(getPlugin());
 		disable();
 		stop();
 		d.s(ChatColor.RED + "Stopped");
@@ -411,7 +415,7 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 					i.stop();
 				}
 				
-				catch(Exception e)
+				catch(Throwable e)
 				{
 					
 				}
@@ -577,6 +581,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 */
 	public int scheduleSyncRepeatingTask(int delay, int interval, Runnable runnable)
 	{
+		if(STOPPING)
+		{
+			return -1;
+		}
+		
 		return getServer().getScheduler().scheduleSyncRepeatingTask(this, runnable, delay, interval);
 	}
 	
@@ -591,6 +600,11 @@ public class ControllablePlugin extends JavaPlugin implements Controllable
 	 */
 	public int scheduleSyncTask(int delay, Runnable runnable)
 	{
+		if(STOPPING)
+		{
+			return -1;
+		}
+		
 		return getServer().getScheduler().scheduleSyncDelayedTask(this, runnable, delay);
 	}
 	
