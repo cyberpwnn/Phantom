@@ -43,16 +43,31 @@ public class TaggedPlayer
 	
 	public void showContext(Player p)
 	{
+		if(!tagged)
+		{
+			return;
+		}
+		
 		NMSX.showEntity(p, getEntity(contextual));
 	}
 	
 	public void hideContext(Player p)
 	{
+		if(!tagged)
+		{
+			return;
+		}
+		
 		NMSX.hideEntity(p, getEntity(contextual));
 	}
 	
 	public void showContent(Player p)
 	{
+		if(!tagged)
+		{
+			return;
+		}
+		
 		for(String i : content)
 		{
 			NMSX.showEntity(p, getEntity(i));
@@ -61,6 +76,11 @@ public class TaggedPlayer
 	
 	public void hideContent(Player p)
 	{
+		if(!tagged)
+		{
+			return;
+		}
+		
 		for(String i : content)
 		{
 			NMSX.hideEntity(p, getEntity(i));
