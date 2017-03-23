@@ -421,9 +421,64 @@ Phantom.instance().getPlayerTagController().registerTagger(new SomeTagHandler())
 ### NBTX
 Modify NBT
 
+``` java
+Entity someEntity = ...;
+
+//Create a wrapper
+PEntity p = new PEntity(someEntity);
+
+// Define passengers
+p.setPassengers(PEntity... pEntities);
+
+// Clear passengers
+p.clearPassengers();
+
+//Get the nbt
+NBTTagCompound nbt = p.getNBT();
+
+// An example change
+nbt.setInt("NoAI", 1);
+
+//Set the nbt
+p.setNBT(nbt);
+```
 
 ### Kernel CPU
 Get cpu specific information from the kernel (thanks sigar)
+
+``` java
+Platform.CPU.getArchitecture(); // amd64 / x86 / i86
+Platform.CPU.getAvailableProcessors(); // 8 (hyperthreaded threads)
+Platform.CPU.getCPULoad(); // Total load across all cores
+Platform.CPU.getCoreLoad(3); // Get cpu load on core 4 (0 being the first core)
+Platform.CPU.getCoreMhz(2); // Get cpu clock speed (megahertz) per core
+Platform.CPU.getProcessCPULoad(); // Get cpu usage from this process  (javaw)
+Platform.CPU.getProcessorModel(); // Get processor model & vendor
+
+// Physical memory (not the same as runtime)
+Platform.MEMORY.PHYSICAL.getFreeMemory();
+Platform.MEMORY.PHYSICAL.getUsedMemory();
+Platform.MEMORY.PHYSICAL.getTotalMemory();
+
+// Virtual memory (swap or page file)
+Platform.MEMORY.VIRTUAL.getCommittedVirtualMemory();
+Platform.MEMORY.VIRTUAL.getFreeMemory();
+Platform.MEMORY.VIRTUAL.getUsedMemory();
+Platform.MEMORY.VIRTUAL.getTotalMemory();
+
+// Java location and vendor/version
+Platform.ENVIRONMENT.getJavaHome();
+Platform.ENVIRONMENT.getJavaVendor();
+Platform.ENVIRONMENT.getJavaVersion();
+
+// Storage?
+Platform.STORAGE.getFreeSpace(rootFile);
+Platform.STORAGE.getUsedSpace(rootFile);
+Platform.STORAGE.getTotalSpace(rootFile);
+Platform.STORAGE.getAbsoluteFreeSpace();
+Platform.STORAGE.getAbsoluteUsedSpace();
+Platform.STORAGE.getAbsoluteTotalSpace();
+```
 
 ## World Utils
 Manipulate the world with loads of utilities
