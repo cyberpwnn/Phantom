@@ -132,10 +132,9 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 	@EventHandler
 	public void on(ServerCommandEvent e)
 	{
-		D.d(this, "STOP COMMAND CAUGHT");
-		
 		if(e.getCommand().equalsIgnoreCase("stop"))
 		{
+			D.d(this, "STOP COMMAND CAUGHT");
 			state = ServerState.STOP;
 		}
 	}
