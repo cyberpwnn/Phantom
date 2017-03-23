@@ -17,6 +17,9 @@ This guide is designed to get you started quickly in phantom. Bigger subjects li
  * [The Good Stuff](#the-good-stuff)
 * [Utilities](#utilities)
   * [Raw Text](#raw-text)
+  * [Player Tags](#player-tags)
+  * [NBTX](#nbtx)
+  * [Kernel CPU](#kernel-cpu)
 * [World Utils](#world-utils)
  * [Async Sync Objects](#async-sync-objects)
  * [Color Armor](#color-armor)
@@ -351,6 +354,9 @@ Seriously, the really good stuff. The stuff you actually need.
 ## Utilities
 The core contains several useful apis and ultilities for you to use while developing. 
 * [Raw Text](#raw-text)
+* [Player Tags](#player-tags)
+* [NBTX](#nbtx)
+* [Kernel CPU](#kernel-cpu)
 
 ### Raw Text
 Make raw text easy with RTX.class.
@@ -369,6 +375,55 @@ rtx.toJSON();
 // Tell raw to a player for you
 rtx.tellRawTo(Players.getAnyPlayer());
 ```
+
+### Player Tags
+Create multiple lines for player tags with animation, dynamic sizes and more!
+``` java
+package org.cyberpwn;
+
+import org.phantomapi.lang.GList;
+import org.phantomapi.tag.PlayerTagHandler;
+import org.phantomapi.tag.TaggedPlayer;
+import org.phantomapi.util.C;
+
+// Implement Anywhere
+public class SomeTagHandler implements PlayerTagHandler
+{
+	// Called when a player's tag is updated (this is called frequently)
+	@Override
+	public void updateTag(TaggedPlayer p)
+	{
+		// Decide to use the custom tag in a specific situation
+		p.setTagged(true);
+		
+		// Set the first tag (the name above their head)
+		p.setName(C.RED + p.getPlayer().getName());
+		
+		// Create a list of content tags (above the name tag)
+		GList<String> content = new GList<String>().qadd("Line 1").qadd("Line 2");
+		
+		// Set the content list
+		p.getContent().clear();
+		p.getContent().add(content);
+		
+		// Optionally add a contextual tag (goes above content)
+		p.setContextual("Only shown when close and sneaking");
+	}
+}
+```
+
+Then simply register your tag handler
+
+``` java
+Phantom.instance().getPlayerTagController().registerTagger(new SomeTagHandler());
+```
+
+### NBTX
+Modify NBT
+
+
+### Kernel CPU
+Get cpu specific information from the kernel (thanks sigar)
 
 ## World Utils
 Manipulate the world with loads of utilities
