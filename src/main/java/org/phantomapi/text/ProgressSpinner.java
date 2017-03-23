@@ -24,7 +24,7 @@ public class ProgressSpinner
 	 */
 	public ProgressSpinner(String... chars)
 	{
-		this.index = 0;
+		index = 0;
 		this.chars = chars;
 	}
 	
@@ -39,6 +39,7 @@ public class ProgressSpinner
 	/**
 	 * Get the next char from the index
 	 */
+	@Override
 	public String toString()
 	{
 		if(chars.length > index + 1)
@@ -58,14 +59,12 @@ public class ProgressSpinner
 	{
 		return chars;
 	}
-
+	
 	public int getIndex()
 	{
 		return index;
 	}
-
-
-
+	
 	static
 	{
 		DEFAULT = new ProgressSpinner();
