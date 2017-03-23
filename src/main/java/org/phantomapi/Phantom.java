@@ -294,6 +294,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(hyveController);
 		register(zenithController);
 		register(ctnController);
+		register(playerTagController);
 		
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
 		globalRegistry = new GlobalRegistry();
