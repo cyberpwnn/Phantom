@@ -11,19 +11,23 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.tag.TaggedPlayer;
 import org.phantomapi.tag.Tagger;
-import org.phantomapi.world.Area;
 
-@Ticked(0)
+@Ticked(5)
 public class PlayerTagController extends Controller
 {
 	private GList<Tagger> taggers;
 	private GMap<Player, TaggedPlayer> tags;
+	private GMap<Player, GList<Player>> hr;
+	private GMap<Player, GList<Player>> hrc;
 	
 	public PlayerTagController(Controllable parentController)
 	{
 		super(parentController);
 		
 		tags = new GMap<Player, TaggedPlayer>();
+		taggers = new GList<Tagger>();
+		hr = new GMap<Player, GList<Player>>();
+		hrc = new GMap<Player, GList<Player>>();
 	}
 	
 	@Override
@@ -60,13 +64,42 @@ public class PlayerTagController extends Controller
 				
 				for(Player j : onlinePlayers())
 				{
-					if(Area.within(i.getLocation(), j.getLocation(), 5.0))
+					if(j.equals(i))
 					{
-						tags.get(i).showContent(j);
+						continue;
+					}
+					
+					if(i.getLocation().distanceSquared(j.getLocation()) <= 16)
+					{
+						if(hr.containsKey(i) && hr.get(i).contains(j))
+						{
+							hr.get(i).remove(j);
+							tags.get(i).getTagBuilder().rebuild();
+						}
 						
 						if(j.isSneaking())
 						{
-							tags.get(i).showContext(j);
+							if(hrc.containsKey(i) && hrc.get(i).contains(j))
+							{
+								tags.get(i).getTagBuilder().rebuild();
+								tags.get(i).showContext(j);
+								hrc.get(i).remove(j);
+							}
+						}
+						
+						else
+						{
+							tags.get(i).hideContext(j);
+							
+							if(!hrc.containsKey(i))
+							{
+								hrc.put(i, new GList<Player>());
+							}
+							
+							if(!hrc.get(i).contains(j))
+							{
+								hrc.get(i).add(j);
+							}
 						}
 					}
 					
@@ -74,6 +107,16 @@ public class PlayerTagController extends Controller
 					{
 						tags.get(i).hideContent(j);
 						tags.get(i).hideContext(j);
+						
+						if(!hr.containsKey(i))
+						{
+							hr.put(i, new GList<Player>());
+						}
+						
+						if(!hr.get(i).contains(j))
+						{
+							hr.get(i).add(j);
+						}
 					}
 				}
 			}
