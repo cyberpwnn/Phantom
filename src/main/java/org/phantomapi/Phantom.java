@@ -2,6 +2,7 @@ package org.phantomapi;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -102,6 +103,7 @@ import org.phantomapi.util.CFS;
 import org.phantomapi.util.D;
 import org.phantomapi.util.ExceptionUtil;
 import org.phantomapi.util.F;
+import org.phantomapi.util.FU;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
 import org.phantomapi.util.Players;
@@ -197,6 +199,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		nsx = M.ns();
 		instance = this;
 		syncStart = true;
+		loadSigar();
 		
 		File f = new File(getDataFolder(), "async");
 		
@@ -327,10 +330,58 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}
 	}
 	
+	private void loadSigar()
+	{
+		GList<String> library = new GList<String>();
+		library.add(new String[] {"libsigar-amd64-freebsd-6.so", "libsigar-amd64-linux.so", "libsigar-amd64-solaris.so", "libsigar-ia64-hpux-11.sl", "libsigar-ia64-linux.so", "libsigar-pa-hpux-11.sl", "libsigar-ppc64-aix-5.so", "libsigar-ppc64-linux.so", "libsigar-ppc-aix-5.so", "libsigar-ppc-linux.so", "libsigar-s390x-linux.so", "libsigar-sparc64-solaris.so", "libsigar-sparc-solaris.so", "libsigar-universal64-macosx.dylib", "libsigar-universal-macosx.dylib", "libsigar-x86-freebsd-5.so", "libsigar-x86-freebsd-6.so", "libsigar-x86-linux.so", "libsigar-x86-solaris.so", "sigar-amd64-winnt.dll", "sigar-x86-winnt.dll", "sigar-x86-winnt.lib"});
+		
+		File sigar = new File(getPlugin().getDataFolder(), "lib");
+		sigar.mkdirs();
+		
+		for(String i : library)
+		{
+			if(new File(sigar, i).exists())
+			{
+				continue;
+			}
+			
+			copyResource("org/phantomapi/kernel/" + i, new File(sigar, i));
+		}
+		
+		System.out.println("Referencing Kernel Library: " + sigar.getAbsolutePath());
+		System.setProperty("java.library.path", sigar.getAbsolutePath() + ";" + System.getProperty("java.library.path"));
+		System.out.println("Library: " + System.getProperty("java.library.path"));
+		System.out.println("Patching Library...");
+		GList<String> li = new GList<String>(System.getProperty("java.library.path").split(";"));
+		li.removeDuplicates();
+		System.setProperty("java.library.path", li.toString(";"));
+		System.out.println("Patch Complete: " + System.getProperty("java.library.path"));
+	}
+	
+	private void copyResource(String location, File dest)
+	{
+		System.out.println("Installing Kernel Library: " + location);
+		URL in = getClass().getResource("/" + location);
+		
+		if(in == null)
+		{
+			System.out.println("NULL");
+		}
+		
+		try
+		{
+			FU.copyURLToFile(in, dest);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void onStart()
 	{
-		
 		try
 		{
 			new JSONDataInput().load(environment, envFile);
@@ -2235,6 +2286,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	public static void async(Runnable runnable)
 	{
+		if(STOPPING)
+		{
+			return;
+		}
+		
 		try
 		{
 			executor.execute(runnable);
