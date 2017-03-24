@@ -13,6 +13,7 @@ public class TaggedPlayer
 	private String name;
 	private String contextual;
 	private final GList<String> content;
+	private final GList<String> staticContent;
 	
 	public TaggedPlayer(Player player)
 	{
@@ -20,6 +21,7 @@ public class TaggedPlayer
 		tagged = false;
 		name = player.getName();
 		content = new GList<String>();
+		staticContent = new GList<String>();
 		contextual = null;
 		tagBuilder = new TagBuilder(player);
 	}
@@ -30,6 +32,7 @@ public class TaggedPlayer
 		{
 			tagBuilder.getContext().clear();
 			tagBuilder.getContext().add(name);
+			tagBuilder.getContext().add(staticContent);
 			tagBuilder.getContext().add(content);
 			
 			if(contextual != null)
@@ -135,5 +138,25 @@ public class TaggedPlayer
 	public TagBuilder getTagBuilder()
 	{
 		return tagBuilder;
+	}
+	
+	public GList<String> getStaticContent()
+	{
+		return staticContent;
+	}
+	
+	public boolean hasContent()
+	{
+		return isTagged() && !getContent().isEmpty();
+	}
+	
+	public boolean hasContext()
+	{
+		return isTagged() && getContextual() != null;
+	}
+	
+	public boolean hasStaticContent()
+	{
+		return isTagged() && !getStaticContent().isEmpty();
 	}
 }
