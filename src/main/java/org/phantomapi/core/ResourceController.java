@@ -10,6 +10,7 @@ import org.phantomapi.event.ResourcePackDeclinedEvent;
 import org.phantomapi.event.ResourcePackFailedEvent;
 import org.phantomapi.event.ResourcePackLoadedEvent;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.Depend;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -32,7 +33,7 @@ public class ResourceController extends Controller
 	{
 		super(parentController);
 		
-		this.protocolManager = ProtocolLibrary.getProtocolManager();
+		protocolManager = ProtocolLibrary.getProtocolManager();
 	}
 	
 	public void onDecline(Player p)
@@ -70,8 +71,14 @@ public class ResourceController extends Controller
 	@Override
 	public void onStart()
 	{
-		this.protocolManager.addPacketListener((PacketListener) new PacketAdapter((Plugin) Phantom.instance(), ListenerPriority.NORMAL, new PacketType[] {PacketType.Play.Client.RESOURCE_PACK_STATUS})
+		if(!Depend.PROTOLIB.exists())
 		{
+			return;
+		}
+		
+		protocolManager.addPacketListener((PacketListener) new PacketAdapter((Plugin) Phantom.instance(), ListenerPriority.NORMAL, new PacketType[] {PacketType.Play.Client.RESOURCE_PACK_STATUS})
+		{
+			@Override
 			public void onPacketReceiving(final PacketEvent event)
 			{
 				if(event.getPacketType() == PacketType.Play.Client.RESOURCE_PACK_STATUS)

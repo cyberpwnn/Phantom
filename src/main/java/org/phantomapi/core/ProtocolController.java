@@ -13,6 +13,7 @@ import org.phantomapi.nms.EntityHider;
 import org.phantomapi.nms.EntityHider.Policy;
 import org.phantomapi.nms.FakeEquipment;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.Depend;
 import org.phantomapi.util.Timer;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -43,6 +44,11 @@ public class ProtocolController extends Controller
 	@Override
 	public void onStart()
 	{
+		if(!Depend.PROTOLIB.exists())
+		{
+			return;
+		}
+		
 		entityHider = new EntityHider(getPlugin(), Policy.BLACKLIST);
 		
 		fakeEquipment = new FakeEquipment(getPlugin())
@@ -140,6 +146,11 @@ public class ProtocolController extends Controller
 	@EventHandler
 	public void on(PlayerJoinEvent e)
 	{
+		if(!Depend.PROTOLIB.exists())
+		{
+			return;
+		}
+		
 		new TaskLater()
 		{
 			@Override
