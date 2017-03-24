@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.phantomapi.Phantom;
 import com.sun.management.OperatingSystemMXBean;
 
 @SuppressWarnings("restriction")
@@ -204,6 +205,11 @@ public class Platform
 	{
 		public static double getCoreLoad(int core)
 		{
+			if(Phantom.instance().hasReloaded())
+			{
+				return getCPULoad();
+			}
+			
 			Sigar s = new Sigar();
 			double r = -1;
 			
@@ -223,6 +229,11 @@ public class Platform
 		
 		public static int getCoreMhz(int core)
 		{
+			if(Phantom.instance().hasReloaded())
+			{
+				return 1337;
+			}
+			
 			Sigar s = new Sigar();
 			int r = -1;
 			
@@ -242,8 +253,14 @@ public class Platform
 		
 		public static String getProcessorModel()
 		{
-			Sigar s = new Sigar();
 			String r = "UNKNOWN";
+			
+			if(Phantom.instance().hasReloaded())
+			{
+				return r + " (Phantom was reloaded)";
+			}
+			
+			Sigar s = new Sigar();
 			
 			try
 			{
@@ -281,16 +298,6 @@ public class Platform
 		}
 		
 		public static double getProcessCPULoad()
-		{
-			if(!ENABLE)
-			{
-				return 0;
-			}
-			
-			return getLiveProcessCPULoad();
-		}
-		
-		public static double getLiveProcessCPULoad()
 		{
 			if(!ENABLE)
 			{
