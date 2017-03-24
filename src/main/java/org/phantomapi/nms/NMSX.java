@@ -116,6 +116,16 @@ public class NMSX
 		return null;
 	}
 	
+	public static net.minecraft.server.v1_9_R2.ItemStack getNMSItemStack(ItemStack item)
+	{
+		return CraftItemStack.asNMSCopy(item);
+	}
+	
+	public static ItemStack getItemStack(net.minecraft.server.v1_9_R2.ItemStack nmsCopy)
+	{
+		return CraftItemStack.asBukkitCopy(nmsCopy);
+	}
+	
 	/**
 	 * Set a specified Field accessible
 	 *
@@ -257,11 +267,6 @@ public class NMSX
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public static void crash(Player p)
-	{
-		
 	}
 	
 	/**
