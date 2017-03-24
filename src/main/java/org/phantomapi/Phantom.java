@@ -49,6 +49,7 @@ import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.EditSessionController;
 import org.phantomapi.core.EventRippler;
 import org.phantomapi.core.HyveController;
+import org.phantomapi.core.KernelController;
 import org.phantomapi.core.LanguageController;
 import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
@@ -189,6 +190,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private ZenithController zenithController;
 	private CTNController ctnController;
 	private PlayerTagController playerTagController;
+	private KernelController kernelController;
 	private Long nsx;
 	
 	@Override
@@ -270,6 +272,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		zenithController = new ZenithController(this);
 		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
+		kernelController = new KernelController(this);
 		
 		D.d(this, "Bungeecord messenger registry");
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -311,6 +314,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(zenithController);
 		register(ctnController);
 		register(playerTagController);
+		register(kernelController);
 		
 		D.d(this, "Build Environment file");
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
@@ -2549,5 +2553,15 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public PlayerTagController getPlayerTagController()
 	{
 		return playerTagController;
+	}
+	
+	public boolean isReloaded()
+	{
+		return reloaded;
+	}
+	
+	public KernelController getKernelController()
+	{
+		return kernelController;
 	}
 }
