@@ -12,7 +12,6 @@ import org.phantomapi.util.Average;
  * and volumes
  * 
  * @author cyberpwn
- *
  */
 public class Audio implements Audible
 {
@@ -23,7 +22,7 @@ public class Audio implements Audible
 	 */
 	public Audio()
 	{
-		this.audibles = new GList<Audible>();
+		audibles = new GList<Audible>();
 	}
 	
 	/**
@@ -37,6 +36,7 @@ public class Audio implements Audible
 		this.audibles = audibles;
 	}
 	
+	@Override
 	public Audible clone()
 	{
 		return new Audio(audibles);
@@ -51,6 +51,12 @@ public class Audio implements Audible
 	public void add(Audible audible)
 	{
 		audibles.add(audible);
+	}
+	
+	public Audio qadd(Audible audible)
+	{
+		audibles.add(audible);
+		return this;
 	}
 	
 	@Override
