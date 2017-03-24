@@ -44,7 +44,9 @@ public class PluginUtil
 	public static void enable(Plugin plugin)
 	{
 		if(plugin != null && !plugin.isEnabled())
+		{
 			Bukkit.getPluginManager().enablePlugin(plugin);
+		}
 	}
 	
 	/**
@@ -109,7 +111,9 @@ public class PluginUtil
 		ChatColor color = plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED;
 		String pluginName = color + plugin.getName();
 		if(includeVersions)
+		{
 			pluginName += " (" + plugin.getDescription().getVersion() + ")";
+		}
 		return pluginName;
 	}
 	
@@ -125,7 +129,9 @@ public class PluginUtil
 		for(Plugin plugin : Bukkit.getPluginManager().getPlugins())
 		{
 			if(name.equalsIgnoreCase(plugin.getName()))
+			{
 				return plugin;
+			}
 		}
 		return null;
 	}
@@ -157,7 +163,9 @@ public class PluginUtil
 	{
 		Plugin plugin = getPluginByName(name);
 		if(plugin != null && plugin.getDescription() != null)
+		{
 			return plugin.getDescription().getVersion();
+		}
 		return null;
 	}
 	
@@ -183,12 +191,16 @@ public class PluginUtil
 			{
 				Map.Entry thisEntry = (Map.Entry) commandsIt.next();
 				if(thisEntry != null)
+				{
 					parsedCommands.add((String) thisEntry.getKey());
+				}
 			}
 		}
 		
 		if(parsedCommands.isEmpty())
+		{
 			return "No commands registered.";
+		}
 		
 		return Joiner.on(", ").join(parsedCommands);
 		
@@ -340,7 +352,7 @@ public class PluginUtil
 	 *
 	 * @param name
 	 *            plugin's name
-	 * @return 
+	 * @return
 	 * @return status message
 	 */
 	public static boolean load(String name)
@@ -502,10 +514,14 @@ public class PluginUtil
 		pluginManager.disablePlugin(plugin);
 		
 		if(plugins != null && plugins.contains(plugin))
+		{
 			plugins.remove(plugin);
+		}
 		
 		if(names != null && names.containsKey(name))
+		{
 			names.remove(name);
+		}
 		
 		if(listeners != null && reloadlisteners)
 		{
@@ -565,11 +581,11 @@ public class PluginUtil
 		
 		return;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static void unloadNoGC(Plugin plugin)
 	{
-
+		
 		String name = plugin.getName();
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
@@ -635,10 +651,14 @@ public class PluginUtil
 		pluginManager.disablePlugin(plugin);
 		
 		if(plugins != null && plugins.contains(plugin))
+		{
 			plugins.remove(plugin);
+		}
 		
 		if(names != null && names.containsKey(name))
+		{
 			names.remove(name);
+		}
 		
 		if(listeners != null && reloadlisteners)
 		{
