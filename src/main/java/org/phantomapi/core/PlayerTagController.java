@@ -14,8 +14,8 @@ import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
-import org.phantomapi.tag.TaggedPlayer;
 import org.phantomapi.tag.PlayerTagHandler;
+import org.phantomapi.tag.TaggedPlayer;
 import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -112,7 +112,7 @@ public class PlayerTagController extends Controller implements Monitorable
 					
 					if(i.getLocation().distanceSquared(j.getLocation()) <= 16)
 					{
-						if(hr.containsKey(i) && hr.get(i).contains(j))
+						if((tags.get(i).hasContext() || tags.get(i).hasContent()) && hr.containsKey(i) && hr.get(i).contains(j))
 						{
 							hr.get(i).remove(j);
 							tags.get(i).getTagBuilder().rebuild();
@@ -120,43 +120,59 @@ public class PlayerTagController extends Controller implements Monitorable
 						
 						if(j.isSneaking())
 						{
-							if(hrc.containsKey(i) && hrc.get(i).contains(j))
+							if(tags.get(i).hasContext())
 							{
-								tags.get(i).getTagBuilder().rebuild();
-								tags.get(i).showContext(j);
-								hrc.get(i).remove(j);
+								if(hrc.containsKey(i) && hrc.get(i).contains(j))
+								{
+									tags.get(i).getTagBuilder().rebuild();
+									tags.get(i).showContext(j);
+									hrc.get(i).remove(j);
+								}
 							}
 						}
 						
 						else
 						{
-							tags.get(i).hideContext(j);
-							
-							if(!hrc.containsKey(i))
+							if(tags.get(i).hasContext())
 							{
-								hrc.put(i, new GList<Player>());
-							}
-							
-							if(!hrc.get(i).contains(j))
-							{
-								hrc.get(i).add(j);
+								tags.get(i).hideContext(j);
+								
+								if(!hrc.containsKey(i))
+								{
+									hrc.put(i, new GList<Player>());
+								}
+								
+								if(!hrc.get(i).contains(j))
+								{
+									hrc.get(i).add(j);
+								}
 							}
 						}
 					}
 					
 					else
 					{
-						tags.get(i).hideContent(j);
-						tags.get(i).hideContext(j);
-						
-						if(!hr.containsKey(i))
+						if(tags.get(i).hasContext() || tags.get(i).hasContent())
 						{
-							hr.put(i, new GList<Player>());
-						}
-						
-						if(!hr.get(i).contains(j))
-						{
-							hr.get(i).add(j);
+							if(tags.get(i).hasContent())
+							{
+								tags.get(i).hideContent(j);
+							}
+							
+							if(tags.get(i).hasContext())
+							{
+								tags.get(i).hideContext(j);
+							}
+							
+							if(!hr.containsKey(i))
+							{
+								hr.put(i, new GList<Player>());
+							}
+							
+							if(!hr.get(i).contains(j))
+							{
+								hr.get(i).add(j);
+							}
 						}
 					}
 				}
