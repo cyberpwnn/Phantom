@@ -79,6 +79,7 @@ import org.phantomapi.schematic.Schematic;
 import org.phantomapi.schematic.WorldArtifact;
 import org.phantomapi.schematic.WorldStructure;
 import org.phantomapi.sfx.Audible;
+import org.phantomapi.sfx.Instrument;
 import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.slate.PhantomSlate;
 import org.phantomapi.slate.Slate;
@@ -121,8 +122,11 @@ import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WQ;
+import org.phantomapi.wraith.WU;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 
 /**
  * Runs tests on various functions of phantom
@@ -204,6 +208,20 @@ public class TestController extends Controller
 			{
 				s(Platform.CPU.getCoreLoad(0) + " Load");
 				s(Platform.CPU.getProcessorModel());
+			}
+		});
+		
+		tests.put("npcx", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					NPC n = CitizensAPI.getNPCRegistry().createNPC(EntityType.HORSE, "Test Wraith");
+					n.spawn(i.getLocation());
+					WU.pathfindTo(n, i);
+				}
 			}
 		});
 		
@@ -568,18 +586,6 @@ public class TestController extends Controller
 							}
 						}
 					}
-				}
-			}
-		});
-		
-		tests.put("crash", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : onlinePlayers())
-				{
-					NMSX.crash(i);
 				}
 			}
 		});
@@ -1184,6 +1190,42 @@ public class TestController extends Controller
 						public void run()
 						{
 							NMSX.showBrightness(i, (float) (Math.random() * 10));
+						}
+					};
+				}
+			}
+		});
+		
+		tests.put("inx", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					int k = 0;
+					
+					for(Instrument j : Instrument.values())
+					{
+						k++;
+						
+						new TaskLater(k * 40)
+						{
+							@Override
+							public void run()
+							{
+								P.showProgress(i, "Sound;" + j.name());
+								j.play(i);
+							}
+						};
+					}
+					
+					new TaskLater(40 * (k + 1))
+					{
+						@Override
+						public void run()
+						{
+							P.clearProgress(i);
 						}
 					};
 				}
