@@ -18,6 +18,14 @@ public class MFADistortion extends AudioDistortion
 		
 		float start = a.getPitch();
 		
+		if(start > to)
+		{
+			float st = start;
+			start = to;
+			to = st;
+			a.setPitch(start);
+		}
+		
 		for(int i = 0; i < span; i++)
 		{
 			Float diff = i * ((to - start) / span);
