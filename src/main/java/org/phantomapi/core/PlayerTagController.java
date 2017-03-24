@@ -103,6 +103,8 @@ public class PlayerTagController extends Controller implements Monitorable
 				
 				tags.get(i).update();
 				
+				tags.get(i).getTagBuilder().setSneak(i.isSneaking());
+				
 				for(Player j : onlinePlayers())
 				{
 					if(j.equals(i))
