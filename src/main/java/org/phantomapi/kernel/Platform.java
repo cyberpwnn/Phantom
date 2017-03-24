@@ -18,6 +18,11 @@ public class Platform
 			return getSystem().getName().toLowerCase().contains("windows");
 		}
 		
+		public static long startTime()
+		{
+			return new File(Phantom.instance().getDataFolder().getParentFile().getParentFile(), "server.properties").lastModified();
+		}
+		
 		public static String getJavaHome()
 		{
 			if(!ENABLE)
