@@ -76,6 +76,7 @@ import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
+import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.kernel.Platform;
@@ -191,6 +192,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private CTNController ctnController;
 	private PlayerTagController playerTagController;
 	private KernelController kernelController;
+	private WraithController wraithController;
 	private Long nsx;
 	
 	@Override
@@ -273,6 +275,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
 		kernelController = new KernelController(this);
+		wraithController = new WraithController(this);
 		
 		D.d(this, "Bungeecord messenger registry");
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -315,6 +318,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(ctnController);
 		register(playerTagController);
 		register(kernelController);
+		register(wraithController);
 		
 		D.d(this, "Build Environment file");
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
@@ -428,7 +432,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		GList<String> plx = new GList<String>();
 		GList<String> pln = new GList<String>();
-		
 		D.d(this, "Finding Plugins which depend on phantom...");
 		for(Plugin i : Bukkit.getPluginManager().getPlugins())
 		{
@@ -492,11 +495,13 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			public void run()
 			{
 				D.d(this, "Running cbinder");
+				
 				for(Controllable i : bindings)
 				{
 					commandRegistryController.register(i);
 					monitorController.register(i);
 				}
+				
 				D.d(this, "CBinder finished");
 			}
 		};
