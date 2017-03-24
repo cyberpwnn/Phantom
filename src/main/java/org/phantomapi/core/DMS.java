@@ -196,6 +196,13 @@ public class DMS extends Controller implements PluginMessageListener, Monitorabl
 				Phantom.splash("", "", "", "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom(), "    " + Phantom.instance().getMsgx().pickRandom());
 				D.d(this, "Splash, get environment");
 				s("-------- Environment --------");
+				
+				if(Phantom.instance().hasReloaded())
+				{
+					w("WARNING, PHANTOM HAS BEEN RELOADED");
+					w("SOME API FEATURES MAY NOT WORK PROPERLY");
+				}
+				
 				s("> " + C.AQUA + "Controllers: " + C.GREEN + Phantom.instance().getBindings().size());
 				testInternetConnection();
 				showDiskSpace();
