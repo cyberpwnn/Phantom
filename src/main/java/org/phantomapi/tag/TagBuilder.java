@@ -1,6 +1,7 @@
 package org.phantomapi.tag;
 
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftAreaEffectCloud;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.nms.NMSX;
+import net.minecraft.server.v1_9_R2.EntityAreaEffectCloud;
 
 public class TagBuilder
 {
@@ -92,6 +94,15 @@ public class TagBuilder
 				rebuild();
 				return;
 			}
+		}
+	}
+	
+	public void setSneak(boolean b)
+	{
+		for(String i : locks.k())
+		{
+			EntityAreaEffectCloud ae = ((CraftAreaEffectCloud) locks.get(i)).getHandle();
+			ae.setSneaking(b);
 		}
 	}
 	
