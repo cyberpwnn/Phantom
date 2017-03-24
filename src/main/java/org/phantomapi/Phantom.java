@@ -77,6 +77,7 @@ import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
 import org.phantomapi.core.ZenithController;
 import org.phantomapi.gui.Notification;
+import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
@@ -141,6 +142,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private static Phantom instance;
 	public static double am = 0;
 	public static double sm = 0;
+	private boolean reloaded;
 	private Economy econ = null;
 	private static boolean syncStart;
 	private DataCluster environment;
@@ -195,6 +197,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
+		reloaded = checkReload();
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		executor.setKeepAliveTime(30, TimeUnit.MINUTES);
 		D.d(this, "Setup Economy");
@@ -344,6 +347,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			getLogger().log(Level.SEVERE, "Error preparing reflection objects", e);
 			getLogger().severe("This version of NBTEditor is not compatible with this version of Bukkit");
 		}
+	}
+	
+	private boolean checkReload()
+	{
+		return M.ms() - Platform.ENVIRONMENT.startTime() > 10000;
 	}
 	
 	private void loadSigar()
@@ -802,6 +810,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public DataCluster getEnvironmentData()
 	{
 		return new DataCluster(environment.getData());
+	}
+	
+	public boolean hasReloaded()
+	{
+		return reloaded;
 	}
 	
 	/**
