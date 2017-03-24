@@ -19,9 +19,23 @@ public class Platform
 			return getSystem().getName().toLowerCase().contains("windows");
 		}
 		
+		public static long getProcessId()
+		{
+			if(Phantom.instance().hasReloaded())
+			{
+				return -1;
+			}
+			
+			Sigar s = new Sigar();
+			long r = -1;
+			r = s.getPid();
+			s.close();
+			return r;
+		}
+		
 		public static long startTime()
 		{
-			return new File(Phantom.instance().getDataFolder().getParentFile().getParentFile(), "server.properties").lastModified();
+			return new File("server.properties").lastModified();
 		}
 		
 		public static String getJavaHome()
@@ -215,7 +229,7 @@ public class Platform
 			
 			try
 			{
-				r = s.getCpuList()[core].getUser();
+				r = s.getCpuPercList()[core].getUser();
 			}
 			
 			catch(SigarException e)
