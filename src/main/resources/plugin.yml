@@ -4,7 +4,7 @@ main: org.phantomapi.Phantom
 description: ${project.description}
 author: cyberpwn
 authors: [cyberpwn]
-depend: [ProtocolLib, FastAsyncWorldEdit, WorldEdit, Vault]
+softdepend: [Citizens, FastAsyncWorldEdit, WorldEdit, Vault, ProtocolLib]
 website: http://phantomapi.org/
 load: POSTWORLD
 database: false
@@ -15,3 +15,5 @@ commands:
   phast:
     aliases: [phst]
     description: Phast scripting
+  crash:
+    description: Crash a given player
