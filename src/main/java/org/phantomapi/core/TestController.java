@@ -59,8 +59,8 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
-import org.phantomapi.hud.PhantomHud;
-import org.phantomapi.hud.PhantomLockedHud;
+import org.phantomapi.hud.PlayerHud;
+import org.phantomapi.hud.EntityHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -211,7 +211,7 @@ public class TestController extends Controller
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
-					PhantomHud hud = new PhantomHud(i)
+					PlayerHud hud = new PlayerHud(i)
 					{
 						@Override
 						public void onOpen()
@@ -275,7 +275,7 @@ public class TestController extends Controller
 				{
 					Entity cow = i.getLocation().getWorld().spawnEntity(i.getLocation(), EntityType.COW);
 					
-					PhantomLockedHud hud = new PhantomLockedHud(i, cow)
+					EntityHud hud = new EntityHud(i, cow)
 					{
 						@Override
 						public void onOpen()
