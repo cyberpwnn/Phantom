@@ -1,10 +1,12 @@
 package org.phantomapi.physics;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GListAdapter;
+import org.phantomapi.util.CDou;
 
 /**
  * Vector utilities
@@ -242,6 +244,104 @@ public class VectorMath
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Angle the vector in a self relative direction
+	 * 
+	 * @param v
+	 *            the initial direction
+	 * @param amt
+	 *            the amount to shift in the direction
+	 * @return the shifted direction
+	 */
+	public static Vector angleLeft(Vector v, float amt)
+	{
+		Location l = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		l.setDirection(v);
+		float y = l.getYaw();
+		float p = l.getPitch();
+		CDou cy = new CDou(360);
+		CDou cp = new CDou(180);
+		cy.set(y);
+		cp.set(p);
+		cy.sub(amt);
+		l.setYaw((float) cy.get());
+		l.setPitch((float) cp.get());
+		
+		return l.getDirection();
+	}
+	
+	/**
+	 * Angle the vector in a self relative direction
+	 * 
+	 * @param v
+	 *            the initial direction
+	 * @param amt
+	 *            the amount to shift in the direction
+	 * @return the shifted direction
+	 */
+	public static Vector angleRight(Vector v, float amt)
+	{
+		Location l = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		l.setDirection(v);
+		float y = l.getYaw();
+		float p = l.getPitch();
+		CDou cy = new CDou(360);
+		CDou cp = new CDou(180);
+		cy.set(y);
+		cp.set(p);
+		cy.add(amt);
+		l.setYaw((float) cy.get());
+		l.setPitch((float) cp.get());
+		
+		return l.getDirection();
+	}
+	
+	/**
+	 * Angle the vector in a self relative direction
+	 * 
+	 * @param v
+	 *            the initial direction
+	 * @param amt
+	 *            the amount to shift in the direction
+	 * @return the shifted direction
+	 */
+	public static Vector angleUp(Vector v, float amt)
+	{
+		Location l = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		l.setDirection(v);
+		float y = l.getYaw();
+		float p = l.getPitch();
+		CDou cy = new CDou(360);
+		cy.set(y);
+		l.setYaw((float) cy.get());
+		l.setPitch((float) Math.max(-90, p - amt));
+		
+		return l.getDirection();
+	}
+	
+	/**
+	 * Angle the vector in a self relative direction
+	 * 
+	 * @param v
+	 *            the initial direction
+	 * @param amt
+	 *            the amount to shift in the direction
+	 * @return the shifted direction
+	 */
+	public static Vector angleDown(Vector v, float amt)
+	{
+		Location l = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		l.setDirection(v);
+		float y = l.getYaw();
+		float p = l.getPitch();
+		CDou cy = new CDou(360);
+		cy.set(y);
+		l.setYaw((float) cy.get());
+		l.setPitch((float) Math.min(90, p + amt));
+		
+		return l.getDirection();
 	}
 	
 	/**
