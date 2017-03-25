@@ -21,6 +21,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
@@ -58,6 +59,8 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
+import org.phantomapi.hud.PhantomHud;
+import org.phantomapi.hud.PhantomLockedHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -197,6 +200,132 @@ public class TestController extends Controller
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
+				}
+			}
+		});
+		
+		tests.put("sud", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					PhantomHud hud = new PhantomHud(i)
+					{
+						@Override
+						public void onOpen()
+						{
+							Instrument.THICK_CLOSE_HIGH.play(i);
+						}
+						
+						@Override
+						public String onDisable(String s)
+						{
+							return C.DARK_GRAY + C.stripColor(s);
+						}
+						
+						@Override
+						public void onClose()
+						{
+							Instrument.THICK_CLOSE_LOW.play(i);
+						}
+						
+						@Override
+						public void onSelect(String selection, int slot)
+						{
+							Instrument.TWIG_HIGH.play(i);
+						}
+						
+						@Override
+						public void onClick(Click c, Player p, String selection, int slot)
+						{
+							if(slot == getContents().size() - 1)
+							{
+								new TaskLater()
+								{
+									@Override
+									public void run()
+									{
+										close();
+									}
+								};
+							}
+							
+							else
+							{
+								Instrument.TWIG_HIGH.play(i);
+								i.sendMessage("Clicked " + selection);
+							}
+						}
+					};
+					
+					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd(C.RED + "EXIT"));
+					hud.open();
+				}
+			}
+		});
+		
+		tests.put("esud", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					Entity cow = i.getLocation().getWorld().spawnEntity(i.getLocation(), EntityType.COW);
+					
+					PhantomLockedHud hud = new PhantomLockedHud(i, cow)
+					{
+						@Override
+						public void onOpen()
+						{
+							Instrument.THICK_CLOSE_HIGH.play(i);
+						}
+						
+						@Override
+						public String onDisable(String s)
+						{
+							return C.DARK_GRAY + C.stripColor(s);
+						}
+						
+						@Override
+						public void onClose()
+						{
+							Instrument.THICK_CLOSE_LOW.play(i);
+						}
+						
+						@Override
+						public void onSelect(String selection, int slot)
+						{
+							Instrument.TWIG_HIGH.play(i);
+						}
+						
+						@Override
+						public void onClick(Click c, Player p, String selection, int slot)
+						{
+							if(slot == getContents().size() - 1)
+							{
+								new TaskLater()
+								{
+									@Override
+									public void run()
+									{
+										close();
+									}
+								};
+							}
+							
+							else
+							{
+								Instrument.TWIG_HIGH.play(i);
+								i.sendMessage("Clicked " + selection);
+							}
+						}
+					};
+					
+					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd(C.RED + "EXIT"));
+					hud.open();
 				}
 			}
 		});
