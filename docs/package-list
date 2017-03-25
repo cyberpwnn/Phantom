@@ -17,6 +17,7 @@ org.phantomapi.entity
 org.phantomapi.event
 org.phantomapi.ext
 org.phantomapi.filesystem
+org.phantomapi.frame
 org.phantomapi.game
 org.phantomapi.graph
 org.phantomapi.gui
