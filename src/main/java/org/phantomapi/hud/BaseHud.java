@@ -13,11 +13,9 @@ import org.phantomapi.gui.Click;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
 import org.phantomapi.lang.GList;
-import org.phantomapi.sync.Task;
 import org.phantomapi.util.CNum;
-import org.phantomapi.util.FinalInteger;
 
-public abstract class LocalHud implements Hud, Listener
+public abstract class BaseHud implements Hud, Listener
 {
 	private Player player;
 	private GList<String> content;
@@ -25,7 +23,7 @@ public abstract class LocalHud implements Hud, Listener
 	private Hologram holo;
 	private CNum selection;
 	
-	public LocalHud(Player player)
+	public BaseHud(Player player)
 	{
 		this.player = player;
 		content = new GList<String>();
@@ -44,41 +42,8 @@ public abstract class LocalHud implements Hud, Listener
 			Phantom.instance().registerListener(this);
 			holo = new PhantomHologram(getBaseLocation());
 			holo.setDisplay(content.toString("\n"));
-			((PhantomHologram) holo).setSplitDistance(0);
+			holo.setExclusive(player);
 			update();
-			
-			FinalInteger k = new FinalInteger(0);
-			int max = 30;
-			
-			new Task(0)
-			{
-				@Override
-				public void run()
-				{
-					if(open)
-					{
-						if(k.get() > max)
-						{
-							update();
-						}
-						
-						else
-						{
-							holo.setLocation(getBaseLocation());
-							double m = (double) k.get() / (double) max;
-							double v = 0.025 * m;
-							((PhantomHologram) holo).setSplitDistance(v);
-							
-							k.add(1);
-						}
-					}
-					
-					else
-					{
-						cancel();
-					}
-				}
-			};
 		}
 	}
 	
@@ -97,6 +62,7 @@ public abstract class LocalHud implements Hud, Listener
 			}
 			
 			onClick(c, player, getSelection(), getSelectionRow());
+			update();
 		}
 	}
 	
@@ -106,8 +72,8 @@ public abstract class LocalHud implements Hud, Listener
 		if(open && player.equals(e.getPlayer()))
 		{
 			selection.set(selection.get() - e.getMovement());
-			update();
 			onSelect(getSelection(), getSelectionRow());
+			update();
 		}
 	}
 	
@@ -123,7 +89,7 @@ public abstract class LocalHud implements Hud, Listener
 			{
 				if(k == getSelectionRow())
 				{
-					sv.add(i);
+					sv.add(onEnable(i));
 				}
 				
 				else
@@ -182,6 +148,8 @@ public abstract class LocalHud implements Hud, Listener
 	public abstract void onOpen();
 	
 	public abstract String onDisable(String s);
+	
+	public abstract String onEnable(String s);
 	
 	public abstract void onClose();
 	
