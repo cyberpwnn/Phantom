@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.async.A;
@@ -37,6 +38,7 @@ import org.phantomapi.event.PlayerMoveChunkEvent;
 import org.phantomapi.event.PlayerMoveLookEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.event.PlayerProjectileDamagePlayerEvent;
+import org.phantomapi.event.PlayerScrollEvent;
 import org.phantomapi.event.TNTDispenseEvent;
 import org.phantomapi.event.TNTPrimeEvent;
 import org.phantomapi.statistics.Monitorable;
@@ -46,7 +48,7 @@ import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
-import org.phantomapi.util.Players;
+import org.phantomapi.util.P;
 import org.phantomapi.world.Area;
 
 /**
@@ -73,6 +75,12 @@ public class EventRippler extends Controller implements Monitorable
 		hang = 0;
 		doub = 0;
 		load = new Average(24);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void on(PlayerItemHeldEvent e)
+	{
+		callEvent(new PlayerScrollEvent(e.getPlayer(), e.getPreviousSlot(), e.getNewSlot()));
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -324,7 +332,7 @@ public class EventRippler extends Controller implements Monitorable
 	{
 		try
 		{
-			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Players.getMainHand(e.getPlayer()).getType().equals(Material.FLINT_AND_STEEL))
+			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && P.getMainHand(e.getPlayer()).getType().equals(Material.FLINT_AND_STEEL))
 			{
 				new TaskLater()
 				{
