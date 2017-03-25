@@ -10,7 +10,8 @@
 * [Dive into the Docs](http://cyberpwnn.github.io/Phantom/)
 
 # Latest Flagships
-* [**Orion**](https://github.com/cyberpwnn/Phantom/releases/)
+* [**MAX**](https://github.com/cyberpwnn/Phantom/releases/)
+* [Orion](https://github.com/cyberpwnn/Phantom/releases/O9)
 * [Zenith](https://github.com/cyberpwnn/Phantom/Z2)
 * [Death](https://github.com/cyberpwnn/Phantom/releases/D9)
 * [Kelvin](https://github.com/cyberpwnn/Phantom/releases/K9)
