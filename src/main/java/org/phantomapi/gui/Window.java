@@ -20,6 +20,13 @@ public interface Window
 	public Window open();
 	
 	/**
+	 * Update the gui without closing. Note, the gui may have to relaunch if the
+	 * viewport or title if the window have been modified since the last build,
+	 * forcing the ui to rebuild
+	 */
+	public void update();
+	
+	/**
 	 * Close the window (called when the player closes the window aswell)
 	 * 
 	 * @return this
