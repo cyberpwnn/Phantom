@@ -2,6 +2,7 @@ package org.phantomapi.hologram;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 
 /**
@@ -15,6 +16,7 @@ public class PhantomHologram implements Hologram
 	private String text;
 	private Location base;
 	private double splitDistance;
+	private Player exclusive;
 	
 	/**
 	 * Create a phantom hologram with the given base location as the bottom
@@ -25,6 +27,7 @@ public class PhantomHologram implements Hologram
 	 */
 	public PhantomHologram(Location base)
 	{
+		exclusive = null;
 		meta = new GList<Hologram>();
 		text = null;
 		this.base = base;
@@ -137,5 +140,22 @@ public class PhantomHologram implements Hologram
 	{
 		this.splitDistance = splitDistance;
 		update();
+	}
+	
+	@Override
+	public void setExclusive(Player p)
+	{
+		exclusive = p;
+		
+		for(Hologram i : meta)
+		{
+			i.setExclusive(p);
+		}
+	}
+	
+	@Override
+	public Player getExclusive()
+	{
+		return exclusive;
 	}
 }

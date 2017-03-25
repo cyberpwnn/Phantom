@@ -2,6 +2,8 @@ package org.phantomapi.hologram;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.phantomapi.nms.NMSX;
 
 /**
  * Represents an entity hologram
@@ -11,6 +13,7 @@ import org.bukkit.entity.Entity;
 public class EntityHologram implements Hologram
 {
 	private Entity base;
+	private Player exc;
 	
 	/**
 	 * Create a new entity hologram holder out of an entity
@@ -20,6 +23,7 @@ public class EntityHologram implements Hologram
 	 */
 	public EntityHologram(Entity base)
 	{
+		exc = null;
 		this.base = base;
 	}
 	
@@ -70,5 +74,20 @@ public class EntityHologram implements Hologram
 	public Location getLocation()
 	{
 		return getHandle().getLocation();
+	}
+	
+	@Override
+	public void setExclusive(Player p)
+	{
+		exc = p;
+		
+		NMSX.hideEntity(base);
+		NMSX.showEntity(exc, base);
+	}
+	
+	@Override
+	public Player getExclusive()
+	{
+		return exc;
 	}
 }

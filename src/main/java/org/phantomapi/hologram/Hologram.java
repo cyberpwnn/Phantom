@@ -2,6 +2,7 @@ package org.phantomapi.hologram;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
  * Hologram interface
@@ -16,6 +17,21 @@ public interface Hologram
 	 * @return the entity
 	 */
 	public Entity getHandle();
+	
+	/**
+	 * Only show this hologram to the given player
+	 * 
+	 * @param p
+	 *            the player
+	 */
+	public void setExclusive(Player p);
+	
+	/**
+	 * Get the exclusive viewer
+	 * 
+	 * @return the viewer or null
+	 */
+	public Player getExclusive();
 	
 	/**
 	 * Get the display text

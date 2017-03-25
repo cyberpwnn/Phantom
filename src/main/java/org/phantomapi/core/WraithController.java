@@ -22,7 +22,7 @@ public class WraithController extends Controller
 	@Override
 	public void onStop()
 	{
-		
+		destroyNPCs();
 	}
 	
 	public void destroyNPCs()

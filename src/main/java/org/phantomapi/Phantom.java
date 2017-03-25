@@ -15,10 +15,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -78,11 +80,15 @@ import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
+import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Notification;
+import org.phantomapi.hud.Hud;
+import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.lang.GSound;
 import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.nbt.BukkitReflect;
 import org.phantomapi.nbt.NBTBase;
@@ -1165,6 +1171,197 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				}
 			}
 			
+			if(command.equalsIgnoreCase("/"))
+			{
+				if(sender.isPlayer() && Z.isZenith(sender.getPlayer()))
+				{
+					Player p = sender.getPlayer();
+					Hud h = new PlayerHud(p)
+					{
+						@Override
+						public void onSelect(String selection, int slot)
+						{
+							new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.7f).play(p);
+						}
+						
+						@Override
+						public void onOpen()
+						{
+							new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+						}
+						
+						@Override
+						public String onDisable(String s)
+						{
+							return C.DARK_GRAY + C.stripColor(s);
+						}
+						
+						@Override
+						public void onClose()
+						{
+							new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+						}
+						
+						@Override
+						public void onClick(Click c, Player p, String selection, int slot, Hud h)
+						{
+							new GSound(Sound.ENTITY_SHULKER_BULLET_HIT, 1f, 0.3f).play(p);
+							
+							if(selection.contains("World"))
+							{
+								Hud hh = new PlayerHud(p)
+								{
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + C.stripColor(s);
+									}
+									
+									@Override
+									public void onClose()
+									{
+										new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud hh)
+									{
+										new GSound(Sound.ENTITY_SHULKER_BULLET_HIT, 1f, 0.3f).play(p);
+										
+										if(selection.contains("Kill All"))
+										{
+											hh.close();
+											
+											for(Entity i : p.getWorld().getEntities())
+											{
+												if(i instanceof Player)
+												{
+													continue;
+												}
+												
+												i.remove();
+											}
+										}
+										
+										else if(selection.contains("Clear Skies"))
+										{
+											hh.close();
+											p.getWorld().setTime(0);
+											p.getWorld().setWeatherDuration(0);
+										}
+										
+										else if(selection.contains("Back"))
+										{
+											hh.close();
+											h.open();
+										}
+									}
+								};
+								
+								GList<String> cmdx = new GList<String>();
+								cmdx.add(C.LIGHT_PURPLE + "Kill All");
+								cmdx.add(C.LIGHT_PURPLE + "Clear Skies");
+								cmdx.add(C.RED + "Back");
+								
+								hh.setContents(cmdx);
+								
+								h.close();
+								hh.open();
+							}
+							
+							else if(selection.contains("Server"))
+							{
+								Hud hh = new PlayerHud(p)
+								{
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + C.stripColor(s);
+									}
+									
+									@Override
+									public void onClose()
+									{
+										new GSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1.7f).play(p);
+									}
+									
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud hh)
+									{
+										new GSound(Sound.ENTITY_SHULKER_BULLET_HIT, 1f, 0.3f).play(p);
+										
+										if(selection.contains("Thrash"))
+										{
+											hh.close();
+											Phantom.thrash(p);
+										}
+										
+										else if(selection.contains("Reload"))
+										{
+											hh.close();
+											Bukkit.reload();
+										}
+										
+										else if(selection.contains("Back"))
+										{
+											hh.close();
+											h.open();
+										}
+									}
+								};
+								
+								GList<String> cmdx = new GList<String>();
+								cmdx.add(C.LIGHT_PURPLE + "Thrash");
+								cmdx.add(C.LIGHT_PURPLE + "Reload");
+								cmdx.add(C.RED + "Back");
+								
+								hh.setContents(cmdx);
+								
+								h.close();
+								hh.open();
+							}
+							
+							else if(selection.contains("Other"))
+							{
+								
+							}
+						}
+					};
+					
+					GList<String> cmd = new GList<String>();
+					cmd.add(C.LIGHT_PURPLE + "World");
+					cmd.add(C.LIGHT_PURPLE + "Server");
+					cmd.add(C.LIGHT_PURPLE + "Other");
+					
+					h.setContents(cmd);
+					h.open();
+				}
+			}
+			
 			if(command.equalsIgnoreCase("//hrb"))
 			{
 				e.setCancelled(true);
@@ -1286,6 +1483,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 				}
 			}
 		}
+	}
+	
+	public void hclose(Hud h)
+	{
+		h.close();
 	}
 	
 	@Override

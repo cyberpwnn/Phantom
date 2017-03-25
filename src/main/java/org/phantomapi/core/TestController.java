@@ -59,8 +59,9 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
-import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.hud.EntityHud;
+import org.phantomapi.hud.Hud;
+import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -238,7 +239,7 @@ public class TestController extends Controller
 						}
 						
 						@Override
-						public void onClick(Click c, Player p, String selection, int slot)
+						public void onClick(Click c, Player p, String selection, int slot, Hud h)
 						{
 							if(slot == getContents().size() - 1)
 							{
