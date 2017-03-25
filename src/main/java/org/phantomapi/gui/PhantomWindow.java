@@ -40,22 +40,24 @@ public class PhantomWindow implements Window, Listener
 	 */
 	public PhantomWindow(String title, Player viewer)
 	{
-		this.inventory = null;
-		this.viewport = 6;
+		inventory = null;
+		viewport = 6;
 		this.title = title;
-		this.elements = new GList<Element>();
-		this.open = false;
+		elements = new GList<Element>();
+		open = false;
 		this.viewer = viewer;
-		this.background = new PhantomElement(Material.AIR, new Slot(0), "")
+		background = new PhantomElement(Material.AIR, new Slot(0), "")
 		{
+			@Override
 			public void onClick(Player p, Click c, Window w)
 			{
 				
 			}
 		};
-		this.id = UUID.randomUUID();
+		id = UUID.randomUUID();
 	}
 	
+	@Override
 	public Window open()
 	{
 		Phantom.instance().registerListener(this);
@@ -65,6 +67,7 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public Window close()
 	{
 		if(open)
@@ -77,6 +80,16 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
+	public void update()
+	{
+		if(open)
+		{
+			rebuild();
+		}
+	}
+	
+	@Override
 	public Window build()
 	{
 		inventory = Bukkit.createInventory(null, viewport * 9, title);
@@ -102,6 +115,43 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	public void rebuild()
+	{
+		if(open)
+		{
+			if(inventory != null)
+			{
+				if(inventory.getSize() == viewport * 9)
+				{
+					for(int i = 0; i < viewport * 9; i++)
+					{
+						Slot slot = new Slot(i);
+						ItemStack stack = null;
+						
+						if(contains(slot))
+						{
+							stack = getElement(slot).getStack();
+						}
+						
+						else
+						{
+							stack = background.copy().setSlot(slot).getStack();
+						}
+						
+						inventory.setItem(slot.getSlot(), stack);
+					}
+				}
+				
+				else
+				{
+					close();
+					open();
+				}
+			}
+		}
+	}
+	
+	@Override
 	public boolean contains(Slot slot)
 	{
 		for(Element i : elements)
@@ -115,11 +165,13 @@ public class PhantomWindow implements Window, Listener
 		return false;
 	}
 	
+	@Override
 	public boolean contains(Element element)
 	{
 		return elements.contains(element);
 	}
 	
+	@Override
 	public Element getElement(Slot slot)
 	{
 		if(contains(slot))
@@ -136,6 +188,7 @@ public class PhantomWindow implements Window, Listener
 		return null;
 	}
 	
+	@Override
 	public Window addElement(Element element)
 	{
 		if(!contains(element) && !contains(element.getSlot()))
@@ -146,6 +199,7 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public Window removeElement(Element element)
 	{
 		elements.remove(element);
@@ -153,11 +207,13 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public String getTitle()
 	{
 		return title;
 	}
 	
+	@Override
 	public Window setTitle(String title)
 	{
 		this.title = title;
@@ -165,11 +221,13 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public GList<Element> getElements()
 	{
 		return elements;
 	}
 	
+	@Override
 	public Window setElements(GList<Element> elements)
 	{
 		this.elements = elements;
@@ -177,26 +235,31 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public Player getViewer()
 	{
 		return viewer;
 	}
 	
+	@Override
 	public Inventory getInventory()
 	{
 		return inventory;
 	}
 	
+	@Override
 	public UUID getId()
 	{
 		return id;
 	}
 	
+	@Override
 	public Element getBackground()
 	{
 		return background;
 	}
 	
+	@Override
 	public Window setBackground(Element background)
 	{
 		this.background = background;
@@ -204,11 +267,13 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public Integer getViewport()
 	{
 		return viewport;
 	}
 	
+	@Override
 	public Window setViewport(Integer viewport)
 	{
 		this.viewport = viewport;
@@ -216,6 +281,7 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public Window setInventory(Inventory inventory)
 	{
 		this.inventory = inventory;
@@ -223,6 +289,7 @@ public class PhantomWindow implements Window, Listener
 		return this;
 	}
 	
+	@Override
 	public boolean isOpen()
 	{
 		return open;
@@ -277,6 +344,7 @@ public class PhantomWindow implements Window, Listener
 		}
 	}
 	
+	@Override
 	public boolean equals(Object object)
 	{
 		if(object instanceof Window)
@@ -292,7 +360,7 @@ public class PhantomWindow implements Window, Listener
 	{
 		return true;
 	}
-
+	
 	@Override
 	public void onClose(Window w, Player p)
 	{
