@@ -1,5 +1,6 @@
 package org.phantomapi.tag;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
@@ -14,10 +15,12 @@ public class TaggedPlayer
 	private String contextual;
 	private final GList<String> content;
 	private final GList<String> staticContent;
+	private Location request;
 	
 	public TaggedPlayer(Player player)
 	{
 		this.player = player;
+		request = null;
 		tagged = false;
 		name = player.getName();
 		content = new GList<String>();
@@ -30,6 +33,13 @@ public class TaggedPlayer
 	{
 		if(tagged)
 		{
+			if(request != null)
+			{
+				tagBuilder.destroyContext();
+				player.teleport(request);
+				request = null;
+			}
+			
 			tagBuilder.getContext().clear();
 			tagBuilder.getContext().add(name);
 			tagBuilder.getContext().add(staticContent);
@@ -133,6 +143,11 @@ public class TaggedPlayer
 	public Player getPlayer()
 	{
 		return player;
+	}
+	
+	public void requestTeleport(Location l)
+	{
+		request = l;
 	}
 	
 	public TagBuilder getTagBuilder()
