@@ -21,7 +21,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
@@ -59,8 +58,8 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
-import org.phantomapi.hud.EntityHud;
 import org.phantomapi.hud.Hud;
+import org.phantomapi.hud.HudFactory;
 import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
@@ -205,6 +204,61 @@ public class TestController extends Controller
 			}
 		});
 		
+		tests.put("hfac", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					new HudFactory(i)
+					{
+						@Override
+						public String onEnable(String s)
+						{
+							return s;
+						}
+						
+						@Override
+						public String onDisable(String s)
+						{
+							return C.DARK_GRAY + C.stripColor(s);
+						}
+						
+						@Override
+						public HudType getType()
+						{
+							return HudType.PLAYER;
+						}
+						
+						@Override
+						public Audible getScrollSound()
+						{
+							return new GSound(Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 1.8f);
+						}
+						
+						@Override
+						public Audible getOpenSound()
+						{
+							return new GSound(Sound.ENTITY_HORSE_SADDLE, 1f, 1.8f);
+						}
+						
+						@Override
+						public Audible getCloseSound()
+						{
+							return new GSound(Sound.BLOCK_IRON_TRAPDOOR_CLOSE, 1f, 1.8f);
+						}
+						
+						@Override
+						public Audible getClickSound()
+						{
+							return new GSound(Sound.ENTITY_SHULKER_SHOOT, 1f, 1.8f);
+						}
+					};
+				}
+			}
+		});
+		
 		tests.put("sud", new Runnable()
 		{
 			@Override
@@ -259,73 +313,22 @@ public class TestController extends Controller
 								i.sendMessage("Clicked " + selection);
 							}
 						}
-					};
-					
-					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd(C.RED + "EXIT"));
-					hud.open();
-				}
-			}
-		});
-		
-		tests.put("esud", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					Entity cow = i.getLocation().getWorld().spawnEntity(i.getLocation(), EntityType.COW);
-					
-					EntityHud hud = new EntityHud(i, cow)
-					{
-						@Override
-						public void onOpen()
-						{
-							Instrument.THICK_CLOSE_HIGH.play(i);
-						}
 						
 						@Override
-						public String onDisable(String s)
+						public void onUpdate()
 						{
-							return C.DARK_GRAY + C.stripColor(s);
-						}
-						
-						@Override
-						public void onClose()
-						{
-							Instrument.THICK_CLOSE_LOW.play(i);
-						}
-						
-						@Override
-						public void onSelect(String selection, int slot)
-						{
-							Instrument.TWIG_HIGH.play(i);
-						}
-						
-						@Override
-						public void onClick(Click c, Player p, String selection, int slot)
-						{
-							if(slot == getContents().size() - 1)
-							{
-								new TaskLater()
-								{
-									@Override
-									public void run()
-									{
-										close();
-									}
-								};
-							}
 							
-							else
-							{
-								Instrument.TWIG_HIGH.play(i);
-								i.sendMessage("Clicked " + selection);
-							}
+						}
+						
+						@Override
+						public String onEnable(String s)
+						{
+							return C.GREEN + "> " + s;
 						}
 					};
 					
-					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd(C.RED + "EXIT"));
+					hud.setIndex(1);
+					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd("TTTTTTTTTfff").qadd("TTTTTTTTTfffd").qadd("TTTTTTT").qadd("TTTTTTTTTff").qadd("TTddTTTTfff").qadd(C.RED + "EXIT"));
 					hud.open();
 				}
 			}
