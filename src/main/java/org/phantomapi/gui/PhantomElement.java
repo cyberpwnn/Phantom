@@ -39,15 +39,15 @@ public class PhantomElement implements Element
 	public PhantomElement(ItemStack stack, Slot slot)
 	{
 		this.stack = stack;
-		this.type = stack.getType();
+		type = stack.getType();
 		this.slot = slot;
-		this.metadata = stack.getData().getData();
-		this.title = stack.hasItemMeta() ? stack.getItemMeta().getDisplayName() : stack.getType().toString();
-		this.text = stack.hasItemMeta() ? new GList<String>(stack.getItemMeta().getLore()) : new GList<String>();
-		this.durability = stack.getDurability();
-		this.count = stack.getAmount();
-		this.id = UUID.randomUUID();
-		this.glowing = false;
+		metadata = stack.getData().getData();
+		title = stack.hasItemMeta() ? stack.getItemMeta().getDisplayName() : stack.getType().toString();
+		text = stack.hasItemMeta() ? new GList<String>(stack.getItemMeta().getLore()) : new GList<String>();
+		durability = stack.getDurability();
+		count = stack.getAmount();
+		id = UUID.randomUUID();
+		glowing = false;
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class PhantomElement implements Element
 		this.text = text;
 		this.durability = durability;
 		this.count = count;
-		this.glowing = false;
+		glowing = false;
 		
 		ItemStack stack = new ItemStack(type, count, durability, metadata);
 		ItemMeta im = stack.hasItemMeta() ? stack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(stack.getType());
@@ -91,7 +91,7 @@ public class PhantomElement implements Element
 		}
 		
 		this.stack = stack;
-		this.id = UUID.randomUUID();
+		id = UUID.randomUUID();
 	}
 	
 	/**
@@ -219,6 +219,7 @@ public class PhantomElement implements Element
 		this(type, metadata, slot, title, new GList<String>(), durability, count);
 	}
 	
+	@Override
 	public Element addText(String text)
 	{
 		this.text.add(text);
@@ -226,11 +227,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Material getType()
 	{
 		return type;
 	}
 	
+	@Override
 	public Element setType(Material type)
 	{
 		this.type = type;
@@ -238,11 +241,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Byte getMetadata()
 	{
 		return metadata;
 	}
 	
+	@Override
 	public Element setMetadata(Byte metadata)
 	{
 		this.metadata = metadata;
@@ -250,11 +255,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public String getTitle()
 	{
 		return title;
 	}
 	
+	@Override
 	public Element setTitle(String title)
 	{
 		this.title = title;
@@ -262,11 +269,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public GList<String> getText()
 	{
 		return text;
 	}
 	
+	@Override
 	public Element setText(GList<String> text)
 	{
 		this.text = text;
@@ -274,11 +283,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Short getDurability()
 	{
 		return durability;
 	}
 	
+	@Override
 	public Element setDurability(Short durability)
 	{
 		this.durability = durability;
@@ -286,11 +297,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Integer getCount()
 	{
 		return count;
 	}
 	
+	@Override
 	public Element setCount(Integer count)
 	{
 		this.count = count;
@@ -298,11 +311,13 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Slot getSlot()
 	{
 		return slot;
 	}
 	
+	@Override
 	public Element setSlot(Slot slot)
 	{
 		this.slot = slot;
@@ -310,6 +325,7 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	@SuppressWarnings("deprecation")
 	public ItemStack getStack()
 	{
@@ -333,6 +349,7 @@ public class PhantomElement implements Element
 		return this.stack;
 	}
 	
+	@Override
 	public Element setStack(ItemStack stack)
 	{
 		this.stack = stack;
@@ -340,10 +357,12 @@ public class PhantomElement implements Element
 		return this;
 	}
 	
+	@Override
 	public Element copy()
 	{
 		return new PhantomElement(type, metadata, slot, title, text, durability, count)
 		{
+			@Override
 			public void onClick(Player p, Click c, Window w)
 			{
 				
@@ -351,6 +370,7 @@ public class PhantomElement implements Element
 		};
 	}
 	
+	@Override
 	public UUID getId()
 	{
 		return id;
@@ -362,6 +382,7 @@ public class PhantomElement implements Element
 		
 	}
 	
+	@Override
 	public boolean equals(Object object)
 	{
 		if(object instanceof Element)
@@ -371,13 +392,13 @@ public class PhantomElement implements Element
 		
 		return false;
 	}
-
+	
 	@Override
 	public void setGlowing(boolean glow)
 	{
 		glowing = glow;
 	}
-
+	
 	@Override
 	public boolean isGlowing()
 	{
