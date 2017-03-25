@@ -46,8 +46,10 @@ import org.phantomapi.command.PhantomSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.filesystem.Serializer;
+import org.phantomapi.frame.ConfigurationUI;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Dialog;
+import org.phantomapi.gui.Element;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.gui.PhantomDialog;
 import org.phantomapi.gui.PhantomElement;
@@ -56,7 +58,6 @@ import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
-import org.phantomapi.hud.ConfigurationUI;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
@@ -107,7 +108,6 @@ import org.phantomapi.util.Formula;
 import org.phantomapi.util.Items;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
-import org.phantomapi.util.Players;
 import org.phantomapi.util.T;
 import org.phantomapi.util.Timer;
 import org.phantomapi.vfx.ColoredParticleEffect;
@@ -221,6 +221,32 @@ public class TestController extends Controller
 					NPC n = CitizensAPI.getNPCRegistry().createNPC(EntityType.HORSE, "Test Wraith");
 					n.spawn(i.getLocation());
 					WU.pathfindTo(n, i);
+				}
+			}
+		});
+		
+		tests.put("guiupdate", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					Window w = new PhantomWindow("Test Update", i);
+					
+					Element e = new PhantomElement(Material.STAINED_GLASS_PANE, new Slot(0, 2), UUID.randomUUID().toString())
+					{
+						@Override
+						public void onClick(Player p, Click c, Window w)
+						{
+							w.getElement(new Slot(0, 2)).setCount(w.getElement(new Slot(0, 2)).getCount() + 1);
+							w.update();
+						}
+					};
+					
+					w.addElement(e);
+					
+					w.open();
 				}
 			}
 		});
@@ -351,7 +377,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Player p = Players.getAnyPlayer();
+				Player p = P.getAnyPlayer();
 				Hologram h = new PhantomHologram(p.getLocation());
 				h.setDisplay(C.GREEN + "Some tag\n" + C.AQUA + "Another Tag");
 				p.setLeashHolder(h.getHandle());
@@ -372,7 +398,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Hologram h = new PhantomHologram(Players.getAnyPlayer().getLocation());
+				Hologram h = new PhantomHologram(P.getAnyPlayer().getLocation());
 				Location b = h.getLocation().clone();
 				FinalFloat t = new FinalFloat(0);
 				FinalDouble s = new FinalDouble(M.sin(t.get()));
@@ -806,7 +832,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				Nest.giveMap(Players.getAnyPlayer());
+				Nest.giveMap(P.getAnyPlayer());
 			}
 		});
 		
@@ -824,7 +850,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				StackedPlayerInventory si = new StackedPlayerInventory(Players.getAnyPlayer().getInventory());
+				StackedPlayerInventory si = new StackedPlayerInventory(P.getAnyPlayer().getInventory());
 				
 				try
 				{
@@ -833,7 +859,7 @@ public class TestController extends Controller
 					w("RAW: " + new String(cc.compress()));
 					
 					si.clear();
-					Players.getAnyPlayer().getInventory().clear();
+					P.getAnyPlayer().getInventory().clear();
 					
 					new TaskLater(20)
 					{
@@ -1162,7 +1188,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				GLocation l = new GLocation(Players.getAnyPlayer().getLocation());
+				GLocation l = new GLocation(P.getAnyPlayer().getLocation());
 				DataCluster cc = new DataCluster();
 				
 				s(l.toString());
