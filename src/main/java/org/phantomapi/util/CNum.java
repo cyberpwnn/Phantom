@@ -39,6 +39,11 @@ public class CNum
 	
 	public void circ()
 	{
+		if(number < 0)
+		{
+			number = max - (Math.abs(number) > max ? max : Math.abs(number));
+		}
+		
 		number = number % (max);
 	}
 }
