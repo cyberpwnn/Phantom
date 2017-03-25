@@ -109,7 +109,6 @@ import org.phantomapi.util.F;
 import org.phantomapi.util.FU;
 import org.phantomapi.util.M;
 import org.phantomapi.util.P;
-import org.phantomapi.util.Players;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
@@ -1381,7 +1380,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 						
 						if(args.length == 3)
 						{
-							Player p = Players.getPlayer(args[2]);
+							Player p = P.getPlayer(args[2]);
 							
 							if(p != null)
 							{
@@ -1417,7 +1416,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 					
 					else if(args[0].equalsIgnoreCase("ping") && args.length == 2)
 					{
-						Player player = Players.getPlayer(args[1]);
+						Player player = P.getPlayer(args[1]);
 						
 						if(player != null)
 						{
