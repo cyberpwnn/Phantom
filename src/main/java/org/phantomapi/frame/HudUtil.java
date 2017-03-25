@@ -1,4 +1,4 @@
-package org.phantomapi.hud;
+package org.phantomapi.frame;
 
 import javax.swing.UIManager;
 

@@ -1,4 +1,4 @@
 /**
  * Create gui applications from the running jvm
  */
-package org.phantomapi.hud;
+package org.phantomapi.frame;
