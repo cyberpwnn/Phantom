@@ -14,6 +14,7 @@ public class PhantomHologram implements Hologram
 	private GList<Hologram> meta;
 	private String text;
 	private Location base;
+	private double splitDistance;
 	
 	/**
 	 * Create a phantom hologram with the given base location as the bottom
@@ -27,6 +28,7 @@ public class PhantomHologram implements Hologram
 		meta = new GList<Hologram>();
 		text = null;
 		this.base = base;
+		splitDistance = 0.25;
 	}
 	
 	@Override
@@ -82,14 +84,14 @@ public class PhantomHologram implements Hologram
 		
 		while(meta.size() < a)
 		{
-			meta.add(new ArmorStandHologram(base.clone().add(0, meta.size() * 0.25, 0)));
+			meta.add(new ArmorStandHologram(base.clone().add(0, meta.size() * splitDistance, 0)));
 		}
 		
 		int k = 0;
 		
 		for(Hologram i : meta)
 		{
-			i.setLocation(base.clone().add(0, (k++ * 0.25), 0));
+			i.setLocation(base.clone().add(0, (k++ * splitDistance), 0));
 		}
 		
 		int ind = meta.size();
@@ -124,5 +126,16 @@ public class PhantomHologram implements Hologram
 	public Location getLocation()
 	{
 		return base;
+	}
+	
+	public double getSplitDistance()
+	{
+		return splitDistance;
+	}
+	
+	public void setSplitDistance(double splitDistance)
+	{
+		this.splitDistance = splitDistance;
+		update();
 	}
 }
