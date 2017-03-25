@@ -16,8 +16,10 @@ import org.phantomapi.world.Area;
 /**
  * Player utils
  * 
+ * @deprecated Use org.phantomapi.utilP instead
  * @author cyberpwn
  */
+@Deprecated
 public class Players
 {
 	/**
