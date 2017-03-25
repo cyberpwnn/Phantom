@@ -13,15 +13,22 @@ import org.phantomapi.gui.Click;
 import org.phantomapi.hologram.Hologram;
 import org.phantomapi.hologram.PhantomHologram;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
+import org.phantomapi.sync.Task;
 import org.phantomapi.util.CNum;
 
 public abstract class BaseHud implements Hud, Listener
 {
-	private Player player;
-	private GList<String> content;
+	protected Player player;
+	protected GList<String> content;
 	protected boolean open;
-	private Hologram holo;
-	private CNum selection;
+	protected Hologram holo;
+	protected CNum selection;
+	protected int maxPage;
+	protected int startRange;
+	protected boolean listening;
+	protected GMap<String, Runnable> preListeners;
+	protected int index;
 	
 	public BaseHud(Player player)
 	{
@@ -30,6 +37,11 @@ public abstract class BaseHud implements Hud, Listener
 		open = false;
 		holo = null;
 		selection = new CNum(1);
+		maxPage = 6;
+		startRange = 0;
+		listening = true;
+		preListeners = new GMap<String, Runnable>();
+		index = 0;
 	}
 	
 	@Override
@@ -44,13 +56,30 @@ public abstract class BaseHud implements Hud, Listener
 			holo.setDisplay(content.toString("\n"));
 			holo.setExclusive(player);
 			update();
+			
+			new Task(0)
+			{
+				@Override
+				public void run()
+				{
+					if(open)
+					{
+						update();
+					}
+					
+					else
+					{
+						cancel();
+					}
+				}
+			};
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void on(PlayerInteractEvent e)
 	{
-		if(open && player.equals(e.getPlayer()))
+		if(open && player.equals(e.getPlayer()) && listening)
 		{
 			e.setCancelled(true);
 			
@@ -61,15 +90,20 @@ public abstract class BaseHud implements Hud, Listener
 				c = Click.RIGHT;
 			}
 			
-			onClick(c, player, getSelection(), getSelectionRow());
+			onClick(c, player, getSelection(), getSelectionRow(), this);
 			update();
+			
+			if(preListeners.containsKey(getSelection()))
+			{
+				preListeners.get(getSelection()).run();
+			}
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(PlayerScrollEvent e)
 	{
-		if(open && player.equals(e.getPlayer()))
+		if(open && player.equals(e.getPlayer()) && listening)
 		{
 			selection.set(selection.get() - e.getMovement());
 			onSelect(getSelection(), getSelectionRow());
@@ -81,11 +115,43 @@ public abstract class BaseHud implements Hud, Listener
 	{
 		if(open)
 		{
+			int sel = getSelectionRow();
+			GList<String> con = new GList<String>();
+			int st = 0;
+			
+			if(content.size() <= maxPage)
+			{
+				con = content.copy();
+			}
+			
+			else
+			{
+				while(startRange + maxPage - 1 < sel)
+				{
+					startRange++;
+				}
+				
+				while(startRange > sel)
+				{
+					startRange--;
+				}
+				
+				st = startRange;
+				
+				for(int i = st; i < st + maxPage; i++)
+				{
+					if(content.hasIndex(i))
+					{
+						con.add(content.get(i));
+					}
+				}
+			}
+			
 			GList<String> sv = new GList<String>();
 			
-			int k = 0;
+			int k = st;
 			
-			for(String i : content)
+			for(String i : con)
 			{
 				if(k == getSelectionRow())
 				{
@@ -102,6 +168,8 @@ public abstract class BaseHud implements Hud, Listener
 			
 			holo.setDisplay(sv.toString("\n"));
 			holo.setLocation(getBaseLocation());
+			onUpdateInternal();
+			onUpdate();
 		}
 	}
 	
@@ -145,16 +213,80 @@ public abstract class BaseHud implements Hud, Listener
 		return selection.get();
 	}
 	
-	public abstract void onOpen();
+	protected abstract void onUpdateInternal();
 	
-	public abstract String onDisable(String s);
+	public GList<String> getContent()
+	{
+		return content;
+	}
 	
-	public abstract String onEnable(String s);
+	public void setContent(GList<String> content)
+	{
+		this.content = content;
+	}
 	
-	public abstract void onClose();
+	public int getMaxPage()
+	{
+		return maxPage;
+	}
 	
-	public abstract void onSelect(String selection, int slot);
+	public void setMaxPage(int maxPage)
+	{
+		this.maxPage = maxPage;
+	}
 	
-	public abstract void onClick(Click c, Player p, String selection, int slot);
+	public Player getPlayer()
+	{
+		return player;
+	}
 	
+	public boolean isOpen()
+	{
+		return open;
+	}
+	
+	public Hologram getHolo()
+	{
+		return holo;
+	}
+	
+	public int getStartRange()
+	{
+		return startRange;
+	}
+	
+	public void registerPreListener(String query, Runnable run)
+	{
+		preListeners.put(query, run);
+	}
+	
+	public void unregisterPreListener(String query)
+	{
+		preListeners.remove(query);
+	}
+	
+	public boolean isListening()
+	{
+		return listening;
+	}
+	
+	public void setListening(boolean listening)
+	{
+		this.listening = listening;
+	}
+	
+	public int getIndex()
+	{
+		return index;
+	}
+	
+	public void setIndex(int index)
+	{
+		this.index = index;
+	}
+	
+	public GMap<String, Runnable> getPreListeners()
+	{
+		return preListeners;
+	}
 }
