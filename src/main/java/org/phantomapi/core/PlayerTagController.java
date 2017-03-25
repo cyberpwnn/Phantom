@@ -1,6 +1,7 @@
 package org.phantomapi.core;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
@@ -183,6 +185,27 @@ public class PlayerTagController extends Controller implements Monitorable
 		
 		t.stop();
 		performance.put(t.getTime());
+	}
+	
+	public void signalTeleport(Player p, Location l)
+	{
+		TaggedPlayer tp = tags.get(p);
+		
+		if(tp != null && tp.isTagged())
+		{
+			tp.requestTeleport(l);
+		}
+	}
+	
+	@EventHandler
+	public void on(PlayerTeleportEvent e)
+	{
+		TaggedPlayer tp = tags.get(e.getPlayer());
+		
+		if(tp != null && tp.isTagged())
+		{
+			tp.requestTeleport(e.getTo());
+		}
 	}
 	
 	public void registerTagger(PlayerTagHandler t)
