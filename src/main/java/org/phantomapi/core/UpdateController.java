@@ -47,7 +47,14 @@ public class UpdateController extends Controller
 	{
 		for(Plugin i : Bukkit.getServer().getPluginManager().getPlugins())
 		{
-			File file = new File(getPlugin().getDataFolder().getParentFile(), getPluginFile(i.getName()));
+			String n = getPluginFile(i.getName());
+			
+			if(n == null)
+			{
+				continue;
+			}
+			
+			File file = new File(getPlugin().getDataFolder().getParentFile(), n);
 			
 			if(!modifications.containsKey(i))
 			{
@@ -63,7 +70,14 @@ public class UpdateController extends Controller
 	
 	public boolean needsUpdate(Plugin i)
 	{
-		File file = new File(getPlugin().getDataFolder().getParentFile(), getPluginFile(i.getName()));
+		String n = getPluginFile(i.getName());
+		
+		if(n == null)
+		{
+			return false;
+		}
+		
+		File file = new File(getPlugin().getDataFolder().getParentFile(), n);
 		
 		if(modifications.containsKey(i))
 		{
@@ -179,12 +193,20 @@ public class UpdateController extends Controller
 	
 	private String getPluginFile(String name)
 	{
-		if(!filePlugins.containsKey(name))
+		try
 		{
-			filePlugins.put(name, PluginUtil.getPluginFileName(name));
+			if(!filePlugins.containsKey(name))
+			{
+				filePlugins.put(name, PluginUtil.getPluginFileName(name));
+			}
+			
+			return filePlugins.get(name);
 		}
 		
-		return filePlugins.get(name);
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 	
 	@Override
