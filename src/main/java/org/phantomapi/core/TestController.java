@@ -241,7 +241,7 @@ public class TestController extends Controller
 						e.printStackTrace();
 					}
 					
-					new MiniPet(i.getLocation(), skull, "Skfffddsull?")
+					new MiniPet(i, i.getLocation(), skull, "Skfffddsull?")
 					{
 						@Override
 						public void entityTick(Zombie z)
@@ -253,6 +253,18 @@ public class TestController extends Controller
 						public void entityInteract(Zombie z)
 						{
 							
+						}
+						
+						@Override
+						public void entityTeleported(Zombie z)
+						{
+							
+						}
+						
+						@Override
+						public void entityAmbient(Zombie z)
+						{
+							ParticleEffect.HEART.display(0.7f, 1, z.getEyeLocation(), 4f);
 						}
 					};
 				}
