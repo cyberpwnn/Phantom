@@ -198,6 +198,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void enable()
 	{
+		loadSupport();
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
@@ -360,6 +361,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private boolean checkReload()
 	{
 		return M.ms() - Platform.ENVIRONMENT.startTime() > 10000;
+	}
+	
+	private void loadSupport()
+	{
+		
 	}
 	
 	private void loadSigar()
