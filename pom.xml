@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyberpwn</groupId>
 	<artifactId>phantom</artifactId>
-	<version>M3</version>
+	<version>M4</version>
 	<name>Phantom</name>
 	<description>Another Damn API</description>
 	<properties>
@@ -236,6 +236,13 @@
 			<artifactId>bukkit</artifactId>
 			<version>1.9.4-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>1.9.4-R0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${req.lib}/craftbukkit-1.9.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
