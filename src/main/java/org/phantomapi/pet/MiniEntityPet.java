@@ -17,8 +17,6 @@ public class MiniEntityPet extends EntityZombie
 	@Override
 	public void g(float paramFloat1, float paramFloat2)
 	{
-		playStepSound();
-		
 		EntityLiving localEntityLiving = (EntityLiving) bu();
 		if(localEntityLiving == null)
 		{
@@ -31,6 +29,7 @@ public class MiniEntityPet extends EntityZombie
 					break;
 				}
 			}
+			
 			if(localEntityLiving == null)
 			{
 				super.g(paramFloat1, paramFloat2);
@@ -64,6 +63,5 @@ public class MiniEntityPet extends EntityZombie
 		locX = ((vv.a + vv.d) / 2.0D);
 		locZ = ((vv.c + vv.f) / 2.0D);
 		locY = (vv.b - 1.5D);
-		
 	}
 }
