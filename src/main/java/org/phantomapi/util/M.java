@@ -7,8 +7,10 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.Area;
+import net.minecraft.server.v1_9_R2.Material;
 
 /**
  * Math
@@ -85,6 +87,34 @@ public class M
 		}
 		
 		return evaluate(expression);
+	}
+	
+	public static Block highestBlock(Location l, int shuf, int st)
+	{
+		int y = st;
+		Block b = null;
+		
+		while(y > 0)
+		{
+			y -= shuf;
+			
+			if(new Location(l.getWorld(), l.getX(), y, l.getZ()).getBlock().getType().equals(Material.AIR))
+			{
+				if(shuf > 1)
+				{
+					b = highestBlock(l, 1, y + shuf);
+					break;
+				}
+				
+				else
+				{
+					b = new Location(l.getWorld(), l.getX(), y, l.getZ()).getBlock();
+					break;
+				}
+			}
+		}
+		
+		return b;
 	}
 	
 	/**
