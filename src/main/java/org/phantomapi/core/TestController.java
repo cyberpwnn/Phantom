@@ -21,9 +21,11 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -76,6 +78,7 @@ import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
+import org.phantomapi.pet.MiniPet;
 import org.phantomapi.ppa.PPA;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
@@ -200,6 +203,58 @@ public class TestController extends Controller
 					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
 					inv.setStacks(inv.getStacks());
 					inv.thrash();
+				}
+			}
+		});
+		
+		tests.put("superglow", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(World i : Bukkit.getWorlds())
+				{
+					for(Entity j : i.getEntities())
+					{
+						j.setGlowing(true);
+					}
+				}
+			}
+		});
+		
+		tests.put("minipet", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : Phantom.instance().onlinePlayers())
+				{
+					ItemStack skull = null;
+					
+					try
+					{
+						skull = Items.getSkull("http://textures.minecraft.net/texture/154a93cf60e2f7ffb21750628f693d4d125c80c1f78454a562bee20254cac90");
+					}
+					
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					
+					new MiniPet(i.getLocation(), skull, "Skfffddsull?")
+					{
+						@Override
+						public void entityTick(Zombie z)
+						{
+							
+						}
+						
+						@Override
+						public void entityInteract(Zombie z)
+						{
+							
+						}
+					};
 				}
 			}
 		});
