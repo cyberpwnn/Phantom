@@ -33,6 +33,7 @@ org.phantomapi.nest
 org.phantomapi.network
 org.phantomapi.nms
 org.phantomapi.papyrus
+org.phantomapi.pet
 org.phantomapi.phast
 org.phantomapi.physics
 org.phantomapi.ppa
