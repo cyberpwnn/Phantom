@@ -1,11 +1,17 @@
 package org.phantomapi.util;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.phantomapi.filesystem.Base64;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.MaterialBlock;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 
 /**
  * Itemstack utilities
@@ -69,6 +75,39 @@ public class Items
 	public static boolean is(ItemStack is, Material material, byte data)
 	{
 		return is(is, new MaterialBlock(material, data));
+	}
+	
+	/**
+	 * Load skin into a skull item stack
+	 * 
+	 * @param uri
+	 *            the url, eg:
+	 *            "http://textures.minecraft.net/texture/e58c3ff46ac3fa1a408b24e5b99913cb4c116d8ad7b259186c9fd529464a71c"
+	 * @return the item stack
+	 * @throws NoSuchFieldException
+	 *             bad version (not 1.9.2-4)
+	 * @throws SecurityException
+	 *             LET ME DO STUFF
+	 * @throws IllegalArgumentException
+	 *             shouldnt happen
+	 * @throws IllegalAccessException
+	 *             not good
+	 */
+	public static ItemStack getSkull(String uri) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	{
+		ItemStack localItemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		ItemMeta localItemMeta = localItemStack.getItemMeta();
+		localItemMeta.setDisplayName("skull");
+		GameProfile localGameProfile = new GameProfile(UUID.randomUUID(), null);
+		byte[] arrayOfByte = Base64.encodeBytesToBytes(String.format("{textures:{SKIN:{url:\"%s\"}}}", new Object[] {uri}).getBytes());
+		localGameProfile.getProperties().put("textures", new Property("textures", new String(arrayOfByte)));
+		Field localField = null;
+		localField = localItemMeta.getClass().getDeclaredField("profile");
+		localField.setAccessible(true);
+		localField.set(localItemMeta, localGameProfile);
+		localItemStack.setItemMeta(localItemMeta);
+		
+		return localItemStack;
 	}
 	
 	/**
