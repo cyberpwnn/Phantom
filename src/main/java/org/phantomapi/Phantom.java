@@ -2588,4 +2588,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		return kernelController;
 	}
+	
+	public static void substrate(Plugin p)
+	{
+		for(Controllable i : Phantom.instance.getBindings())
+		{
+			if(i.getPlugin().equals(p))
+			{
+				Phantom.instance.o("Reregister: " + i.getName());
+				Phantom.instance.getCommandRegistryController().register(i);
+			}
+		}
+	}
 }
