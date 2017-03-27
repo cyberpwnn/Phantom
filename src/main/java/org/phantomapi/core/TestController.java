@@ -34,6 +34,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
+import org.phantomapi.async.Callback;
 import org.phantomapi.chromatic.Chromatic;
 import org.phantomapi.chromatic.ChromaticBlock;
 import org.phantomapi.clust.DataCluster;
@@ -193,12 +194,22 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("inventory-thrash", new Runnable()
+		tests.put("sign", new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				
+				for(Player i : onlinePlayers())
+				{
+					Phantom.instance().getProtocolController().listenSign(i, new Callback<GList<String>>()
+					{
+						@Override
+						public void run()
+						{
+							i.sendMessage("Text: " + get().toString(", "));
+						}
+					}, new GList<String>().qadd("Text 1").qadd("Text 2").qadd("Text 3").qadd("Text 4"));
+				}
 			}
 		});
 		
