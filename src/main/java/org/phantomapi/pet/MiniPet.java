@@ -4,7 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,11 +24,14 @@ import org.phantomapi.world.W;
 public abstract class MiniPet implements Listener
 {
 	private Zombie z;
+	private Snowball s;
+	private Snowball s2;
 	private boolean following;
 	private boolean follow;
 	private GSound ambientSound;
 	private double minDist;
 	private Player owner;
+	private String name;
 	
 	public MiniPet(Player owner, Location location, ItemStack skull, String name)
 	{
@@ -34,11 +39,18 @@ public abstract class MiniPet implements Listener
 		following = false;
 		z = (Zombie) EntityTypes.spawnEntity(new MiniEntityPet(((CraftWorld) location.getWorld()).getHandle()), location);
 		z.setInvulnerable(true);
-		PE.INVISIBILITY.a(0).d(10000000).c(z);
 		z.getEquipment().setHelmet(skull);
 		Phantom.instance().registerListener(this);
 		ambientSound = new GSound(Sound.ENTITY_WOLF_AMBIENT, 1f, 1.7f);
 		minDist = 3.7;
+		s = (Snowball) z.getWorld().spawnEntity(z.getLocation().clone().add(0, 1, 0), EntityType.SNOWBALL);
+		s2 = (Snowball) z.getWorld().spawnEntity(z.getLocation().clone().add(0, 1, 0), EntityType.SNOWBALL);
+		s2.setCustomName(name);
+		s2.setCustomNameVisible(true);
+		s.setPassenger(s2);
+		z.setPassenger(s);
+		this.name = name;
+		PE.INVISIBILITY.a(0).d(10000000).c(z);
 		this.owner = owner;
 		
 		new Task(5)
@@ -76,6 +88,7 @@ public abstract class MiniPet implements Listener
 				}
 				
 				PE.INVISIBILITY.a(0).d(10000000).c(z);
+				s2.setCustomName(getName());
 				
 				if(!owner.getWorld().equals(z.getWorld()))
 				{
@@ -209,5 +222,25 @@ public abstract class MiniPet implements Listener
 	public Player getOwner()
 	{
 		return owner;
+	}
+	
+	public Snowball getS()
+	{
+		return s;
+	}
+	
+	public Snowball getS2()
+	{
+		return s2;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }
