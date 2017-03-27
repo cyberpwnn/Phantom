@@ -59,6 +59,7 @@ public class NMSPetUtils
 				throw new IllegalArgumentException(paramLivingEntity.getType().getName() + " is not an instance of an EntityInsentient.");
 			}
 		}
+		
 		catch(Exception localException)
 		{
 			localException.printStackTrace();

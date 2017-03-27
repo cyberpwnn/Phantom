@@ -2,6 +2,7 @@ package org.phantomapi.pet;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -12,9 +13,11 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.phantomapi.Phantom;
 import org.phantomapi.event.PacketNamedSoundEvent;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.sync.Task;
 import org.phantomapi.world.PE;
+import org.phantomapi.world.W;
 
 public abstract class MiniPet implements Listener
 {
@@ -55,18 +58,9 @@ public abstract class MiniPet implements Listener
 				{
 					if(follow)
 					{
+						new NMSPetUtils().setToFollow(z, owner.getUniqueId(), 1f);
+						
 						if(!owner.getWorld().equals(z.getWorld()))
-						{
-							z.teleport(owner.getLocation());
-							entityTeleported(z);
-						}
-						
-						if(owner.getLocation().distanceSquared(z.getEyeLocation()) < (16 * 16))
-						{
-							new NMSPetUtils().setToFollow(z, owner.getUniqueId(), 1f);
-						}
-						
-						else
 						{
 							z.teleport(owner.getLocation());
 							entityTeleported(z);
@@ -131,7 +125,16 @@ public abstract class MiniPet implements Listener
 	{
 		if(e.getSound().equals(Sound.ENTITY_ZOMBIE_AMBIENT))
 		{
-			if(e.getLocation().getBlock().getLocation().equals(z.getLocation().getBlock().getLocation()))
+			GList<Location> scan = new GList<Location>();
+			Block b = e.getLocation().getBlock();
+			scan.add(b.getLocation());
+			
+			for(Block i : W.blockFaces(b))
+			{
+				scan.add(i.getLocation());
+			}
+			
+			if(scan.contains(z.getLocation().getBlock().getLocation()))
 			{
 				entityAmbient(z);
 				
