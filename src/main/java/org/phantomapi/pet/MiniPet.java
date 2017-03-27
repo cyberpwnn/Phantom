@@ -129,7 +129,7 @@ public abstract class MiniPet implements Listener
 	@EventHandler
 	public void on(PlayerInteractAtEntityEvent e)
 	{
-		if(e.getRightClicked().getEntityId() == z.getEntityId())
+		if(e.getRightClicked().getEntityId() == z.getEntityId() && e.getPlayer().equals(owner))
 		{
 			entityInteract(z);
 		}
