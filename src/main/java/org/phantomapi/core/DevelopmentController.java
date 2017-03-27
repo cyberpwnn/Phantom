@@ -188,10 +188,11 @@ public class DevelopmentController extends Controller implements Configurable, M
 							{
 								s("Reloading " + C.LIGHT_PURPLE + i.getName());
 								PluginUtil.reload(i);
+								Phantom.substrate(i);
 								
 								for(Player p : Phantom.instance().onlinePlayers())
 								{
-									mb.message(p, C.GRAY + "Reloaded " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
+									mb.message(p, C.GRAY + "Injected " + C.BOLD + C.WHITE + i.getName() + " " + i.getDescription().getVersion());
 								}
 							}
 						}
