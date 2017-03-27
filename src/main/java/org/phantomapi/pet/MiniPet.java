@@ -113,6 +113,8 @@ public abstract class MiniPet implements Listener
 	public void destroy()
 	{
 		z.remove();
+		s.remove();
+		s2.remove();
 	}
 	
 	@EventHandler
