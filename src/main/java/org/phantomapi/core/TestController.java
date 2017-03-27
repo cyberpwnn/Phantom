@@ -198,12 +198,7 @@ public class TestController extends Controller
 			@Override
 			public void run()
 			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					StackedPlayerInventory inv = new StackedPlayerInventory(i.getInventory());
-					inv.setStacks(inv.getStacks());
-					inv.thrash();
-				}
+				
 			}
 		});
 		
