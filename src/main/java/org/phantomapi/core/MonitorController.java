@@ -88,4 +88,14 @@ public class MonitorController extends Controller
 			samplers.remove(c.getName());
 		}
 	}
+	
+	public GMap<String, Monitorable> getSamplers()
+	{
+		return samplers;
+	}
+	
+	public GMap<Player, String> getMonitors()
+	{
+		return monitors;
+	}
 }
