@@ -115,6 +115,11 @@ public abstract class BaseHud implements Hud, Listener
 	{
 		if(open)
 		{
+			if(selection.getMax() != content.size())
+			{
+				selection.setMax(content.size());
+			}
+			
 			int sel = getSelectionRow();
 			GList<String> con = new GList<String>();
 			int st = 0;
