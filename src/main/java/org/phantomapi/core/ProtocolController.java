@@ -2,7 +2,6 @@ package org.phantomapi.core;
 
 import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -20,8 +19,9 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.nms.EntityHider;
 import org.phantomapi.nms.EntityHider.Policy;
 import org.phantomapi.nms.FakeEquipment;
-import org.phantomapi.packet.WrapperPlayServerBlockChange;
+import org.phantomapi.nms.NMSX;
 import org.phantomapi.sync.TaskLater;
+import org.phantomapi.util.C;
 import org.phantomapi.util.Depend;
 import org.phantomapi.util.PRO;
 import org.phantomapi.util.Timer;
@@ -33,8 +33,6 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
-import com.comphenix.protocol.wrappers.WrappedBlockData;
-import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 
 public class ProtocolController extends Controller
 {
@@ -59,34 +57,16 @@ public class ProtocolController extends Controller
 		signListen = new GMap<Player, Callback<GList<String>>>();
 	}
 	
-	public void listenSign(Player player, Callback<GList<String>> callback, GList<String> initialText)
+	public void listenSign(Player player, Callback<GList<String>> callback, GList<String> initialText, String guide)
 	{
-		WrapperPlayServerBlockChange wrapper = new WrapperPlayServerBlockChange();
-		wrapper.setBlockData(WrappedBlockData.createData(Material.SIGN_POST));
-		wrapper.setLocation(new BlockPosition(player.getLocation().toVector()));
-		
-		PacketContainer p1 = PRO.getLibrary().createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
-		p1.getIntegers().write(0, PRO.toPosition(player.getLocation().toVector()));
-		p1.getIntegers().write(0, 9);
-		NbtCompound nbt = (NbtCompound) p1.getNbtModifier().read(0);
-		String[] lines = initialText.toArray(new String[initialText.size()]);
-		
-		for(int i = 0; i < 4; i++)
-		{
-			nbt.put("Text" + (i + 1), "{\"extra\":[{\"text\":\"" + lines[i] + "\"}],\"text\":\"\"}");
-		}
-		
-		p1.getNbtModifier().write(0, nbt);
-		
 		PacketContainer p2 = PRO.getLibrary().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
 		p2.getBlockPositionModifier().write(0, new BlockPosition(player.getLocation().toVector()));
 		
 		try
 		{
-			PRO.getLibrary().sendServerPacket(player, wrapper.getHandle());
-			PRO.getLibrary().sendServerPacket(player, p1);
 			PRO.getLibrary().sendServerPacket(player, p2);
 			signListen.put(player, callback);
+			NMSX.sendActionBar(player, C.GREEN + guide);
 		}
 		
 		catch(InvocationTargetException e)
