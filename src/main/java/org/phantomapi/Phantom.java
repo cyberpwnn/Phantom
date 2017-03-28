@@ -19,6 +19,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -31,6 +33,7 @@ import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.JSONDataInput;
 import org.phantomapi.clust.JSONDataOutput;
 import org.phantomapi.clust.MySQL;
+import org.phantomapi.clust.YAMLDataInput;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.command.PhantomSender;
@@ -78,8 +81,10 @@ import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
 import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
+import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.hud.Hud;
+import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
@@ -91,6 +96,7 @@ import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.registry.GlobalRegistry;
+import org.phantomapi.sfx.Instrument;
 import org.phantomapi.slate.Slate;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
@@ -194,10 +200,12 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private KernelController kernelController;
 	private WraithController wraithController;
 	private Long nsx;
+	private GMap<String, GList<String>> dictionaries;
 	
 	@Override
 	public void enable()
 	{
+		dictionaries = new GMap<String, GList<String>>();
 		loadSupport();
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
@@ -365,7 +373,40 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	
 	private void loadSupport()
 	{
+		try
+		{
+			copyResource("org/phantomapi/kernel/" + "properties.yml", new File(getDataFolder(), "properties.yml"));
+		}
 		
+		catch(Exception e)
+		{
+			
+		}
+		
+		File p = new File(getDataFolder(), "properties.yml");
+		
+		if(p.exists())
+		{
+			try
+			{
+				DataCluster cc = new DataCluster();
+				new YAMLDataInput().load(cc, p);
+				
+				DataCluster dicts = cc.crop("properties.dictionaries");
+				
+				for(String i : dicts.getRoots())
+				{
+					GList<String> s = new GList<String>(dicts.getStringList(i));
+					dictionaries.put(i, s);
+					D.d(this, "Loading Dictionary: " + i);
+				}
+			}
+			
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void loadSigar()
@@ -1176,7 +1217,462 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			{
 				if(sender.isPlayer() && Z.isZenith(sender.getPlayer()))
 				{
-					// TODO hud
+					e.setCancelled(true);
+					PlayerHud ph = new PlayerHud(sender.getPlayer(), true)
+					{
+						@Override
+						public void onUpdate()
+						{
+							
+						}
+						
+						@Override
+						public void onSelect(String selection, int slot)
+						{
+							Instrument.TWIG_HIGH.play(getPlayer());
+						}
+						
+						@Override
+						public void onOpen()
+						{
+							Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+						}
+						
+						@Override
+						public String onEnable(String s)
+						{
+							return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+						}
+						
+						@Override
+						public String onDisable(String s)
+						{
+							return C.DARK_GRAY + s;
+						}
+						
+						@Override
+						public void onClose()
+						{
+							Instrument.THICK_CLOSE_LOW.play(getPlayer());
+						}
+						
+						@Override
+						public void onClick(Click c, Player p, String selection, int slot, Hud h)
+						{
+							Instrument.DEEP_BOOM_HIGH.play(p);
+							
+							if(selection.equalsIgnoreCase("Server"))
+							{
+								close();
+								
+								PlayerHud phh = new PlayerHud(sender.getPlayer(), true)
+								{
+									@Override
+									public void onUpdate()
+									{
+										
+									}
+									
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										Instrument.TWIG_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public String onEnable(String s)
+									{
+										return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + s;
+									}
+									
+									@Override
+									public void onClose()
+									{
+										Instrument.THICK_CLOSE_LOW.play(getPlayer());
+									}
+									
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud h)
+									{
+										Instrument.DEEP_BOOM_HIGH.play(p);
+										
+										if(selection.equalsIgnoreCase("Back"))
+										{
+											close();
+											Phantom.this.on(e);
+										}
+										
+										if(selection.equalsIgnoreCase("Thrash"))
+										{
+											close();
+											thrash(sender);
+										}
+										
+										if(selection.equalsIgnoreCase("Reload"))
+										{
+											close();
+											Bukkit.reload();
+										}
+										
+										if(selection.equalsIgnoreCase("Stop"))
+										{
+											close();
+											Bukkit.shutdown();
+										}
+									}
+								};
+								
+								phh.getContent().add("Back");
+								phh.getContent().add("Thrash");
+								phh.getContent().add("Reload");
+								phh.getContent().add("Stop");
+								phh.open();
+							}
+							
+							if(selection.equalsIgnoreCase("World"))
+							{
+								close();
+								
+								PlayerHud phh = new PlayerHud(sender.getPlayer(), true)
+								{
+									@Override
+									public void onUpdate()
+									{
+										
+									}
+									
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										Instrument.TWIG_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public String onEnable(String s)
+									{
+										return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + s;
+									}
+									
+									@Override
+									public void onClose()
+									{
+										Instrument.THICK_CLOSE_LOW.play(getPlayer());
+									}
+									
+									@SuppressWarnings("deprecation")
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud h)
+									{
+										Instrument.DEEP_BOOM_HIGH.play(p);
+										
+										if(selection.equalsIgnoreCase("Back"))
+										{
+											close();
+											Phantom.this.on(e);
+										}
+										
+										if(selection.equalsIgnoreCase("Clear Skies"))
+										{
+											close();
+											sender.getPlayer().getWorld().setTime(0);
+											sender.getPlayer().getWorld().setWeatherDuration(0);
+										}
+										
+										if(selection.equalsIgnoreCase("Kill"))
+										{
+											close();
+											
+											PlayerHud phhh = new PlayerHud(sender.getPlayer(), true)
+											{
+												@Override
+												public void onUpdate()
+												{
+													
+												}
+												
+												@Override
+												public void onSelect(String selection, int slot)
+												{
+													Instrument.TWIG_HIGH.play(getPlayer());
+												}
+												
+												@Override
+												public void onOpen()
+												{
+													Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+												}
+												
+												@Override
+												public String onEnable(String s)
+												{
+													return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+												}
+												
+												@Override
+												public String onDisable(String s)
+												{
+													return C.DARK_GRAY + s;
+												}
+												
+												@Override
+												public void onClose()
+												{
+													Instrument.THICK_CLOSE_LOW.play(getPlayer());
+												}
+												
+												@Override
+												public void onClick(Click c, Player p, String selection, int slot, Hud h)
+												{
+													Instrument.DEEP_BOOM_HIGH.play(p);
+													
+													if(selection.equalsIgnoreCase("Back"))
+													{
+														close();
+													}
+													
+													else if(selection.equalsIgnoreCase("EVERYTHING"))
+													{
+														close();
+														
+														int k = 0;
+														for(Entity i : p.getWorld().getEntities())
+														{
+															if(i instanceof Player)
+															{
+																continue;
+															}
+															
+															i.remove();
+															k++;
+														}
+														
+														sender.sendMessage("Killed " + k + " Entities");
+													}
+													
+													else
+													{
+														String f = selection.toUpperCase().replaceAll(" ", "_");
+														EntityType t = EntityType.valueOf(f);
+														int k = 0;
+														
+														for(Entity i : p.getWorld().getEntities())
+														{
+															if(i.getType().equals(t))
+															{
+																k++;
+																i.remove();
+															}
+														}
+														
+														sender.sendMessage("Killed " + k + " " + selection + "'s");
+													}
+												}
+											};
+											
+											phhh.getContent().add("Back");
+											phhh.getContent().add("EVERYTHING");
+											
+											for(EntityType i : EntityType.values())
+											{
+												phhh.getContent().add(StringUtils.capitaliseAllWords(i.toString().toLowerCase().replaceAll("_", " ")));
+											}
+											
+											phhh.open();
+										}
+									}
+								};
+								
+								phh.getContent().add("Back");
+								phh.getContent().add("Clear Skies");
+								phh.getContent().add("Kill");
+								phh.open();
+							}
+							
+							if(selection.equalsIgnoreCase("Hotplug"))
+							{
+								close();
+								
+								PlayerHud phh = new PlayerHud(sender.getPlayer(), true)
+								{
+									@Override
+									public void onUpdate()
+									{
+										
+									}
+									
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										Instrument.TWIG_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public String onEnable(String s)
+									{
+										return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + s;
+									}
+									
+									@Override
+									public void onClose()
+									{
+										Instrument.THICK_CLOSE_LOW.play(getPlayer());
+									}
+									
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud h)
+									{
+										Instrument.DEEP_BOOM_HIGH.play(p);
+										
+										if(selection.equalsIgnoreCase("Back"))
+										{
+											close();
+											Phantom.this.on(e);
+										}
+										
+										else if(selection.equalsIgnoreCase("OFF"))
+										{
+											close();
+											getMonitorController().unPlug(p);
+										}
+										
+										else
+										{
+											close();
+											getMonitorController().hotPlug(p, selection);
+										}
+									}
+								};
+								
+								phh.getContent().add("Back");
+								phh.getContent().add("OFF");
+								phh.getContent().add(getMonitorController().getSamplers().k());
+								phh.open();
+							}
+							
+							if(selection.equalsIgnoreCase("Teleport"))
+							{
+								close();
+								
+								PlayerHud phh = new PlayerHud(sender.getPlayer(), true)
+								{
+									@Override
+									public void onUpdate()
+									{
+										
+									}
+									
+									@Override
+									public void onSelect(String selection, int slot)
+									{
+										Instrument.TWIG_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public void onOpen()
+									{
+										Instrument.THICK_CLOSE_HIGH.play(getPlayer());
+									}
+									
+									@Override
+									public String onEnable(String s)
+									{
+										return C.GRAY + "> " + C.LIGHT_PURPLE + s + C.GRAY + " <";
+									}
+									
+									@Override
+									public String onDisable(String s)
+									{
+										return C.DARK_GRAY + s;
+									}
+									
+									@Override
+									public void onClose()
+									{
+										Instrument.THICK_CLOSE_LOW.play(getPlayer());
+									}
+									
+									@Override
+									public void onClick(Click c, Player p, String selection, int slot, Hud h)
+									{
+										Instrument.DEEP_BOOM_HIGH.play(p);
+										
+										if(selection.equalsIgnoreCase("Back"))
+										{
+											close();
+											Phantom.this.on(e);
+										}
+										
+										else if(selection.equalsIgnoreCase("World Spawn"))
+										{
+											close();
+											P.tp(sender.getPlayer(), sender.getPlayer().getWorld().getSpawnLocation());
+										}
+										
+										else
+										{
+											close();
+											P.tp(sender.getPlayer(), P.findPlayer(selection).getLocation());
+										}
+									}
+								};
+								
+								phh.getContent().add("Back");
+								phh.getContent().add("World Spawn");
+								
+								for(Player i : onlinePlayers())
+								{
+									if(!i.equals(e.getPlayer()))
+									{
+										phh.getContent().add(i.getName());
+									}
+								}
+								
+								phh.open();
+							}
+						}
+					};
+					
+					ph.getContent().add("Server");
+					ph.getContent().add("Hotplug");
+					ph.getContent().add("Teleport");
+					ph.getContent().add("World");
+					ph.open();
 				}
 			}
 			
