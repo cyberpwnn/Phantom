@@ -3,7 +3,7 @@
   <groupId>org.cyberpwn</groupId>
   <artifactId>phantom</artifactId>
   <versioning>
-    <release>M5</release>
+    <release>M6</release>
     <versions>
       <version>P6</version>
       <version>P7</version>
@@ -68,7 +68,8 @@
       <version>M3</version>
       <version>M4</version>
       <version>M5</version>
+      <version>M6</version>
     </versions>
-    <lastUpdated>20170327113926</lastUpdated>
+    <lastUpdated>20170328144144</lastUpdated>
   </versioning>
 </metadata>

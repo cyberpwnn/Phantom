@@ -32,6 +32,7 @@ org.phantomapi.nbt
 org.phantomapi.nest
 org.phantomapi.network
 org.phantomapi.nms
+org.phantomapi.packet
 org.phantomapi.papyrus
 org.phantomapi.pet
 org.phantomapi.phast
