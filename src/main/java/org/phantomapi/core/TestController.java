@@ -208,7 +208,7 @@ public class TestController extends Controller
 						{
 							i.sendMessage("Text: " + get().toString(", "));
 						}
-					}, new GList<String>().qadd("Text 1").qadd("Text 2").qadd("Text 3").qadd("Text 4"));
+					}, new GList<String>().qadd("Text 1").qadd("Text 2").qadd("Text 3").qadd("Text 4"), "Please type your message.");
 				}
 			}
 		});
