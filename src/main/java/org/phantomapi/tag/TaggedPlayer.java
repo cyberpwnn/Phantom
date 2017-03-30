@@ -3,6 +3,7 @@ package org.phantomapi.tag;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.phantomapi.entity.PEntity;
 import org.phantomapi.lang.GList;
 import org.phantomapi.nms.NMSX;
 
@@ -26,20 +27,23 @@ public class TaggedPlayer
 		content = new GList<String>();
 		staticContent = new GList<String>();
 		contextual = null;
-		tagBuilder = new TagBuilder(player);
+		tagBuilder = new TagBuilder(player, this);
 	}
 	
 	public void update()
 	{
+		if(request != null)
+		{
+			tagBuilder.destroyContext();
+			new PEntity(player).clearPassengers();
+			player.setPassenger(null);
+			player.teleport(request);
+			player.sendMessage("Tried to teleport");
+			request = null;
+		}
+		
 		if(tagged)
 		{
-			if(request != null)
-			{
-				tagBuilder.destroyContext();
-				player.teleport(request);
-				request = null;
-			}
-			
 			tagBuilder.getContext().clear();
 			tagBuilder.getContext().add(name);
 			tagBuilder.getContext().add(staticContent);
