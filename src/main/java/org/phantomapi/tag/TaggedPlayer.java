@@ -38,7 +38,6 @@ public class TaggedPlayer
 			new PEntity(player).clearPassengers();
 			player.setPassenger(null);
 			player.teleport(request);
-			player.sendMessage("Tried to teleport");
 			request = null;
 		}
 		
