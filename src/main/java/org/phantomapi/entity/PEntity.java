@@ -54,6 +54,13 @@ public class PEntity
 		setNBT(c);
 	}
 	
+	public boolean hasPassengers()
+	{
+		NBTTagCompound c = getNBT();
+		return c.hasKey("Passengers");
+		
+	}
+	
 	public void setPassengers(PEntity... riders)
 	{
 		if(riders == null || riders.length == 0)
