@@ -17,6 +17,7 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GListAdapter;
+import org.phantomapi.nms.NMSX;
 import org.phantomapi.world.Area;
 import org.phantomapi.world.PE;
 import org.phantomapi.world.RayTrace;
@@ -54,6 +55,7 @@ public class P
 	{
 		p.teleport(target);
 		Phantom.instance().getPlayerTagController().signalTeleport(p, target);
+		NMSX.forceTeleport(p, target);
 	}
 	
 	/**
