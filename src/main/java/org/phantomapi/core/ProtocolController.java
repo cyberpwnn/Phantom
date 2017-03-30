@@ -2,8 +2,10 @@ package org.phantomapi.core;
 
 import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,6 +27,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.Depend;
 import org.phantomapi.util.PRO;
 import org.phantomapi.util.Timer;
+import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -59,20 +62,51 @@ public class ProtocolController extends Controller
 	
 	public void listenSign(Player player, Callback<GList<String>> callback, GList<String> initialText, String guide)
 	{
-		PacketContainer p2 = PRO.getLibrary().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-		p2.getBlockPositionModifier().write(0, new BlockPosition(player.getLocation().toVector()));
+		Location l = player.getLocation().getBlock().getLocation();
+		Location v = l.clone().add(0, -1, 0);
+		MaterialBlock mb = new MaterialBlock(l);
+		MaterialBlock mbx = new MaterialBlock(v);
+		v.getBlock().setType(Material.BARRIER);
+		l.getBlock().setType(Material.SIGN_POST);
+		Sign s = (Sign) l.getBlock().getState();
+		s.setLine(0, initialText.get(0));
+		s.setLine(1, initialText.get(1));
+		s.setLine(2, initialText.get(2));
+		s.setLine(3, initialText.get(3));
+		s.update();
 		
-		try
+		new TaskLater(2)
 		{
-			PRO.getLibrary().sendServerPacket(player, p2);
-			signListen.put(player, callback);
-			NMSX.sendActionBar(player, C.GREEN + guide);
-		}
-		
-		catch(InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
+			@Override
+			public void run()
+			{
+				try
+				{
+					s.update();
+					PacketContainer p = PRO.getLibrary().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
+					p.getBlockPositionModifier().write(0, new BlockPosition(player.getLocation().toVector()));
+					PRO.getLibrary().sendServerPacket(player, p);
+					
+					new TaskLater(5)
+					{
+						@Override
+						public void run()
+						{
+							mb.apply(l);
+							mbx.apply(v);
+						}
+					};
+				}
+				
+				catch(InvocationTargetException e)
+				{
+					e.printStackTrace();
+				}
+				
+				signListen.put(player, callback);
+				NMSX.sendActionBar(player, C.GREEN + guide);
+			}
+		};
 	}
 	
 	@Override
