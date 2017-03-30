@@ -96,6 +96,15 @@ public class NMSX
 		e.setInvulnerable(true);
 	}
 	
+	public static void forceTeleport(Player player, Location target)
+	{
+		CraftPlayer cp = ((CraftPlayer) player);
+		EntityPlayer ep = cp.getHandle();
+		ep.setPosition(target.getX(), target.getY(), target.getZ());
+		ep.setLocation(target.getX(), target.getY(), target.getZ(), target.getYaw(), target.getPitch());
+		ep.playerConnection.teleport(target);
+	}
+	
 	public static void addPassenger(Entity entity, Entity passenger)
 	{
 		getEntity(entity).passengers.add(getEntity(passenger));
