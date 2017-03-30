@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.event.PacketNamedSoundEvent;
 import org.phantomapi.lang.GList;
@@ -42,7 +43,7 @@ public abstract class MiniPet implements Listener
 		z.getEquipment().setHelmet(skull);
 		Phantom.instance().registerListener(this);
 		ambientSound = new GSound(Sound.ENTITY_WOLF_AMBIENT, 1f, 1.7f);
-		minDist = 3.7;
+		minDist = 4.7;
 		s = (Snowball) z.getWorld().spawnEntity(z.getLocation().clone().add(0, 1, 0), EntityType.SNOWBALL);
 		s2 = (Snowball) z.getWorld().spawnEntity(z.getLocation().clone().add(0, 1, 0), EntityType.SNOWBALL);
 		s2.setCustomName(name);
@@ -53,7 +54,7 @@ public abstract class MiniPet implements Listener
 		PE.INVISIBILITY.a(0).d(10000000).c(z);
 		this.owner = owner;
 		
-		new Task(5)
+		new Task(0)
 		{
 			@Override
 			public void run()
@@ -64,6 +65,26 @@ public abstract class MiniPet implements Listener
 					cancel();
 					
 					return;
+				}
+				
+				if(!follow)
+				{
+					z.setAI(false);
+					z.setVelocity(z.getVelocity().clone().multiply(0.1).setY(-1));
+				}
+				
+				else
+				{
+					z.setAI(true);
+					Vector m = z.getVelocity();
+					
+					if(m.getY() < 0.1)
+					{
+						m.setX(m.getX() * 1.3);
+						m.setZ(m.getZ() * 1.3);
+					}
+					
+					z.setVelocity(m);
 				}
 				
 				if(follow != following)
