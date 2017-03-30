@@ -46,6 +46,7 @@ import org.phantomapi.core.CTNController;
 import org.phantomapi.core.CacheController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
+import org.phantomapi.core.CommandSupportController;
 import org.phantomapi.core.DMS;
 import org.phantomapi.core.DefaultController;
 import org.phantomapi.core.DevelopmentController;
@@ -146,6 +147,22 @@ import net.milkbowl.vault.economy.Economy;
 public class Phantom extends PhantomPlugin implements TagProvider
 {
 	public static ThreadPoolExecutor executor;
+	
+	public WraithController getWraithController()
+	{
+		return wraithController;
+	}
+	
+	public CommandSupportController getCommandSupportController()
+	{
+		return commandSupportController;
+	}
+	
+	public GMap<String, GList<String>> getDictionaries()
+	{
+		return dictionaries;
+	}
+	
 	private static Long thread;
 	private static Phantom instance;
 	public static double am = 0;
@@ -199,6 +216,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private PlayerTagController playerTagController;
 	private KernelController kernelController;
 	private WraithController wraithController;
+	private CommandSupportController commandSupportController;
 	private Long nsx;
 	private GMap<String, GList<String>> dictionaries;
 	
@@ -285,6 +303,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		playerTagController = new PlayerTagController(this);
 		kernelController = new KernelController(this);
 		wraithController = new WraithController(this);
+		commandSupportController = new CommandSupportController(this);
 		
 		D.d(this, "Bungeecord messenger registry");
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -328,6 +347,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(playerTagController);
 		register(kernelController);
 		register(wraithController);
+		register(commandSupportController);
 		
 		D.d(this, "Build Environment file");
 		envFile = new File(getDataFolder().getParentFile().getParentFile(), "phantom-environment.json");
