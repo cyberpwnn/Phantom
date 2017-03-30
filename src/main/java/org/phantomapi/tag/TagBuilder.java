@@ -16,12 +16,14 @@ public class TagBuilder
 	private final GList<String> context;
 	private final GMap<String, AreaEffectCloud> locks;
 	private final Entity base;
+	private TaggedPlayer t;
 	
-	public TagBuilder(Entity base)
+	public TagBuilder(Entity base, TaggedPlayer taggedPlayer)
 	{
 		locks = new GMap<String, AreaEffectCloud>();
 		this.base = base;
 		context = new GList<String>();
+		t = taggedPlayer;
 	}
 	
 	public TagBuilder add(String context)
@@ -44,6 +46,11 @@ public class TagBuilder
 	
 	public void rebuild()
 	{
+		if(!t.isTagged())
+		{
+			return;
+		}
+		
 		for(String i : locks.k())
 		{
 			locks.get(i).remove();
@@ -55,6 +62,11 @@ public class TagBuilder
 	
 	public void build()
 	{
+		if(!t.isTagged())
+		{
+			return;
+		}
+		
 		Entity last = base;
 		
 		int k = 3;
@@ -85,6 +97,11 @@ public class TagBuilder
 	
 	public void fortify()
 	{
+		if(!t.isTagged())
+		{
+			return;
+		}
+		
 		for(String i : context)
 		{
 			locks.get(i).setDuration(Integer.MAX_VALUE / 20);
@@ -99,6 +116,11 @@ public class TagBuilder
 	
 	public void setSneak(boolean b)
 	{
+		if(!t.isTagged())
+		{
+			return;
+		}
+		
 		for(String i : locks.k())
 		{
 			EntityAreaEffectCloud ae = ((CraftAreaEffectCloud) locks.get(i)).getHandle();
@@ -108,6 +130,11 @@ public class TagBuilder
 	
 	public void update()
 	{
+		if(!t.isTagged())
+		{
+			return;
+		}
+		
 		if(!locks.k().equals(context))
 		{
 			if(locks.size() != context.size())
