@@ -15,7 +15,7 @@ import org.phantomapi.sync.S;
  */
 public class D
 {
-	public static boolean rdebug = true;
+	public static boolean rdebug = false;
 	public static boolean fool = false;
 	private String name;
 	private GList<Player> listeners;
