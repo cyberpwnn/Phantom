@@ -3,9 +3,7 @@ package org.phantomapi.core;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.command.PhantomSender;
@@ -114,12 +112,6 @@ public class CommandSupportController extends ConfigurableController implements 
 				}
 			}
 		}
-	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
-	public void on(PlayerTeleportEvent e)
-	{
-		e.getPlayer().sendMessage("Teleport");
 	}
 	
 	@Override

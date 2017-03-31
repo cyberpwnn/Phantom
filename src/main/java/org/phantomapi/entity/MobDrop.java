@@ -35,14 +35,14 @@ public enum MobDrop
 	WITHER(Material.FEATHER, Material.RAW_CHICKEN),
 	ZOMBIE(Material.ROTTEN_FLESH),
 	PIG_ZOMBIE(Material.FEATHER, Material.RAW_CHICKEN);
-
+	
 	private Material[] materials;
-
+	
 	private MobDrop(Material... materials)
 	{
 		this.materials = materials;
 	}
-
+	
 	/**
 	 * Get mob drops
 	 *
@@ -51,15 +51,15 @@ public enum MobDrop
 	public GList<ItemStack> getDrops()
 	{
 		GList<ItemStack> is = new GList<ItemStack>();
-
+		
 		for(Material i : materials)
 		{
 			is.add(new ItemStack(i));
 		}
-
+		
 		return is;
 	}
-
+	
 	/**
 	 * Get materials
 	 *
