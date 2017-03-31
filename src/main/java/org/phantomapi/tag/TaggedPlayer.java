@@ -32,6 +32,16 @@ public class TaggedPlayer
 	
 	public void update()
 	{
+		while(getContent().size() > 6)
+		{
+			getContent().remove(0);
+		}
+		
+		while(getStaticContent().size() > 6)
+		{
+			getStaticContent().remove(0);
+		}
+		
 		if(request != null)
 		{
 			tagBuilder.destroyContext();
