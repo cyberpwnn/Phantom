@@ -90,6 +90,8 @@ import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.library.Coordinates;
+import org.phantomapi.library.LibraryInstaller;
 import org.phantomapi.multiblock.Multiblock;
 import org.phantomapi.nbt.BukkitReflect;
 import org.phantomapi.nbt.NBTBase;
@@ -239,6 +241,13 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		D.d(this, "Initialize Sigar injection...");
 		loadSigar();
 		D.d(this, "Success! Sigar ready.");
+		LibraryInstaller li = new LibraryInstaller(new File(getDataFolder().getParentFile().getParentFile(), "repository"), true);
+		li.add(Coordinates.COMMON_COMPRESS.get());
+		li.add(Coordinates.COMMON_IO.get());
+		li.add(Coordinates.COMMON_LANG.get());
+		li.add(Coordinates.COMMON_MATH.get());
+		li.add(Coordinates.GUAVA.get());
+		li.install();
 		
 		File f = new File(getDataFolder(), "async");
 		
@@ -398,7 +407,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			copyResource("org/phantomapi/kernel/" + "properties.yml", new File(getDataFolder(), "properties.yml"));
 		}
 		
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			
 		}

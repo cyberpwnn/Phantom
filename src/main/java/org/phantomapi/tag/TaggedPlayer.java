@@ -55,6 +55,11 @@ public class TaggedPlayer
 			
 			tagBuilder.update();
 		}
+		
+		else
+		{
+			tagBuilder.destroyContext();
+		}
 	}
 	
 	public void showContext(Player p)

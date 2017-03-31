@@ -3,6 +3,7 @@ package org.phantomapi.physics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GListAdapter;
@@ -139,6 +140,36 @@ public class VectorMath
 	public static Vector toVector(float yaw, float pitch)
 	{
 		return new Vector(Math.cos(pitch) * Math.cos(yaw), Math.sin(pitch), Math.cos(pitch) * Math.sin(-yaw));
+	}
+	
+	/**
+	 * Add an impulse (force) to an entity
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param v
+	 *            the vector
+	 */
+	public static void impulse(Entity e, Vector v)
+	{
+		impulse(e, v, 1.0);
+	}
+	
+	/**
+	 * Add an impulse (force) on an entity
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param v
+	 *            the vector
+	 * @param effectiveness
+	 *            the effectiveness
+	 */
+	public static void impulse(Entity e, Vector v, double effectiveness)
+	{
+		Vector vx = e.getVelocity();
+		vx.add(v.clone().multiply(effectiveness));
+		e.setVelocity(vx);
 	}
 	
 	/**

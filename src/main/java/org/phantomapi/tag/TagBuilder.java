@@ -76,7 +76,7 @@ public class TagBuilder
 		for(String i : context)
 		{
 			k++;
-			locks.put(i, (AreaEffectCloud) base.getWorld().spawnEntity(base.getLocation().clone().add(0, (k * amx) + amv, 0), EntityType.AREA_EFFECT_CLOUD));
+			locks.put(i, (AreaEffectCloud) base.getWorld().spawnEntity(base.getLocation().clone().add(0, ((k * amx) + amv) - 40, 0), EntityType.AREA_EFFECT_CLOUD));
 			locks.get(i).setRadius(0f);
 			locks.get(i).setRadiusOnUse(0f);
 			locks.get(i).setRadiusPerTick(0f);

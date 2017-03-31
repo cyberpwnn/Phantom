@@ -98,9 +98,23 @@ public class PlayerTagController extends Controller implements Monitorable
 			
 			if(tags.containsKey(i))
 			{
+				GMap<PlayerTagHandler, Integer> priority = new GMap<PlayerTagHandler, Integer>();
+				
 				for(PlayerTagHandler j : taggers)
 				{
-					j.updateTag(tags.get(i));
+					priority.put(j, j.getPriority());
+				}
+				
+				GMap<Integer, GList<PlayerTagHandler>> order = priority.flip();
+				GList<Integer> or = order.k();
+				or.sort();
+				
+				for(int j : or)
+				{
+					for(PlayerTagHandler k : order.get(j))
+					{
+						k.updateTag(tags.get(i));
+					}
 				}
 				
 				tags.get(i).update();
@@ -214,15 +228,25 @@ public class PlayerTagController extends Controller implements Monitorable
 		taggers.add(t);
 	}
 	
+	public void rebuild()
+	{
+		for(Player i : tags.k())
+		{
+			tags.get(i).getTagBuilder().rebuild();
+		}
+	}
+	
 	public void j(Player p)
 	{
 		tags.put(p, new TaggedPlayer(p));
+		rebuild();
 	}
 	
 	public void q(Player p)
 	{
 		tags.get(p).getTagBuilder().destroyContext();
 		tags.remove(p);
+		rebuild();
 	}
 	
 	@EventHandler
