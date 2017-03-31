@@ -50,6 +50,7 @@ org.phantomapi.stack
 org.phantomapi.statistics
 org.phantomapi.structure
 org.phantomapi.sync
+org.phantomapi.tab
 org.phantomapi.tag
 org.phantomapi.text
 org.phantomapi.texture
