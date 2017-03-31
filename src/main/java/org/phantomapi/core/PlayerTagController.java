@@ -108,6 +108,7 @@ public class PlayerTagController extends Controller implements Monitorable
 				GMap<Integer, GList<PlayerTagHandler>> order = priority.flip();
 				GList<Integer> or = order.k();
 				or.sort();
+				or.reverse();
 				
 				for(int j : or)
 				{
