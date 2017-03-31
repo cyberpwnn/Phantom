@@ -61,7 +61,7 @@ public class CommandSupportController extends ConfigurableController implements 
 				Location l = P.targetBlock(p, 256);
 				l.setYaw(p.getLocation().getYaw());
 				l.setPitch(p.getLocation().getPitch());
-				P.tp(p, l);
+				P.tp(p, l.clone().add(0, 1, 0));
 				e.setCancelled(true);
 			}
 		}
