@@ -227,6 +227,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	{
 		dictionaries = new GMap<String, GList<String>>();
 		loadSupport();
+		D.rdebug = new File(getDataFolder(), "signal-debug").exists();
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
