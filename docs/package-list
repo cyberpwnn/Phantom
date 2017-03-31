@@ -27,6 +27,7 @@ org.phantomapi.hud
 org.phantomapi.inventory
 org.phantomapi.kernel
 org.phantomapi.lang
+org.phantomapi.library
 org.phantomapi.multiblock
 org.phantomapi.nbt
 org.phantomapi.nest
