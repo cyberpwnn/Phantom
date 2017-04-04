@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -53,9 +54,16 @@ public class P
 	 */
 	public static void tp(Player p, Location target)
 	{
-		p.teleport(target);
-		Phantom.instance().getPlayerTagController().signalTeleport(p, target);
-		NMSX.forceTeleport(p, target);
+		PlayerTeleportEvent e = new PlayerTeleportEvent(p, p.getLocation(), target);
+		Phantom.instance().callEvent(e);
+		
+		if(!e.isCancelled())
+		{
+			target = e.getTo();
+			p.teleport(target);
+			Phantom.instance().getPlayerTagController().signalTeleport(p, target);
+			NMSX.forceTeleport(p, target);
+		}
 	}
 	
 	/**

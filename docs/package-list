@@ -40,6 +40,7 @@ org.phantomapi.phast
 org.phantomapi.physics
 org.phantomapi.ppa
 org.phantomapi.queue
+org.phantomapi.reek
 org.phantomapi.refract
 org.phantomapi.registry
 org.phantomapi.schematic

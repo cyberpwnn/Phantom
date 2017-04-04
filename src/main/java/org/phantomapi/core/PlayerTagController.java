@@ -7,6 +7,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -22,6 +23,7 @@ import org.phantomapi.util.Average;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
+import org.phantomapi.util.P;
 import org.phantomapi.util.Timer;
 
 @Ticked(0)
@@ -212,14 +214,12 @@ public class PlayerTagController extends Controller implements Monitorable
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
 	public void on(PlayerTeleportEvent e)
 	{
-		TaggedPlayer tp = tags.get(e.getPlayer());
-		
-		if(tp != null && tp.isTagged())
+		if(e.isCancelled() && e.getFrom().getX() - e.getFrom().getBlockX() == 0.01337 && e.getFrom().getY() - e.getFrom().getBlockY() == 0.01337 && e.getFrom().getZ() - e.getFrom().getBlockZ() == 0.01337)
 		{
-			tp.requestTeleport(e.getTo());
+			P.tp(e.getPlayer(), e.getTo());
 		}
 	}
 	
