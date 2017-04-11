@@ -6,9 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -80,7 +77,6 @@ import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
-import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Notification;
@@ -90,6 +86,7 @@ import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
+import org.phantomapi.lang.Instrument;
 import org.phantomapi.library.Coordinates;
 import org.phantomapi.library.LibraryInstaller;
 import org.phantomapi.multiblock.Multiblock;
@@ -99,7 +96,6 @@ import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.registry.GlobalRegistry;
-import org.phantomapi.sfx.Instrument;
 import org.phantomapi.slate.Slate;
 import org.phantomapi.sync.ExecutiveIterator;
 import org.phantomapi.sync.S;
@@ -122,6 +118,7 @@ import org.phantomapi.util.P;
 import org.phantomapi.util.PluginUtil;
 import org.phantomapi.util.RunVal;
 import org.phantomapi.util.SQLOperation;
+import org.phantomapi.util.TXE;
 import org.phantomapi.util.Timer;
 import org.phantomapi.util.Z;
 import org.phantomapi.world.Cuboid;
@@ -148,13 +145,6 @@ import net.milkbowl.vault.economy.Economy;
 @SyncStart
 public class Phantom extends PhantomPlugin implements TagProvider
 {
-	public static ThreadPoolExecutor executor;
-	
-	public WraithController getWraithController()
-	{
-		return wraithController;
-	}
-	
 	public CommandSupportController getCommandSupportController()
 	{
 		return commandSupportController;
@@ -165,6 +155,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return dictionaries;
 	}
 	
+	private static TXE tx;
 	private static Long thread;
 	private static Phantom instance;
 	public static double am = 0;
@@ -217,7 +208,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private CTNController ctnController;
 	private PlayerTagController playerTagController;
 	private KernelController kernelController;
-	private WraithController wraithController;
 	private CommandSupportController commandSupportController;
 	private Long nsx;
 	private GMap<String, GList<String>> dictionaries;
@@ -231,9 +221,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
+		tx = new TXE();
+		tx.start();
 		reloaded = checkReload();
-		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		executor.setKeepAliveTime(30, TimeUnit.MINUTES);
 		D.d(this, "Setup Economy");
 		setupEconomy();
 		nsx = M.ns();
@@ -312,7 +302,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
 		kernelController = new KernelController(this);
-		wraithController = new WraithController(this);
 		commandSupportController = new CommandSupportController(this);
 		
 		D.d(this, "Bungeecord messenger registry");
@@ -356,7 +345,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(ctnController);
 		register(playerTagController);
 		register(kernelController);
-		register(wraithController);
 		register(commandSupportController);
 		
 		D.d(this, "Build Environment file");
@@ -770,7 +758,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStop()
 	{
-		executor.shutdown();
+		tx.interrupt();
 		
 		try
 		{
@@ -2661,6 +2649,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return instance;
 	}
 	
+	public TXE getTx()
+	{
+		return tx;
+	}
+	
 	/**
 	 * Request to save data from the cluster into the defined database. If the
 	 * database is not defined, data wont be saved.
@@ -2900,7 +2893,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		try
 		{
-			executor.execute(runnable);
+			tx.add(runnable);
 		}
 		
 		catch(Exception e)
@@ -3088,11 +3081,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public CTNController getCtnController()
 	{
 		return ctnController;
-	}
-	
-	public static ThreadPoolExecutor getExecutor()
-	{
-		return executor;
 	}
 	
 	public CacheController getCacheController()

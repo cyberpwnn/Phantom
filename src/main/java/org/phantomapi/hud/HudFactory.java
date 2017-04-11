@@ -4,9 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.phantomapi.gui.Click;
+import org.phantomapi.lang.Audible;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
-import org.phantomapi.sfx.Audible;
 
 public abstract class HudFactory
 {

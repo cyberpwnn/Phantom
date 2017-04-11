@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.phantomapi.sfx.Audible;
 
 /**
  * A GSound can play a sound

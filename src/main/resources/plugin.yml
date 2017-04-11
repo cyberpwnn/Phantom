@@ -4,7 +4,7 @@ main: org.phantomapi.Phantom
 description: ${project.description}
 author: cyberpwn
 authors: [cyberpwn]
-softdepend: [Citizens, FastAsyncWorldEdit, WorldEdit, Vault, ProtocolLib]
+softdepend: [FastAsyncWorldEdit, WorldEdit, Vault, ProtocolLib]
 website: http://phantomapi.org/
 load: POSTWORLD
 database: false
