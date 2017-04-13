@@ -3,7 +3,7 @@
   <groupId>org.phantomapi</groupId>
   <artifactId>Wraith</artifactId>
   <versioning>
-    <release>Q9</release>
+    <release>Q10</release>
     <versions>
       <version>Q</version>
       <version>Q1</version>
@@ -15,7 +15,8 @@
       <version>Q7</version>
       <version>Q8</version>
       <version>Q9</version>
+      <version>Q10</version>
     </versions>
-    <lastUpdated>20170412234823</lastUpdated>
+    <lastUpdated>20170413001227</lastUpdated>
   </versioning>
 </metadata>
