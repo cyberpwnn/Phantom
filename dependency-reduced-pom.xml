@@ -81,6 +81,7 @@
                   <include>net.citizensapi:citizens</include>
                   <include>hyp.sigar:sigar</include>
                   <include>org.powermock:powermock-api-mockito</include>
+                  <include>net.citizensnpcs:citizensapi</include>
                   <include>javassist:javassist</include>
                 </includes>
               </artifactSet>

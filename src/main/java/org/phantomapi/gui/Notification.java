@@ -2,9 +2,9 @@ package org.phantomapi.gui;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.Phantom;
-import org.phantomapi.lang.Audible;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.sfx.Audible;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.vfx.VisualEffect;
 

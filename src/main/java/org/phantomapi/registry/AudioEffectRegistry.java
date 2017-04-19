@@ -2,7 +2,7 @@ package org.phantomapi.registry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.phantomapi.lang.Audible;
+import org.phantomapi.sfx.Audible;
 
 /**
  * A Audible effect registry

@@ -28,7 +28,6 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -36,8 +35,6 @@ import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
 import org.phantomapi.async.Callback;
-import org.phantomapi.brush.BrushStoneBrick;
-import org.phantomapi.builder.Brush;
 import org.phantomapi.chromatic.Chromatic;
 import org.phantomapi.chromatic.ChromaticBlock;
 import org.phantomapi.clust.DataCluster;
@@ -68,14 +65,11 @@ import org.phantomapi.hud.Hud;
 import org.phantomapi.hud.HudFactory;
 import org.phantomapi.hud.PlayerHud;
 import org.phantomapi.kernel.Platform;
-import org.phantomapi.lang.Audible;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
-import org.phantomapi.lang.Instrument;
-import org.phantomapi.lang.MFADistortion;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nest.Nest;
@@ -92,6 +86,9 @@ import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
 import org.phantomapi.schematic.WorldArtifact;
 import org.phantomapi.schematic.WorldStructure;
+import org.phantomapi.sfx.Audible;
+import org.phantomapi.sfx.Instrument;
+import org.phantomapi.sfx.MFADistortion;
 import org.phantomapi.slate.PhantomSlate;
 import org.phantomapi.slate.Slate;
 import org.phantomapi.source.SourcePack;
@@ -130,12 +127,13 @@ import org.phantomapi.world.Dimension;
 import org.phantomapi.world.Direction;
 import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
-import org.phantomapi.world.Pulse;
-import org.phantomapi.world.VariableBlock;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WQ;
+import org.phantomapi.wraith.WU;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 
 /**
  * Runs tests on various functions of phantom
@@ -416,6 +414,20 @@ public class TestController extends Controller
 			{
 				s(Platform.CPU.getCoreLoad(0) + " Load");
 				s(Platform.CPU.getProcessorModel());
+			}
+		});
+		
+		tests.put("npcx", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : onlinePlayers())
+				{
+					NPC n = CitizensAPI.getNPCRegistry().createNPC(EntityType.HORSE, "Test Wraith");
+					n.spawn(i.getLocation());
+					WU.pathfindTo(n, i);
+				}
 			}
 		});
 		
@@ -2340,37 +2352,16 @@ public class TestController extends Controller
 			{
 				for(Player i : Phantom.instance().onlinePlayers())
 				{
-					Brush b = new BrushStoneBrick(1.0)
-					{
-						@Override
-						public VariableBlock brush(Location location)
-						{
-							VariableBlock vb = super.brush(location);
-							
-							for(MaterialBlock i : vb.getBlocks())
-							{
-								vb.addBlock(i);
-								vb.addBlock(i);
-								vb.addBlock(i);
-								vb.addBlock(i);
-								vb.addBlock(i);
-							}
-							
-							vb.addBlock(new MaterialBlock(Material.FENCE));
-							return vb;
-						}
-					};
-					
-					Schematic s = new Schematic(new Dimension(24, 24, 24));
+					Schematic s = new Schematic(new Dimension(9, 9, 9));
 					s.fill(new MaterialBlock(Material.AIR));
-					s.setFaces(b);
+					s.setFaces(new MaterialBlock(Material.THIN_GLASS));
 					s.setFace(new MaterialBlock(Material.ENDER_PORTAL), Direction.U);
 					s.setFace(new MaterialBlock(Material.GLASS), Direction.D);
 					s.distort(new EdgeDistortion(new MaterialBlock(Material.GLOWSTONE)));
 					
-					Schematic s2 = new Schematic(new Dimension(9, 24, 9));
+					Schematic s2 = new Schematic(new Dimension(3, 9, 3));
 					s2.fill(new MaterialBlock(Material.AIR));
-					s2.setFaces(b);
+					s2.setFaces(new MaterialBlock(Material.THIN_GLASS));
 					s2.setFace(new MaterialBlock(Material.ENDER_PORTAL), Direction.U);
 					s2.setFace(new MaterialBlock(Material.GLASS), Direction.D);
 					s2.distort(new EdgeDistortion(new MaterialBlock(Material.GLOWSTONE)));
@@ -2587,14 +2578,6 @@ public class TestController extends Controller
 				}
 			};
 		}
-	}
-	
-	@EventHandler
-	public void on(EntityExplodeEvent e)
-	{
-		e.setCancelled(true);
-		e.getEntity().remove();
-		new Pulse().pushEntities().shape(new Vector(34, 34, 34)).impulse(e.getEntity().getLocation());
 	}
 	
 	public GMap<String, Runnable> getTests()

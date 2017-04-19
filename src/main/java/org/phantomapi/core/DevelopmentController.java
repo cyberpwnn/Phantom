@@ -282,6 +282,6 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Override
 	public String getMonitorableData()
 	{
-		return C.LIGHT_PURPLE + "QPool: " + Phantom.instance().getTx().status();
+		return C.LIGHT_PURPLE + "QPool: " + Phantom.executor.getPoolSize();
 	}
 }
