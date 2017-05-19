@@ -389,6 +389,30 @@ public class ProtocolController extends Controller
 		};
 	}
 	
+	public void listen(PacketType type)
+	{
+		PRO.getLibrary().addPacketListener(new PacketAdapter(getPlugin(), ListenerPriority.HIGHEST, type)
+		{
+			@Override
+			public void onPacketReceiving(PacketEvent event)
+			{
+				if(event.getPacketType().equals(type))
+				{
+					s("Received Packet " + type.toString() + " from " + event.getPlayer().getName());
+				}
+			}
+			
+			@Override
+			public void onPacketSending(PacketEvent event)
+			{
+				if(event.getPacketType().equals(type))
+				{
+					s("Sent Packet " + type.toString() + " to " + event.getPlayer().getName());
+				}
+			}
+		});
+	}
+	
 	public FakeEquipment getFakeEquipment()
 	{
 		return fakeEquipment;

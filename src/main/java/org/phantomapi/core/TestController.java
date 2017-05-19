@@ -19,6 +19,10 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -129,11 +133,8 @@ import org.phantomapi.world.L;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 import org.phantomapi.world.WQ;
-import org.phantomapi.wraith.WU;
 import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.util.TaskManager;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 
 /**
  * Runs tests on various functions of phantom
@@ -210,6 +211,36 @@ public class TestController extends Controller
 						}
 					}, new GList<String>().qadd("Text 1").qadd("Text 2").qadd("Text 3").qadd("Text 4"), "Please type your message.");
 				}
+			}
+		});
+		
+		tests.put("bbar", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				BossBar b = Bukkit.createBossBar("Woohoo", BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+				
+				for(Player i : onlinePlayers())
+				{
+					b.addPlayer(i);
+				}
+				
+				b.setVisible(true);
+				
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						for(Player i : onlinePlayers())
+						{
+							b.removePlayer(i);
+							b.addPlayer(i);
+							b.setProgress((Math.sin(M.ms() / 1000) + 1.0) / 2);
+						}
+					}
+				};
 			}
 		});
 		
@@ -417,20 +448,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("npcx", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : onlinePlayers())
-				{
-					NPC n = CitizensAPI.getNPCRegistry().createNPC(EntityType.HORSE, "Test Wraith");
-					n.spawn(i.getLocation());
-					WU.pathfindTo(n, i);
-				}
-			}
-		});
-		
 		tests.put("guiupdate", new Runnable()
 		{
 			@Override
@@ -563,6 +580,22 @@ public class TestController extends Controller
 			public void run()
 			{
 				ExceptionUtil.writeIssues(new File(Phantom.instance().getDataFolder(), "report"));
+			}
+		});
+		
+		tests.put("astest", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new A()
+				{
+					@Override
+					public void async()
+					{
+						System.out.println("Went ASYNC, GOOD WORKS");
+					}
+				};
 			}
 		});
 		

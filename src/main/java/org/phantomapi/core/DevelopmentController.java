@@ -14,6 +14,7 @@ import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.coretick.U;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.statistics.Monitorable;
@@ -282,6 +283,6 @@ public class DevelopmentController extends Controller implements Configurable, M
 	@Override
 	public String getMonitorableData()
 	{
-		return C.LIGHT_PURPLE + "QPool: " + Phantom.executor.getPoolSize();
+		return C.LIGHT_PURPLE + U.status(true);
 	}
 }

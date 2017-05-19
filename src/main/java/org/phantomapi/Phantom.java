@@ -6,9 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -80,8 +77,11 @@ import org.phantomapi.core.SyncStart;
 import org.phantomapi.core.TestController;
 import org.phantomapi.core.UpdateController;
 import org.phantomapi.core.WorldController;
-import org.phantomapi.core.WraithController;
 import org.phantomapi.core.ZenithController;
+import org.phantomapi.coretick.Execution;
+import org.phantomapi.coretick.ParallelPoolManager;
+import org.phantomapi.coretick.QueueMode;
+import org.phantomapi.coretick.TICK;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.hud.Hud;
@@ -148,23 +148,7 @@ import net.milkbowl.vault.economy.Economy;
 @SyncStart
 public class Phantom extends PhantomPlugin implements TagProvider
 {
-	public static ThreadPoolExecutor executor;
-	
-	public WraithController getWraithController()
-	{
-		return wraithController;
-	}
-	
-	public CommandSupportController getCommandSupportController()
-	{
-		return commandSupportController;
-	}
-	
-	public GMap<String, GList<String>> getDictionaries()
-	{
-		return dictionaries;
-	}
-	
+	private ParallelPoolManager poolManager;
 	private static Long thread;
 	private static Phantom instance;
 	public static double am = 0;
@@ -217,11 +201,21 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private CTNController ctnController;
 	private PlayerTagController playerTagController;
 	private KernelController kernelController;
-	private WraithController wraithController;
 	private CommandSupportController commandSupportController;
 	private Long nsx;
 	private GMap<String, GList<String>> dictionaries;
 	
+	public void onLoad()
+	{
+		super.onLoad();
+		readCurrentTick();
+	}
+	
+	public ParallelPoolManager getPoolManager()
+	{
+		return poolManager;
+	}
+
 	@Override
 	public void enable()
 	{
@@ -232,8 +226,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
 		reloaded = checkReload();
-		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		executor.setKeepAliveTime(30, TimeUnit.MINUTES);
 		D.d(this, "Setup Economy");
 		setupEconomy();
 		nsx = M.ns();
@@ -312,9 +304,9 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
 		kernelController = new KernelController(this);
-		wraithController = new WraithController(this);
 		commandSupportController = new CommandSupportController(this);
 		
+		setupTicker();
 		D.d(this, "Bungeecord messenger registry");
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
@@ -356,7 +348,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(ctnController);
 		register(playerTagController);
 		register(kernelController);
-		register(wraithController);
 		register(commandSupportController);
 		
 		D.d(this, "Build Environment file");
@@ -770,7 +761,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	@Override
 	public void onStop()
 	{
-		executor.shutdown();
+		poolManager.shutdown();
 		
 		try
 		{
@@ -2481,6 +2472,16 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		}, 10);
 	}
 	
+	public CommandSupportController getCommandSupportController()
+	{
+		return commandSupportController;
+	}
+	
+	public GMap<String, GList<String>> getDictionaries()
+	{
+		return dictionaries;
+	}
+	
 	public static void thrash()
 	{
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Phantom.instance, new Runnable()
@@ -2900,7 +2901,14 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		
 		try
 		{
-			executor.execute(runnable);
+			instance.poolManager.queue(new Execution()
+			{
+				@Override
+				public void run()
+				{
+					runnable.run();
+				}
+			});
 		}
 		
 		catch(Exception e)
@@ -2991,6 +2999,30 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public BlockCheckController getBlockCheckController()
 	{
 		return blockCheckController;
+	}
+	
+	private void readCurrentTick()
+	{
+		long ms = System.currentTimeMillis();
+		File prop = new File("server.properties");
+		TICK.tick = (ms - prop.lastModified()) / 50;
+		System.out.println("Setting Tick to " + TICK.tick);
+		poolManager = new ParallelPoolManager(4, QueueMode.ROUND_ROBIN);
+	}
+	
+	private void setupTicker()
+	{
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+		{
+			public void run()
+			{
+				TICK.tick++;
+				
+				poolManager.chk();
+			}
+		}, 0, 0);
+		
+		poolManager.start();
 	}
 	
 	public RegistryController getRegistryController()
@@ -3088,11 +3120,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public CTNController getCtnController()
 	{
 		return ctnController;
-	}
-	
-	public static ThreadPoolExecutor getExecutor()
-	{
-		return executor;
 	}
 	
 	public CacheController getCacheController()

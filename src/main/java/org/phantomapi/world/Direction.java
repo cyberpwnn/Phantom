@@ -1,6 +1,9 @@
 package org.phantomapi.world;
 
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
+import org.phantomapi.physics.VectorMath;
 import org.phantomapi.world.Cuboid.CuboidDirection;
 
 /**
@@ -28,6 +31,29 @@ public enum Direction
 		this.y = y;
 		this.z = z;
 		this.f = f;
+	}
+	
+	public Direction reverse()
+	{
+		switch(this)
+		{
+			case D:
+				return U;
+			case E:
+				return W;
+			case N:
+				return S;
+			case S:
+				return N;
+			case U:
+				return D;
+			case W:
+				return E;
+			default:
+				break;
+		}
+		
+		return null;
 	}
 	
 	public int x()
@@ -58,6 +84,21 @@ public enum Direction
 	public static GList<Direction> udnews()
 	{
 		return new GList<Direction>().qadd(U).qadd(D).qadd(N).qadd(E).qadd(W).qadd(S);
+	}
+	
+	public static Direction facing(Player p)
+	{
+		Vector dir = VectorMath.triNormalize(p.getLocation().getDirection());
+		
+		for(Direction i : udnews())
+		{
+			if(dir.getBlockX() == i.x && dir.getBlockY() == i.y && dir.getBlockZ() == i.z)
+			{
+				return i;
+			}
+		}
+		
+		return Direction.D;
 	}
 	
 	/**

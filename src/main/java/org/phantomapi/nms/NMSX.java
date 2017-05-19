@@ -747,6 +747,16 @@ public class NMSX
 	 */
 	public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle)
 	{
+		if(subtitle.length() == 0 || subtitle.equals(" "))
+		{
+			subtitle = "  ";
+		}
+		
+		if(title.length() == 0 || title.equals(" "))
+		{
+			title = "  ";
+		}
+		
 		try
 		{
 			Object e;

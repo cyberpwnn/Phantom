@@ -144,8 +144,7 @@ public class W
 	public static Cuboid getSelection(Player p)
 	{
 		Region r = (Region) FawePlayer.wrap(p).getSelection();
-		
-		return new Cuboid(new Location(p.getWorld(), r.getMaximumPoint().x, r.getMaximumPoint().y, r.getMaximumPoint().z), new Location(p.getWorld(), r.getMinimumPoint().x, r.getMinimumPoint().y, r.getMinimumPoint().z));
+		return new Cuboid(new Location(p.getWorld(), r.getMaximumPoint().getX(), r.getMaximumPoint().getY(), r.getMaximumPoint().getZ()), new Location(p.getWorld(), r.getMinimumPoint().getX(), r.getMinimumPoint().getY(), r.getMinimumPoint().getZ()));
 	}
 	
 	/**

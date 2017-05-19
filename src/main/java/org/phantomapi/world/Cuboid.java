@@ -823,7 +823,16 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	public enum CuboidDirection
 	{
 		
-		North, East, South, West, Up, Down, Horizontal, Vertical, Both, Unknown;
+		North,
+		East,
+		South,
+		West,
+		Up,
+		Down,
+		Horizontal,
+		Vertical,
+		Both,
+		Unknown;
 		
 		public CuboidDirection opposite()
 		{
@@ -853,4 +862,50 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 		}
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((worldName == null) ? 0 : worldName.hashCode());
+		result = prime * result + x1;
+		result = prime * result + x2;
+		result = prime * result + y1;
+		result = prime * result + y2;
+		result = prime * result + z1;
+		result = prime * result + z2;
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		Cuboid other = (Cuboid) obj;
+		if(worldName == null)
+		{
+			if(other.worldName != null)
+				return false;
+		}
+		else if(!worldName.equals(other.worldName))
+			return false;
+		if(x1 != other.x1)
+			return false;
+		if(x2 != other.x2)
+			return false;
+		if(y1 != other.y1)
+			return false;
+		if(y2 != other.y2)
+			return false;
+		if(z1 != other.z1)
+			return false;
+		if(z2 != other.z2)
+			return false;
+		return true;
+	}
 }
