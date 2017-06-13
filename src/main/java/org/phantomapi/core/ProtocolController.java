@@ -22,9 +22,12 @@ import org.phantomapi.nms.EntityHider;
 import org.phantomapi.nms.EntityHider.Policy;
 import org.phantomapi.nms.FakeEquipment;
 import org.phantomapi.nms.NMSX;
+import org.phantomapi.packet.WrapperPlayServerKeepAlive;
+import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.Depend;
+import org.phantomapi.util.P;
 import org.phantomapi.util.PRO;
 import org.phantomapi.util.Timer;
 import org.phantomapi.world.MaterialBlock;
@@ -58,6 +61,20 @@ public class ProtocolController extends Controller
 		pingHistory = new GMap<Player, GList<Double>>();
 		id = new GMap<Sound, String>();
 		signListen = new GMap<Player, Callback<GList<String>>>();
+		
+		new Task(0)
+		{
+			@Override
+			public void run()
+			{
+				for(Player i : P.onlinePlayers())
+				{
+					WrapperPlayServerKeepAlive w = new WrapperPlayServerKeepAlive();
+					w.setKeepAliveId((int) (Math.random() * 10000));
+					w.sendPacket(i);
+				}
+			}
+		};
 	}
 	
 	public void listenSign(Player player, Callback<GList<String>> callback, GList<String> initialText, String guide)
