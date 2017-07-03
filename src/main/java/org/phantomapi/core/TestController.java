@@ -37,6 +37,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
+import org.phantomapi.aic.NMSChunk19;
+import org.phantomapi.aic.VirtualChunk;
 import org.phantomapi.async.A;
 import org.phantomapi.async.Callback;
 import org.phantomapi.chromatic.Chromatic;
@@ -256,6 +258,22 @@ public class TestController extends Controller
 						j.setGlowing(true);
 					}
 				}
+			}
+		});
+		
+		tests.put("chunk-map", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Player p = P.getAnyPlayer();
+				VirtualChunk v = new NMSChunk19(p.getLocation().getChunk());
+				v.set(0, 100, 0, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.set(0, 100, 1, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.set(0, 100, 2, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.set(1, 100, 1, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.set(2, 100, 2, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.send(p);
 			}
 		});
 		
@@ -1499,6 +1517,7 @@ public class TestController extends Controller
 		
 		tests.put("state-dark", new Runnable()
 		{
+			
 			@Override
 			public void run()
 			{
@@ -1526,6 +1545,7 @@ public class TestController extends Controller
 		
 		tests.put("state-light", new Runnable()
 		{
+			
 			@Override
 			public void run()
 			{
@@ -1553,6 +1573,7 @@ public class TestController extends Controller
 		
 		tests.put("state-creep", new Runnable()
 		{
+			
 			@Override
 			public void run()
 			{
@@ -1580,6 +1601,7 @@ public class TestController extends Controller
 		
 		tests.put("break-particle", new Runnable()
 		{
+			
 			@Override
 			public void run()
 			{
