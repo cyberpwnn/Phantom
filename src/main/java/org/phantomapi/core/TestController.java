@@ -268,11 +268,7 @@ public class TestController extends Controller
 			{
 				Player p = P.getAnyPlayer();
 				VirtualChunk v = new NMSChunk19(p.getLocation().getChunk());
-				v.set(0, 100, 0, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
-				v.set(0, 100, 1, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
-				v.set(0, 100, 2, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
-				v.set(1, 100, 1, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
-				v.set(2, 100, 2, new MaterialBlock(Material.BIRCH_WOOD_STAIRS));
+				v.set(15, 100, 8, new MaterialBlock(Material.DIRT));
 				v.send(p);
 			}
 		});

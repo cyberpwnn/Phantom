@@ -2,19 +2,23 @@ package org.phantomapi.aic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_9_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import io.netty.buffer.ByteBufOutputStream;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.BukkitConverters;
 import net.minecraft.server.v1_9_R2.Block;
 import net.minecraft.server.v1_9_R2.ChunkSection;
 import net.minecraft.server.v1_9_R2.DataBits;
 import net.minecraft.server.v1_9_R2.IBlockData;
-import net.minecraft.server.v1_9_R2.Packet;
-import net.minecraft.server.v1_9_R2.PacketDataSerializer;
-import net.minecraft.server.v1_9_R2.PacketListener;
+import net.minecraft.server.v1_9_R2.MathHelper;
 
 public class NMSChunk19 extends NMSChunk implements VirtualChunk
 {
@@ -66,78 +70,70 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 	@Override
 	public void send(Player p)
 	{
-		((CraftPlayer) p).getHandle().playerConnection.sendPacket(new ChunkPacket(this));
+		PacketContainer container = new PacketContainer(PacketType.Play.Server.MAP_CHUNK);
+		
+		try
+		{
+			write(container);
+			ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public class ChunkPacket implements Packet
+	public void write(PacketContainer packet) throws IOException
 	{
-		private NMSChunk19 c;
+		StructureModifier<Integer> ints = packet.getIntegers();
+		StructureModifier<byte[]> byteArray = packet.getByteArrays();
+		StructureModifier<Boolean> bools = packet.getBooleans();
+		ints.write(0, getX());
+		ints.write(1, getZ());
+		bools.write(0, false);
+		ints.write(2, getBitMask());
 		
-		public ChunkPacket(NMSChunk19 c)
-		{
-			this.c = c;
-		}
+		ByteArrayOutputStream boas = new ByteArrayOutputStream();
+		NMOutputStream nm = new NMOutputStream(boas);
+		int[][] data = blockData;
 		
-		@Override
-		public void b(PacketDataSerializer b) throws IOException
+		for(int i = 0; i < data.length; i++)
 		{
-			b.writeInt(getX());
-			b.writeInt(getZ());
-			b.writeBoolean(false);
-			b.d(getBitMask());
-			ByteArrayOutputStream boas = new ByteArrayOutputStream();
-			NMOutputStream nm = new NMOutputStream(boas);
-			int[][] data = c.blockData;
-			
-			for(int i = 0; i < data.length; i++)
+			int[] section = data[i];
+			if(section == null)
 			{
-				int[] section = data[i];
-				if(section == null)
-				{
-					continue;
-				}
-				
-				int n = Block.REGISTRY_ID.a();
-				nm.write(n);
-				nm.writeVarInt(0);
-				DataBits bits = new DataBits(n, 4096);
-				
-				for(int j = 0; j < 4096; j++)
-				{
-					int id = section[j];
-					
-					if(id != 0)
-					{
-						bits.a(j, id);
-					}
-				}
-				
-				for(long j : bits.a())
-				{
-					nm.writeLong(j);
-				}
-				
-				nm.write(c.skyLight[i]);
-				nm.write(c.blockLight[i]);
+				continue;
 			}
 			
-			nm.close();
-			b.d(boas.size());
-			boas.writeTo(new ByteBufOutputStream(b));
-			b.d(0);
+			int num = MathHelper.d(Block.REGISTRY_ID.a());
+			nm.write(num);
+			nm.writeVarInt(0);
+			DataBits bits = new DataBits(num, 4096);
+			
+			for(int j = 0; j < 4096; j++)
+			{
+				int id = section[j];
+				
+				if(id != 0 && id <= 8191)
+				{
+					bits.a(j, id);
+				}
+			}
+			
+			nm.write(bits.a().length);
+			
+			for(long j : bits.a())
+			{
+				nm.writeLong(j);
+			}
+			
+			nm.write(skyLight[i]);
+			nm.write(blockLight[i]);
 		}
 		
-		@Override
-		public void a(PacketDataSerializer arg0) throws IOException
-		{
-			throw new UnsupportedOperationException("Deserialization not supported");
-		}
-		
-		@Override
-		public void a(PacketListener packetListener)
-		{
-			throw new UnsupportedOperationException("Listening not supported");
-		}
+		byteArray.write(0, boas.toByteArray());
+		packet.getModifier().withType(Collection.class, BukkitConverters.getListConverter(MinecraftReflection.getNBTBaseClass(), BukkitConverters.getNbtConverter())).write(0, new ArrayList<>());
+		nm.close();
 	}
 }
