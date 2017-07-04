@@ -42,11 +42,6 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 				continue;
 			}
 			
-			if(i.getYPosition() > 15)
-			{
-				continue;
-			}
-			
 			for(int j = 0; j < 16; j++)
 			{
 				for(int k = 0; k < 16; k++)
@@ -56,9 +51,9 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 						IBlockData ibd = i.getBlocks().a(j, k, l);
 						int id = Block.getId(ibd.getBlock());
 						byte data = (byte) ibd.getBlock().toLegacyData(ibd);
-						setSect(i.getYPosition(), j, k, l, id, data);
-						skyLight[i.getYPosition()][getIndexAmod(j, k, l)] = (byte) i.getSkyLightArray().a(j, k, l);
-						blockLight[i.getYPosition()][getIndexAmod(j, k, l)] = (byte) i.getEmittedLightArray().a(j, k, l);
+						setSect(i.getYPosition() >> 4, j, k, l, id, data);
+						skyLight[i.getYPosition() >> 4][getIndexAmod(j, k, l)] = (byte) i.getSkyLightArray().a(j, k, l);
+						blockLight[i.getYPosition() >> 4][getIndexAmod(j, k, l)] = (byte) i.getEmittedLightArray().a(j, k, l);
 					}
 				}
 			}
@@ -110,6 +105,7 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 			nm.write(num);
 			nm.writeVarInt(0);
 			DataBits bits = new DataBits(num, 4096);
+			bits.a(0, 0);
 			
 			for(int j = 0; j < 4096; j++)
 			{

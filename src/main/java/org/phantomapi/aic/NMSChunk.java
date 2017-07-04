@@ -77,16 +77,7 @@ public abstract class NMSChunk implements VirtualChunk
 	@Override
 	public void set(int x, int y, int z, int id, byte data)
 	{
-		try
-		{
-			blockData[getSection(y)][getIndex(x, y, z)] = getCombined(id, data);
-		}
-		
-		catch(Exception e)
-		{
-			System.out.println("Attempted to put " + x + " " + y + " " + z + " (section " + getSection(y) + ") / (index: " + getIndex(x, y, z) + ")");
-		}
-		
+		blockData[getSection(y)][getIndex(x, y, z)] = getCombined(id, data);
 		markModification(x, y, z);
 	}
 	
@@ -164,11 +155,6 @@ public abstract class NMSChunk implements VirtualChunk
 	public int getSection(int y)
 	{
 		return y >> 4;
-	}
-	
-	public int toChunk(int v)
-	{
-		return v & 15;
 	}
 	
 	@Override

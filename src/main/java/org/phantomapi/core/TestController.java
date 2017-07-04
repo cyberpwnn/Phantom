@@ -268,12 +268,18 @@ public class TestController extends Controller
 			{
 				Player p = P.getAnyPlayer();
 				VirtualChunk v = new NMSChunk19(p.getLocation().getChunk());
-				v.set(15, 100, 8, new MaterialBlock(Material.DIRT));
-				v.set(15, 60, 8, new MaterialBlock(Material.DIRT));
-				v.set(15, 70, 8, new MaterialBlock(Material.DIRT));
-				v.set(15, 50, 8, new MaterialBlock(Material.DIRT));
-				v.set(15, 80, 8, new MaterialBlock(Material.DIRT));
-				v.set(15, 90, 8, new MaterialBlock(Material.DIRT));
+				
+				for(int i = 0; i < 16; i++)
+				{
+					for(int j = 0; j < 16; j++)
+					{
+						for(int k = 100; k < 120; k++)
+						{
+							v.set(i, k, j, new MaterialBlock(Material.WOOD));
+						}
+					}
+				}
+				
 				v.send(p);
 			}
 		});
