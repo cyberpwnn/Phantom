@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_9_R2.CraftChunk;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.phantomapi.nms.NMSX;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.server.v1_9_R2.Block;
 import net.minecraft.server.v1_9_R2.ChunkSection;
@@ -66,7 +66,7 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 	@Override
 	public void send(Player p)
 	{
-		NMSX.sendPacket(p, new ChunkPacket(this));
+		((CraftPlayer) p).getHandle().playerConnection.sendPacket(new ChunkPacket(this));
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -85,7 +85,7 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 			b.writeInt(getX());
 			b.writeInt(getZ());
 			b.writeBoolean(false);
-			writeVarInt(getBitMask(), b);
+			b.d(getBitMask());
 			ByteArrayOutputStream boas = new ByteArrayOutputStream();
 			NMOutputStream nm = new NMOutputStream(boas);
 			int[][] data = c.blockData;
@@ -93,7 +93,6 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 			for(int i = 0; i < data.length; i++)
 			{
 				int[] section = data[i];
-				
 				if(section == null)
 				{
 					continue;
@@ -124,9 +123,9 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 			}
 			
 			nm.close();
-			writeVarInt(boas.size(), b);
+			b.d(boas.size());
 			boas.writeTo(new ByteBufOutputStream(b));
-			writeVarInt(0, b);
+			b.d(0);
 		}
 		
 		@Override
@@ -139,24 +138,6 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 		public void a(PacketListener packetListener)
 		{
 			throw new UnsupportedOperationException("Listening not supported");
-		}
-		
-		public void writeVarInt(int value, PacketDataSerializer b)
-		{
-			do
-			{
-				byte temp = (byte) (value & 0b01111111);
-				value >>>= 7;
-				
-				if(value != 0)
-				{
-					temp |= 0b10000000;
-				}
-				
-				b.writeByte(temp);
-			}
-			
-			while(value != 0);
 		}
 	}
 }

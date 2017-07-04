@@ -27,22 +27,15 @@ public class NMOutputStream extends DataOutputStream
 		}
 	}
 	
-	public void writeVarInt(int value) throws IOException
+	public void writeVarInt(int i) throws IOException
 	{
-		do
+		while((i & 0xFFFFFF80) != 0)
 		{
-			byte temp = (byte) (value & 0b01111111);
-			value >>>= 7;
-			
-			if(value != 0)
-			{
-				temp |= 0b10000000;
-			}
-			
-			writeByte(temp);
+			writeByte(i & 0x7F | 0x80);
+			i >>>= 7;
 		}
 		
-		while(value != 0);
+		writeByte(i);
 	}
 	
 	public void writeShort(short s) throws IOException
