@@ -61,17 +61,17 @@ public abstract class NMSChunk implements VirtualChunk
 	
 	public int getCombined(int id, int data)
 	{
-		return id + (data << 12);
+		return (id << 4) + data;
 	}
 	
 	public int getId(int combined)
 	{
-		return combined & 4095;
+		return combined >> 4;
 	}
 	
 	public byte getData(int combined)
 	{
-		return (byte) (combined >> 12 & 15);
+		return (byte) (combined & 15);
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public abstract class NMSChunk implements VirtualChunk
 	
 	public int getSection(int y)
 	{
-		return y & 15;
+		return y >> 4;
 	}
 	
 	public int toChunk(int v)

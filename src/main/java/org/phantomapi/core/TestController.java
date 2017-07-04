@@ -269,6 +269,11 @@ public class TestController extends Controller
 				Player p = P.getAnyPlayer();
 				VirtualChunk v = new NMSChunk19(p.getLocation().getChunk());
 				v.set(15, 100, 8, new MaterialBlock(Material.DIRT));
+				v.set(15, 60, 8, new MaterialBlock(Material.DIRT));
+				v.set(15, 70, 8, new MaterialBlock(Material.DIRT));
+				v.set(15, 50, 8, new MaterialBlock(Material.DIRT));
+				v.set(15, 80, 8, new MaterialBlock(Material.DIRT));
+				v.set(15, 90, 8, new MaterialBlock(Material.DIRT));
 				v.send(p);
 			}
 		});

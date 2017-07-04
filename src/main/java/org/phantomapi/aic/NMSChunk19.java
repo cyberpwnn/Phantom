@@ -101,7 +101,7 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 		for(int i = 0; i < data.length; i++)
 		{
 			int[] section = data[i];
-			if(section == null)
+			if(!modifiedSections[i])
 			{
 				continue;
 			}
@@ -121,15 +121,15 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 				}
 			}
 			
-			nm.write(bits.a().length);
+			nm.writeVarInt(bits.a().length);
 			
 			for(long j : bits.a())
 			{
 				nm.writeLong(j);
 			}
 			
-			nm.write(skyLight[i]);
 			nm.write(blockLight[i]);
+			nm.write(skyLight[i]);
 		}
 		
 		byteArray.write(0, boas.toByteArray());
