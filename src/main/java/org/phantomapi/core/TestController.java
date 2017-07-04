@@ -273,7 +273,7 @@ public class TestController extends Controller
 				{
 					for(int j = 0; j < 16; j++)
 					{
-						for(int k = 100; k < 120; k++)
+						for(int k = 100; k < 110; k++)
 						{
 							v.set(i, k, j, new MaterialBlock(Material.WOOD));
 						}

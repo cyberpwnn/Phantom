@@ -52,8 +52,8 @@ public class NMSChunk19 extends NMSChunk implements VirtualChunk
 						int id = Block.getId(ibd.getBlock());
 						byte data = (byte) ibd.getBlock().toLegacyData(ibd);
 						setSect(i.getYPosition() >> 4, j, k, l, id, data);
-						skyLight[i.getYPosition() >> 4][getIndexAmod(j, k, l)] = (byte) i.getSkyLightArray().a(j, k, l);
-						blockLight[i.getYPosition() >> 4][getIndexAmod(j, k, l)] = (byte) i.getEmittedLightArray().a(j, k, l);
+						skyLight[i.getYPosition() >> 4] = i.getSkyLightArray().asBytes();
+						blockLight[i.getYPosition() >> 4] = i.getEmittedLightArray().asBytes();
 					}
 				}
 			}

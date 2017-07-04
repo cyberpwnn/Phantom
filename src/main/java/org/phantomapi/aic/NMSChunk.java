@@ -40,8 +40,8 @@ public abstract class NMSChunk implements VirtualChunk
 	public void clearSection(int sect)
 	{
 		blockData[sect] = new int[4096];
-		skyLight[sect] = new byte[4096];
-		blockLight[sect] = new byte[4096];
+		skyLight[sect] = new byte[2048];
+		blockLight[sect] = new byte[2048];
 		Arrays.fill(blockData[sect], 0);
 		Arrays.fill(skyLight[sect], (byte) 0);
 		Arrays.fill(blockLight[sect], (byte) 0);
