@@ -16,11 +16,11 @@ import org.bukkit.Material;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R2.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -37,11 +37,11 @@ import org.phantomapi.world.MaterialBlock;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
-import net.minecraft.server.v1_9_R2.BlockPosition;
-import net.minecraft.server.v1_9_R2.EntityPlayer;
-import net.minecraft.server.v1_9_R2.EnumItemSlot;
-import net.minecraft.server.v1_9_R2.PacketPlayOutEntityEquipment;
-import net.minecraft.server.v1_9_R2.PacketPlayOutSetSlot;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.EnumItemSlot;
+import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_12_R1.PacketPlayOutSetSlot;
 
 /**
  * NMS Implementation for doing dirty things. Does not use craftbukkit. Consider
@@ -55,6 +55,9 @@ public class NMSX
 	private static boolean useOldMethods;
 	public static String nmsver;
 	public static GList<Color> colors;
+	public static Object eTimes = null;
+	public static Object eTitle = null;
+	public static Object eSubtitle = null;
 	
 	public static String getVersion()
 	{
@@ -68,14 +71,14 @@ public class NMSX
 		return ((CraftPlayer) p).getHandle();
 	}
 	
-	public static net.minecraft.server.v1_9_R2.Entity getEntity(Entity e)
+	public static net.minecraft.server.v1_12_R1.Entity getEntity(Entity e)
 	{
 		return ((CraftEntity) e).getHandle();
 	}
 	
 	public static void clearPassengers(Entity entity)
 	{
-		for(net.minecraft.server.v1_9_R2.Entity i : getEntity(entity).passengers)
+		for(net.minecraft.server.v1_12_R1.Entity i : getEntity(entity).passengers)
 		{
 			i.dead = true;
 		}
@@ -125,12 +128,12 @@ public class NMSX
 		return null;
 	}
 	
-	public static net.minecraft.server.v1_9_R2.ItemStack getNMSItemStack(ItemStack item)
+	public static net.minecraft.server.v1_12_R1.ItemStack getNMSItemStack(ItemStack item)
 	{
 		return CraftItemStack.asNMSCopy(item);
 	}
 	
-	public static ItemStack getItemStack(net.minecraft.server.v1_9_R2.ItemStack nmsCopy)
+	public static ItemStack getItemStack(net.minecraft.server.v1_12_R1.ItemStack nmsCopy)
 	{
 		return CraftItemStack.asBukkitCopy(nmsCopy);
 	}
@@ -292,8 +295,8 @@ public class NMSX
 			CraftBlock cb = (CraftBlock) i;
 			Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
 			method.setAccessible(true);
-			net.minecraft.server.v1_9_R2.Block b = (net.minecraft.server.v1_9_R2.Block) method.invoke(cb);
-			c.getHandle().applyPhysics(new BlockPosition(i.getX(), i.getY(), i.getZ()), b);
+			net.minecraft.server.v1_12_R1.Block b = (net.minecraft.server.v1_12_R1.Block) method.invoke(cb);
+			c.getHandle().applyPhysics(new BlockPosition(i.getX(), i.getY(), i.getZ()), b, false);
 		}
 		
 		catch(Exception e)
@@ -747,31 +750,38 @@ public class NMSX
 	 */
 	public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle)
 	{
-		if(subtitle.length() == 0 || subtitle.equals(" "))
-		{
-			subtitle = "  ";
-		}
-		
-		if(title.length() == 0 || title.equals(" "))
-		{
-			title = "  ";
-		}
-		
 		try
 		{
 			Object e;
+			
+			if(eTimes == null)
+			{
+				eTimes = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+			}
+			
+			if(eTitle == null)
+			{
+				eTitle = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+			}
+			
+			if(eSubtitle == null)
+			{
+				eSubtitle = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+			}
+			
 			Constructor<?> subtitleConstructor;
 			
 			if(title != null)
 			{
-				title = ChatColor.translateAlternateColorCodes('&', title);
+				title = ChatColor.translateAlternateColorCodes((char) '&', (String) title);
 				title = title.replaceAll("%player%", player.getDisplayName());
-				e = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+				e = eTimes;
 				Object chatTitle = NMSX.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + title + "\"}");
 				subtitleConstructor = NMSX.getNMSClass("PacketPlayOutTitle").getConstructor(NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], NMSX.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				Object titlePacket = subtitleConstructor.newInstance(e, chatTitle, fadeIn, stay, fadeOut);
 				NMSX.sendPacket(player, titlePacket);
-				e = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+				
+				e = eTitle;
 				chatTitle = NMSX.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + title + "\"}");
 				subtitleConstructor = NMSX.getNMSClass("PacketPlayOutTitle").getConstructor(NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], NMSX.getNMSClass("IChatBaseComponent"));
 				titlePacket = subtitleConstructor.newInstance(e, chatTitle);
@@ -780,14 +790,17 @@ public class NMSX
 			
 			if(subtitle != null)
 			{
-				subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
+				subtitle = ChatColor.translateAlternateColorCodes((char) '&', (String) subtitle);
 				subtitle = subtitle.replaceAll("%player%", player.getDisplayName());
-				e = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+				
+				e = eTimes;
+				
 				Object chatSubtitle = NMSX.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + title + "\"}");
 				subtitleConstructor = NMSX.getNMSClass("PacketPlayOutTitle").getConstructor(NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], NMSX.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				Object subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
 				NMSX.sendPacket(player, subtitlePacket);
-				e = NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+				
+				e = eSubtitle;
 				chatSubtitle = NMSX.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + subtitle + "\"}");
 				subtitleConstructor = NMSX.getNMSClass("PacketPlayOutTitle").getConstructor(NMSX.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], NMSX.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);

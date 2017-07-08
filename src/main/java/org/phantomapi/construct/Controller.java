@@ -368,23 +368,6 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	}
 	
 	/**
-	 * Writes the configurable object's data to the redis db
-	 * 
-	 * @param c
-	 *            the configurable object
-	 */
-	public void saveRedis(Configurable c)
-	{
-		if(!ConfigurationHandler.hasRedisTable(c))
-		{
-			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
-			return;
-		}
-		
-		ConfigurationHandler.writeRedis(c);
-	}
-	
-	/**
 	 * Get the current mysql connection
 	 * 
 	 * @return the connection
@@ -392,24 +375,6 @@ public abstract class Controller implements Controllable, ControllerMessenger
 	public MySQL getSQL()
 	{
 		return Phantom.instance().getSQL();
-	}
-	
-	/**
-	 * Reads the configurable object's data from the redis db. If the data does
-	 * not exist, defaults will be created.
-	 * 
-	 * @param c
-	 *            the configurable object
-	 */
-	public void readRedis(Configurable c)
-	{
-		if(!ConfigurationHandler.hasRedisTable(c))
-		{
-			f("No Redis annotation for the configurable object " + c.getClass().getSimpleName() + "<" + c.getCodeName() + ">");
-			return;
-		}
-		
-		ConfigurationHandler.readRedis(c);
 	}
 	
 	/**

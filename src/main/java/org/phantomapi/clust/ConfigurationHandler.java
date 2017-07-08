@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.phantomapi.Phantom;
 import org.phantomapi.async.A;
-import org.phantomapi.core.RedisConnectionController;
 import org.phantomapi.lang.GList;
 import org.phantomapi.sync.S;
 import org.phantomapi.sync.TaskLater;
@@ -211,70 +210,6 @@ public class ConfigurationHandler
 		{
 			return false;
 		}
-	}
-	
-	/**
-	 * Read the configurable object from redis
-	 * 
-	 * @param c
-	 *            the configurable object
-	 */
-	public static void readRedis(Configurable c)
-	{
-		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
-		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
-		fromFields(c);
-		c.onNewConfig();
-		
-		if(!r.hasKey(key))
-		{
-			writeRedis(c);
-		}
-		
-		c.getConfiguration().addJson(new JSONObject(r.read(key)));
-		toFields(c);
-		c.onReadConfig();
-	}
-	
-	/**
-	 * Does the given configurable object reside in redis
-	 * 
-	 * @param c
-	 *            the configurable object
-	 * @return true if it exists
-	 */
-	public static boolean redisExists(Configurable c)
-	{
-		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
-		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
-		return r.hasKey(key);
-	}
-	
-	/**
-	 * Delete redis key
-	 * 
-	 * @param c
-	 *            the configurable object
-	 */
-	public static void redisDelete(Configurable c)
-	{
-		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
-		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
-		r.drop(key);
-	}
-	
-	/**
-	 * Write the configurable object to redis
-	 * 
-	 * @param c
-	 *            the configurable object
-	 */
-	public static void writeRedis(Configurable c)
-	{
-		RedisConnectionController r = Phantom.instance().getRedisConnectionController();
-		String key = c.getClass().getAnnotation(Redis.class).value() + ":" + c.getCodeName();
-		fromFields(c);
-		r.write(key, c.getConfiguration().toJSON().toString());
 	}
 	
 	/**

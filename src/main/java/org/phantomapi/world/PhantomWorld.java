@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -31,8 +32,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
 @SuppressWarnings("deprecation")
@@ -847,5 +850,29 @@ public class PhantomWorld implements World
 	public <T> void spawnParticle(Particle arg0, double arg1, double arg2, double arg3, int arg4, double arg5, double arg6, double arg7, double arg8, T arg9)
 	{
 		world.spawnParticle(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+	}
+	
+	@Override
+	public void playSound(Location arg0, Sound arg1, SoundCategory arg2, float arg3, float arg4)
+	{
+		world.playSound(arg0, arg1, arg2, arg3, arg4);
+	}
+	
+	@Override
+	public void playSound(Location arg0, String arg1, SoundCategory arg2, float arg3, float arg4)
+	{
+		world.playSound(arg0, arg1, arg2, arg3, arg4);
+	}
+	
+	@Override
+	public <T extends Entity> T spawn(Location arg0, Class<T> arg1, Consumer<T> arg2) throws IllegalArgumentException
+	{
+		return spawn(arg0, arg1, arg2);
+	}
+	
+	@Override
+	public FallingBlock spawnFallingBlock(Location arg0, MaterialData arg1) throws IllegalArgumentException
+	{
+		return spawnFallingBlock(arg0, arg1);
 	}
 }

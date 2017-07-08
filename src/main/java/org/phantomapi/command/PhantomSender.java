@@ -29,7 +29,7 @@ public class PhantomSender implements PhantomCommandSender
 	public PhantomSender(CommandSender sender)
 	{
 		this.sender = sender;
-		this.builder = null;
+		builder = null;
 	}
 	
 	@Override
@@ -173,5 +173,11 @@ public class PhantomSender implements PhantomCommandSender
 	public MessageBuilder getMessageBuilder()
 	{
 		return builder;
+	}
+	
+	@Override
+	public Spigot spigot()
+	{
+		return sender.spigot();
 	}
 }

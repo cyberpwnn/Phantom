@@ -1,8 +1,6 @@
 package org.phantomapi.clust;
 
 import java.sql.SQLException;
-import org.phantomapi.Phantom;
-import org.phantomapi.core.RedisConnectionController;
 
 /**
  * Represents a data manager driver
@@ -12,7 +10,6 @@ import org.phantomapi.core.RedisConnectionController;
 public abstract class REM
 {
 	protected MySQL sql;
-	protected RedisConnectionController redis;
 	
 	/**
 	 * Initialize the drivers
@@ -20,7 +17,6 @@ public abstract class REM
 	public REM()
 	{
 		sql = MySQL.get();
-		redis = Phantom.instance().getRedisConnectionController();
 	}
 	
 	/**
@@ -82,15 +78,5 @@ public abstract class REM
 	public MySQL getSql()
 	{
 		return sql;
-	}
-	
-	/**
-	 * Get the redis driver
-	 * 
-	 * @return the redis driver
-	 */
-	public RedisConnectionController getRedis()
-	{
-		return redis;
 	}
 }

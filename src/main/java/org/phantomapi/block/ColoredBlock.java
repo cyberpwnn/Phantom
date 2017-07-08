@@ -44,7 +44,7 @@ public class ColoredBlock
 			return;
 		}
 		
-		new MaterialBlock(block.getType(), dc.getData()).apply(block.getLocation());
+		new MaterialBlock(block.getType(), dc.getDyeData()).apply(block.getLocation());
 	}
 	
 	/**
@@ -61,6 +61,6 @@ public class ColoredBlock
 			return banner.getBaseColor();
 		}
 		
-		return DyeColor.getByData(new MaterialBlock(block.getLocation()).getData());
+		return DyeColor.getByDyeData(new MaterialBlock(block.getLocation()).getData());
 	}
 }

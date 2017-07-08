@@ -478,6 +478,7 @@ public class P
 	 * @param health
 	 *            the health
 	 */
+	@SuppressWarnings("deprecation")
 	public static void heal(Player p, double health)
 	{
 		p.setHealth(p.getHealth() + health > p.getMaxHealth() ? p.getMaxHealth() : p.getHealth() + health);
@@ -500,6 +501,7 @@ public class P
 	 * @param p
 	 *            the player
 	 */
+	@SuppressWarnings("deprecation")
 	public static void resetMaxHeath(Player p)
 	{
 		p.setMaxHealth(20);

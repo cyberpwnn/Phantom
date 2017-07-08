@@ -10,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.phantomapi.lang.GList;
 import org.phantomapi.world.Area;
-import net.minecraft.server.v1_9_R2.Material;
 
 /**
  * Math
@@ -98,7 +97,7 @@ public class M
 		{
 			y -= shuf;
 			
-			if(new Location(l.getWorld(), l.getX(), y, l.getZ()).getBlock().getType().equals(Material.AIR))
+			if(new Location(l.getWorld(), l.getX(), y, l.getZ()).getBlock().getType().equals(org.bukkit.Material.AIR))
 			{
 				if(shuf > 1)
 				{

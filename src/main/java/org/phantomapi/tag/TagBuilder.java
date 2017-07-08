@@ -1,7 +1,7 @@
 package org.phantomapi.tag;
 
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftAreaEffectCloud;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftAreaEffectCloud;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.nms.NMSX;
-import net.minecraft.server.v1_9_R2.EntityAreaEffectCloud;
+import net.minecraft.server.v1_12_R1.EntityAreaEffectCloud;
 
 public class TagBuilder
 {

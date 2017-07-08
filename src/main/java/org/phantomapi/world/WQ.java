@@ -38,7 +38,7 @@ public class WQ extends PhantomWorldQueue
 			return;
 		}
 		
-		new MaterialBlock(location.getBlock().getType(), color.getData()).apply(location.getBlock().getLocation());
+		new MaterialBlock(location.getBlock().getType(), color.getDyeData()).apply(location.getBlock().getLocation());
 	}
 	
 	/**

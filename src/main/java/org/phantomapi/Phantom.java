@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,7 +38,6 @@ import org.phantomapi.construct.PhantomPlugin;
 import org.phantomapi.core.BlockCheckController;
 import org.phantomapi.core.BlockUpdateController;
 import org.phantomapi.core.BungeeController;
-import org.phantomapi.core.CTNController;
 import org.phantomapi.core.CacheController;
 import org.phantomapi.core.ChanneledExecutivePoolController;
 import org.phantomapi.core.CommandRegistryController;
@@ -50,7 +48,6 @@ import org.phantomapi.core.DevelopmentController;
 import org.phantomapi.core.EditSessionController;
 import org.phantomapi.core.EventRippler;
 import org.phantomapi.core.HyveController;
-import org.phantomapi.core.KernelController;
 import org.phantomapi.core.LanguageController;
 import org.phantomapi.core.Metrics;
 import org.phantomapi.core.Metrics.Graph;
@@ -59,7 +56,6 @@ import org.phantomapi.core.MultiblockRegistryController;
 import org.phantomapi.core.MySQLConnectionController;
 import org.phantomapi.core.NestController;
 import org.phantomapi.core.NotificationController;
-import org.phantomapi.core.PPAController;
 import org.phantomapi.core.PhastController;
 import org.phantomapi.core.PhotonController;
 import org.phantomapi.core.PlayerDataManager;
@@ -67,7 +63,6 @@ import org.phantomapi.core.PlayerTagController;
 import org.phantomapi.core.ProbeController;
 import org.phantomapi.core.ProtocolController;
 import org.phantomapi.core.RebootController;
-import org.phantomapi.core.RedisConnectionController;
 import org.phantomapi.core.RegistryController;
 import org.phantomapi.core.ResourceController;
 import org.phantomapi.core.SQLiteConnectionController;
@@ -86,15 +81,12 @@ import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.hud.Hud;
 import org.phantomapi.hud.PlayerHud;
-import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSet;
 import org.phantomapi.library.Coordinates;
 import org.phantomapi.library.LibraryInstaller;
 import org.phantomapi.multiblock.Multiblock;
-import org.phantomapi.nbt.BukkitReflect;
-import org.phantomapi.nbt.NBTBase;
 import org.phantomapi.nest.Nest;
 import org.phantomapi.network.Network;
 import org.phantomapi.nms.NMSX;
@@ -110,7 +102,6 @@ import org.phantomapi.text.SpeechMesh;
 import org.phantomapi.text.TagProvider;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.transmit.Transmitter;
-import org.phantomapi.util.APITest;
 import org.phantomapi.util.C;
 import org.phantomapi.util.CFS;
 import org.phantomapi.util.D;
@@ -169,7 +160,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private EventRippler eventRippler;
 	private CommandRegistryController commandRegistryController;
 	private DMS dms;
-	private PPAController ppaController;
 	private GList<Controllable> bindings;
 	private GList<Plugin> plugins;
 	private File envFile;
@@ -193,14 +183,11 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	private UpdateController updateController;
 	private BlockUpdateController blockUpdateController;
 	private RebootController rebootController;
-	private RedisConnectionController redisConnectionController;
 	private SpawnerController spawnerController;
 	private PlayerDataManager pdm;
 	private WorldController worldController;
 	private ZenithController zenithController;
-	private CTNController ctnController;
 	private PlayerTagController playerTagController;
-	private KernelController kernelController;
 	private CommandSupportController commandSupportController;
 	private Long nsx;
 	private GMap<String, GList<String>> dictionaries;
@@ -226,7 +213,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		D.d(this, "Identify Main Thread as THIS");
 		thread = Thread.currentThread().getId();
 		D.d(this, "Initialize Thread pool executor");
-		reloaded = checkReload();
+		reloaded = false;
 		D.d(this, "Setup Economy");
 		setupEconomy();
 		nsx = M.ns();
@@ -273,10 +260,8 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		notificationController = new NotificationController(this);
 		probeController = new ProbeController(this);
 		protocolController = new ProtocolController(this);
-		redisConnectionController = new RedisConnectionController(this);
 		mySQLConnectionController = new MySQLConnectionController(this);
 		sqLiteConnectionController = new SQLiteConnectionController(this);
-		ppaController = new PPAController(this);
 		eventRippler = new EventRippler(this);
 		defaultController = new DefaultController(this);
 		plugins = new GList<Plugin>();
@@ -302,9 +287,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		hyveController = new HyveController(this);
 		worldController = new WorldController(this);
 		zenithController = new ZenithController(this);
-		ctnController = new CTNController(this);
 		playerTagController = new PlayerTagController(this);
-		kernelController = new KernelController(this);
 		commandSupportController = new CommandSupportController(this);
 		
 		setupTicker();
@@ -320,9 +303,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(channeledExecutivePoolController);
 		register(notificationController);
 		register(probeController);
-		register(redisConnectionController);
 		register(mySQLConnectionController);
-		register(ppaController);
 		register(dms);
 		register(eventRippler);
 		register(protocolController);
@@ -346,9 +327,7 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		register(worldController);
 		register(hyveController);
 		register(zenithController);
-		register(ctnController);
 		register(playerTagController);
-		register(kernelController);
 		register(commandSupportController);
 		
 		D.d(this, "Build Environment file");
@@ -372,25 +351,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			D.d(this, "!ahahahahahahahahahahaH");
 			D.fool = true;
 		}
-		
-		try
-		{
-			D.d(this, "Setting up NBT Reflectors");
-			BukkitReflect.prepareReflection();
-			NBTBase.prepareReflection();
-			D.d(this, "NBT Ready!");
-		}
-		
-		catch(Throwable e)
-		{
-			getLogger().log(Level.SEVERE, "Error preparing reflection objects", e);
-			getLogger().severe("This version of NBTEditor is not compatible with this version of Bukkit");
-		}
-	}
-	
-	private boolean checkReload()
-	{
-		return M.ms() - Platform.ENVIRONMENT.startTime() > 10000;
 	}
 	
 	private void loadSupport()
@@ -773,11 +733,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		{
 			ExceptionUtil.print(e);
 		}
-	}
-	
-	public static String getPPAID()
-	{
-		return instance.ppaController.id;
 	}
 	
 	/**
@@ -1212,28 +1167,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 			GList<String> rtz = new GList<String>(roots.split(" "));
 			String command = rtz.pop();
 			String[] args = rtz.toArray(new String[rtz.size()]);
-			
-			if(command.equalsIgnoreCase("/ctn"))
-			{
-				if(sender.isConsole() || (sender.isPlayer() && Z.isZenith(sender.getPlayer())))
-				{
-					if(args.length == 0)
-					{
-						sender.sendMessage(C.RED + "/sync <command>");
-					}
-					
-					String cx = "";
-					
-					for(String i : args)
-					{
-						cx = cx + i + " ";
-					}
-					
-					cx.trim();
-					getCtnController().dispatchCommandOverNetwork(cx, "all", sender);
-					e.setCancelled(true);
-				}
-			}
 			
 			if(command.equalsIgnoreCase("/"))
 			{
@@ -1859,18 +1792,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 							public void sync()
 							{
 								thrash(sender);
-							}
-						};
-					}
-					
-					else if(args[0].equalsIgnoreCase("apitest"))
-					{
-						new S()
-						{
-							@Override
-							public void sync()
-							{
-								new APITest(new PhantomSender(sender));
 							}
 						};
 					}
@@ -3057,16 +2978,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return sqLiteConnectionController;
 	}
 	
-	public RedisConnectionController getRedisConnectionController()
-	{
-		return redisConnectionController;
-	}
-	
-	public PPAController getPpaController()
-	{
-		return ppaController;
-	}
-	
 	public LanguageController getLanguageController()
 	{
 		return languageController;
@@ -3119,11 +3030,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 		return zenithController;
 	}
 	
-	public CTNController getCtnController()
-	{
-		return ctnController;
-	}
-	
 	public CacheController getCacheController()
 	{
 		return cacheController;
@@ -3137,11 +3043,6 @@ public class Phantom extends PhantomPlugin implements TagProvider
 	public boolean isReloaded()
 	{
 		return reloaded;
-	}
-	
-	public KernelController getKernelController()
-	{
-		return kernelController;
 	}
 	
 	public static void substrate(Plugin p)

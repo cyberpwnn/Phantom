@@ -29,7 +29,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -37,8 +36,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
-import org.phantomapi.aic.NMSChunk19;
-import org.phantomapi.aic.VirtualChunk;
 import org.phantomapi.async.A;
 import org.phantomapi.async.Callback;
 import org.phantomapi.chromatic.Chromatic;
@@ -70,7 +67,6 @@ import org.phantomapi.hologram.PhantomHologram;
 import org.phantomapi.hud.Hud;
 import org.phantomapi.hud.HudFactory;
 import org.phantomapi.hud.PlayerHud;
-import org.phantomapi.kernel.Platform;
 import org.phantomapi.lang.GChunk;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GLocation;
@@ -85,8 +81,6 @@ import org.phantomapi.papyrus.Maps;
 import org.phantomapi.papyrus.PaperColor;
 import org.phantomapi.papyrus.PapyrusRenderer;
 import org.phantomapi.papyrus.RenderFilter;
-import org.phantomapi.pet.MiniPet;
-import org.phantomapi.ppa.PPA;
 import org.phantomapi.schematic.Artifact;
 import org.phantomapi.schematic.EdgeDistortion;
 import org.phantomapi.schematic.Schematic;
@@ -261,78 +255,6 @@ public class TestController extends Controller
 			}
 		});
 		
-		tests.put("chunk-map", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				Player p = P.getAnyPlayer();
-				VirtualChunk v = new NMSChunk19(p.getLocation().getChunk());
-				
-				for(int i = 0; i < 10; i++)
-				{
-					for(int j = 0; j < 4; j++)
-					{
-						for(int k = 45; k < 75; k++)
-						{
-							v.set(i, k, j, new MaterialBlock(Material.STAINED_GLASS, (byte) (Math.random() * 15)));
-						}
-					}
-				}
-				
-				v.send(p);
-			}
-		});
-		
-		tests.put("minipet", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					ItemStack skull = null;
-					
-					try
-					{
-						skull = Items.getSkull("http://textures.minecraft.net/texture/154a93cf60e2f7ffb21750628f693d4d125c80c1f78454a562bee20254cac90");
-					}
-					
-					catch(Exception e)
-					{
-						e.printStackTrace();
-					}
-					
-					new MiniPet(i, i.getLocation(), skull, "Skfffddsull?")
-					{
-						@Override
-						public void entityTick(Zombie z)
-						{
-							
-						}
-						
-						@Override
-						public void entityInteract(Zombie z)
-						{
-							
-						}
-						
-						@Override
-						public void entityTeleported(Zombie z)
-						{
-							
-						}
-						
-						@Override
-						public void entityAmbient(Zombie z)
-						{
-							ParticleEffect.HEART.display(0.7f, 1, z.getEyeLocation(), 4f);
-						}
-					};
-				}
-			}
-		});
-		
 		tests.put("hfac", new Runnable()
 		{
 			@Override
@@ -460,16 +382,6 @@ public class TestController extends Controller
 					hud.setContents(new GList<String>().qadd(C.GREEN + "Frields (3 Online)").qadd(C.LIGHT_PURPLE + "Cosmetics").qadd(C.YELLOW + "Something Else").qadd("TTTTTTTTTfff").qadd("TTTTTTTTTfffd").qadd("TTTTTTT").qadd("TTTTTTTTTff").qadd("TTddTTTTfff").qadd(C.RED + "EXIT"));
 					hud.open();
 				}
-			}
-		});
-		
-		tests.put("platformt", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				s(Platform.CPU.getCoreLoad(0) + " Load");
-				s(Platform.CPU.getProcessorModel());
 			}
 		});
 		
@@ -621,18 +533,6 @@ public class TestController extends Controller
 						System.out.println("Went ASYNC, GOOD WORKS");
 					}
 				};
-			}
-		});
-		
-		tests.put("ppa", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				PPA ppa = new PPA("test");
-				ppa.set("testing", 423);
-				ppa.set("testval", "val");
-				ppa.send();
 			}
 		});
 		
@@ -898,6 +798,7 @@ public class TestController extends Controller
 				
 				new Task(0)
 				{
+					@SuppressWarnings("deprecation")
 					@Override
 					public void run()
 					{

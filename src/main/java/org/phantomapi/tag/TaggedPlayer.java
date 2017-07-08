@@ -30,6 +30,7 @@ public class TaggedPlayer
 		tagBuilder = new TagBuilder(player, this);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void update()
 	{
 		while(getContent().size() > 6)

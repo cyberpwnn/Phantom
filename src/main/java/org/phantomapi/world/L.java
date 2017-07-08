@@ -24,6 +24,7 @@ public class L
 	{
 		new A()
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void async()
 			{

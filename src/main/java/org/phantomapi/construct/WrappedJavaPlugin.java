@@ -8,7 +8,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.avaje.ebean.EbeanServer;
 
 public class WrappedJavaPlugin extends JavaPlugin
 {
@@ -29,18 +28,6 @@ public class WrappedJavaPlugin extends JavaPlugin
 	public FileConfiguration getConfig()
 	{
 		return plugin.getConfig();
-	}
-	
-	@Override
-	public EbeanServer getDatabase()
-	{
-		return plugin.getDatabase();
-	}
-	
-	@Override
-	public List<Class<?>> getDatabaseClasses()
-	{
-		return plugin.getDatabaseClasses();
 	}
 	
 	@Override
