@@ -622,6 +622,10 @@ public class ConfigurationHandler
 			conn = db.getConnection();
 		}
 		
+		PreparedStatement s = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " + "`" + table + "`" + " (`k` TEXT, `d` TEXT);");
+		s.execute();
+		s.close();
+		
 		PreparedStatement ps = conn.prepareStatement("SELECT count(*) from " + table + " WHERE k = ?");
 		ps.setString(1, codeName);
 		ResultSet resultSet = ps.executeQuery();

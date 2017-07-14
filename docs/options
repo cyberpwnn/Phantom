@@ -1,0 +1,27 @@
+-classpath
+'C:/Users/cyberpwn/Documents/development/repository/com/sk89q/worldedit/6.0.0-SNAPSHOT/worldedit-6.0.0-SNAPSHOT.jar;C:/Users/cyberpwn/Documents/development/repository/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar;C:/Users/cyberpwn/Documents/development/repository/org/bukkit/bukkit/1.12-R0.1-SNAPSHOT/bukkit-1.12-R0.1-SNAPSHOT.jar;C:/Users/cyberpwn/Documents/development/lib/craftbukkit-1.12.jar;C:/Users/cyberpwn/Documents/development/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar;C:/Users/cyberpwn/Documents/development/repository/net/milkbowl/vault/VaultAPI/1.6/VaultAPI-1.6.jar;C:/Users/cyberpwn/Documents/development/repository/org/yaml/snakeyaml/1.18/snakeyaml-1.18.jar;C:/Users/cyberpwn/Documents/development/repository/net/md-5/bungeecord-chat/1.12-SNAPSHOT/bungeecord-chat-1.12-SNAPSHOT.jar;C:/Users/cyberpwn/Documents/development/repository/com/boydti/fawe-api/latest/fawe-api-latest.jar;C:/Users/cyberpwn/Documents/development/repository/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar;C:/Users/cyberpwn/Documents/development/lib/FastAsyncWorldEdit-bukkit-17.07.06-ded70ab-743-13.6.1.jar;C:/Users/cyberpwn/Documents/development/repository/com/comphenix/executors/BukkitExecutors/1.1-SNAPSHOT/BukkitExecutors-1.1-SNAPSHOT.jar;C:/Users/cyberpwn/Documents/development/repository/com/comphenix/protocol/ProtocolLib-API/4.3.0/ProtocolLib-API-4.3.0.jar;C:/Users/cyberpwn/Documents/development/repository/de/schlichtherle/truezip/6.8.3/truezip-6.8.3.jar;C:/Users/cyberpwn/Documents/development/repository/rhino/js/1.7R2/js-1.7R2.jar;C:/Users/cyberpwn/Documents/development/repository/cglib/cglib-nodep/3.2.5/cglib-nodep-3.2.5.jar;C:/Users/cyberpwn/Documents/development/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar;C:/Users/cyberpwn/Documents/development/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar;C:/Users/cyberpwn/Documents/development/repository/junit/junit/4.10/junit-4.10.jar;C:/Users/cyberpwn/Documents/development/repository/org/spigotmc/spigot-api/1.12-R0.1-SNAPSHOT/spigot-api-1.12-R0.1-SNAPSHOT.jar;C:/Users/cyberpwn/Documents/development/repository/com/google/guava/guava/21.0/guava-21.0.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/cyberpwn/Documents/development/workspace/Phantom/src/main/java'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2017. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/cyberpwn/Documents/development/workspace/Phantom/docs'
+-docencoding
+'UTF-8'
+-doctitle
+'Phantom Y API'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' 'C:/Users/cyberpwn/Documents/development/workspace/Phantom/target/javadoc-bundle-options'
+-stylesheetfile
+'C:/Users/cyberpwn/Documents/development/workspace/Phantom/stylesheet.css'
+-use
+-version
+-windowtitle
+'Phantom Y API'
