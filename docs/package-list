@@ -11,6 +11,7 @@ org.phantomapi.clust
 org.phantomapi.command
 org.phantomapi.construct
 org.phantomapi.core
+org.phantomapi.coretick
 org.phantomapi.currency
 org.phantomapi.data
 org.phantomapi.entity
@@ -25,7 +26,6 @@ org.phantomapi.hive
 org.phantomapi.hologram
 org.phantomapi.hud
 org.phantomapi.inventory
-org.phantomapi.kernel
 org.phantomapi.lang
 org.phantomapi.library
 org.phantomapi.multiblock
@@ -35,10 +35,8 @@ org.phantomapi.network
 org.phantomapi.nms
 org.phantomapi.packet
 org.phantomapi.papyrus
-org.phantomapi.pet
 org.phantomapi.phast
 org.phantomapi.physics
-org.phantomapi.ppa
 org.phantomapi.queue
 org.phantomapi.reek
 org.phantomapi.refract
@@ -60,4 +58,3 @@ org.phantomapi.transmit
 org.phantomapi.util
 org.phantomapi.vfx
 org.phantomapi.world
-org.phantomapi.wraith
