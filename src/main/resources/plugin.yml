@@ -1,0 +1,3 @@
+name: ${project.name}
+main: ${project.main.bukkit}
+version: ${project.version}
