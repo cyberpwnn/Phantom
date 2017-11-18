@@ -1,9 +1,8 @@
 package org.phantomapi.core.bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.phantomapi.core.CorePlugin;
 
-public abstract class BukkitPlugin extends JavaPlugin implements CorePlugin
+public abstract class BukkitPlugin extends JavaPlugin
 {
 	public BukkitPlugin()
 	{
