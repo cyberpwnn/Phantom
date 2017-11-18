@@ -7,6 +7,7 @@
 	<name>Phantom</name>
 	<description>This again...</description>
 	<properties>
+		<phantom.main.bukkit>org.phantomapi.core.bukkit.PhantomBukkit</phantom.main.bukkit>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<github.maven.repository>file://C:\Users\cyberpwn\Documents\development\repository</github.maven.repository>
