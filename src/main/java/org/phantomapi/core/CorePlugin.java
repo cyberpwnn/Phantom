@@ -11,16 +11,21 @@ import org.cyberpwn.gconcurrent.A;
 import org.cyberpwn.gconcurrent.ParallelPoolManager;
 import org.cyberpwn.gconcurrent.QueueMode;
 import org.cyberpwn.gconcurrent.S;
+import org.cyberpwn.gconcurrent.TICK;
 import org.cyberpwn.gformat.F;
+import org.cyberpwn.glang.GBiset;
 import org.cyberpwn.glang.GList;
+import org.cyberpwn.glang.GMap;
 import org.cyberpwn.glog.L;
 
+import phantom.annotation.Async;
 import phantom.annotation.Control;
 import phantom.annotation.Controller;
 import phantom.annotation.Disable;
 import phantom.annotation.Enable;
 import phantom.annotation.Instance;
 import phantom.annotation.MasterController;
+import phantom.annotation.Tick;
 import phantom.util.annotations.Annotations;
 
 public class CorePlugin implements ICorePlugin
@@ -31,10 +36,14 @@ public class CorePlugin implements ICorePlugin
 	private GList<Class<?>> cMasterControllers;
 	private GList<Class<?>> classes;
 	private GList<File> searchDirectories;
+	private GMap<GBiset<Object, Method>, Integer> syncTick;
+	private GMap<GBiset<Object, Method>, Integer> asyncTick;
 
 	public CorePlugin(GList<File> searchDirectories) throws IOException
 	{
 		this.searchDirectories = searchDirectories;
+		syncTick = new GMap<GBiset<Object, Method>, Integer>();
+		asyncTick = new GMap<GBiset<Object, Method>, Integer>();
 		controllers = new GList<Object>();
 		cControllers = new GList<Class<?>>();
 		cMasterControllers = new GList<Class<?>>();
@@ -75,6 +84,19 @@ public class CorePlugin implements ICorePlugin
 			i.set(inst, initializeController(i.getType()));
 		}
 
+		for(Method i : Annotations.getAnnotatedMethods(c, Tick.class).k())
+		{
+			if(Annotations.hasAnnotation(c, Async.class))
+			{
+				asyncTick.put(new GBiset<Object, Method>(inst, i), Annotations.getAnnotation(i, Tick.class).value());
+			}
+
+			else
+			{
+				syncTick.put(new GBiset<Object, Method>(inst, i), Annotations.getAnnotation(i, Tick.class).value());
+			}
+		}
+
 		return inst;
 	}
 
@@ -100,6 +122,19 @@ public class CorePlugin implements ICorePlugin
 			i.set(inst, initializeController(i.getType()));
 		}
 
+		for(Method i : Annotations.getAnnotatedMethods(c, Tick.class).k())
+		{
+			if(Annotations.hasAnnotation(c, Async.class))
+			{
+				asyncTick.put(new GBiset<Object, Method>(inst, i), Annotations.getAnnotation(i, Tick.class).value());
+			}
+
+			else
+			{
+				syncTick.put(new GBiset<Object, Method>(inst, i), Annotations.getAnnotation(i, Tick.class).value());
+			}
+		}
+
 		return inst;
 	}
 
@@ -118,12 +153,6 @@ public class CorePlugin implements ICorePlugin
 	public GList<Class<?>> getMasterControllerClasses()
 	{
 		return cMasterControllers;
-	}
-
-	@Override
-	public void onTick()
-	{
-		pool.tickSyncQueue();
 	}
 
 	@Override
@@ -262,8 +291,33 @@ public class CorePlugin implements ICorePlugin
 
 		for(Method i : Annotations.getAnnotatedMethods(o, Enable.class).k())
 		{
-			i.setAccessible(true);
-			i.invoke(o);
+			if(Annotations.hasAnnotation(i, Async.class))
+			{
+				new A()
+				{
+					@Override
+					public void run()
+					{
+						i.setAccessible(true);
+
+						try
+						{
+							i.invoke(o);
+						}
+
+						catch(Throwable e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
+			}
+
+			else
+			{
+				i.setAccessible(true);
+				i.invoke(o);
+			}
 		}
 	}
 
@@ -282,8 +336,75 @@ public class CorePlugin implements ICorePlugin
 
 		for(Method i : Annotations.getAnnotatedMethods(o, Disable.class).k())
 		{
-			i.setAccessible(true);
-			i.invoke(o);
+			if(Annotations.hasAnnotation(i, Async.class))
+			{
+				new A()
+				{
+					@Override
+					public void run()
+					{
+						i.setAccessible(true);
+
+						try
+						{
+							i.invoke(o);
+						}
+
+						catch(Throwable e)
+						{
+							e.printStackTrace();
+						}
+					}
+				};
+			}
+
+			else
+			{
+				i.setAccessible(true);
+				i.invoke(o);
+			}
+		}
+	}
+
+	@Override
+	public void onTickSync()
+	{
+		pool.tickSyncQueue();
+
+		for(GBiset<Object, Method> m : syncTick.k())
+		{
+			if(TICK.tick % (syncTick.get(m) < 1 ? 1 : syncTick.get(m)) == 0)
+			{
+				try
+				{
+					m.getB().invoke(m.getA());
+				}
+
+				catch(Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onTickAsync()
+	{
+		for(GBiset<Object, Method> m : asyncTick.k())
+		{
+			if(TICK.tick % (asyncTick.get(m) < 1 ? 1 : asyncTick.get(m)) == 0)
+			{
+				try
+				{
+					m.getB().invoke(m.getA());
+				}
+
+				catch(Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
