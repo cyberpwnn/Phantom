@@ -35,7 +35,9 @@ public interface ICorePlugin
 
 	public void onLoad();
 
-	public void onTick();
+	public void onTickSync();
+
+	public void onTickAsync();
 
 	/**
 	 * Initialize an object
