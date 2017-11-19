@@ -137,7 +137,8 @@
 		<dependency>
 			<groupId>org.cyberpwn</groupId>
 			<artifactId>GConcurrent</artifactId>
-			<version>1.4</version>
+			<version>1.5
+			</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cyberpwn</groupId>
