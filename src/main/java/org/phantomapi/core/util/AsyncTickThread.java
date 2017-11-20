@@ -1,4 +1,4 @@
-package phantom.util.threads;
+package org.phantomapi.core.util;
 
 public class AsyncTickThread extends Thread
 {

@@ -1,4 +1,4 @@
-package phantom.util.annotations;
+package org.phantomapi.core.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

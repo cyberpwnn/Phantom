@@ -1,4 +1,4 @@
-package org.phantomapi.core;
+package org.phantomapi.core.bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,10 @@ import org.cyberpwn.glang.GBiset;
 import org.cyberpwn.glang.GList;
 import org.cyberpwn.glang.GMap;
 import org.cyberpwn.glog.L;
+import org.phantomapi.core.ICorePlugin;
+import org.phantomapi.core.IGateway;
+import org.phantomapi.core.Phantom;
+import org.phantomapi.core.util.Annotations;
 
 import phantom.annotation.Async;
 import phantom.annotation.Control;
@@ -26,9 +30,8 @@ import phantom.annotation.Enable;
 import phantom.annotation.Instance;
 import phantom.annotation.MasterController;
 import phantom.annotation.Tick;
-import phantom.util.annotations.Annotations;
 
-public class CorePlugin implements ICorePlugin
+public class CorePluginBukkit implements ICorePlugin
 {
 	private ParallelPoolManager pool;
 	private GList<Object> controllers;
@@ -38,8 +41,9 @@ public class CorePlugin implements ICorePlugin
 	private GList<File> searchDirectories;
 	private GMap<GBiset<Object, Method>, Integer> syncTick;
 	private GMap<GBiset<Object, Method>, Integer> asyncTick;
+	private IGateway gateway;
 
-	public CorePlugin(GList<File> searchDirectories) throws IOException
+	public CorePluginBukkit(GList<File> searchDirectories) throws Exception
 	{
 		this.searchDirectories = searchDirectories;
 		syncTick = new GMap<GBiset<Object, Method>, Integer>();
@@ -48,6 +52,7 @@ public class CorePlugin implements ICorePlugin
 		cControllers = new GList<Class<?>>();
 		cMasterControllers = new GList<Class<?>>();
 		classes = new GList<Class<?>>();
+		Field coreF = Phantom.class.getField("core");
 		pool = new ParallelPoolManager("Ghost", 4, QueueMode.ROUND_ROBIN)
 		{
 			@Override
@@ -60,6 +65,9 @@ public class CorePlugin implements ICorePlugin
 		pool.start();
 		A.mgr = pool;
 		S.mgr = pool;
+		coreF.setAccessible(true);
+		coreF.set(null, this);
+		gateway = new BukkitGateway();
 	}
 
 	private Object initializeMasterController(Class<?> c) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
@@ -138,7 +146,7 @@ public class CorePlugin implements ICorePlugin
 		return inst;
 	}
 
-	public CorePlugin(File... files) throws IOException
+	public CorePluginBukkit(File... files) throws Exception
 	{
 		this(new GList<File>(files));
 	}
@@ -164,18 +172,35 @@ public class CorePlugin implements ICorePlugin
 	@Override
 	public void onEnable()
 	{
-		for(Object i : controllers)
+		new A()
 		{
-			try
+			@Override
+			public void run()
 			{
-				enableController(i);
-			}
+				readClasses();
+				processClasses();
 
-			catch(Exception e)
-			{
-				e.printStackTrace();
+				new S()
+				{
+					@Override
+					public void run()
+					{
+						for(Object i : controllers)
+						{
+							try
+							{
+								enableController(i);
+							}
+
+							catch(Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				};
 			}
-		}
+		};
 	}
 
 	@Override
@@ -200,30 +225,11 @@ public class CorePlugin implements ICorePlugin
 	@Override
 	public void onLoad()
 	{
-		for(File i : searchDirectories)
-		{
-			for(File j : i.listFiles())
-			{
-				if(j.getName().endsWith(".jar"))
-				{
-					int s = classes.size();
 
-					try
-					{
-						classes.addAll(ICorePlugin.getClassesFromJar(j));
-					}
+	}
 
-					catch(IOException e)
-					{
-						e.printStackTrace();
-					}
-
-					L.l("  Reading " + F.f(classes.size() - s) + " classes from " + j.getName());
-				}
-			}
-		}
-
-		L.l("Read " + F.f(classes.size()));
+	private void processClasses()
+	{
 		L.l("Processing " + F.f(classes.size()) + " classes");
 
 		for(Class<?> i : classes)
@@ -248,31 +254,72 @@ public class CorePlugin implements ICorePlugin
 
 		for(Class<?> i : cMasterControllers)
 		{
-			Class<?> c = i;
+			processClass(i);
+		}
+	}
+
+	private void processClass(Class<?> c)
+	{
+		try
+		{
+			Object o = initializeMasterController(c);
+
+			if(o != null)
+			{
+				L.f("  Initialized Master Controller " + o.getClass().getSimpleName());
+
+				for(Field j : Annotations.getAnnotatedFields(o, Instance.class).k())
+				{
+					j.setAccessible(true);
+					j.set(o, o);
+				}
+
+				controllers.add(o);
+			}
+		}
+
+		catch(Throwable e)
+		{
+			L.f("  Failed to initialize Master controller ");
+			e.printStackTrace();
+		}
+	}
+
+	private void readClasses()
+	{
+		for(File i : searchDirectories)
+		{
+			readSeachDirectory(i);
+		}
+
+		L.l("Read " + F.f(classes.size()));
+	}
+
+	private void readSeachDirectory(File i)
+	{
+		for(File j : i.listFiles())
+		{
+			readJar(j);
+		}
+	}
+
+	private void readJar(File j)
+	{
+		if(j.getName().endsWith(".jar"))
+		{
+			int s = classes.size();
 
 			try
 			{
-				Object o = initializeMasterController(c);
-
-				if(o != null)
-				{
-					L.f("  Initialized Master Controller " + o.getClass().getSimpleName());
-
-					for(Field j : Annotations.getAnnotatedFields(o, Instance.class).k())
-					{
-						j.setAccessible(true);
-						j.set(o, o);
-					}
-
-					controllers.add(o);
-				}
+				classes.addAll(ICorePlugin.getClassesFromJar(j));
 			}
 
-			catch(Throwable e)
+			catch(IOException e)
 			{
-				L.f("  Failed to initialize Master controller ");
 				e.printStackTrace();
 			}
+
+			L.l("  Reading " + F.f(classes.size() - s) + " classes from " + j.getName());
 		}
 	}
 
@@ -406,5 +453,11 @@ public class CorePlugin implements ICorePlugin
 				}
 			}
 		}
+	}
+
+	@Override
+	public IGateway getGateway()
+	{
+		return gateway;
 	}
 }

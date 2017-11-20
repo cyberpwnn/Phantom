@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import org.cyberpwn.glang.GList;
 import org.cyberpwn.glang.GListAdapter;
+import org.phantomapi.core.util.Annotations;
+import org.phantomapi.core.util.Archives;
 
 import phantom.annotation.Controller;
 import phantom.annotation.MasterController;
-import phantom.util.annotations.Annotations;
-import phantom.util.files.Archives;
 
 /**
  * The gateway beteen the world of phantom and the underlying api
@@ -38,6 +38,8 @@ public interface ICorePlugin
 	public void onTickSync();
 
 	public void onTickAsync();
+
+	public IGateway getGateway();
 
 	/**
 	 * Initialize an object

@@ -32,8 +32,53 @@
               <artifactSet>
                 <includes>
                   <include>org.cyberpwn:*</include>
+                  <include>org.ow2.asm:asm</include>
+                  <include>org.ow2.asm:asm-commons</include>
+                  <include>org.ow2.asm:asm-util</include>
+                  <include>org.ow2.asm:asm-tree</include>
+                  <include>org.ow2.asm:asm-analysis</include>
+                  <include>org.ow2.asm:asm-xml</include>
+                  <include>redis.clients:jedis</include>
                 </includes>
               </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>org.cyberpwn.gbench</pattern>
+                  <shadedPattern>phantom.bench</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.gconcurrent</pattern>
+                  <shadedPattern>phantom.concurrent</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.gformat</pattern>
+                  <shadedPattern>phantom.format</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.glang</pattern>
+                  <shadedPattern>phantom.lang</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.gmath</pattern>
+                  <shadedPattern>phantom.math</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.gnet</pattern>
+                  <shadedPattern>phantom.net</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.cyberpwn.json</pattern>
+                  <shadedPattern>phantom.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.objectweb.asm</pattern>
+                  <shadedPattern>phantom.asm</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>redis.clients</pattern>
+                  <shadedPattern>phantom.redis</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -56,20 +101,13 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom\scripts\development.bat</executable>
-                  <arguments>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-1.0.jar</argument>
-                    <argument>C:\Users\cyberpwn\Documents\development\servers\dynamic\plugins\Phantom.jar</argument>
-                  </arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom\scripts\development.bat</executable>
+              <executable>${script.development}</executable>
               <arguments>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-1.0.jar</argument>
-                <argument>C:\Users\cyberpwn\Documents\development\servers\dynamic\plugins\Phantom.jar</argument>
+                <argument>${phantom.target}\${phantom.finalname}.jar</argument>
+                <argument>${development.server}</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -91,13 +129,20 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom\scripts\release.bat</executable>
+                  <arguments>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-1.0.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\Phantom-1.0.jar</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>${script.release}</executable>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom\scripts\release.bat</executable>
               <arguments>
-                <argument>${phantom.target}\${phantom.finalname}.jar</argument>
-                <argument>${phantom.release}\${phantom.finalname}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-1.0.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\Phantom-1.0.jar</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -113,6 +158,10 @@
     <repository>
       <id>central</id>
       <url>https://raw.githubusercontent.com/cyberpwnn/Central/master/</url>
+    </repository>
+    <repository>
+      <id>mvn</id>
+      <url>https://repo.maven.apache.org/maven2/</url>
     </repository>
   </repositories>
   <dependencies>

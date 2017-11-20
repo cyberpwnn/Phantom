@@ -5,13 +5,11 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.cyberpwn.gconcurrent.TICK;
 import org.cyberpwn.glog.L;
-import org.phantomapi.core.CorePlugin;
-
-import phantom.util.threads.AsyncTickThread;
+import org.phantomapi.core.util.AsyncTickThread;
 
 public class PhantomBukkit extends BukkitPlugin
 {
-	public CorePlugin core;
+	public CorePluginBukkit core;
 	public AsyncTickThread asyn;
 	public int tid;
 
@@ -20,7 +18,7 @@ public class PhantomBukkit extends BukkitPlugin
 	{
 		try
 		{
-			core = new CorePlugin(new File("plugins"));
+			core = new CorePluginBukkit(new File("plugins"));
 			core.onInit();
 		}
 

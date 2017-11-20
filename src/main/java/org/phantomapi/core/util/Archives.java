@@ -1,4 +1,4 @@
-package phantom.util.files;
+package org.phantomapi.core.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
