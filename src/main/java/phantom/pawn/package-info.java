@@ -2,4 +2,4 @@
  * @author cyberpwn
  * Controllers
  */
-package phantom.control;
+package phantom.pawn;
