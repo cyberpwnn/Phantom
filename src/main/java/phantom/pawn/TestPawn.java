@@ -1,6 +1,5 @@
 package phantom.pawn;
 
-@Controller("Test Controller") // Define its controlled
 @Registered // Define it needs to be bukkit event registered
 public class TestPawn
 {
