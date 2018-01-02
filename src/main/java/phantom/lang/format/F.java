@@ -37,6 +37,13 @@ public class F
 		}
 	}
 
+	/**
+	 * Capitalizes a string (one word)
+	 * 
+	 * @param s
+	 *            the string
+	 * @return the capitalized string
+	 */
 	public static String capitalize(String s)
 	{
 		String roll = "";
@@ -59,6 +66,13 @@ public class F
 		return roll;
 	}
 
+	/**
+	 * Capitalizes all words in the string.
+	 * 
+	 * @param s
+	 *            the string.
+	 * @return the capitalized string
+	 */
 	public static String capitalizeWords(String s)
 	{
 		String rollx = "";
@@ -176,6 +190,17 @@ public class F
 		}
 	}
 
+	/**
+	 * Get a time (fancy string) for the given milliseconds. Giving double
+	 * precision. This method uses a double millisecond input. So it can handle
+	 * higher than millisecond accuracy.
+	 * 
+	 * @param ms
+	 *            the millis
+	 * @param prec
+	 *            the decimals to use if present.
+	 * @return the formatted time string
+	 */
 	public static String time(double ms, int prec)
 	{
 		if(ms < 1000.0)

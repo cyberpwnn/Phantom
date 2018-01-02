@@ -14,6 +14,17 @@ public class M
 	private static final int modulus = 360 * precision;
 	private static final float[] sin = new float[modulus];
 
+	/**
+	 * Clips a number (min max) beteen two values.
+	 * 
+	 * @param value
+	 *            the value to clip
+	 * @param min
+	 *            the minimum the result can be (floor)
+	 * @param max
+	 *            the maximum the result can be (ceil)
+	 * @return the new value
+	 */
 	public static double clip(double value, double min, double max)
 	{
 		return Math.min(max, Math.max(min, value));
@@ -37,8 +48,8 @@ public class M
 	}
 
 	/**
-	 * Get the ticks per second from a time in nanoseconds, the rad can be used for
-	 * multiple ticks
+	 * Get the ticks per second from a time in nanoseconds, the rad can be used
+	 * for multiple ticks
 	 *
 	 * @param ns
 	 *            the time in nanoseconds
