@@ -1,7 +1,5 @@
 package phantom.lang;
 
-import java.util.List;
-
 /**
  * Adapts a list of objects into a list of other objects
  *
@@ -20,9 +18,9 @@ public abstract class GListAdapter<FROM, TO>
 	 *            the from list
 	 * @return the to list
 	 */
-	public List<TO> adapt(List<FROM> from)
+	public GList<TO> adapt(GList<FROM> from)
 	{
-		List<TO> adapted = new GList<TO>();
+		GList<TO> adapted = new GList<TO>();
 
 		for(FROM i : from)
 		{
