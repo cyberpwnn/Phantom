@@ -1,4 +1,4 @@
-package org.phantomapi.core;
+package org.phantomapi;
 
 public enum Signal
 {
