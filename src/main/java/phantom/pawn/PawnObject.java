@@ -1,7 +1,9 @@
 package phantom.pawn;
 
 import java.lang.reflect.Method;
+import org.phantomapi.Phantom;
 import phantom.lang.GList;
+import phantom.scheduler.TICK;
 
 public class PawnObject
 {
@@ -29,14 +31,72 @@ public class PawnObject
 		}
 	}
 	
+	private void callMethods(PawnMethodType type)
+	{
+		for(PawnMethod i : methods)
+		{
+			if(i.getType().equals(type))
+			{
+				invokeMethod(i);
+			}
+		}
+	}
+	
+	private void invokeMethod(PawnMethod m)
+	{
+		if(m.getType().equals(PawnMethodType.TICK) && TICK.tick % m.getInterval() != 0)
+		{
+			return;
+		}
+		
+		if(m.isAsync())
+		{
+			// TODO in async
+			invokeMethod(m.getMethod());
+		}
+		
+		else
+		{
+			invokeMethod(m.getMethod());
+		}
+	}
+	
+	private void invokeMethod(Method m)
+	{
+		try
+		{
+			m.invoke(pawn);
+		}
+		
+		catch(Throwable e)
+		{
+			Phantom.kick(e);
+		}
+	}
+	
 	public void activate()
 	{
+		if(registered)
+		{
+			Phantom.register(pawn);
+		}
 		
+		callMethods(PawnMethodType.START);
 	}
 	
 	public void deactivate()
 	{
+		if(registered)
+		{
+			Phantom.unregister(pawn);
+		}
 		
+		callMethods(PawnMethodType.STOP);
+	}
+	
+	public void tick()
+	{
+		callMethods(PawnMethodType.TICK);
 	}
 
 	public IPawn getPawn()
