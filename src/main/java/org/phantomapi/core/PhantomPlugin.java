@@ -1,12 +1,18 @@
 package org.phantomapi.core;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.phantomapi.Phantom;
+import phantom.dispatch.PD;
 
 public class PhantomPlugin extends JavaPlugin
 {
+	private static PhantomPlugin inst;
+	
 	public PhantomPlugin()
 	{
-		
+		inst = this;
+		Phantom.touch(this);
+		PD.l("Starting Phantom " + Phantom.getVersion());
 	}
 	
 	public void onLoad()
@@ -16,11 +22,21 @@ public class PhantomPlugin extends JavaPlugin
 	
 	public void onEnable()
 	{
-		
+		Phantom.pulse(Signal.START);
 	}
 	
 	public void onDisable()
 	{
-		
+		Phantom.pulse(Signal.STOP);
+	}
+	
+	public void onAbort()
+	{
+		Phantom.pulse(Signal.ABORT);
+	}
+
+	public static PhantomPlugin instance()
+	{
+		return inst;
 	}
 }
