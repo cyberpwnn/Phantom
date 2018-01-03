@@ -1,11 +1,9 @@
 package org.phantomapi;
 
+import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.phantomapi.core.DMS;
-import org.phantomapi.core.PhantomPlugin;
-import org.phantomapi.core.Signal;
 import phantom.dispatch.PD;
 import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
@@ -13,7 +11,7 @@ import phantom.util.exception.PawnActivationException;
 
 public class Phantom
 {
-	private static final DMS dms = new DMS();
+	private static final DMSP dms = new DMSP();
 	private static final PawnSpace pawnSpace = new PawnSpace();
 	private static PhantomPlugin inst = PhantomPlugin.instance();
 
@@ -83,6 +81,11 @@ public class Phantom
 	public static void unregister(Listener listener)
 	{
 		HandlerList.unregisterAll(listener);
+	}
+	
+	public static void claim(IPawn owner, IPawn claimed, Field field)
+	{
+		pawnSpace.claim(owner, field, claimed);
 	}
 
 	public static void activate(IPawn pawn)
