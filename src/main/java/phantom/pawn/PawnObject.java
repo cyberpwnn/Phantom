@@ -1,8 +1,11 @@
 package phantom.pawn;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import org.phantomapi.Phantom;
 import phantom.lang.GList;
+import phantom.lang.GMap;
 import phantom.scheduler.TICK;
 
 public class PawnObject
@@ -14,19 +17,21 @@ public class PawnObject
 	private final GList<PawnMethod> methods;
 	private final boolean singular;
 	private final String name;
+	private final GMap<Field, IPawn> pawns;
 
 	public PawnObject(IPawn p)
 	{
 		pawn = p;
 		Class<?> c = pawn.getClass();
-		registered = c.isAnnotationPresent(Registered.class);
+		registered = c.isAnnotationPresent(Register.class);
 		activated = false;
 		methods = new GList<PawnMethod>();
-		singular = c.isAnnotationPresent(Singularity.class);
+		singular = c.isAnnotationPresent(Singular.class);
 		String suff = singular ? "" : "-" + ct++;
-		name = c.isAnnotationPresent(Named.class) ? c.getDeclaredAnnotation(Named.class).value() + suff : c.getSimpleName() + suff;
+		name = c.isAnnotationPresent(Name.class) ? c.getDeclaredAnnotation(Name.class).value() + suff : c.getSimpleName() + suff;
+		pawns = new GMap<Field, IPawn>();
 
-		for(Method i : c.getMethods())
+		for(Method i : c.getDeclaredMethods())
 		{
 			PawnMethod m = new PawnMethod(i);
 
@@ -35,6 +40,37 @@ public class PawnObject
 				methods.add(m);
 			}
 		}
+
+		for(Field i : c.getDeclaredFields())
+		{
+			if(Modifier.isStatic(i.getModifiers()) || Modifier.isFinal(i.getModifiers()))
+			{
+				continue;
+			}
+
+			if(!i.isAnnotationPresent(Pawn.class))
+			{
+				continue;
+			}
+
+			i.setAccessible(true);
+
+			try
+			{
+				IPawn spawn = (IPawn) i.getType().getConstructor().newInstance();
+				pawns.put(i, spawn);
+			}
+
+			catch(Throwable e)
+			{
+				Phantom.kick(e);
+			}
+		}
+	}
+	
+	public void forceOwnershipOf(IPawn pawn, Field f)
+	{
+		pawns.put(f, pawn);
 	}
 
 	private void callMethods(PawnMethodType type)
@@ -82,6 +118,8 @@ public class PawnObject
 
 	public void activate()
 	{
+		activateSubPawns();
+
 		if(registered)
 		{
 			Phantom.register(pawn);
@@ -90,14 +128,52 @@ public class PawnObject
 		callMethods(PawnMethodType.START);
 	}
 
+	private void activateSubPawns()
+	{
+		for(Field i : pawns.k())
+		{
+			try
+			{
+				IPawn instance = pawns.get(i);
+				Phantom.activate(instance);
+				i.setAccessible(true);
+				i.set(pawn, instance);
+			}
+
+			catch(Exception e)
+			{
+				Phantom.kick(e);
+			}
+		}
+	}
+
 	public void deactivate()
 	{
+		deactivateSubPawns();
+		
 		if(registered)
 		{
 			Phantom.unregister(pawn);
 		}
 
 		callMethods(PawnMethodType.STOP);
+	}
+	
+	private void deactivateSubPawns()
+	{
+		for(Field i : pawns.k())
+		{
+			try
+			{
+				IPawn instance = pawns.get(i);
+				Phantom.deactivate(instance);
+			}
+
+			catch(Exception e)
+			{
+				Phantom.kick(e);
+			}
+		}
 	}
 
 	public void tick()
@@ -108,6 +184,16 @@ public class PawnObject
 	public IPawn getPawn()
 	{
 		return pawn;
+	}
+
+	public static int getCt()
+	{
+		return ct;
+	}
+
+	public GMap<Field, IPawn> getSubPawns()
+	{
+		return pawns;
 	}
 
 	public boolean isRegistered()
