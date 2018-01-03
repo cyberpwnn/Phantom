@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface Named
+public @interface Name
 {
 	String value();
 }
