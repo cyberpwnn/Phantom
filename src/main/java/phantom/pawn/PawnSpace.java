@@ -1,6 +1,7 @@
 package phantom.pawn;
 
 import phantom.lang.GList;
+import phantom.lang.GMap;
 
 /**
  * Holds active pawns
@@ -9,14 +10,24 @@ import phantom.lang.GList;
  */
 public class PawnSpace
 {
-	private final GList<IPawn> activePawns;
+	private final GMap<IPawn, PawnObject> activePawns;
 
 	/**
 	 * Create a new pawn space
 	 */
 	public PawnSpace()
 	{
-		activePawns = new GList<IPawn>();
+		activePawns = new GMap<IPawn, PawnObject>();
+	}
+
+	/**
+	 * Get active pawns
+	 * 
+	 * @return returns a glist of active pawns
+	 */
+	public GList<IPawn> getActivePawns()
+	{
+		return activePawns.k();
 	}
 
 	/**
@@ -27,7 +38,8 @@ public class PawnSpace
 	 */
 	public void activate(IPawn pawn)
 	{
-		activePawns.add(pawn);
+		activePawns.put(pawn, new PawnObject(pawn));
+		activePawns.get(pawn).activate();
 	}
 
 	/**
@@ -38,6 +50,23 @@ public class PawnSpace
 	 */
 	public void deactivate(IPawn pawn)
 	{
+		if(!activePawns.containsKey(pawn))
+		{
+			return;
+		}
+
+		activePawns.get(pawn).deactivate();
 		activePawns.remove(pawn);
+	}
+
+	/**
+	 * Tick the pawns
+	 */
+	public void tick()
+	{
+		for(IPawn i : activePawns.k())
+		{
+			activePawns.get(i).tick();
+		}
 	}
 }
