@@ -1,7 +1,6 @@
-package org.phantomapi.core;
+package org.phantomapi;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.phantomapi.Phantom;
 import phantom.dispatch.PD;
 
 public class PhantomPlugin extends JavaPlugin

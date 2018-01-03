@@ -1,3 +1,3 @@
 name: ${project.name}
 version: ${project.version}
-main: org.phantomapi.core.PhantomPlugin
+main: org.phantomapi.PhantomPlugin
