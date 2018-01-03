@@ -1,49 +1,41 @@
-package org.phantomapi.core;
+package org.phantomapi;
 
-import org.phantomapi.Phantom;
+import org.phantomapi.core.PhantomController;
 import phantom.dispatch.PD;
-import phantom.scheduler.S;
 import phantom.scheduler.TICK;
 import phantom.scheduler.Task;
 
-public class DMS
+public class DMSP
 {
 	private Task task;
-	
-	public DMS()
+	private PhantomController api;
+
+	public DMSP()
 	{
-		PD.v("DMS Initialized");
+		PD.v("DMSp Initialized");
+		api = new PhantomController();
 	}
-	
+
 	public void start()
 	{
 		startTickMethod();
-		PD.v("DMS Online");
-		SomePawn pawn = new SomePawn();
-		Phantom.activate(pawn);
-		
-		new S(20)
-		{
-			@Override
-			public void run()
-			{
-				Phantom.deactivate(pawn);
-			}
-		};
+		Phantom.activate(api);
+		PD.v("DMSp Online");
 	}
-	
+
 	public void stop()
 	{
 		task.cancel();
-		PD.v("DMS Offline");
+		Phantom.deactivate(api);
+		PD.v("DMSp Offline");
 	}
-	
+
 	private void tick()
 	{
 		TICK.tick++;
 		Phantom.getPawnSpace().tick();
 	}
-	
+
 	private void startTickMethod()
 	{
 		task = new Task(0)
