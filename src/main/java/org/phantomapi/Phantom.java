@@ -9,6 +9,7 @@ import org.phantomapi.core.Signal;
 import phantom.dispatch.PD;
 import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
+import phantom.util.exception.PawnActivationException;
 
 public class Phantom
 {
@@ -86,7 +87,15 @@ public class Phantom
 
 	public static void activate(IPawn pawn)
 	{
-		pawnSpace.activate(pawn);
+		try
+		{
+			pawnSpace.activate(pawn);
+		}
+		
+		catch(PawnActivationException e)
+		{
+			kick(e);
+		}
 	}
 
 	public static void deactivate(IPawn pawn)

@@ -2,6 +2,7 @@ package phantom.pawn;
 
 import phantom.lang.GList;
 import phantom.lang.GMap;
+import phantom.util.exception.PawnActivationException;
 
 /**
  * Holds active pawns
@@ -35,10 +36,26 @@ public class PawnSpace
 	 * 
 	 * @param pawn
 	 *            the pawn to activate
+	 * 
+	 * @throws PawnActivationException
+	 *             duplicate instances of a singularity pawn
 	 */
-	public void activate(IPawn pawn)
+	public void activate(IPawn pawn) throws PawnActivationException
 	{
-		activePawns.put(pawn, new PawnObject(pawn));
+		PawnObject pw = new PawnObject(pawn);
+		
+		if(pw.isSingular())
+		{
+			for(IPawn i : getActivePawns())
+			{
+				if(activePawns.get(i).isSingular() && activePawns.get(i).getName().equals(pw.getName()))
+				{
+					throw new PawnActivationException();
+				}
+			}
+		}
+		
+		activePawns.put(pawn, pw);
 		activePawns.get(pawn).activate();
 	}
 

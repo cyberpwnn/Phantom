@@ -7,10 +7,13 @@ import phantom.scheduler.TICK;
 
 public class PawnObject
 {
+	private static int ct = 1;
 	private final IPawn pawn;
 	private final boolean registered;
 	private boolean activated;
 	private final GList<PawnMethod> methods;
+	private final boolean singular;
+	private final String name;
 
 	public PawnObject(IPawn p)
 	{
@@ -19,18 +22,21 @@ public class PawnObject
 		registered = c.isAnnotationPresent(Registered.class);
 		activated = false;
 		methods = new GList<PawnMethod>();
-		
+		singular = c.isAnnotationPresent(Singularity.class);
+		String suff = singular ? "" : "-" + ct++;
+		name = c.isAnnotationPresent(Named.class) ? c.getDeclaredAnnotation(Named.class).value() + suff : c.getSimpleName() + suff;
+
 		for(Method i : c.getMethods())
 		{
 			PawnMethod m = new PawnMethod(i);
-			
+
 			if(m.getType() != null)
 			{
 				methods.add(m);
 			}
 		}
 	}
-	
+
 	private void callMethods(PawnMethodType type)
 	{
 		for(PawnMethod i : methods)
@@ -41,59 +47,59 @@ public class PawnObject
 			}
 		}
 	}
-	
+
 	private void invokeMethod(PawnMethod m)
 	{
 		if(m.getType().equals(PawnMethodType.TICK) && TICK.tick % m.getInterval() != 0)
 		{
 			return;
 		}
-		
+
 		if(m.isAsync())
 		{
 			// TODO in async
 			invokeMethod(m.getMethod());
 		}
-		
+
 		else
 		{
 			invokeMethod(m.getMethod());
 		}
 	}
-	
+
 	private void invokeMethod(Method m)
 	{
 		try
 		{
 			m.invoke(pawn);
 		}
-		
+
 		catch(Throwable e)
 		{
 			Phantom.kick(e);
 		}
 	}
-	
+
 	public void activate()
 	{
 		if(registered)
 		{
 			Phantom.register(pawn);
 		}
-		
+
 		callMethods(PawnMethodType.START);
 	}
-	
+
 	public void deactivate()
 	{
 		if(registered)
 		{
 			Phantom.unregister(pawn);
 		}
-		
+
 		callMethods(PawnMethodType.STOP);
 	}
-	
+
 	public void tick()
 	{
 		callMethods(PawnMethodType.TICK);
@@ -117,5 +123,15 @@ public class PawnObject
 	public GList<PawnMethod> getMethods()
 	{
 		return methods;
+	}
+
+	public boolean isSingular()
+	{
+		return singular;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 }
