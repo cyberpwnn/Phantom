@@ -11,6 +11,7 @@ import org.phantomapi.service.ClassAnchorService;
 
 import phantom.dispatch.PD;
 import phantom.lang.GList;
+import phantom.net.Protocol;
 import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
 import phantom.service.IService;
@@ -29,6 +30,36 @@ public class Phantom
 	private static final DMSP dms = new DMSP();
 	private static final PawnSpace pawnSpace = new PawnSpace();
 	private static PhantomPlugin inst = PhantomPlugin.instance();
+
+	/**
+	 * Checks if nms could be used on this server
+	 *
+	 * @return true if it can be, false if there is no nms binding
+	 */
+	public static boolean isNMSAvalible()
+	{
+		return !getNMSPackageVersion().equals("UNKNOWN");
+	}
+
+	/**
+	 * Gets the package version for nms use on this server
+	 *
+	 * @return the version or "UNKNOWN"
+	 */
+	public static String getNMSPackageVersion()
+	{
+		return getServerVersion().getPackageVersion();
+	}
+
+	/**
+	 * Get the server version
+	 *
+	 * @return the server version
+	 */
+	public static Protocol getServerVersion()
+	{
+		return Protocol.getProtocolVersion();
+	}
 
 	/**
 	 * Kick an exception to the console. Allows use for listeners and formatting.
