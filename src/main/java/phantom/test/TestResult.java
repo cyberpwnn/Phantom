@@ -1,4 +1,4 @@
-package phantomapi.test;
+package phantom.test;
 
 public class TestResult
 {

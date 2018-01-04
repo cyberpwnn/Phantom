@@ -10,10 +10,10 @@ import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.service.IService;
+import phantom.test.IUnitTest;
+import phantom.test.TestResult;
+import phantom.test.UnitTest;
 import phantom.util.metrics.Documented;
-import phantomapi.test.IUnitTest;
-import phantomapi.test.TestResult;
-import phantomapi.test.UnitTest;
 
 /**
  * Test service used for running tests on the api

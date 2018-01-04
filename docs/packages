@@ -18,10 +18,10 @@ phantom.nms
 phantom.pawn
 phantom.sched
 phantom.service
+phantom.test
 phantom.text
 phantom.util.array
 phantom.util.exception
 phantom.util.metrics
 phantom.util.plugin
 phantom.world
-phantomapi.test

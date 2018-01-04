@@ -1,4 +1,4 @@
-package phantomapi.test;
+package phantom.test;
 
 import phantom.lang.Callback;
 import phantom.pawn.IPawn;

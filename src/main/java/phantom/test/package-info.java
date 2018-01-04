@@ -4,6 +4,6 @@
  * @author cyberpwn
  */
 @Documented
-package phantomapi.test;
+package phantom.test;
 
 import phantom.util.metrics.Documented;
