@@ -1,4 +1,4 @@
-package phantom.scheduler;
+package phantom.sched;
 
 import org.phantomapi.Phantom;
 import phantom.util.metrics.Profiler;
