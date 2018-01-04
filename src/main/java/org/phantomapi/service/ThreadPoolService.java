@@ -1,9 +1,11 @@
 package org.phantomapi.service;
 
+import phantom.dispatch.D;
 import phantom.pawn.Name;
 import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
+import phantom.pawn.Tick;
 import phantom.sched.A;
 import phantom.sched.ParallelPoolManager;
 import phantom.sched.QueueMode;
@@ -26,6 +28,8 @@ public class ThreadPoolService implements IService
 				return 1000000;
 			}
 		};
+
+		pool.start();
 	}
 
 	@Stop
@@ -34,8 +38,19 @@ public class ThreadPoolService implements IService
 		pool.shutdown();
 	}
 
+	@Tick(5)
+	public void flushDispatcher()
+	{
+		D.flush();
+	}
+
 	public void run(A a)
 	{
 		pool.queue(a);
+	}
+
+	public long lock()
+	{
+		return pool.lock();
 	}
 }
