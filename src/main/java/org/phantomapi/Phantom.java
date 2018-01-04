@@ -1,16 +1,21 @@
 package org.phantomapi;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginLoader;
+import org.phantomapi.service.ClassAnchorService;
 
 import phantom.dispatch.PD;
+import phantom.lang.GList;
 import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
 import phantom.service.IService;
 import phantom.util.exception.PawnActivationException;
+import phantom.util.plugin.PluginUtil;
 
 public class Phantom
 {
@@ -21,6 +26,21 @@ public class Phantom
 	public static void kick(Throwable e)
 	{
 		e.printStackTrace();
+	}
+
+	public static GList<Class<?>> getAnchors(String tag)
+	{
+		return getService(ClassAnchorService.class).getAnchoredClasses(tag);
+	}
+
+	public static void crawlJar(File jar)
+	{
+		getService(ClassAnchorService.class).crawl(jar);
+	}
+
+	public static boolean isActive(IPawn pawn)
+	{
+		return pawnSpace.isActive(pawn);
 	}
 
 	public static <T extends IService> T getService(Class<? extends T> svc)
@@ -147,5 +167,20 @@ public class Phantom
 	public static PawnSpace getPawnSpace()
 	{
 		return pawnSpace;
+	}
+
+	public static File getDataFolder()
+	{
+		return inst.getDataFolder();
+	}
+
+	public static PluginLoader getPluginLoader()
+	{
+		return inst.getPluginLoader();
+	}
+
+	public static File getPluginFile()
+	{
+		return PluginUtil.getPluginFile(inst);
 	}
 }
