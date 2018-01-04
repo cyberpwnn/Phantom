@@ -1,19 +1,20 @@
 package org.phantomapi;
 
-import org.phantomapi.core.PhantomController;
+import org.phantomapi.core.PhantomProvider;
+
 import phantom.dispatch.PD;
-import phantom.scheduler.TICK;
-import phantom.scheduler.Task;
+import phantom.sched.TICK;
+import phantom.sched.Task;
 
 public class DMSP
 {
 	private Task task;
-	private PhantomController api;
+	private PhantomProvider api;
 
 	public DMSP()
 	{
 		PD.v("DMSp Initialized");
-		api = new PhantomController();
+		api = new PhantomProvider();
 	}
 
 	public void start()
@@ -46,5 +47,10 @@ public class DMSP
 				tick();
 			}
 		};
+	}
+
+	public PhantomProvider getApi()
+	{
+		return api;
 	}
 }
