@@ -2,19 +2,19 @@ package phantom.lang;
 
 /**
  * Callback for async workers
- * 
+ *
  * @author cyberpwn
  *
  * @param <T>
  *            the type of object to be returned in the runnable
  */
-public class Callback<T> implements Runnable
+public abstract class Callback<T> implements Runnable
 {
 	private T t;
-	
+
 	/**
 	 * Execute the callback via async.
-	 * 
+	 *
 	 * @param t
 	 *            the object to be called back from the worker thead
 	 */
@@ -23,20 +23,17 @@ public class Callback<T> implements Runnable
 		this.t = t;
 		run();
 	}
-	
+
 	/**
 	 * Implement your callback code through here. Invoke get(); to get the
 	 * called back object
 	 */
 	@Override
-	public void run()
-	{
-		
-	}
-	
+	public abstract void run();
+
 	/**
 	 * Get the object from the worker thread
-	 * 
+	 *
 	 * @return the Object of the defined type T
 	 */
 	public T get()
