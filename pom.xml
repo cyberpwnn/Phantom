@@ -10,7 +10,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<github.maven.repository>file://${project.basedir}\repository</github.maven.repository>
+		<phantom.repository>file://${project.basedir}\repository</phantom.repository>
+		<phantom.server>C:\Users\cyberpwn\Documents\development\servers\dynamic\plugins</phantom.server>
 	</properties>
 	<build>
 		<resources>
@@ -41,14 +42,14 @@
 						<artifactId>maven-jar-plugin</artifactId>
 						<version>3.0.2</version>
 						<configuration>
-							<outputDirectory>C:\dan\development\server\plugins</outputDirectory>
+							<outputDirectory>${phantom.server}</outputDirectory>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 		<profile>
-			<id>production</id>
+			<id>release</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -83,7 +84,7 @@
 	<distributionManagement>
 		<repository>
 			<id>phantom</id>
-			<url>${github.maven.repository}</url>
+			<url>${phantom.repository}</url>
 		</repository>
 	</distributionManagement>
 	<repositories>
