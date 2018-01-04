@@ -3,8 +3,11 @@ package org.phantomapi.core;
 import java.lang.reflect.Field;
 
 import org.phantomapi.Phantom;
+import org.phantomapi.service.ClassAnchorService;
+import org.phantomapi.service.PhantomTestService;
 import org.phantomapi.service.ThreadPoolService;
 
+import phantom.dispatch.PD;
 import phantom.lang.GMap;
 import phantom.pawn.DeployableService;
 import phantom.pawn.IPawn;
@@ -22,6 +25,12 @@ public class ServiceProvider implements IPawn
 {
 	@DeployableService
 	private ThreadPoolService threadPoolSVC;
+
+	@DeployableService
+	private ClassAnchorService classAnchorSVC;
+
+	@DeployableService
+	private PhantomTestService phantomTestSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 
@@ -86,10 +95,12 @@ public class ServiceProvider implements IPawn
 				offeredServices.get(svcClass).set(this, svc);
 				Phantom.activate(svc);
 				Phantom.claim(this, svc, offeredServices.get(svcClass));
+				PD.l(svcClass.getSimpleName() + " Started");
 			}
 
 			catch(Exception e)
 			{
+				PD.f("Failed to start " + svcClass.getSimpleName());
 				Phantom.kick(e);
 			}
 		}

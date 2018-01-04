@@ -12,7 +12,7 @@ import phantom.lang.GSet;
  *
  * @author cyberpwn
  */
-public class JarScan
+public class JarScanner
 {
 	private final GSet<Class<?>> classes;
 	private final File jar;
@@ -23,7 +23,7 @@ public class JarScan
 	 * @param jar
 	 *            the path to the jar
 	 */
-	public JarScan(File jar)
+	public JarScanner(File jar)
 	{
 		this.jar = jar;
 		this.classes = new GSet<Class<?>>();
