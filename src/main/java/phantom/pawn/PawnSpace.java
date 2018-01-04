@@ -1,6 +1,7 @@
 package phantom.pawn;
 
 import java.lang.reflect.Field;
+
 import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.lang.format.F;
@@ -25,7 +26,7 @@ public class PawnSpace
 
 	/**
 	 * Get active pawns
-	 * 
+	 *
 	 * @return returns a glist of active pawns
 	 */
 	public GList<IPawn> getActivePawns()
@@ -35,10 +36,10 @@ public class PawnSpace
 
 	/**
 	 * Activate a pawn
-	 * 
+	 *
 	 * @param pawn
 	 *            the pawn to activate
-	 * 
+	 *
 	 * @throws PawnActivationException
 	 *             duplicate instances of a singularity pawn
 	 */
@@ -63,7 +64,7 @@ public class PawnSpace
 
 	/**
 	 * Deactivate a pawn
-	 * 
+	 *
 	 * @param pawn
 	 *            the pawn to deactivate
 	 */
@@ -92,7 +93,7 @@ public class PawnSpace
 	/**
 	 * Defines that the OWNER is claiming super-pawn over the CLAIMED sub-pawn which
 	 * is trusted to be held in the field FIELD
-	 * 
+	 *
 	 * @param owner
 	 *            the owner or super-pawn)
 	 * @param field
@@ -108,7 +109,7 @@ public class PawnSpace
 
 	/**
 	 * Prints all singularities down from the given host
-	 * 
+	 *
 	 * @param host
 	 *            show the host
 	 * @return the list of strings to print
@@ -135,5 +136,25 @@ public class PawnSpace
 		}
 
 		return dv;
+	}
+
+	public boolean isActive(IPawn pawn)
+	{
+		String name = pawn.getClass().isAnnotationPresent(Name.class) ? pawn.getClass().getDeclaredAnnotation(Name.class).value() : null;
+
+		if(name == null)
+		{
+			return false;
+		}
+
+		for(IPawn i : getActivePawns())
+		{
+			if(activePawns.get(i).getName().equals(name))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
