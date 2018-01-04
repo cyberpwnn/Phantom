@@ -73,7 +73,7 @@ public class D
 		}
 	}
 
-	private static void flush()
+	public static void flush()
 	{
 		while(!sendBuffer.isEmpty())
 		{
