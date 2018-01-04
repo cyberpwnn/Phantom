@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.phantomapi.Phantom;
 import org.phantomapi.service.ClassAnchorService;
+import org.phantomapi.service.NMSBinderService;
 import org.phantomapi.service.PhantomTestService;
 import org.phantomapi.service.ThreadPoolService;
 
@@ -38,6 +39,9 @@ public class ServiceProvider implements IPawn
 
 	@DeployableService
 	private PhantomTestService phantomTestSVC;
+
+	@DeployableService
+	private NMSBinderService nmsBinderSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 
