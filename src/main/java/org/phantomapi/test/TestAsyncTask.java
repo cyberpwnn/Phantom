@@ -1,0 +1,70 @@
+package org.phantomapi.test;
+
+import org.phantomapi.Phantom;
+import org.phantomapi.service.ThreadPoolService;
+
+import phantom.lang.Callback;
+import phantom.lang.FinalInteger;
+import phantom.pawn.Name;
+import phantom.pawn.Singular;
+import phantom.sched.A;
+import phantom.util.metrics.Anchor;
+import phantomapi.test.IUnitTest;
+import phantomapi.test.TestResult;
+import phantomapi.test.UnitTest;
+
+@Singular
+@Name("TEST Async Task")
+@Anchor("phantom-test")
+@UnitTest({"async", "async-task"})
+public class TestAsyncTask implements IUnitTest
+{
+	@Override
+	public String[] getTestNames()
+	{
+		return this.getClass().getDeclaredAnnotation(UnitTest.class).value();
+	}
+
+	@Override
+	public void test(Callback<TestResult> callbackSet, String[] args)
+	{
+		FinalInteger fi = new FinalInteger(0);
+		int goal = 100;
+
+		if(args.length > 0)
+		{
+			try
+			{
+				goal = Integer.valueOf(args[0]);
+			}
+
+			catch(NumberFormatException e)
+			{
+				callbackSet.run(new TestResult("Invalid integer argument: " + args[0]));
+				return;
+			}
+		}
+
+		for(int i = 0; i < 100; i++)
+		{
+			new A()
+			{
+				@Override
+				public void run()
+				{
+					fi.add(1);
+				}
+			};
+		}
+
+		Phantom.getService(ThreadPoolService.class).lock();
+		callbackSet.run(new TestResult("Executed " + fi.get() + " of " + goal + " tasks", fi.get() != goal));
+	}
+
+	@Override
+	public void test(Callback<TestResult> callbackSet)
+	{
+		test(callbackSet, new String[0]);
+	}
+
+}
