@@ -1,5 +1,7 @@
 package org.phantomapi.core;
 
+import org.phantomapi.Phantom;
+
 import phantom.pawn.IPawn;
 import phantom.pawn.Name;
 import phantom.pawn.Pawn;
@@ -19,7 +21,7 @@ public class PhantomProvider implements IPawn
 	@Start
 	public void onStart()
 	{
-
+		Phantom.crawlJar(Phantom.getPluginFile());
 	}
 
 	@Stop
