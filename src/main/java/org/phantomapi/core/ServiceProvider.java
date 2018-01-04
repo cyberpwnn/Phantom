@@ -18,6 +18,11 @@ import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.service.IService;
 
+/**
+ * Service provider for deploying and sending services
+ *
+ * @author cyberpwn
+ */
 @Register
 @Singular
 @Name("Service Controller")
@@ -66,6 +71,12 @@ public class ServiceProvider implements IPawn
 
 	}
 
+	/**
+	 * Shut down a service
+	 *
+	 * @param svcClass
+	 *            the service class to shut down
+	 */
 	public void stopService(Class<? extends IService> svcClass)
 	{
 		if(isService(svcClass) && isServiceRunning(svcClass))
@@ -84,6 +95,12 @@ public class ServiceProvider implements IPawn
 		}
 	}
 
+	/**
+	 * Start a service
+	 *
+	 * @param svcClass
+	 *            the service class
+	 */
 	public void startService(Class<? extends IService> svcClass)
 	{
 		if(isService(svcClass) && !isServiceRunning(svcClass))
@@ -106,6 +123,14 @@ public class ServiceProvider implements IPawn
 		}
 	}
 
+	/**
+	 * Check if the given service class is running
+	 *
+	 * @param svcClass
+	 *            the service to check
+	 * @return true if it is running, false if it is not running, isnt a valid
+	 *         service or failures to check
+	 */
 	public boolean isServiceRunning(Class<? extends IService> svcClass)
 	{
 		if(!isService(svcClass))
@@ -126,11 +151,26 @@ public class ServiceProvider implements IPawn
 		return false;
 	}
 
+	/**
+	 * Check if the service class is a valid service
+	 *
+	 * @param svcClass
+	 *            the service class to check
+	 * @return true if it is
+	 */
 	public boolean isService(Class<? extends IService> svcClass)
 	{
 		return offeredServices.containsKey(svcClass);
 	}
 
+	/**
+	 * Get a running service object from the service class (typed). If the service
+	 * is not running it will be started
+	 *
+	 * @param svcClass
+	 *            the service class to get the instance for
+	 * @return the service or null pointer
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends IService> T getService(Class<? extends T> svcClass)
 	{

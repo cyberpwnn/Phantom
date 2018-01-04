@@ -10,6 +10,11 @@ import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
 
+/**
+ * The main provider of the phantom api
+ *
+ * @author cyberpwn
+ */
 @Register
 @Singular
 @Name("Phantom Controller")
@@ -30,7 +35,12 @@ public class PhantomProvider implements IPawn
 
 	}
 
-	public ServiceProvider getServiceController()
+	/**
+	 * Get the service controller
+	 *
+	 * @return the phantom service controller
+	 */
+	public ServiceProvider getServiceProvider()
 	{
 		return serviceController;
 	}

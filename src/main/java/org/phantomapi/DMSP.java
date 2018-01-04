@@ -6,17 +6,28 @@ import phantom.dispatch.PD;
 import phantom.sched.TICK;
 import phantom.sched.Task;
 
+/**
+ * DMSP Used for managing the phantom api
+ *
+ * @author cyberpwn
+ */
 public class DMSP
 {
 	private Task task;
 	private PhantomProvider api;
 
+	/**
+	 * Create a dmsp instance
+	 */
 	public DMSP()
 	{
 		PD.v("DMSp Initialized");
 		api = new PhantomProvider();
 	}
 
+	/**
+	 * Start DMSP
+	 */
 	public void start()
 	{
 		startTickMethod();
@@ -24,6 +35,9 @@ public class DMSP
 		PD.v("DMSp Online");
 	}
 
+	/**
+	 * Stop DMSP
+	 */
 	public void stop()
 	{
 		task.cancel();
@@ -49,6 +63,11 @@ public class DMSP
 		};
 	}
 
+	/**
+	 * Get the root phantom provider
+	 *
+	 * @return the provider
+	 */
 	public PhantomProvider getApi()
 	{
 		return api;
