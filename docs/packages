@@ -1,5 +1,6 @@
 org.phantomapi.core
 org.phantomapi
+org.phantomapi.nmsw
 org.phantomapi.service
 org.phantomapi.test
 phantom.data
@@ -13,6 +14,7 @@ phantom.math
 phantom.math.geometry
 phantom.math.physics
 phantom.net
+phantom.nms
 phantom.pawn
 phantom.sched
 phantom.service
