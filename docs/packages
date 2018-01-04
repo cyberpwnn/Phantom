@@ -1,6 +1,7 @@
 org.phantomapi.core
 org.phantomapi
 org.phantomapi.service
+org.phantomapi.test
 phantom.data
 phantom.dispatch
 phantom.entity
@@ -13,10 +14,12 @@ phantom.math.geometry
 phantom.math.physics
 phantom.net
 phantom.pawn
-phantom.scheduler
+phantom.sched
 phantom.service
 phantom.text
 phantom.util.array
 phantom.util.exception
 phantom.util.metrics
+phantom.util.plugin
 phantom.world
+phantomapi.test
