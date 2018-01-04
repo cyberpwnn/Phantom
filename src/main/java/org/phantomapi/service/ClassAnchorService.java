@@ -83,10 +83,16 @@ public class ClassAnchorService implements IService
 			int a = 0;
 			int c = 0;
 			int s = 0;
+			int d = 0;
 
 			for(Class<?> i : scanner.getClasses())
 			{
 				s++;
+
+				if(i.isAnnotationPresent(Documented.class))
+				{
+					d++;
+				}
 
 				if(i.isAnnotationPresent(Anchor.class))
 				{
@@ -104,6 +110,7 @@ public class ClassAnchorService implements IService
 			}
 
 			PD.l("Crawled " + jarFile.getPath() + " Found " + a + " anchors in " + F.f(c) + " anchored classes out of " + F.f(s) + " scanned classes.");
+			PD.l("Found " + F.f(d) + " of " + F.f(s) + " documented classes (" + F.pc((double) (d) / (double) (s)) + ")");
 		}
 
 		catch(Throwable e)
