@@ -1,5 +1,7 @@
 package phantom.json;
 
+import phantom.util.metrics.Documented;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -22,21 +24,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 /**
  * The HTTPTokener extends the JSONTokener to provide additional methods for the
  * parsing of HTTP headers.
- * 
+ *
  * @author JSON.org
  * @version 2014-05-03
  */
+@Documented
 public class HTTPTokener extends JSONTokener
 {
-	
+
 	/**
 	 * Construct an HTTPTokener from a string.
-	 * 
+	 *
 	 * @param string
 	 *            A source string.
 	 */
@@ -44,10 +47,10 @@ public class HTTPTokener extends JSONTokener
 	{
 		super(string);
 	}
-	
+
 	/**
 	 * Get the next token or string. This is used in parsing HTTP headers.
-	 * 
+	 *
 	 * @throws JSONException
 	 * @return A String.
 	 */

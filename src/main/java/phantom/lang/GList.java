@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import phantom.util.metrics.Documented;
+
 /**
  * GLists are Arraylists with special enhancements
  *
@@ -16,6 +18,7 @@ import java.util.Set;
  * @param <T>
  *            the type of list T
  */
+@Documented
 public class GList<T> extends ArrayList<T>
 {
 	private static final long serialVersionUID = 4480457702775755227L;

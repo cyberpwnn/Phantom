@@ -7,6 +7,7 @@ import phantom.lang.format.F;
  *
  * @author cyberpwn
  */
+@Documented
 public class Profiler
 {
 	private long nanos;
@@ -67,7 +68,7 @@ public class Profiler
 
 	/**
 	 * Get the time (measurement determined by number) in accuracy.
-	 * 
+	 *
 	 * @param dec
 	 *            the amount of decimal places to use
 	 * @return
@@ -99,7 +100,7 @@ public class Profiler
 
 	/**
 	 * Get the time measured in ticks
-	 * 
+	 *
 	 * @return ticks
 	 */
 	public double getTicks()

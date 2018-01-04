@@ -5,12 +5,14 @@ import org.phantomapi.core.PhantomProvider;
 import phantom.dispatch.PD;
 import phantom.sched.TICK;
 import phantom.sched.Task;
+import phantom.util.metrics.Documented;
 
 /**
  * DMSP Used for managing the phantom api
  *
  * @author cyberpwn
  */
+@Documented
 public class DMSP
 {
 	private Task task;

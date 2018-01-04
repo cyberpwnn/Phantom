@@ -1,15 +1,18 @@
 package phantom.util.array;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Array utilities
- * 
+ *
  * @author cyberpwn
  */
+@Documented
 public class ARR
 {
 	/**
 	 * Create a sized object array
-	 * 
+	 *
 	 * @param size
 	 *            the size of the array
 	 * @return an object array of the specified size
@@ -21,7 +24,7 @@ public class ARR
 
 	/**
 	 * Count objects in the indexes which are not null
-	 * 
+	 *
 	 * @param arr
 	 *            the array
 	 * @return the number of elements not null in the array
@@ -33,7 +36,7 @@ public class ARR
 
 	/**
 	 * Count objects in the indexes which are null
-	 * 
+	 *
 	 * @param arr
 	 *            the array
 	 * @return the number of elements null in the array
@@ -58,7 +61,7 @@ public class ARR
 	 * possible treating null as empty object space in the array. This retains
 	 * order and literal size of the array. Only permutations are used to move
 	 * elements around the array.
-	 * 
+	 *
 	 * @param arr
 	 *            the array to defrag
 	 */

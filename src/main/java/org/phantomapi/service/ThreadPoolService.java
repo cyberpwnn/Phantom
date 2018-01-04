@@ -10,12 +10,14 @@ import phantom.sched.A;
 import phantom.sched.ParallelPoolManager;
 import phantom.sched.QueueMode;
 import phantom.service.IService;
+import phantom.util.metrics.Documented;
 
 /**
  * Thread pool service
  *
  * @author cyberpwn
  */
+@Documented
 @Name("SVC Thread Pool")
 @Singular
 public class ThreadPoolService implements IService

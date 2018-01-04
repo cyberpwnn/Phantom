@@ -3,4 +3,7 @@
  *
  * @author cyberpwn
  */
+@Documented
 package phantom.inventory;
+
+import phantom.util.metrics.Documented;

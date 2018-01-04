@@ -1,16 +1,19 @@
 package phantom.math;
 
+import phantom.util.metrics.Documented;
+
 /**
  * For some odd reason this is useful.
  *
  * @author cyberpwn
  */
+@Documented
 public class DoubleArrayUtils
 {
 	/**
 	 * Shift a double array to the right, pushing the given value into the
 	 * made-vacant spot near the 0 index (left).
-	 * 
+	 *
 	 * @param values
 	 *            the values to shift
 	 * @param push
@@ -29,7 +32,7 @@ public class DoubleArrayUtils
 	/**
 	 * Wrap the values to the right. Simply pushes all values to the right, the
 	 * value popped off the list is moved to the 0 index (left) vacant slot.
-	 * 
+	 *
 	 * @param values
 	 *            the values to roll
 	 */
@@ -41,7 +44,7 @@ public class DoubleArrayUtils
 
 	/**
 	 * Fill the array with a value
-	 * 
+	 *
 	 * @param values
 	 *            the values array
 	 * @param value

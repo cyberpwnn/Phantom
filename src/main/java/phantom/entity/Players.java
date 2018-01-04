@@ -1,21 +1,25 @@
 package phantom.entity;
 
 import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import phantom.lang.GList;
 import phantom.lang.GListAdapter;
+import phantom.util.metrics.Documented;
 
 /**
  * Player utilities
- * 
+ *
  * @author cyberpwn
  */
+@Documented
 public class Players
 {
 	/**
 	 * Checks if anyone is online
-	 * 
+	 *
 	 * @return returns true if there is at least one player online.
 	 */
 	public static boolean isAnyoneOnline()
@@ -25,7 +29,7 @@ public class Players
 
 	/**
 	 * Get the player count
-	 * 
+	 *
 	 * @return the player count
 	 */
 	public static int getPlayerCount()
@@ -36,7 +40,7 @@ public class Players
 	/**
 	 * Gets the first player in the player list. Will remain the same every time
 	 * until the list is modified.
-	 * 
+	 *
 	 * @return any player (semi-consistent)
 	 */
 	public static Player getAnyPlayer()
@@ -51,7 +55,7 @@ public class Players
 
 	/**
 	 * Randomly pick a player
-	 * 
+	 *
 	 * @return a random player or null if no one is online.
 	 */
 	public static Player getRandomPlayer()
@@ -66,7 +70,7 @@ public class Players
 
 	/**
 	 * Get the player based on uuid
-	 * 
+	 *
 	 * @param id
 	 *            the player uid
 	 * @return the player matching the uuid or null
@@ -79,7 +83,7 @@ public class Players
 	/**
 	 * Get the player matching a name. First it looks for identical matches, then
 	 * tries ignoring case, then finally checks for partial ignored case.
-	 * 
+	 *
 	 * @param search
 	 *            the search query
 	 * @return the player found or null
@@ -118,7 +122,7 @@ public class Players
 	 * Search for multiple player matches. If there is an identical match, nothing
 	 * else will be searched. If there is multiple ignored case matches, partials
 	 * will not be matched. Else it will match all partials.
-	 * 
+	 *
 	 * @param search
 	 *            the search query
 	 * @return a list of partial matches
@@ -167,7 +171,7 @@ public class Players
 
 	/**
 	 * Returns a list of ops
-	 * 
+	 *
 	 * @return ops in glist
 	 */
 	public static GList<Player> getPlayerWithOps()
@@ -184,7 +188,7 @@ public class Players
 
 	/**
 	 * Returns a list of non ops
-	 * 
+	 *
 	 * @return non op list
 	 */
 	public static GList<Player> getPlayerWithoutOps()
@@ -201,7 +205,7 @@ public class Players
 
 	/**
 	 * Returns a list of players who have all of the given permissions.
-	 * 
+	 *
 	 * @param permissions
 	 *            a collection of permissions any player in the return list must
 	 *            have. Supplying no permissions will return the source list.
@@ -229,7 +233,7 @@ public class Players
 
 	/**
 	 * Returns a list of players who do not have all of the given permissions.
-	 * 
+	 *
 	 * @param permissions
 	 *            a collection of permissions any player in the return list cannot
 	 *            have. Supplying no permissions will return the source list.
@@ -258,7 +262,7 @@ public class Players
 	/**
 	 * Get a list of players who match the given adapter. Source list comes from all
 	 * players currently connected.
-	 * 
+	 *
 	 * @param adapter
 	 *            the glist adapter to determine if the player should be adapted to
 	 *            the next list. If the adapter returns null instead of the source
@@ -272,7 +276,7 @@ public class Players
 
 	/**
 	 * Returns a glist of all players currently online
-	 * 
+	 *
 	 * @return a glist representing all online players
 	 */
 	public static GList<Player> getPlayers()

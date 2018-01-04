@@ -1,5 +1,7 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Callback for async workers
  *
@@ -8,6 +10,7 @@ package phantom.lang;
  * @param <T>
  *            the type of object to be returned in the runnable
  */
+@Documented
 public abstract class Callback<T> implements Runnable
 {
 	private T t;
@@ -25,8 +28,8 @@ public abstract class Callback<T> implements Runnable
 	}
 
 	/**
-	 * Implement your callback code through here. Invoke get(); to get the
-	 * called back object
+	 * Implement your callback code through here. Invoke get(); to get the called
+	 * back object
 	 */
 	@Override
 	public abstract void run();

@@ -3,4 +3,7 @@
  *
  * @author cyberpwn
  */
+@Documented
 package org.phantomapi;
+
+import phantom.util.metrics.Documented;

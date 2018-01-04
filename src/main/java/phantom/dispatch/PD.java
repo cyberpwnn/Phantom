@@ -1,10 +1,13 @@
 package phantom.dispatch;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Phantom dispatcher
  *
  * @author cyberpwn
  */
+@Documented
 public class PD
 {
 	private static final D pd = new D("Phantom");

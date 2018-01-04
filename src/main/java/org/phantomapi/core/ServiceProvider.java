@@ -17,12 +17,14 @@ import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.service.IService;
+import phantom.util.metrics.Documented;
 
 /**
  * Service provider for deploying and sending services
  *
  * @author cyberpwn
  */
+@Documented
 @Register
 @Singular
 @Name("Service Controller")

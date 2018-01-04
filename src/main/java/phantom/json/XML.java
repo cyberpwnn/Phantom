@@ -22,57 +22,60 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 import java.util.Iterator;
+
+import phantom.util.metrics.Documented;
 
 /**
  * This provides static methods to convert an XML text into a JSONObject, and to
  * covert a JSONObject into an XML text.
- * 
+ *
  * @author JSON.org
  * @version 2014-05-03
  */
+@Documented
 public class XML
 {
-	
+
 	/** The Character '&amp;'. */
 	public static final Character AMP = '&';
-	
+
 	/** The Character '''. */
 	public static final Character APOS = '\'';
-	
+
 	/** The Character '!'. */
 	public static final Character BANG = '!';
-	
+
 	/** The Character '='. */
 	public static final Character EQ = '=';
-	
+
 	/** The Character '>'. */
 	public static final Character GT = '>';
-	
+
 	/** The Character '&lt;'. */
 	public static final Character LT = '<';
-	
+
 	/** The Character '?'. */
 	public static final Character QUEST = '?';
-	
+
 	/** The Character '"'. */
 	public static final Character QUOT = '"';
-	
+
 	/** The Character '/'. */
 	public static final Character SLASH = '/';
-	
+
 	/**
 	 * Replace special characters with XML escapes:
-	 * 
+	 *
 	 * <pre>
 	 * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
 	 * &lt; <small>(less than)</small> is replaced by &amp;lt;
 	 * &gt; <small>(greater than)</small> is replaced by &amp;gt;
 	 * &quot; <small>(double quote)</small> is replaced by &amp;quot;
 	 * </pre>
-	 * 
+	 *
 	 * @param string
 	 *            The string to be escaped.
 	 * @return The escaped string.
@@ -106,11 +109,11 @@ public class XML
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Throw an exception if the string contains whitespace. Whitespace is not
 	 * allowed in tagNames and attributes.
-	 * 
+	 *
 	 * @param string
 	 *            A string.
 	 * @throws JSONException
@@ -130,10 +133,10 @@ public class XML
 			}
 		}
 	}
-	
+
 	/**
 	 * Scan the content following the named tag, attaching it to the context.
-	 * 
+	 *
 	 * @param x
 	 *            The XMLTokener containing the source string.
 	 * @param context
@@ -151,7 +154,7 @@ public class XML
 		String string;
 		String tagName;
 		Object token;
-		
+
 		// Test for and skip past these forms:
 		// <!-- ... -->
 		// <! ... >
@@ -161,11 +164,11 @@ public class XML
 		// <>
 		// <=
 		// <<
-		
+
 		token = x.nextToken();
-		
+
 		// <!
-		
+
 		if(token == BANG)
 		{
 			c = x.next();
@@ -212,16 +215,16 @@ public class XML
 			return false;
 		} else if(token == QUEST)
 		{
-			
+
 			// <?
-			
+
 			x.skipPast("?>");
 			return false;
 		} else if(token == SLASH)
 		{
-			
+
 			// Close tag </
-			
+
 			token = x.nextToken();
 			if(name == null)
 			{
@@ -236,13 +239,13 @@ public class XML
 				throw x.syntaxError("Misshaped close tag");
 			}
 			return true;
-			
+
 		} else if(token instanceof Character)
 		{
 			throw x.syntaxError("Misshaped tag");
-			
+
 			// Open tag <
-			
+
 		} else
 		{
 			tagName = (String) token;
@@ -254,9 +257,9 @@ public class XML
 				{
 					token = x.nextToken();
 				}
-				
+
 				// attribute = value
-				
+
 				if(token instanceof String)
 				{
 					string = (String) token;
@@ -274,9 +277,9 @@ public class XML
 					{
 						jsonobject.accumulate(string, "");
 					}
-					
+
 					// Empty tag <.../>
-					
+
 				} else if(token == SLASH)
 				{
 					if(x.nextToken() != GT)
@@ -291,9 +294,9 @@ public class XML
 						context.accumulate(tagName, "");
 					}
 					return false;
-					
+
 					// Content, between <...> and </...>
-					
+
 				} else if(token == GT)
 				{
 					for(;;)
@@ -313,9 +316,9 @@ public class XML
 							{
 								jsonobject.accumulate("content", XML.stringToValue(string));
 							}
-							
+
 							// Nested element
-							
+
 						} else if(token == LT)
 						{
 							if(parse(x, jsonobject, tagName))
@@ -341,14 +344,14 @@ public class XML
 			}
 		}
 	}
-	
+
 	/**
 	 * Try to convert a string into a number, boolean, or null. If the string
 	 * can't be converted, return the string. This is much less ambitious than
 	 * JSONObject.stringToValue, especially because it does not attempt to
 	 * convert plus forms, octal forms, hex forms, or E forms lacking decimal
 	 * points.
-	 * 
+	 *
 	 * @param string
 	 *            A String.
 	 * @return A simple JSON value.
@@ -367,11 +370,11 @@ public class XML
 		{
 			return JSONObject.NULL;
 		}
-		
+
 		// If it might be a number, try converting it, first as a Long, and then
 		// as a
 		// Double. If that doesn't work, return the string.
-		
+
 		try
 		{
 			char initial = string.charAt(0);
@@ -398,7 +401,7 @@ public class XML
 		}
 		return string;
 	}
-	
+
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
 	 * JSONObject. Some information may be lost in this transformation because
@@ -409,7 +412,7 @@ public class XML
 	 * elements are represented as JSONArrays. Content text may be placed in a
 	 * "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code>
 	 * are ignored.
-	 * 
+	 *
 	 * @param string
 	 *            The source string.
 	 * @return A JSONObject containing the structured data from the XML string.
@@ -425,10 +428,10 @@ public class XML
 		}
 		return jo;
 	}
-	
+
 	/**
 	 * Convert a JSONObject into a well-formed, element-normal XML string.
-	 * 
+	 *
 	 * @param object
 	 *            A JSONObject.
 	 * @return A string.
@@ -438,10 +441,10 @@ public class XML
 	{
 		return toString(object, null);
 	}
-	
+
 	/**
 	 * Convert a JSONObject into a well-formed, element-normal XML string.
-	 * 
+	 *
 	 * @param object
 	 *            A JSONObject.
 	 * @param tagName
@@ -462,18 +465,18 @@ public class XML
 		Object value;
 		if(object instanceof JSONObject)
 		{
-			
+
 			// Emit <tagName>
-			
+
 			if(tagName != null)
 			{
 				sb.append('<');
 				sb.append(tagName);
 				sb.append('>');
 			}
-			
+
 			// Loop thru the keys.
-			
+
 			jo = (JSONObject) object;
 			keys = jo.keys();
 			while(keys.hasNext())
@@ -485,9 +488,9 @@ public class XML
 					value = "";
 				}
 				string = value instanceof String ? (String) value : null;
-				
+
 				// Emit content in body
-				
+
 				if("content".equals(key))
 				{
 					if(value instanceof JSONArray)
@@ -506,9 +509,9 @@ public class XML
 					{
 						sb.append(escape(value.toString()));
 					}
-					
+
 					// Emit an array of similar keys
-					
+
 				} else if(value instanceof JSONArray)
 				{
 					ja = (JSONArray) value;
@@ -535,9 +538,9 @@ public class XML
 					sb.append('<');
 					sb.append(key);
 					sb.append("/>");
-					
+
 					// Emit a new tag <k>
-					
+
 				} else
 				{
 					sb.append(toString(value, key));
@@ -545,19 +548,19 @@ public class XML
 			}
 			if(tagName != null)
 			{
-				
+
 				// Emit the </tagname> close tag
-				
+
 				sb.append("</");
 				sb.append(tagName);
 				sb.append('>');
 			}
 			return sb.toString();
-			
+
 			// XML does not have good support for arrays. If an array appears in
 			// a place
 			// where XML is lacking, synthesize an <array> element.
-			
+
 		} else
 		{
 			if(object.getClass().isArray())

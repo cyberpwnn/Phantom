@@ -1,5 +1,7 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * An adapter converts one object into another
  *
@@ -9,6 +11,7 @@ package phantom.lang;
  * @param <TO>
  *            the resulting object
  */
+@Documented
 public interface Adapter<FROM, TO>
 {
 	/**

@@ -22,9 +22,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 import java.util.Iterator;
+
+import phantom.util.metrics.Documented;
 
 /**
  * This provides static methods to convert an XML text into a JSONArray or
@@ -34,12 +36,13 @@ import java.util.Iterator;
  * @author JSON.org
  * @version 2014-05-03
  */
+@Documented
 public class JSONML
 {
-	
+
 	/**
 	 * Parse XML values and store them in a JSONArray.
-	 * 
+	 *
 	 * @param x
 	 *            The XMLTokener containing the source string.
 	 * @param arrayForm
@@ -60,13 +63,13 @@ public class JSONML
 		JSONObject newjo = null;
 		Object token;
 		String tagName = null;
-		
+
 		// Test for and skip past these forms:
 		// <!-- ... -->
 		// <![ ... ]]>
 		// <! ... >
 		// <? ... ?>
-		
+
 		while(true)
 		{
 			if(!x.more())
@@ -81,9 +84,9 @@ public class JSONML
 				{
 					if(token == XML.SLASH)
 					{
-						
+
 						// Close tag </
-						
+
 						token = x.nextToken();
 						if(!(token instanceof String))
 						{
@@ -96,9 +99,9 @@ public class JSONML
 						return token;
 					} else if(token == XML.BANG)
 					{
-						
+
 						// <!
-						
+
 						c = x.next();
 						if(c == '-')
 						{
@@ -142,17 +145,17 @@ public class JSONML
 						}
 					} else if(token == XML.QUEST)
 					{
-						
+
 						// <?
-						
+
 						x.skipPast("?>");
 					} else
 					{
 						throw x.syntaxError("Misshaped tag");
 					}
-					
+
 					// Open tag <
-					
+
 				} else
 				{
 					if(!(token instanceof String))
@@ -192,9 +195,9 @@ public class JSONML
 						{
 							break;
 						}
-						
+
 						// attribute = value
-						
+
 						attribute = (String) token;
 						if(!arrayForm && ("tagName".equals(attribute) || "childNode".equals(attribute)))
 						{
@@ -219,9 +222,9 @@ public class JSONML
 					{
 						newja.put(newjo);
 					}
-					
+
 					// Empty tag <.../>
-					
+
 					if(token == XML.SLASH)
 					{
 						if(x.nextToken() != XML.GT)
@@ -238,9 +241,9 @@ public class JSONML
 								return newjo;
 							}
 						}
-						
+
 						// Content, between <...> and </...>
-						
+
 					} else
 					{
 						if(token != XML.GT)
@@ -281,7 +284,7 @@ public class JSONML
 			}
 		}
 	}
-	
+
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
 	 * JSONArray using the JsonML transform. Each XML tag is represented as a
@@ -290,7 +293,7 @@ public class JSONML
 	 * name/value pairs. If the tag contains children, then strings and
 	 * JSONArrays will represent the child tags. Comments, prologs, DTDs, and
 	 * <code>&lt;[ [ ]]></code> are ignored.
-	 * 
+	 *
 	 * @param string
 	 *            The source string.
 	 * @return A JSONArray containing the structured data from the XML string.
@@ -300,7 +303,7 @@ public class JSONML
 	{
 		return toJSONArray(new XMLTokener(string));
 	}
-	
+
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
 	 * JSONArray using the JsonML transform. Each XML tag is represented as a
@@ -309,7 +312,7 @@ public class JSONML
 	 * name/value pairs. If the tag contains children, then strings and
 	 * JSONArrays will represent the child content and tags. Comments, prologs,
 	 * DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-	 * 
+	 *
 	 * @param x
 	 *            An XMLTokener.
 	 * @return A JSONArray containing the structured data from the XML string.
@@ -319,7 +322,7 @@ public class JSONML
 	{
 		return (JSONArray) parse(x, true, null);
 	}
-	
+
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
 	 * JSONObject using the JsonML transform. Each XML tag is represented as a
@@ -327,9 +330,9 @@ public class JSONML
 	 * attributes will be in the JSONObject as properties. If the tag contains
 	 * children, the object will have a "childNodes" property which will be an
 	 * array of strings and JsonML JSONObjects.
-	 * 
+	 *
 	 * Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-	 * 
+	 *
 	 * @param x
 	 *            An XMLTokener of the XML source text.
 	 * @return A JSONObject containing the structured data from the XML string.
@@ -339,7 +342,7 @@ public class JSONML
 	{
 		return (JSONObject) parse(x, false, null);
 	}
-	
+
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
 	 * JSONObject using the JsonML transform. Each XML tag is represented as a
@@ -347,9 +350,9 @@ public class JSONML
 	 * attributes will be in the JSONObject as properties. If the tag contains
 	 * children, the object will have a "childNodes" property which will be an
 	 * array of strings and JsonML JSONObjects.
-	 * 
+	 *
 	 * Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-	 * 
+	 *
 	 * @param string
 	 *            The XML source text.
 	 * @return A JSONObject containing the structured data from the XML string.
@@ -359,10 +362,10 @@ public class JSONML
 	{
 		return toJSONObject(new XMLTokener(string));
 	}
-	
+
 	/**
 	 * Reverse the JSONML transformation, making an XML text from a JSONArray.
-	 * 
+	 *
 	 * @param ja
 	 *            A JSONArray.
 	 * @return An XML string.
@@ -379,23 +382,23 @@ public class JSONML
 		StringBuilder sb = new StringBuilder();
 		String tagName;
 		String value;
-		
+
 		// Emit <tagName
-		
+
 		tagName = ja.getString(0);
 		XML.noSpace(tagName);
 		tagName = XML.escape(tagName);
 		sb.append('<');
 		sb.append(tagName);
-		
+
 		object = ja.opt(1);
 		if(object instanceof JSONObject)
 		{
 			i = 2;
 			jo = (JSONObject) object;
-			
+
 			// Emit the attributes
-			
+
 			keys = jo.keys();
 			while(keys.hasNext())
 			{
@@ -416,9 +419,9 @@ public class JSONML
 		{
 			i = 1;
 		}
-		
+
 		// Emit content in body
-		
+
 		length = ja.length();
 		if(i >= length)
 		{
@@ -455,13 +458,13 @@ public class JSONML
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Reverse the JSONML transformation, making an XML text from a JSONObject.
 	 * The JSONObject must contain a "tagName" property. If it has children,
 	 * then it must have a "childNodes" property containing an array of objects.
 	 * The other properties are attributes with string values.
-	 * 
+	 *
 	 * @param jo
 	 *            A JSONObject.
 	 * @return An XML string.
@@ -478,9 +481,9 @@ public class JSONML
 		Object object;
 		String tagName;
 		String value;
-		
+
 		// Emit <tagName
-		
+
 		tagName = jo.optString("tagName");
 		if(tagName == null)
 		{
@@ -490,9 +493,9 @@ public class JSONML
 		tagName = XML.escape(tagName);
 		sb.append('<');
 		sb.append(tagName);
-		
+
 		// Emit the attributes
-		
+
 		keys = jo.keys();
 		while(keys.hasNext())
 		{
@@ -512,9 +515,9 @@ public class JSONML
 				}
 			}
 		}
-		
+
 		// Emit content in body
-		
+
 		ja = jo.optJSONArray("childNodes");
 		if(ja == null)
 		{

@@ -2,6 +2,8 @@ package phantom.lang;
 
 import java.io.Serializable;
 
+import phantom.util.metrics.Documented;
+
 /**
  * A Biset
  *
@@ -12,6 +14,7 @@ import java.io.Serializable;
  * @param <B>
  *            the second object type
  */
+@Documented
 public class GBiset<A, B> implements Serializable
 {
 	private static final long serialVersionUID = 1L;

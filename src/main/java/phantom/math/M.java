@@ -3,11 +3,14 @@ package phantom.math;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Math
  *
  * @author cyberpwn
  */
+@Documented
 public class M
 {
 	private static final int precision = 128;
@@ -16,7 +19,7 @@ public class M
 
 	/**
 	 * Clips a number (min max) beteen two values.
-	 * 
+	 *
 	 * @param value
 	 *            the value to clip
 	 * @param min

@@ -4,12 +4,14 @@ import org.phantomapi.Phantom;
 
 import phantom.lang.GQueue;
 import phantom.text.C;
+import phantom.util.metrics.Documented;
 
 /**
  * Dispatcher used for logging
  *
  * @author cyberpwn
  */
+@Documented
 public class D
 {
 	private static final GQueue<String> sendBuffer = new GQueue<String>();

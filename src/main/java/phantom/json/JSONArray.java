@@ -35,6 +35,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import phantom.util.metrics.Documented;
+
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a
  * string wrapped in square brackets with commas separating the values. The
@@ -79,14 +81,15 @@ import java.util.Map;
  * @author JSON.org
  * @version 2015-07-22
  */
+@Documented
 public class JSONArray implements Iterable<Object>
 {
-	
+
 	/**
 	 * The arrayList where the JSONArray's properties are kept.
 	 */
 	private final ArrayList<Object> myArrayList;
-	
+
 	/**
 	 * Construct an empty JSONArray.
 	 */
@@ -94,7 +97,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		this.myArrayList = new ArrayList<Object>();
 	}
-	
+
 	/**
 	 * Construct a JSONArray from a JSONTokener.
 	 *
@@ -141,7 +144,7 @@ public class JSONArray implements Iterable<Object>
 			}
 		}
 	}
-	
+
 	/**
 	 * Construct a JSONArray from a source JSON text.
 	 *
@@ -156,7 +159,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		this(new JSONTokener(source));
 	}
-	
+
 	/**
 	 * Construct a JSONArray from a Collection.
 	 *
@@ -175,7 +178,7 @@ public class JSONArray implements Iterable<Object>
 			}
 		}
 	}
-	
+
 	/**
 	 * Construct a JSONArray from an array
 	 *
@@ -197,13 +200,13 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray initial value should be a string or collection or array.");
 		}
 	}
-	
+
 	@Override
 	public Iterator<Object> iterator()
 	{
 		return myArrayList.iterator();
 	}
-	
+
 	/**
 	 * Get the object value associated with an index.
 	 *
@@ -222,7 +225,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return object;
 	}
-	
+
 	/**
 	 * Get the boolean value associated with an index. The string values "true"
 	 * and "false" are converted to boolean.
@@ -246,7 +249,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		throw new JSONException("JSONArray[" + index + "] is not a boolean.");
 	}
-	
+
 	/**
 	 * Get the double value associated with an index.
 	 *
@@ -268,10 +271,10 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray[" + index + "] is not a number.");
 		}
 	}
-	
+
 	/**
 	 * Get the enum value associated with an index.
-	 * 
+	 *
 	 * @param clazz
 	 *            The type of enum to retrieve.
 	 * @param index
@@ -293,7 +296,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return val;
 	}
-	
+
 	/**
 	 * Get the BigDecimal value associated with an index.
 	 *
@@ -315,7 +318,7 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray[" + index + "] could not convert to BigDecimal.");
 		}
 	}
-	
+
 	/**
 	 * Get the BigInteger value associated with an index.
 	 *
@@ -337,7 +340,7 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray[" + index + "] could not convert to BigInteger.");
 		}
 	}
-	
+
 	/**
 	 * Get the int value associated with an index.
 	 *
@@ -358,7 +361,7 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray[" + index + "] is not a number.");
 		}
 	}
-	
+
 	/**
 	 * Get the JSONArray associated with an index.
 	 *
@@ -378,7 +381,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		throw new JSONException("JSONArray[" + index + "] is not a JSONArray.");
 	}
-	
+
 	/**
 	 * Get the JSONObject associated with an index.
 	 *
@@ -398,7 +401,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		throw new JSONException("JSONArray[" + index + "] is not a JSONObject.");
 	}
-	
+
 	/**
 	 * Get the long value associated with an index.
 	 *
@@ -420,7 +423,7 @@ public class JSONArray implements Iterable<Object>
 			throw new JSONException("JSONArray[" + index + "] is not a number.");
 		}
 	}
-	
+
 	/**
 	 * Get the string associated with an index.
 	 *
@@ -439,7 +442,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		throw new JSONException("JSONArray[" + index + "] not a string.");
 	}
-	
+
 	/**
 	 * Determine if the value is null.
 	 *
@@ -451,7 +454,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return JSONObject.NULL.equals(this.opt(index));
 	}
-	
+
 	/**
 	 * Make a string from the contents of this JSONArray. The
 	 * <code>separator</code> string is inserted between each element. Warning:
@@ -467,7 +470,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		int len = this.length();
 		StringBuilder sb = new StringBuilder();
-		
+
 		for(int i = 0; i < len; i += 1)
 		{
 			if(i > 0)
@@ -478,7 +481,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Get the number of elements in the JSONArray, included nulls.
 	 *
@@ -488,7 +491,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.myArrayList.size();
 	}
-	
+
 	/**
 	 * Get the optional object value associated with an index.
 	 *
@@ -500,7 +503,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return (index < 0 || index >= this.length()) ? null : this.myArrayList.get(index);
 	}
-	
+
 	/**
 	 * Get the optional boolean value associated with an index. It returns false
 	 * if there is no value at that index, or if the value is not Boolean.TRUE
@@ -514,7 +517,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optBoolean(index, false);
 	}
-	
+
 	/**
 	 * Get the optional boolean value associated with an index. It returns the
 	 * defaultValue if there is no value at that index or if it is not a Boolean
@@ -536,7 +539,7 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional double value associated with an index. NaN is returned
 	 * if there is no value for the index, or if the value is not a number and
@@ -550,7 +553,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optDouble(index, Double.NaN);
 	}
-	
+
 	/**
 	 * Get the optional double value associated with an index. The defaultValue
 	 * is returned if there is no value for the index, or if the value is not a
@@ -572,7 +575,7 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional int value associated with an index. Zero is returned if
 	 * there is no value for the index, or if the value is not a number and
@@ -586,7 +589,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optInt(index, 0);
 	}
-	
+
 	/**
 	 * Get the optional int value associated with an index. The defaultValue is
 	 * returned if there is no value for the index, or if the value is not a
@@ -608,10 +611,10 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the enum value associated with a key.
-	 * 
+	 *
 	 * @param clazz
 	 *            The type of enum to retrieve.
 	 * @param index
@@ -622,10 +625,10 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optEnum(clazz, index, null);
 	}
-	
+
 	/**
 	 * Get the enum value associated with a key.
-	 * 
+	 *
 	 * @param clazz
 	 *            The type of enum to retrieve.
 	 * @param index
@@ -653,18 +656,18 @@ public class JSONArray implements Iterable<Object>
 			}
 			return Enum.valueOf(clazz, val.toString());
 		}
-		
+
 		catch(IllegalArgumentException e)
 		{
 			return defaultValue;
 		}
-		
+
 		catch(NullPointerException e)
 		{
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional BigInteger value associated with an index. The
 	 * defaultValue is returned if there is no value for the index, or if the
@@ -686,7 +689,7 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional BigDecimal value associated with an index. The
 	 * defaultValue is returned if there is no value for the index, or if the
@@ -708,7 +711,7 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional JSONArray associated with an index.
 	 *
@@ -722,7 +725,7 @@ public class JSONArray implements Iterable<Object>
 		Object o = this.opt(index);
 		return o instanceof JSONArray ? (JSONArray) o : null;
 	}
-	
+
 	/**
 	 * Get the optional JSONObject associated with an index. Null is returned if
 	 * the key is not found, or null if the index has no value, or if the value
@@ -737,7 +740,7 @@ public class JSONArray implements Iterable<Object>
 		Object o = this.opt(index);
 		return o instanceof JSONObject ? (JSONObject) o : null;
 	}
-	
+
 	/**
 	 * Get the optional long value associated with an index. Zero is returned if
 	 * there is no value for the index, or if the value is not a number and
@@ -751,7 +754,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optLong(index, 0);
 	}
-	
+
 	/**
 	 * Get the optional long value associated with an index. The defaultValue is
 	 * returned if there is no value for the index, or if the value is not a
@@ -773,7 +776,7 @@ public class JSONArray implements Iterable<Object>
 			return defaultValue;
 		}
 	}
-	
+
 	/**
 	 * Get the optional string value associated with an index. It returns an
 	 * empty string if there is no value at that index. If the value is not a
@@ -787,7 +790,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.optString(index, "");
 	}
-	
+
 	/**
 	 * Get the optional string associated with an index. The defaultValue is
 	 * returned if the key is not found.
@@ -803,7 +806,7 @@ public class JSONArray implements Iterable<Object>
 		Object object = this.opt(index);
 		return JSONObject.NULL.equals(object) ? defaultValue : object.toString();
 	}
-	
+
 	/**
 	 * Append a boolean value. This increases the array's length by one.
 	 *
@@ -816,7 +819,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(value ? Boolean.TRUE : Boolean.FALSE);
 		return this;
 	}
-	
+
 	/**
 	 * Put a value in the JSONArray, where the value will be a JSONArray which
 	 * is produced from a Collection.
@@ -830,7 +833,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(new JSONArray(value));
 		return this;
 	}
-	
+
 	/**
 	 * Append a double value. This increases the array's length by one.
 	 *
@@ -847,7 +850,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(d);
 		return this;
 	}
-	
+
 	/**
 	 * Append an int value. This increases the array's length by one.
 	 *
@@ -860,7 +863,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(new Integer(value));
 		return this;
 	}
-	
+
 	/**
 	 * Append an long value. This increases the array's length by one.
 	 *
@@ -873,7 +876,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(new Long(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put a value in the JSONArray, where the value will be a JSONObject which
 	 * is produced from a Map.
@@ -887,7 +890,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(new JSONObject(value));
 		return this;
 	}
-	
+
 	/**
 	 * Append an object value. This increases the array's length by one.
 	 *
@@ -902,7 +905,7 @@ public class JSONArray implements Iterable<Object>
 		this.myArrayList.add(value);
 		return this;
 	}
-	
+
 	/**
 	 * Put or replace a boolean value in the JSONArray. If the index is greater
 	 * than the length of the JSONArray, then null elements will be added as
@@ -921,7 +924,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, value ? Boolean.TRUE : Boolean.FALSE);
 		return this;
 	}
-	
+
 	/**
 	 * Put a value in the JSONArray, where the value will be a JSONArray which
 	 * is produced from a Collection.
@@ -939,7 +942,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, new JSONArray(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put or replace a double value. If the index is greater than the length of
 	 * the JSONArray, then null elements will be added as necessary to pad it
@@ -958,7 +961,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, new Double(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put or replace an int value. If the index is greater than the length of
 	 * the JSONArray, then null elements will be added as necessary to pad it
@@ -977,7 +980,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, new Integer(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put or replace a long value. If the index is greater than the length of
 	 * the JSONArray, then null elements will be added as necessary to pad it
@@ -996,7 +999,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, new Long(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put a value in the JSONArray, where the value will be a JSONObject that
 	 * is produced from a Map.
@@ -1015,7 +1018,7 @@ public class JSONArray implements Iterable<Object>
 		this.put(index, new JSONObject(value));
 		return this;
 	}
-	
+
 	/**
 	 * Put or replace an object value in the JSONArray. If the index is greater
 	 * than the length of the JSONArray, then null elements will be added as
@@ -1052,7 +1055,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Remove an index and close the hole.
 	 *
@@ -1065,7 +1068,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return index >= 0 && index < this.length() ? this.myArrayList.remove(index) : null;
 	}
-	
+
 	/**
 	 * Determine if two JSONArrays are similar. They must contain similar
 	 * sequences.
@@ -1108,7 +1111,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Produce a JSONObject by combining a JSONArray of names with the values of
 	 * this JSONArray.
@@ -1134,7 +1137,7 @@ public class JSONArray implements Iterable<Object>
 		}
 		return jo;
 	}
-	
+
 	/**
 	 * Make a JSON text of this JSONArray. For compactness, no unnecessary
 	 * whitespace is added. If it is not possible to produce a syntactically
@@ -1146,6 +1149,7 @@ public class JSONArray implements Iterable<Object>
 	 * @return a printable, displayable, transmittable representation of the
 	 *         array.
 	 */
+	@Override
 	public String toString()
 	{
 		try
@@ -1156,7 +1160,7 @@ public class JSONArray implements Iterable<Object>
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Make a prettyprinted JSON text of this JSONArray. Warning: This method
 	 * assumes that the data structure is acyclical.
@@ -1177,7 +1181,7 @@ public class JSONArray implements Iterable<Object>
 			return this.write(sw, indentFactor, 0).toString();
 		}
 	}
-	
+
 	/**
 	 * Write the contents of the JSONArray as JSON text to a writer. For
 	 * compactness, no whitespace is added.
@@ -1191,7 +1195,7 @@ public class JSONArray implements Iterable<Object>
 	{
 		return this.write(writer, 0, 0);
 	}
-	
+
 	/**
 	 * Write the contents of the JSONArray as JSON text to a writer. For
 	 * compactness, no whitespace is added.
@@ -1212,14 +1216,14 @@ public class JSONArray implements Iterable<Object>
 			boolean commanate = false;
 			int length = this.length();
 			writer.write('[');
-			
+
 			if(length == 1)
 			{
 				JSONObject.writeValue(writer, this.myArrayList.get(0), indentFactor, indent);
 			} else if(length != 0)
 			{
 				final int newindent = indent + indentFactor;
-				
+
 				for(int i = 0; i < length; i += 1)
 				{
 					if(commanate)

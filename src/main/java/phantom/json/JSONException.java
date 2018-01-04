@@ -1,16 +1,19 @@
 package phantom.json;
 
+import phantom.util.metrics.Documented;
+
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.
  *
  * @author JSON.org
  * @version 2014-05-03
  */
+@Documented
 public class JSONException extends RuntimeException
 {
 	private static final long serialVersionUID = 0;
 	private Throwable cause;
-	
+
 	/**
 	 * Constructs a JSONException with an explanatory message.
 	 *
@@ -21,10 +24,10 @@ public class JSONException extends RuntimeException
 	{
 		super(message);
 	}
-	
+
 	/**
 	 * Constructs a new JSONException with the specified cause.
-	 * 
+	 *
 	 * @param cause
 	 *            The cause.
 	 */
@@ -33,7 +36,7 @@ public class JSONException extends RuntimeException
 		super(cause.getMessage());
 		this.cause = cause;
 	}
-	
+
 	/**
 	 * Returns the cause of this exception or null if the cause is nonexistent
 	 * or unknown.

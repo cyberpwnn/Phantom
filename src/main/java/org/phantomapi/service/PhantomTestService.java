@@ -10,6 +10,7 @@ import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.service.IService;
+import phantom.util.metrics.Documented;
 import phantomapi.test.IUnitTest;
 import phantomapi.test.TestResult;
 import phantomapi.test.UnitTest;
@@ -19,6 +20,7 @@ import phantomapi.test.UnitTest;
  *
  * @author cyberpwn
  */
+@Documented
 @Name("SVC Phantom Test")
 @Singular
 public class PhantomTestService implements IService

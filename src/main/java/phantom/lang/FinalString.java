@@ -1,17 +1,20 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Represents a string that can be changed even if final
- * 
+ *
  * @author cyberpwn
  */
+@Documented
 public class FinalString
 {
 	private String string;
-	
+
 	/**
 	 * Create a final string
-	 * 
+	 *
 	 * @param string
 	 *            the string
 	 */
@@ -19,20 +22,20 @@ public class FinalString
 	{
 		this.string = string;
 	}
-	
+
 	/**
 	 * Get the string
-	 * 
+	 *
 	 * @return the string
 	 */
 	public String get()
 	{
 		return string;
 	}
-	
+
 	/**
 	 * Set the string
-	 * 
+	 *
 	 * @param string
 	 *            the string
 	 */

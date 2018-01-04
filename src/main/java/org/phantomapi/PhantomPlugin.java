@@ -3,12 +3,14 @@ package org.phantomapi;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import phantom.dispatch.PD;
+import phantom.util.metrics.Documented;
 
 /**
  * The phantom plugin instance
  *
  * @author cyberpwn
  */
+@Documented
 public class PhantomPlugin extends JavaPlugin
 {
 	private static PhantomPlugin inst;

@@ -15,6 +15,7 @@ import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
 import phantom.service.IService;
 import phantom.util.exception.PawnActivationException;
+import phantom.util.metrics.Documented;
 import phantom.util.plugin.PluginUtil;
 
 /**
@@ -22,6 +23,7 @@ import phantom.util.plugin.PluginUtil;
  *
  * @author cyberpwn
  */
+@Documented
 public class Phantom
 {
 	private static final DMSP dms = new DMSP();

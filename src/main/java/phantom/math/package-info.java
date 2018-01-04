@@ -3,4 +3,7 @@
  *
  * @author cyberpwn
  */
+@Documented
 package phantom.math;
+
+import phantom.util.metrics.Documented;

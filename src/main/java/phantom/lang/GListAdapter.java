@@ -1,5 +1,7 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Adapts a list of objects into a list of other objects
  *
@@ -9,6 +11,7 @@ package phantom.lang;
  * @param <TO>
  *            the to object in lists (the item INSIDE the list)
  */
+@Documented
 public abstract class GListAdapter<FROM, TO>
 {
 	/**

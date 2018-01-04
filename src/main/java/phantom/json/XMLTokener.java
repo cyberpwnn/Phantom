@@ -1,5 +1,7 @@
 package phantom.json;
 
+import phantom.util.metrics.Documented;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -22,24 +24,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 /**
  * The XMLTokener extends the JSONTokener to provide additional methods for the
  * parsing of XML texts.
- * 
+ *
  * @author JSON.org
  * @version 2014-05-03
  */
+@Documented
 public class XMLTokener extends JSONTokener
 {
-	
+
 	/**
 	 * The table of entity values. It initially contains Character values for
 	 * amp, apos, gt, lt, quot.
 	 */
 	public static final java.util.HashMap<String, Character> entity;
-	
+
 	static
 	{
 		entity = new java.util.HashMap<String, Character>(8);
@@ -49,10 +52,10 @@ public class XMLTokener extends JSONTokener
 		entity.put("lt", XML.LT);
 		entity.put("quot", XML.QUOT);
 	}
-	
+
 	/**
 	 * Construct an XMLTokener from a string.
-	 * 
+	 *
 	 * @param s
 	 *            A source string.
 	 */
@@ -60,10 +63,10 @@ public class XMLTokener extends JSONTokener
 	{
 		super(s);
 	}
-	
+
 	/**
 	 * Get the text in the CDATA block.
-	 * 
+	 *
 	 * @return The string up to the <code>]]&gt;</code>.
 	 * @throws JSONException
 	 *             If the <code>]]&gt;</code> is not found.
@@ -89,7 +92,7 @@ public class XMLTokener extends JSONTokener
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the next XML outer token, trimming whitespace. There are two kinds of
 	 * tokens: the '<' character which begins a markup tag, and the content text
@@ -133,11 +136,11 @@ public class XMLTokener extends JSONTokener
 			c = next();
 		}
 	}
-	
+
 	/**
 	 * Return the next entity. These entities are translated to Characters:
 	 * <code>&amp;  &apos;  &gt;  &lt;  &quot;</code>.
-	 * 
+	 *
 	 * @param ampersand
 	 *            An ampersand character.
 	 * @return A Character or an entity String if the entity is not recognized.
@@ -165,11 +168,11 @@ public class XMLTokener extends JSONTokener
 		Object object = entity.get(string);
 		return object != null ? object : ampersand + string + ";";
 	}
-	
+
 	/**
 	 * Returns the next XML meta token. This is used for skipping over
 	 * <!...> and <?...?> structures.
-	 * 
+	 *
 	 * @return Syntax characters (<code>< > / = ! ?</code>) are returned as
 	 *         Character, and strings and names are returned as Boolean. We
 	 *         don't care what the values actually are.
@@ -241,12 +244,12 @@ public class XMLTokener extends JSONTokener
 				}
 		}
 	}
-	
+
 	/**
 	 * Get the next XML Token. These tokens are found inside of angle brackets.
 	 * It may be one of these characters: <code>/ > = ! ?</code> or it may be a
 	 * string wrapped in single quotes or double quotes, or it may be a name.
-	 * 
+	 *
 	 * @return a String or a Character.
 	 * @throws JSONException
 	 *             If the XML is not well formed.
@@ -276,9 +279,9 @@ public class XMLTokener extends JSONTokener
 				return XML.BANG;
 			case '?':
 				return XML.QUEST;
-			
-			// Quoted string
-			
+
+				// Quoted string
+
 			case '"':
 			case '\'':
 				q = c;
@@ -303,9 +306,9 @@ public class XMLTokener extends JSONTokener
 					}
 				}
 			default:
-				
+
 				// Name
-				
+
 				sb = new StringBuilder();
 				for(;;)
 				{
@@ -336,11 +339,11 @@ public class XMLTokener extends JSONTokener
 				}
 		}
 	}
-	
+
 	/**
 	 * Skip characters until past the requested string. If it is not found, we
 	 * are left at the end of the source with a result of false.
-	 * 
+	 *
 	 * @param to
 	 *            A string to skip past.
 	 * @throws JSONException
@@ -354,12 +357,12 @@ public class XMLTokener extends JSONTokener
 		int offset = 0;
 		int length = to.length();
 		char[] circle = new char[length];
-		
+
 		/*
 		 * First fill the circle buffer with as many characters as are in the to
 		 * string. If we reach an early end, bail.
 		 */
-		
+
 		for(i = 0; i < length; i += 1)
 		{
 			c = next();
@@ -369,16 +372,16 @@ public class XMLTokener extends JSONTokener
 			}
 			circle[i] = c;
 		}
-		
+
 		/* We will loop, possibly for all of the remaining characters. */
-		
+
 		for(;;)
 		{
 			j = offset;
 			b = true;
-			
+
 			/* Compare the circle buffer with the to string. */
-			
+
 			for(i = 0; i < length; i += 1)
 			{
 				if(circle[j] != to.charAt(i))
@@ -392,18 +395,18 @@ public class XMLTokener extends JSONTokener
 					j -= length;
 				}
 			}
-			
+
 			/* If we exit the loop with b intact, then victory is ours. */
-			
+
 			if(b)
 			{
 				return true;
 			}
-			
+
 			/*
 			 * Get the next character. If there isn't one, then defeat is ours.
 			 */
-			
+
 			c = next();
 			if(c == 0)
 			{

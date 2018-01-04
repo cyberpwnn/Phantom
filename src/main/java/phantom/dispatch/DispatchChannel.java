@@ -1,12 +1,14 @@
 package phantom.dispatch;
 
 import phantom.text.C;
+import phantom.util.metrics.Documented;
 
 /**
  * Represents a dispatch channel
  *
  * @author cyberpwn
  */
+@Documented
 public enum DispatchChannel
 {
 	/**

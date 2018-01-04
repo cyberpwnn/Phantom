@@ -3,6 +3,9 @@ package phantom.lang;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import phantom.util.metrics.Documented;
+
+@Documented
 public class GMap<K, V> extends ConcurrentHashMap<K, V>
 {
 	private static final long serialVersionUID = 1527847670799761130L;

@@ -1,5 +1,7 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * A GAdapter for adapting objects to other objects
  *
@@ -9,6 +11,7 @@ package phantom.lang;
  * @param <TO>
  *            the to object
  */
+@Documented
 public abstract class GAdapter<FROM, TO> implements Adapter<FROM, TO>
 {
 	@Override

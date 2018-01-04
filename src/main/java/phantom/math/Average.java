@@ -1,10 +1,13 @@
 package phantom.math;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Represents a custom sized rolling average
  *
  * @author cyberpwn
  */
+@Documented
 public class Average
 {
 	private double[] values;
@@ -13,7 +16,7 @@ public class Average
 
 	/**
 	 * Represents a rolling average
-	 * 
+	 *
 	 * @param size
 	 *            the maximum size (radius) of the average
 	 */
@@ -27,7 +30,7 @@ public class Average
 
 	/**
 	 * Put a value into the average
-	 * 
+	 *
 	 * @param i
 	 *            the value
 	 */
@@ -40,7 +43,7 @@ public class Average
 	/**
 	 * Get the last computed average. If new data has entered the roll, then it
 	 * is first computed.
-	 * 
+	 *
 	 * @return the average of all of the numbers.
 	 */
 	public double getAverage()

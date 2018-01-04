@@ -9,6 +9,7 @@ import phantom.pawn.Name;
 import phantom.pawn.Singular;
 import phantom.sched.A;
 import phantom.util.metrics.Anchor;
+import phantom.util.metrics.Documented;
 import phantomapi.test.IUnitTest;
 import phantomapi.test.TestResult;
 import phantomapi.test.UnitTest;
@@ -18,6 +19,7 @@ import phantomapi.test.UnitTest;
  *
  * @author cyberpwn
  */
+@Documented
 @Singular
 @Name("TEST Async Task")
 @Anchor("phantom-test")

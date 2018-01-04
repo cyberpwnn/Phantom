@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import phantom.lang.GSet;
 
 /**
@@ -12,6 +13,7 @@ import phantom.lang.GSet;
  *
  * @author cyberpwn
  */
+@Documented
 public class JarScanner
 {
 	private final GSet<Class<?>> classes;
@@ -19,7 +21,7 @@ public class JarScanner
 
 	/**
 	 * Create a scanner
-	 * 
+	 *
 	 * @param jar
 	 *            the path to the jar
 	 */
@@ -31,7 +33,7 @@ public class JarScanner
 
 	/**
 	 * Scan the jar
-	 * 
+	 *
 	 * @throws IOException
 	 *             bad things happen
 	 */
@@ -70,7 +72,7 @@ public class JarScanner
 
 	/**
 	 * Get the scanned clases
-	 * 
+	 *
 	 * @return a gset of classes
 	 */
 	public GSet<Class<?>> getClasses()
@@ -80,7 +82,7 @@ public class JarScanner
 
 	/**
 	 * Get the file object for the jar
-	 * 
+	 *
 	 * @return a file object representing the jar
 	 */
 	public File getJar()

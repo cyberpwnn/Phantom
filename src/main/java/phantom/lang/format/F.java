@@ -13,18 +13,21 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Formatter
  *
  * @author cyberpwn
  */
+@Documented
 public class F
 {
 	private static NumberFormat NF;
 	private static DecimalFormat DF;
 
 	private static final String NAMES[] = new String[]
-	{ "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septendecillion", "Octodecillion", "Novemdecillion", "Vigintillion", };
+			{ "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septendecillion", "Octodecillion", "Novemdecillion", "Vigintillion", };
 	private static final BigInteger THOUSAND = BigInteger.valueOf(1000);
 	private static final NavigableMap<BigInteger, String> MAP;
 
@@ -39,7 +42,7 @@ public class F
 
 	/**
 	 * Capitalizes a string (one word)
-	 * 
+	 *
 	 * @param s
 	 *            the string
 	 * @return the capitalized string
@@ -68,7 +71,7 @@ public class F
 
 	/**
 	 * Capitalizes all words in the string.
-	 * 
+	 *
 	 * @param s
 	 *            the string.
 	 * @return the capitalized string
@@ -194,7 +197,7 @@ public class F
 	 * Get a time (fancy string) for the given milliseconds. Giving double
 	 * precision. This method uses a double millisecond input. So it can handle
 	 * higher than millisecond accuracy.
-	 * 
+	 *
 	 * @param ms
 	 *            the millis
 	 * @param prec

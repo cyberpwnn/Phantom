@@ -9,12 +9,14 @@ import phantom.pawn.Register;
 import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
+import phantom.util.metrics.Documented;
 
 /**
  * The main provider of the phantom api
  *
  * @author cyberpwn
  */
+@Documented
 @Register
 @Singular
 @Name("Phantom Controller")

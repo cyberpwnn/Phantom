@@ -6,12 +6,14 @@ import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.lang.format.F;
 import phantom.util.exception.PawnActivationException;
+import phantom.util.metrics.Documented;
 
 /**
  * Holds active pawns
  *
  * @author cyberpwn
  */
+@Documented
 public class PawnSpace
 {
 	private final GMap<IPawn, PawnObject> activePawns;

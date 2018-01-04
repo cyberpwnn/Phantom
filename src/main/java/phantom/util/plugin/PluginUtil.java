@@ -27,6 +27,7 @@ import org.phantomapi.Phantom;
 
 import phantom.lang.GList;
 import phantom.text.C;
+import phantom.util.metrics.Documented;
 import phantom.util.metrics.PluginDeleter;
 
 /*
@@ -59,7 +60,9 @@ import phantom.util.metrics.PluginDeleter;
  * Utilities for managing plugins.
  *
  * @author rylinaux
+ * @author cyberpwn
  */
+@Documented
 public class PluginUtil
 {
 

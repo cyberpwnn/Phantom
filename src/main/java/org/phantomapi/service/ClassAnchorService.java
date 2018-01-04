@@ -14,6 +14,7 @@ import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.service.IService;
 import phantom.util.metrics.Anchor;
+import phantom.util.metrics.Documented;
 import phantom.util.metrics.JarScanner;
 
 /**
@@ -21,6 +22,7 @@ import phantom.util.metrics.JarScanner;
  *
  * @author cyberpwn
  */
+@Documented
 @Name("SVC Class Anchor")
 @Singular
 public class ClassAnchorService implements IService

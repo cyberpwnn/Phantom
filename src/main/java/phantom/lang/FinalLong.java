@@ -1,17 +1,20 @@
 package phantom.lang;
 
+import phantom.util.metrics.Documented;
+
 /**
  * Represents a number that can be finalized and be changed
- * 
+ *
  * @author cyberpwn
  */
+@Documented
 public class FinalLong
 {
 	private long i;
-	
+
 	/**
 	 * Create a final number
-	 * 
+	 *
 	 * @param i
 	 *            the initial number
 	 */
@@ -19,20 +22,20 @@ public class FinalLong
 	{
 		this.i = i;
 	}
-	
+
 	/**
 	 * Get the value
-	 * 
+	 *
 	 * @return the number value
 	 */
 	public long get()
 	{
 		return i;
 	}
-	
+
 	/**
 	 * Set the value
-	 * 
+	 *
 	 * @param i
 	 *            the number value
 	 */
@@ -40,10 +43,10 @@ public class FinalLong
 	{
 		this.i = i;
 	}
-	
+
 	/**
 	 * Add to this value
-	 * 
+	 *
 	 * @param i
 	 *            the number to add to this value (value = value + i)
 	 */
@@ -51,10 +54,10 @@ public class FinalLong
 	{
 		this.i += i;
 	}
-	
+
 	/**
 	 * Subtract from this value
-	 * 
+	 *
 	 * @param i
 	 *            the number to subtract from this value (value = value - i)
 	 */
