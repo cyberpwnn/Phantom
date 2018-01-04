@@ -1,12 +1,15 @@
 package org.phantomapi;
 
 import java.lang.reflect.Field;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+
 import phantom.dispatch.PD;
 import phantom.pawn.IPawn;
 import phantom.pawn.PawnSpace;
+import phantom.service.IService;
 import phantom.util.exception.PawnActivationException;
 
 public class Phantom
@@ -18,6 +21,11 @@ public class Phantom
 	public static void kick(Throwable e)
 	{
 		e.printStackTrace();
+	}
+
+	public static <T extends IService> T getService(Class<? extends T> svc)
+	{
+		return dms.getApi().getServiceController().getService(svc);
 	}
 
 	public static boolean isServerThread()
@@ -33,20 +41,20 @@ public class Phantom
 	public static void pulse(Signal signal)
 	{
 		PD.v("Received pulse: " + signal.toString());
-		
+
 		switch(signal)
 		{
-		case ABORT:
-			doAbort();
-			break;
-		case START:
-			doStart();
-			break;
-		case STOP:
-			doStop();
-			break;
-		default:
-			break;
+			case ABORT:
+				doAbort();
+				break;
+			case START:
+				doStart();
+				break;
+			case STOP:
+				doStop();
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -82,7 +90,7 @@ public class Phantom
 	{
 		HandlerList.unregisterAll(listener);
 	}
-	
+
 	public static void claim(IPawn owner, IPawn claimed, Field field)
 	{
 		pawnSpace.claim(owner, field, claimed);
@@ -94,7 +102,7 @@ public class Phantom
 		{
 			pawnSpace.activate(pawn);
 		}
-		
+
 		catch(PawnActivationException e)
 		{
 			kick(e);
@@ -120,7 +128,7 @@ public class Phantom
 	{
 		return inst.getDescription().getVersion();
 	}
-	
+
 	public static int startTask(int delay, Runnable r)
 	{
 		return Bukkit.getScheduler().scheduleSyncDelayedTask(inst, r, delay);
