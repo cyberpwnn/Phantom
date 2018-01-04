@@ -1,6 +1,7 @@
 package phantom.dispatch;
 
 import org.phantomapi.Phantom;
+
 import phantom.lang.GQueue;
 import phantom.text.C;
 
@@ -56,7 +57,14 @@ public class D
 
 	private static void log(DispatchChannel channel, String header, String message)
 	{
-		String compiledMessage = channel.toString() + "|" + C.DARK_GRAY + C.stripColor(header) + ": " + (channel == DispatchChannel.VERBOSE ? C.GRAY : channel.toString()) + message;
+		String ak = "";
+
+		if(!Phantom.isServerThread())
+		{
+			ak = C.AQUA + "|" + C.DARK_GRAY + "A";
+		}
+
+		String compiledMessage = ak + channel.toString() + "|" + C.DARK_GRAY + C.stripColor(header) + ": " + (channel == DispatchChannel.VERBOSE ? C.GRAY : channel.toString()) + message;
 		sendBuffer.offer(compiledMessage);
 
 		if(Phantom.isServerThread())
