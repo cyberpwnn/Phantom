@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 import org.phantomapi.Phantom;
 import phantom.lang.GList;
 import phantom.lang.GMap;
-import phantom.scheduler.TICK;
+import phantom.sched.TICK;
 
 public class PawnObject
 {
