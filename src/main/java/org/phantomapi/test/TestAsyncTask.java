@@ -13,6 +13,11 @@ import phantomapi.test.IUnitTest;
 import phantomapi.test.TestResult;
 import phantomapi.test.UnitTest;
 
+/**
+ * Tests async tasks. Argument allowed [int] for the count of tasks to fire off
+ *
+ * @author cyberpwn
+ */
 @Singular
 @Name("TEST Async Task")
 @Anchor("phantom-test")

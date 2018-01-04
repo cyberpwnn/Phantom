@@ -16,6 +16,11 @@ import phantom.service.IService;
 import phantom.util.metrics.Anchor;
 import phantom.util.metrics.JarScanner;
 
+/**
+ * Class anchor service used for anchoring classes, and crawling jars
+ *
+ * @author cyberpwn
+ */
 @Name("SVC Class Anchor")
 @Singular
 public class ClassAnchorService implements IService
@@ -34,11 +39,23 @@ public class ClassAnchorService implements IService
 
 	}
 
+	/**
+	 * Get all tags found in crawled jars
+	 *
+	 * @return a list of anchor tags
+	 */
 	public GList<String> getAnchorTags()
 	{
 		return anchors.k();
 	}
 
+	/**
+	 * Get anchored classes for the given tag
+	 *
+	 * @param anchorTag
+	 *            the anchor tag
+	 * @return a list of classes or empty list
+	 */
 	public GList<Class<?>> getAnchoredClasses(String anchorTag)
 	{
 		if(!anchors.containsKey(anchorTag))
@@ -49,6 +66,12 @@ public class ClassAnchorService implements IService
 		return anchors.get(anchorTag);
 	}
 
+	/**
+	 * Crawl a jar for anchors
+	 *
+	 * @param jarFile
+	 *            the jar file to crawl
+	 */
 	public void crawl(File jarFile)
 	{
 		try

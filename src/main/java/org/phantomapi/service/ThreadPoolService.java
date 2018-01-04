@@ -11,6 +11,11 @@ import phantom.sched.ParallelPoolManager;
 import phantom.sched.QueueMode;
 import phantom.service.IService;
 
+/**
+ * Thread pool service
+ *
+ * @author cyberpwn
+ */
 @Name("SVC Thread Pool")
 @Singular
 public class ThreadPoolService implements IService
@@ -44,11 +49,23 @@ public class ThreadPoolService implements IService
 		D.flush();
 	}
 
+	/**
+	 * Run an async task
+	 *
+	 * @param a
+	 *            the task
+	 */
 	public void run(A a)
 	{
 		pool.queue(a);
 	}
 
+	/**
+	 * Force all threads to complete their work on the queue before returning this
+	 * method
+	 *
+	 * @return returns the number of milliseconds waited
+	 */
 	public long lock()
 	{
 		return pool.lock();

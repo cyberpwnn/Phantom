@@ -14,6 +14,11 @@ import phantomapi.test.IUnitTest;
 import phantomapi.test.TestResult;
 import phantomapi.test.UnitTest;
 
+/**
+ * Test service used for running tests on the api
+ *
+ * @author cyberpwn
+ */
 @Name("SVC Phantom Test")
 @Singular
 public class PhantomTestService implements IService
@@ -30,6 +35,17 @@ public class PhantomTestService implements IService
 
 	}
 
+	/**
+	 * Run a test
+	 *
+	 * @param test
+	 *            the test name or alias
+	 * @param args
+	 *            the arguments for the test
+	 * @param result
+	 *            the result callback (multiple will fire), if the TestResult object
+	 *            fired has a isFinisher() as true, it is the last callback.
+	 */
 	public void runTest(String test, String[] args, Callback<TestResult> result)
 	{
 		for(Class<?> i : Phantom.getAnchors("phantom-test"))
@@ -75,6 +91,15 @@ public class PhantomTestService implements IService
 		}
 	}
 
+	/**
+	 * Run a test with no arguments
+	 *
+	 * @param test
+	 *            the test name or alias
+	 * @param result
+	 *            the result callback (multiple will fire), if the TestResult object
+	 *            fired has a isFinisher() as true, it is the last callback.
+	 */
 	public void runTest(String test, Callback<TestResult> result)
 	{
 		runTest(test, new String[0], result);
