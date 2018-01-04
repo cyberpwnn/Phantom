@@ -1,5 +1,6 @@
 /**
+ * Pawns pawns and pawns.
+ *
  * @author cyberpwn
- * Controllers
  */
 package phantom.pawn;
