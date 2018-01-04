@@ -1,8 +1,10 @@
 package org.phantomapi.core;
 
 import java.lang.reflect.Field;
+
 import org.phantomapi.Phantom;
 import org.phantomapi.service.ThreadPoolService;
+
 import phantom.lang.GMap;
 import phantom.pawn.DeployableService;
 import phantom.pawn.IPawn;
@@ -16,7 +18,7 @@ import phantom.service.IService;
 @Register
 @Singular
 @Name("Service Controller")
-public class ServiceController implements IPawn
+public class ServiceProvider implements IPawn
 {
 	@DeployableService
 	private ThreadPoolService threadPoolSVC;
@@ -118,7 +120,8 @@ public class ServiceController implements IPawn
 		return offeredServices.containsKey(svcClass);
 	}
 
-	public IService getService(Class<? extends IService> svcClass)
+	@SuppressWarnings("unchecked")
+	public <T extends IService> T getService(Class<? extends T> svcClass)
 	{
 		if(isService(svcClass))
 		{
@@ -129,7 +132,7 @@ public class ServiceController implements IPawn
 
 			try
 			{
-				return (IService) offeredServices.get(svcClass).get(this);
+				return (T) offeredServices.get(svcClass).get(this);
 			}
 
 			catch(Exception e)
@@ -137,7 +140,7 @@ public class ServiceController implements IPawn
 				Phantom.kick(e);
 			}
 		}
-		
+
 		return null;
 	}
 }

@@ -11,20 +11,25 @@ import phantom.pawn.Stop;
 @Register
 @Singular
 @Name("Phantom Controller")
-public class PhantomController implements IPawn
+public class PhantomProvider implements IPawn
 {
 	@Pawn
-	private ServiceController serviceController;
-	
+	private ServiceProvider serviceController;
+
 	@Start
 	public void onStart()
 	{
-		
+
 	}
-	
+
 	@Stop
 	public void onStop()
 	{
-		
+
+	}
+
+	public ServiceProvider getServiceController()
+	{
+		return serviceController;
 	}
 }
