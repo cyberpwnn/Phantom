@@ -7,7 +7,6 @@ import phantom.pawn.Name;
 import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
-import phantom.util.metrics.Anchor;
 import phantom.util.metrics.Documented;
 
 /**
@@ -27,7 +26,6 @@ import phantom.util.metrics.Documented;
  */
 @Documented
 @Singular
-@Anchor("phantom-nmsw")
 @Name("NMS Wrapper 1.8.X")
 @NMSPackage("v1_8_R3")
 public class NMSW8 extends NMSWrapper
