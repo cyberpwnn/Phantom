@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginLoader;
+import org.phantomapi.core.PhantomProvider;
 import org.phantomapi.service.ClassAnchorService;
 import org.phantomapi.service.CommandService;
 
@@ -32,6 +33,16 @@ public class Phantom
 	private static final DMSP dms = new DMSP();
 	private static final PawnSpace pawnSpace = new PawnSpace();
 	private static PhantomPlugin inst = PhantomPlugin.instance();
+
+	/**
+	 * Get the api controller
+	 *
+	 * @return the api controller (phantom provider)
+	 */
+	public static PhantomProvider getAPI()
+	{
+		return dms.getApi();
+	}
 
 	/**
 	 * Checks if nms could be used on this server
