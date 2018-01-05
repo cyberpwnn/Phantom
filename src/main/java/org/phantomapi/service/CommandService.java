@@ -8,6 +8,7 @@ import org.bukkit.event.server.ServerCommandEvent;
 import org.phantomapi.Phantom;
 
 import phantom.command.ICommand;
+import phantom.dispatch.PD;
 import phantom.lang.GList;
 import phantom.pawn.Name;
 import phantom.pawn.Register;
@@ -97,8 +98,10 @@ public class CommandService implements IService
 			return;
 		}
 
-		String[] pars = getParameters(e.getCommand());
-		processCommand(e.getSender(), pars);
+		if(processCommand(e.getSender(), getParameters(e.getCommand())))
+		{
+			e.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -107,6 +110,11 @@ public class CommandService implements IService
 		if(e.isCancelled())
 		{
 			return;
+		}
+
+		if(processCommand(e.getPlayer(), getParameters(e.getMessage())))
+		{
+			e.setCancelled(true);
 		}
 	}
 
@@ -211,6 +219,7 @@ public class CommandService implements IService
 		activeCommands.add(command);
 		Phantom.activate(command);
 		Phantom.claim(this, command);
+		PD.l("Activated Command: /" + command.getCommandName());
 	}
 
 	/**
@@ -224,5 +233,6 @@ public class CommandService implements IService
 		activeCommands.remove(command);
 		Phantom.deactivate(command);
 		Phantom.unclaim(this, command);
+		PD.l("Deactivated Command: /" + command.getCommandName());
 	}
 }
