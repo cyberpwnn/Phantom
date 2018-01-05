@@ -1,6 +1,7 @@
 package org.phantomapi.service;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
 
 import org.phantomapi.Phantom;
 
@@ -94,6 +95,14 @@ public class ClassAnchorService implements IService
 					d++;
 				}
 
+				boolean found = false;
+				boolean annot = Annotation.class.isAssignableFrom(i);
+
+				if(annot)
+				{
+					continue;
+				}
+
 				if(i.isAnnotationPresent(Anchor.class))
 				{
 					String id = i.getDeclaredAnnotation(Anchor.class).value();
@@ -106,6 +115,29 @@ public class ClassAnchorService implements IService
 					}
 
 					anchors.get(id).add(i);
+					found = true;
+				}
+
+				if(!found)
+				{
+					for(Annotation j : i.getDeclaredAnnotations())
+					{
+						Class<? extends Annotation> type = j.annotationType();
+
+						if(type.isAnnotationPresent(Anchor.class))
+						{
+							String id = type.getAnnotation(Anchor.class).value();
+							c++;
+
+							if(!anchors.containsKey(id))
+							{
+								a++;
+								anchors.put(id, new GList<Class<?>>());
+							}
+
+							anchors.get(id).add(i);
+						}
+					}
 				}
 			}
 
