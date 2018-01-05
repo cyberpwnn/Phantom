@@ -25,10 +25,27 @@ import phantom.util.metrics.Documented;
 @Singular
 public class PhantomTestService implements IService
 {
+	private GList<IUnitTest> tests;
+
 	@Start
 	public void start()
 	{
+		tests = new GList<IUnitTest>();
 
+		for(Class<?> i : Phantom.getAnchors("phantom-test"))
+		{
+			try
+			{
+				IUnitTest u = (IUnitTest) i.getConstructor().newInstance();
+				tests.add(u);
+				PD.v("Binding Unit Test: " + u.getTestNames()[0]);
+			}
+
+			catch(Exception e)
+			{
+				Phantom.kick(e);
+			}
+		}
 	}
 
 	@Stop
@@ -105,5 +122,10 @@ public class PhantomTestService implements IService
 	public void runTest(String test, Callback<TestResult> result)
 	{
 		runTest(test, new String[0], result);
+	}
+
+	public GList<IUnitTest> getTests()
+	{
+		return tests;
 	}
 }
