@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.phantomapi</groupId>
 	<artifactId>Phantom</artifactId>
-	<version>B4</version>
+	<version>B5</version>
 	<name>Phantom</name>
 	<description>Vroom Vroom</description>
 	<properties>
