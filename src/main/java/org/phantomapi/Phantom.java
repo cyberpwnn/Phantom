@@ -8,7 +8,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginLoader;
 import org.phantomapi.service.ClassAnchorService;
+import org.phantomapi.service.CommandService;
 
+import phantom.command.ICommand;
 import phantom.dispatch.PD;
 import phantom.lang.GList;
 import phantom.net.Protocol;
@@ -258,6 +260,28 @@ public class Phantom
 	public static void unclaim(IPawn owner, IPawn claimed)
 	{
 		pawnSpace.unclaim(owner, claimed);
+	}
+
+	/**
+	 * Activate a command
+	 *
+	 * @param command
+	 *            a command
+	 */
+	public static void activateCommand(ICommand command)
+	{
+		getService(CommandService.class).activateCommand(command);
+	}
+
+	/**
+	 * Deactivate a command
+	 *
+	 * @param command
+	 *            a command
+	 */
+	public static void deactivateCommand(ICommand command)
+	{
+		getService(CommandService.class).deactivateCommand(command);
 	}
 
 	/**
