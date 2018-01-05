@@ -1,6 +1,7 @@
 package org.phantomapi.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 import org.phantomapi.Phantom;
 import org.phantomapi.service.ClassAnchorService;
@@ -10,6 +11,7 @@ import org.phantomapi.service.PhantomTestService;
 import org.phantomapi.service.ThreadPoolService;
 
 import phantom.dispatch.PD;
+import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.pawn.DeployableService;
 import phantom.pawn.IPawn;
@@ -203,5 +205,71 @@ public class ServiceProvider implements IPawn
 		}
 
 		return null;
+	}
+
+	public GList<IService> getDeployedServices()
+	{
+		GList<IService> svc = new GList<IService>();
+
+		for(Class<? extends IService> i : offeredServices.k())
+		{
+			if(isServiceRunning(i))
+			{
+				try
+				{
+					svc.add(i.getConstructor().newInstance());
+				}
+
+				catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+				{
+					Phantom.kick(e);
+				}
+			}
+		}
+
+		return svc;
+	}
+
+	public GList<IService> getDormantServices()
+	{
+		GList<IService> svc = new GList<IService>();
+
+		for(Class<? extends IService> i : offeredServices.k())
+		{
+			if(!isServiceRunning(i))
+			{
+				try
+				{
+					svc.add(i.getConstructor().newInstance());
+				}
+
+				catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+				{
+					Phantom.kick(e);
+				}
+			}
+		}
+
+		return svc;
+	}
+
+	public GList<IService> getOfferedServices()
+	{
+		GList<IService> svc = new GList<IService>();
+
+		for(Class<? extends IService> i : offeredServices.k())
+		{
+			try
+			{
+				svc.add(i.getConstructor().newInstance());
+			}
+
+			catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+			{
+				Phantom.kick(e);
+			}
+		}
+
+		return svc;
 	}
 }
