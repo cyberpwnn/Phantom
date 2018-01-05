@@ -82,9 +82,9 @@ public class ParallelThread extends Thread
 		}
 	}
 
-	public void queue(Execution e)
+	public boolean queue(Execution e)
 	{
-		queue.offer(e);
+		return queue.offer(e);
 	}
 
 	public Queue<Execution> getQueue()
