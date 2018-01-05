@@ -23,6 +23,59 @@ public interface ICommand extends IPawn, ITagProvider
 	public int getPriority();
 
 	/**
+	 * Get all subcommands to this command
+	 *
+	 * @return a glist of subcommands
+	 */
+	public GList<ICommand> getSubCommands();
+
+	/**
+	 * Get all sorted subcommands to this command
+	 *
+	 * @return a glist of subcommands
+	 */
+	public GList<ICommand> getSubCommandsByPriority();
+
+	/**
+	 * Takes the root command arguments and processes it into a new sub-command
+	 * (first argument). The rest are passed as arguments to a resolved sub command.
+	 * If no sub command is found, false is returned.
+	 *
+	 * @param sender
+	 *            the command sender
+	 * @param a
+	 *            the arguments of the super-command
+	 * @return true if a command was executed, false otherwise
+	 */
+	public boolean fireSubCommand(CommandSender sender, String[] a);
+
+	/**
+	 * Resolve a subcommand based on the arguments given
+	 *
+	 * @param sub
+	 *            the sub command name
+	 * @return the subcommand or null
+	 */
+	public ICommand getResolvedSubCommand(String sub);
+
+	/**
+	 * Makes a normal command act as a sub command. The Alias & Command name are
+	 * used as the sub command. Arguments are adapted before they are passed in.
+	 *
+	 * @param command
+	 *            the command object
+	 */
+	public void activateSubCommand(ICommand command);
+
+	/**
+	 * Deactivates a subcommand
+	 *
+	 * @param command
+	 *            the sub command
+	 */
+	public void deactivateSubCommand(ICommand command);
+
+	/**
 	 * Set the priority
 	 *
 	 * @param p
@@ -73,6 +126,11 @@ public interface ICommand extends IPawn, ITagProvider
 	 * @return the parameter usage
 	 */
 	public String getParameterUsage();
+
+	/**
+	 * Deactivates all subcommands
+	 */
+	public void deactivateSubCommands();
 
 	/**
 	 * Called when a command matching this is executed. This is only called when the
