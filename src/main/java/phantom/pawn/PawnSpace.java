@@ -161,7 +161,13 @@ public class PawnSpace
 
 		for(IPawn i : activePawns.get(host).getSubPawns().v())
 		{
-			dv.add(F.repeat("  ", deep) + (deep == 0 ? "" : "->") + activePawns.get(i).getName());
+			dv.add(F.repeat(" ", deep) + (deep == 0 ? "" : "") + activePawns.get(i).getName());
+			dv.addAll(findSubPawns(i, deep + 1));
+		}
+
+		for(IPawn i : activePawns.get(host).getHackPawns())
+		{
+			dv.add(F.repeat(" ", deep) + (deep == 0 ? "" : "") + activePawns.get(i).getName());
 			dv.addAll(findSubPawns(i, deep + 1));
 		}
 
