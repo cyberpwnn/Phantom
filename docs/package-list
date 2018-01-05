@@ -1,8 +1,10 @@
 org.phantomapi
+org.phantomapi.command
 org.phantomapi.core
 org.phantomapi.nmsw
 org.phantomapi.service
 org.phantomapi.test
+phantom.command
 phantom.data
 phantom.dispatch
 phantom.entity
