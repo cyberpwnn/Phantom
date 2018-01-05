@@ -252,4 +252,9 @@ public class PawnObject
 	{
 		return name;
 	}
+
+	public GList<IPawn> getHackPawns()
+	{
+		return hackedSubPawns;
+	}
 }
