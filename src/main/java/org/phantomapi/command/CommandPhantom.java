@@ -3,9 +3,12 @@ package org.phantomapi.command;
 import org.bukkit.command.CommandSender;
 
 import phantom.command.Command;
+import phantom.command.ICommand;
 import phantom.command.PhantomCommand;
 import phantom.pawn.Name;
 import phantom.pawn.Singular;
+import phantom.pawn.Start;
+import phantom.pawn.Stop;
 import phantom.text.C;
 import phantom.text.TXT;
 
@@ -22,10 +25,34 @@ public class CommandPhantom extends PhantomCommand
 		addAlias("pha");
 	}
 
+	@Start
+	public void onStart()
+	{
+		activateSubCommand(new CommandTest());
+		activateSubCommand(new CommandStatus());
+	}
+
+	@Stop
+	public void onStop()
+	{
+		deactivateSubCommands();
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, String[] a)
 	{
-		msg(sender, "Oi");
+		if(a.length == 0)
+		{
+			for(ICommand i : getSubCommandsByPriority())
+			{
+				msg(sender, C.LIGHT_PURPLE + "/pha " + C.WHITE + i.getCommandName() + C.GRAY + " " + i.getParameterUsage());
+			}
+		}
+
+		else if(!fireSubCommand(sender, a))
+		{
+			msg(sender, "Unknown sub command: " + C.WHITE + a[0]);
+		}
 
 		return true;
 	}
