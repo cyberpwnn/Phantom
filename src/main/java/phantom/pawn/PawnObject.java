@@ -3,7 +3,9 @@ package phantom.pawn;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
 import org.phantomapi.Phantom;
+
 import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.sched.TICK;
@@ -18,10 +20,12 @@ public class PawnObject
 	private final boolean singular;
 	private final String name;
 	private final GMap<Field, IPawn> pawns;
+	private final GList<IPawn> hackedSubPawns;
 
 	public PawnObject(IPawn p)
 	{
 		pawn = p;
+		hackedSubPawns = new GList<IPawn>();
 		Class<?> c = pawn.getClass();
 		registered = c.isAnnotationPresent(Register.class);
 		activated = false;
@@ -67,10 +71,28 @@ public class PawnObject
 			}
 		}
 	}
-	
+
 	public void forceOwnershipOf(IPawn pawn, Field f)
 	{
 		pawns.put(f, pawn);
+	}
+
+	public void forceOwnershipOf(IPawn pawn)
+	{
+		hackedSubPawns.add(pawn);
+	}
+
+	public void forceDestroyOwnershipOf(IPawn claimed)
+	{
+		hackedSubPawns.remove(pawn);
+
+		for(Field i : pawns.k())
+		{
+			if(pawns.get(i).equals(pawn))
+			{
+				pawns.remove(i);
+			}
+		}
 	}
 
 	private void callMethods(PawnMethodType type)
@@ -145,12 +167,17 @@ public class PawnObject
 				Phantom.kick(e);
 			}
 		}
+
+		for(IPawn i : hackedSubPawns.copy())
+		{
+			Phantom.activate(i);
+		}
 	}
 
 	public void deactivate()
 	{
 		deactivateSubPawns();
-		
+
 		if(registered)
 		{
 			Phantom.unregister(pawn);
@@ -158,7 +185,7 @@ public class PawnObject
 
 		callMethods(PawnMethodType.STOP);
 	}
-	
+
 	private void deactivateSubPawns()
 	{
 		for(Field i : pawns.k())
@@ -173,6 +200,11 @@ public class PawnObject
 			{
 				Phantom.kick(e);
 			}
+		}
+
+		for(IPawn i : hackedSubPawns.copy())
+		{
+			Phantom.deactivate(i);
 		}
 	}
 

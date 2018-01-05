@@ -235,6 +235,32 @@ public class Phantom
 	}
 
 	/**
+	 * Force claim a pawn as your own subpawn.
+	 *
+	 * @param owner
+	 *            the owner pawn (super)
+	 * @param claimed
+	 *            the claimed pawn (sub)
+	 */
+	public static void claim(IPawn owner, IPawn claimed)
+	{
+		pawnSpace.claim(owner, claimed);
+	}
+
+	/**
+	 * Force unclaim a pawn as your own subpawn.
+	 *
+	 * @param owner
+	 *            the owner pawn (super)
+	 * @param claimed
+	 *            the claimed pawn (sub)
+	 */
+	public static void unclaim(IPawn owner, IPawn claimed)
+	{
+		pawnSpace.unclaim(owner, claimed);
+	}
+
+	/**
 	 * Activate a pawn
 	 *
 	 * @param pawn

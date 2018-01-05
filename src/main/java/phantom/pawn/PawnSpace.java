@@ -110,6 +110,34 @@ public class PawnSpace
 	}
 
 	/**
+	 * Defines that the OWNER is claiming super-pawn over the CLAIMED sub-pawn which
+	 * is trusted to be held in a hacked space.
+	 *
+	 * @param owner
+	 *            the owner or super-pawn)
+	 * @param claimed
+	 *            the claimed (sub-pawn) which is held in the given field
+	 */
+	public void claim(IPawn owner, IPawn claimed)
+	{
+		activePawns.get(owner).forceOwnershipOf(claimed);
+	}
+
+	/**
+	 * Defines that the OWNER is unclaiming super-pawn over the CLAIMED sub-pawn
+	 * which is trusted to be held in a hacked space.
+	 *
+	 * @param owner
+	 *            the owner or super-pawn)
+	 * @param claimed
+	 *            the claimed (sub-pawn) which is held in the given field
+	 */
+	public void unclaim(IPawn owner, IPawn claimed)
+	{
+		activePawns.get(owner).forceDestroyOwnershipOf(claimed);
+	}
+
+	/**
 	 * Prints all singularities down from the given host
 	 *
 	 * @param host
