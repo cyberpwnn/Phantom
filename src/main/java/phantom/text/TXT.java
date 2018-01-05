@@ -103,6 +103,41 @@ public class TXT
 	}
 
 	/**
+	 * Create a line
+	 *
+	 * @param color
+	 *            the color
+	 * @param len
+	 *            the length
+	 * @param text
+	 *            the centered text to display
+	 * @return the line
+	 */
+	public static String line(C color, int len, String text)
+	{
+		int side = (text.length() / 2) - 2;
+		int lside = (len / 2) - side;
+		return color + "" + C.STRIKETHROUGH + repeat(" ", lside) + C.RESET + C.BOLD + " " + text + " " + C.RESET + color + "" + C.STRIKETHROUGH + repeat(" ", lside);
+	}
+
+	/**
+	 * Create a line
+	 *
+	 * @param color
+	 *            the color
+	 * @param text
+	 *            the centered text to display
+	 * @return the line
+	 */
+	public static String line(C color, String text)
+	{
+		int len = 66;
+		int side = (text.length() / 2) - 2;
+		int lside = (len / 2) - side;
+		return color + "" + C.STRIKETHROUGH + repeat(" ", lside) + C.RESET + C.BOLD + " " + text + " " + C.RESET + color + "" + C.STRIKETHROUGH + repeat(" ", lside);
+	}
+
+	/**
 	 * Create an underline
 	 *
 	 * @param color
