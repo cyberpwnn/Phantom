@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import phantom.lang.GList;
 import phantom.pawn.IPawn;
+import phantom.text.ITagProvider;
 import phantom.util.metrics.Documented;
 
 /**
@@ -12,7 +13,7 @@ import phantom.util.metrics.Documented;
  * @author cyberpwn
  */
 @Documented
-public interface ICommand extends IPawn
+public interface ICommand extends IPawn, ITagProvider
 {
 	/**
 	 * Used as a method of determining order since all commands run on the event
@@ -20,6 +21,30 @@ public interface ICommand extends IPawn
 	 * @return the priroity of the command
 	 */
 	public int getPriority();
+
+	/**
+	 * Set the priority
+	 *
+	 * @param p
+	 *            the priority
+	 */
+	public void setPriority(int p);
+
+	/**
+	 * Set the parameter usage
+	 *
+	 * @param p
+	 *            the par usage
+	 */
+	public void setPrameterUsage(String p);
+
+	/**
+	 * Add an alias
+	 *
+	 * @param alias
+	 *            the alias to add for this command
+	 */
+	public void addAlias(String alias);
 
 	/**
 	 * Get the name bank representing the aliases and main command string
