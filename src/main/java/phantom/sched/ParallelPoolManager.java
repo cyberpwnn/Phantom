@@ -7,15 +7,43 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import phantom.lang.GList;
 import phantom.math.M;
 
-public abstract class ParallelPoolManager
+public abstract class ParallelPoolManager extends Thread
 {
 	private QueueMode mode;
 	private GList<ParallelThread> threads;
 	private int next;
 	private int threadCount;
 	private Queue<Execution> squeue;
+	private GList<Execution> aqueue;
 	private String key;
 	private ThreadInformation info;
+
+	@Override
+	public void run()
+	{
+		while(!interrupted())
+		{
+			try
+			{
+				Thread.sleep(1);
+
+				while(!aqueue.isEmpty())
+				{
+					Execution e = aqueue.get(0);
+
+					if(nextThread().queue(e))
+					{
+						aqueue.remove(0);
+					}
+				}
+			}
+
+			catch(InterruptedException e)
+			{
+
+			}
+		}
+	}
 
 	public void syncQueue(Execution e)
 	{
@@ -75,6 +103,7 @@ public abstract class ParallelPoolManager
 		key = "Worker Thread";
 		info = new ThreadInformation(-1);
 		squeue = new ConcurrentLinkedQueue<Execution>();
+		aqueue = new GList<Execution>();
 	}
 
 	public long lock()
@@ -109,9 +138,11 @@ public abstract class ParallelPoolManager
 		return size;
 	}
 
+	@Override
 	public void start()
 	{
 		createThreads(threadCount);
+		super.start();
 	}
 
 	public void shutdown()
@@ -120,6 +151,8 @@ public abstract class ParallelPoolManager
 		{
 			i.interrupt();
 		}
+
+		interrupt();
 	}
 
 	public ParallelPoolManager(int threadCount)
@@ -129,7 +162,10 @@ public abstract class ParallelPoolManager
 
 	public void queue(Execution e)
 	{
-		nextThread().queue(e);
+		if(!nextThread().queue(e))
+		{
+			aqueue.add(e);
+		}
 	}
 
 	public int getSize()
