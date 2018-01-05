@@ -11,7 +11,6 @@ import phantom.sched.A;
 import phantom.test.IUnitTest;
 import phantom.test.TestResult;
 import phantom.test.UnitTest;
-import phantom.util.metrics.Anchor;
 import phantom.util.metrics.Documented;
 
 /**
@@ -22,7 +21,6 @@ import phantom.util.metrics.Documented;
 @Documented
 @Singular
 @Name("TEST Async Task")
-@Anchor("phantom-test")
 @UnitTest({"async", "async-task"})
 public class TestAsyncTask implements IUnitTest
 {
