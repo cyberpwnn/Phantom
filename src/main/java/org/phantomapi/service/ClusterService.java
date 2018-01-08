@@ -38,7 +38,7 @@ public class ClusterService implements IService
 	 */
 	public void add(Class<? extends ICluster<?>> c)
 	{
-		Class<?> type = c.getDeclaredAnnotation(Cluster.class).value();
+		Class<?> type = c.getDeclaredAnnotation(Cluster.class).type();
 		registerClusterType(type, c);
 
 		if(ClassUtil.isWrapperOrPrimative(type))
@@ -82,5 +82,70 @@ public class ClusterService implements IService
 	public boolean supports(Class<?> clazz)
 	{
 		return clusterTypes.containsKey(clazz);
+	}
+
+	/**
+	 * Check if the shortcode is a list form
+	 *
+	 * @param shortcode
+	 *            the shortcode
+	 * @return true if it is a list of clusters
+	 */
+	public boolean isListType(String shortcode)
+	{
+		return shortcode.startsWith("l-");
+	}
+
+	/**
+	 * Get the cluster type for the given shortcode
+	 *
+	 * @param shortCode
+	 *            the shortcode
+	 * @return the cluster type or null
+	 */
+	public Class<? extends ICluster<?>> getClusterType(String shortCode)
+	{
+		for(Class<? extends ICluster<?>> i : clusterTypes.v())
+		{
+			if(getShortcodeFor(i, false).equals(shortCode) || getShortcodeFor(i, true).equals(shortCode))
+			{
+				return i;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the object type for the short code
+	 *
+	 * @param shortCode
+	 *            the shortcode
+	 * @return the object type or null
+	 */
+	public Class<?> getType(String shortCode)
+	{
+		Class<? extends ICluster<?>> c = getClusterType(shortCode);
+
+		if(c == null)
+		{
+			return null;
+		}
+
+		return c.getDeclaredAnnotation(Cluster.class).type();
+	}
+
+	/**
+	 * Get the shortcode for the cluster type
+	 *
+	 * @param clusterType
+	 *            the cluster type
+	 * @param isList
+	 *            if the type is a list
+	 * @return the shortcode for this list
+	 */
+	public String getShortcodeFor(Class<? extends ICluster<?>> clusterType, boolean isList)
+	{
+		return (isList ? "l-" : "") + clusterType.getAnnotation(Cluster.class).shortcode();
 	}
 }
