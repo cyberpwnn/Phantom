@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginLoader;
@@ -433,5 +434,16 @@ public class Phantom
 	public static File getPluginFile()
 	{
 		return PluginUtil.getPluginFile(inst);
+	}
+
+	/**
+	 * Call a bukkit event
+	 *
+	 * @param event
+	 *            the event to call
+	 */
+	public static void callEvent(Event event)
+	{
+		Bukkit.getPluginManager().callEvent(event);
 	}
 }
