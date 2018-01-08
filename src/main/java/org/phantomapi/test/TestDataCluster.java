@@ -49,7 +49,7 @@ public class TestDataCluster extends PhantomCommand implements IUnitTest
 
 		for(Class<?> i : Phantom.getAnchors("phantom-cluster"))
 		{
-			Class<?> type = i.getDeclaredAnnotation(Cluster.class).value();
+			Class<?> type = i.getDeclaredAnnotation(Cluster.class).type();
 			boolean supp = cc.supports(type);
 			callbackSet.run(new TestResult("Support for " + type.getSimpleName() + ": " + supp, !supp));
 
