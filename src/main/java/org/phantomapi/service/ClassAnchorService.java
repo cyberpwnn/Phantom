@@ -5,6 +5,7 @@ import java.lang.annotation.Annotation;
 
 import org.phantomapi.Phantom;
 
+import phantom.data.cluster.ICluster;
 import phantom.dispatch.PD;
 import phantom.lang.GList;
 import phantom.lang.GMap;
@@ -75,6 +76,7 @@ public class ClassAnchorService implements IService
 	 * @param jarFile
 	 *            the jar file to crawl
 	 */
+	@SuppressWarnings("unchecked")
 	public void crawl(File jarFile)
 	{
 		try
@@ -139,6 +141,11 @@ public class ClassAnchorService implements IService
 						}
 					}
 				}
+			}
+
+			for(Class<?> i : anchors.get("phantom-cluster"))
+			{
+				Phantom.getService(ClusterService.class).add((Class<? extends ICluster<?>>) i);
 			}
 
 			PD.l("Crawled " + jarFile.getPath() + " Found " + a + " anchors in " + F.f(c) + " anchored classes out of " + F.f(s) + " scanned classes.");
