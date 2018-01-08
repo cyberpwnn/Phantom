@@ -69,7 +69,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 
 			else
 			{
-				fc.set(finalKey, o.toString());
+				fc.set(finalKey, data.getCluster(i).asString());
 			}
 		}
 
