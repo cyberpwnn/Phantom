@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.phantomapi.Phantom;
 import org.phantomapi.service.ClassAnchorService;
+import org.phantomapi.service.ClusterService;
 import org.phantomapi.service.CommandService;
 import org.phantomapi.service.NMSBinderService;
 import org.phantomapi.service.PhantomTestService;
@@ -48,6 +49,9 @@ public class ServiceProvider implements IPawn
 
 	@DeployableService
 	private CommandService commandSVC;
+
+	@DeployableService
+	private ClusterService clusterSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 
