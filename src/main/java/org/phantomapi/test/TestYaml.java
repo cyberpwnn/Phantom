@@ -2,9 +2,11 @@ package org.phantomapi.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.util.Vector;
 import org.phantomapi.Phantom;
 
 import phantom.command.PhantomCommand;
@@ -67,6 +69,10 @@ public class TestYaml extends PhantomCommand implements IUnitTest
 		cc.set("testing.char", 'Z');
 		cc.set("testing.short", (short) 4);
 		cc.set("testing.byte", (byte) -15);
+		cc.set("testing.vector", Vector.getRandom().subtract(Vector.getRandom()).clone().normalize());
+		cc.set("testing.world", Phantom.getWorld("world"));
+		cc.set("testing.location", Phantom.getWorld("world").getSpawnLocation().clone().add(Vector.getRandom().normalize()));
+		cc.set("testing.uuid", UUID.randomUUID());
 
 		callbackSet.run(new TestResult("Wrote all basic types", false));
 
