@@ -177,27 +177,27 @@ public class StringUtil
 		return new String(chararr, 0, chararr_count);
 	}
 
-	public String worldToString(World w)
+	public static String worldToString(World w)
 	{
 		return w.getName();
 	}
 
-	public World worldFromString(String w)
+	public static World worldFromString(String w)
 	{
 		return Phantom.getWorld(w);
 	}
 
-	public String vectortoString(Vector v)
+	public static String vectortoString(Vector v)
 	{
 		return vectortoString(v, true);
 	}
 
-	public String vectortoString(Vector v, boolean accurate)
+	public static String vectortoString(Vector v, boolean accurate)
 	{
 		return (accurate ? v.getX() : v.getBlockX()) + ";" + (accurate ? v.getY() : v.getBlockY()) + ";" + (accurate ? v.getZ() : v.getBlockZ());
 	}
 
-	public Vector vectorFromString(String v)
+	public static Vector vectorFromString(String v)
 	{
 		String[] a = v.split(";");
 
@@ -209,17 +209,17 @@ public class StringUtil
 		return null;
 	}
 
-	public String locationToString(Location l)
+	public static String locationToString(Location l)
 	{
 		return locationToString(l, true, true);
 	}
 
-	public String locationToString(Location l, boolean accurate, boolean direction)
+	public static String locationToString(Location l, boolean accurate, boolean direction)
 	{
 		return worldToString(l.getWorld()) + ";" + (accurate ? l.getX() : l.getBlockX()) + ";" + (accurate ? l.getY() : l.getBlockY()) + ";" + (accurate ? l.getZ() : l.getBlockZ()) + (direction ? ";" + l.getYaw() + ";" + l.getPitch() : "");
 	}
 
-	public Location locationFromString(String l)
+	public static Location locationFromString(String l)
 	{
 		String[] a = l.split(";");
 		World w = null;
