@@ -1,5 +1,6 @@
 package phantom.data.cluster;
 
+import phantom.data.ports.IDataPort;
 import phantom.lang.GList;
 import phantom.util.metrics.Documented;
 
@@ -102,4 +103,41 @@ public interface IDataCluster
 	 * @return the keys
 	 */
 	public GList<String> k();
+
+	/**
+	 * Read data from the port to this cluster
+	 *
+	 * @param port
+	 *            the data port
+	 * @param source
+	 *            the source
+	 */
+	public <T> void read(IDataPort<T> port, T source);
+
+	/**
+	 * Write data to the port from this cluster
+	 *
+	 * @param port
+	 *            the port
+	 * @return the object representing this cluster
+	 */
+	public <T> T write(IDataPort<T> port);
+
+	/**
+	 * Add the contents of the given data cluster into this cluster
+	 *
+	 * @param cluster
+	 *            the data cluster
+	 */
+	public void add(IDataCluster cluster);
+
+	/**
+	 * Add the contents of the data cluster into this cluster with a prefix
+	 *
+	 * @param prefix
+	 *            the prefix to prefix all source keys to this cluster
+	 * @param cluster
+	 *            the cluster
+	 */
+	public void add(String prefix, IDataCluster cluster);
 }
