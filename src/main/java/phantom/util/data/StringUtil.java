@@ -187,12 +187,12 @@ public class StringUtil
 		return Phantom.getWorld(w);
 	}
 
-	public static String vectortoString(Vector v)
+	public static String vectorToString(Vector v)
 	{
-		return vectortoString(v, true);
+		return vectorToString(v, true);
 	}
 
-	public static String vectortoString(Vector v, boolean accurate)
+	public static String vectorToString(Vector v, boolean accurate)
 	{
 		return (accurate ? v.getX() : v.getBlockX()) + ";" + (accurate ? v.getY() : v.getBlockY()) + ";" + (accurate ? v.getZ() : v.getBlockZ());
 	}
