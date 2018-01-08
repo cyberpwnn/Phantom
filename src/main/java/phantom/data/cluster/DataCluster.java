@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.phantomapi.Phantom;
 import org.phantomapi.service.ClusterService;
 
+import phantom.data.ports.IDataPort;
+import phantom.dispatch.PD;
 import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.util.data.ClassUtil;
@@ -19,7 +21,7 @@ import phantom.util.metrics.Documented;
 @Documented
 public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 {
-	private final GMap<String, ICluster<?>> data;
+	private GMap<String, ICluster<?>> data;
 
 	/**
 	 * Create a new datacluster
@@ -61,6 +63,18 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 	@Override
 	public void set(String key, Object object)
 	{
+		if(key == null)
+		{
+			PD.f("Key is null");
+			return;
+		}
+
+		if(object == null)
+		{
+			PD.f("Object is null for " + key);
+			return;
+		}
+
 		if(supports(object.getClass()))
 		{
 			try
@@ -176,12 +190,41 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 	@Override
 	public String getRealKeyFromShortcoded(String shortcodedKey)
 	{
-		return shortcodedKey.split("--")[1];
+		return shortcodedKey.split("--")[0];
 	}
 
 	@Override
 	public String getShortCodeFromKey(String shortcodedKey)
 	{
-		return shortcodedKey.split("--")[0];
+		return shortcodedKey.split("--")[1];
+	}
+
+	@Override
+	public <T> void read(IDataPort<T> port, T source)
+	{
+		add(port.read(source));
+	}
+
+	@Override
+	public <T> T write(IDataPort<T> port)
+	{
+		return port.write(this);
+	}
+
+	@Override
+	public void add(IDataCluster cluster)
+	{
+		add(null, cluster);
+	}
+
+	@Override
+	public void add(String prefix, IDataCluster cluster)
+	{
+		String pre = prefix == null ? "" : prefix.endsWith(".") ? prefix : prefix + ".";
+
+		for(String i : cluster.k())
+		{
+			setCluster(pre + i, cluster.getCluster(i));
+		}
 	}
 }
