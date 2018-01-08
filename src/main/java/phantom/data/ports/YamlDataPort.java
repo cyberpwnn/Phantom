@@ -23,7 +23,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 		{
 			String key = i;
 			String shortc = svc.getShortcodeFor((Class<? extends ICluster<?>>) data.getCluster(key).getClass(), false);
-			String finalKey = shortc + "--" + key;
+			String finalKey = key + "--" + shortc;
 			Object o = data.get(key);
 			Class<?> type = data.getType(key);
 
@@ -59,7 +59,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 
 			else if(type.equals(Short.class))
 			{
-				fc.set(finalKey, (Integer) o);
+				fc.set(finalKey, (Integer) ((Short) o).intValue());
 			}
 
 			else if(type.equals(String.class))
@@ -84,6 +84,11 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 
 		for(String i : source.getKeys(true))
 		{
+			if(!i.contains("--"))
+			{
+				continue;
+			}
+
 			String finalKey = i;
 			String shortCode = cc.getShortCodeFromKey(finalKey);
 			String key = cc.getRealKeyFromShortcoded(finalKey);
@@ -93,55 +98,55 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 
 			if(type.equals(Boolean.class))
 			{
-				o = Boolean.valueOf(source.getBoolean(key));
+				o = Boolean.valueOf(source.getBoolean(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Character.class))
 			{
-				o = Character.valueOf(source.getString(key).charAt(0));
+				o = Character.valueOf(source.getString(finalKey).charAt(0));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Double.class))
 			{
-				o = Double.valueOf(source.getDouble(key));
+				o = Double.valueOf(source.getDouble(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Float.class))
 			{
-				o = Float.valueOf((float) source.getDouble(key));
+				o = Float.valueOf((float) source.getDouble(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Integer.class))
 			{
-				o = Integer.valueOf(source.getInt(key));
+				o = Integer.valueOf(source.getInt(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Long.class))
 			{
-				o = Long.valueOf(source.getLong(key));
+				o = Long.valueOf(source.getLong(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(Short.class))
 			{
-				o = Short.valueOf((short) source.getInt(key));
+				o = Short.valueOf((short) source.getInt(finalKey));
 				cc.set(key, o);
 			}
 
 			else if(type.equals(String.class))
 			{
-				o = source.getString(key);
+				o = source.getString(finalKey);
 				cc.set(key, o);
 			}
 
 			else
 			{
-				o = source.getString(key);
+				o = source.getString(finalKey);
 
 				try
 				{
