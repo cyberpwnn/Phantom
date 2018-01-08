@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -445,5 +446,17 @@ public class Phantom
 	public static void callEvent(Event event)
 	{
 		Bukkit.getPluginManager().callEvent(event);
+	}
+
+	/**
+	 * Get the phantom world
+	 *
+	 * @param name
+	 *            the name
+	 * @return the world or null
+	 */
+	public static World getWorld(String name)
+	{
+		return Bukkit.getWorld(name);
 	}
 }
