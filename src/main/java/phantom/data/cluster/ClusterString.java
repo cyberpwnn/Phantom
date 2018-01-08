@@ -2,7 +2,7 @@ package phantom.data.cluster;
 
 import java.io.UTFDataFormatException;
 
-@Cluster(String.class)
+@Cluster(shortcode = "s", type = String.class)
 public class ClusterString extends PhantomCluster<String>
 {
 	public ClusterString(String value)

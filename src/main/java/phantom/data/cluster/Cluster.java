@@ -13,5 +13,7 @@ import phantom.util.metrics.Anchor;
 @Target(TYPE)
 public @interface Cluster
 {
-	Class<?> value();
+	Class<?> type();
+
+	String shortcode();
 }

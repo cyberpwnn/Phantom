@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-@Cluster(Float.class)
+@Cluster(shortcode = "f", type = Float.class)
 public class ClusterFloat extends PhantomCluster<Float>
 {
 	public ClusterFloat(Float value)

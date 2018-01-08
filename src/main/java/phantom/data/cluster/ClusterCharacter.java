@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-@Cluster(Character.class)
+@Cluster(shortcode = "c", type = Character.class)
 public class ClusterCharacter extends PhantomCluster<Character>
 {
 	public ClusterCharacter(Character value)

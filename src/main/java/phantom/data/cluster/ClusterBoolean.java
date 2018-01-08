@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-@Cluster(Boolean.class)
+@Cluster(shortcode = "b", type = Boolean.class)
 public class ClusterBoolean extends PhantomCluster<Boolean>
 {
 	public ClusterBoolean(Boolean value)

@@ -17,7 +17,7 @@ import phantom.util.metrics.Documented;
  *
  */
 @Documented
-public class DataCluster implements IDataCluster
+public class DataCluster implements IDataCluster, IGenericTyped
 {
 	private final GMap<String, ICluster<?>> data;
 
@@ -116,5 +116,53 @@ public class DataCluster implements IDataCluster
 	public GList<String> k()
 	{
 		return data.k();
+	}
+
+	@Override
+	public String getString(String key)
+	{
+		return get(key, String.class);
+	}
+
+	@Override
+	public Double getDouble(String key)
+	{
+		return get(key, Double.class);
+	}
+
+	@Override
+	public Float getFloat(String key)
+	{
+		return get(key, Float.class);
+	}
+
+	@Override
+	public Integer getInteger(String key)
+	{
+		return get(key, Integer.class);
+	}
+
+	@Override
+	public Short getShort(String key)
+	{
+		return get(key, Short.class);
+	}
+
+	@Override
+	public Long getLong(String key)
+	{
+		return get(key, Long.class);
+	}
+
+	@Override
+	public Character getCharacter(String key)
+	{
+		return get(key, Character.class);
+	}
+
+	@Override
+	public Boolean getBoolean(String key)
+	{
+		return get(key, Boolean.class);
 	}
 }

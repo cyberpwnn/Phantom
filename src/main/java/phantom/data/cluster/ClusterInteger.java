@@ -1,5 +1,6 @@
 package phantom.data.cluster;
 
+@Cluster(shortcode = "i", type = Integer.class)
 public class ClusterInteger extends PhantomCluster<Integer>
 {
 	public ClusterInteger(Integer value)
