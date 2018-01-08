@@ -9,7 +9,6 @@ import phantom.data.ports.IDataPort;
 import phantom.dispatch.PD;
 import phantom.lang.GList;
 import phantom.lang.GMap;
-import phantom.util.data.ClassUtil;
 import phantom.util.metrics.Documented;
 
 /**
@@ -79,7 +78,8 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 		{
 			try
 			{
-				data.put(key, Phantom.getService(ClusterService.class).getType(object.getClass()).getConstructor(ClassUtil.toWrapper(object.getClass())).newInstance(object));
+				Class<?> aty = Phantom.getService(ClusterService.class).getType(object.getClass()).getDeclaredAnnotation(Cluster.class).type();
+				data.put(key, Phantom.getService(ClusterService.class).getType(object.getClass()).getConstructor(aty).newInstance(aty.cast(object)));
 			}
 
 			catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
