@@ -5,8 +5,8 @@ import java.lang.annotation.Annotation;
 
 import org.phantomapi.Phantom;
 
-import phantom.data.cluster.ICluster;
 import phantom.dispatch.PD;
+import phantom.event.PhantomJarScannedEvent;
 import phantom.lang.GList;
 import phantom.lang.GMap;
 import phantom.lang.format.F;
@@ -76,7 +76,6 @@ public class ClassAnchorService implements IService
 	 * @param jarFile
 	 *            the jar file to crawl
 	 */
-	@SuppressWarnings("unchecked")
 	public void crawl(File jarFile)
 	{
 		try
@@ -87,6 +86,8 @@ public class ClassAnchorService implements IService
 			int c = 0;
 			int s = 0;
 			int d = 0;
+
+			GMap<String, GList<Class<?>>> dta = new GMap<String, GList<Class<?>>>();
 
 			for(Class<?> i : scanner.getClasses())
 			{
@@ -114,9 +115,11 @@ public class ClassAnchorService implements IService
 					{
 						a++;
 						anchors.put(id, new GList<Class<?>>());
+						dta.put(id, new GList<Class<?>>());
 					}
 
 					anchors.get(id).add(i);
+					dta.get(id).add(i);
 					found = true;
 				}
 
@@ -135,21 +138,19 @@ public class ClassAnchorService implements IService
 							{
 								a++;
 								anchors.put(id, new GList<Class<?>>());
+								dta.put(id, new GList<Class<?>>());
 							}
 
 							anchors.get(id).add(i);
+							dta.get(id).add(i);
 						}
 					}
 				}
 			}
 
-			for(Class<?> i : anchors.get("phantom-cluster"))
-			{
-				Phantom.getService(ClusterService.class).add((Class<? extends ICluster<?>>) i);
-			}
-
 			PD.l("Crawled " + jarFile.getPath() + " Found " + a + " anchors in " + F.f(c) + " anchored classes out of " + F.f(s) + " scanned classes.");
 			PD.l("Found " + F.f(d) + " of " + F.f(s) + " documented classes (" + F.pc((double) (d) / (double) (s)) + ")");
+			Phantom.callEvent(new PhantomJarScannedEvent(jarFile, dta));
 		}
 
 		catch(Throwable e)
