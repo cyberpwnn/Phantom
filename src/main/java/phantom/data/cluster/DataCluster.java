@@ -17,7 +17,7 @@ import phantom.util.metrics.Documented;
  *
  */
 @Documented
-public class DataCluster implements IDataCluster, IGenericTyped
+public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 {
 	private final GMap<String, ICluster<?>> data;
 
@@ -164,5 +164,24 @@ public class DataCluster implements IDataCluster, IGenericTyped
 	public Boolean getBoolean(String key)
 	{
 		return get(key, Boolean.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getShortcodedKey(String key)
+	{
+		return Phantom.getService(ClusterService.class).getShortcodeFor((Class<? extends ICluster<?>>) getCluster(key).getClass(), false);
+	}
+
+	@Override
+	public String getRealKeyFromShortcoded(String shortcodedKey)
+	{
+		return shortcodedKey.split("--")[1];
+	}
+
+	@Override
+	public String getShortCodeFromKey(String shortcodedKey)
+	{
+		return shortcodedKey.split("--")[0];
 	}
 }
