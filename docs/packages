@@ -3,6 +3,7 @@ org.phantomapi.core
 org.phantomapi
 org.phantomapi.nmsw
 org.phantomapi.service
+org.phantomapi.sfx
 org.phantomapi.test
 phantom.command
 phantom.data.cluster
@@ -26,12 +27,15 @@ phantom.nms
 phantom.pawn
 phantom.sched
 phantom.service
+phantom.stack
 phantom.test
 phantom.text
+phantom.texture
 phantom.util.array
 phantom.util.data
 phantom.util.exception
 phantom.util.files
 phantom.util.metrics
 phantom.util.plugin
+phantom.vfx
 phantom.world

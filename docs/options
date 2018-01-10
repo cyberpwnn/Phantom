@@ -15,7 +15,7 @@
 -docencoding
 'UTF-8'
 -doctitle
-'Phantom B6 API'
+'Phantom B7 API'
 -linkoffline
 'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/cyberpwn/Documents/development/workspace/Phantom/target/javadoc-bundle-options'
 -stylesheetfile
@@ -23,4 +23,4 @@
 -use
 -version
 -windowtitle
-'Phantom B6 API'
+'Phantom B7 API'
