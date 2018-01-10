@@ -38,6 +38,8 @@ public class FS
 				boas.write(buf, 0, read);
 			}
 
+			fin.close();
+
 			return boas.toByteArray();
 		}
 
