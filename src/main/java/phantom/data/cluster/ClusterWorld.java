@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-import java.io.UTFDataFormatException;
+import java.io.IOException;
 
 import org.bukkit.World;
 import org.phantomapi.Phantom;
@@ -16,13 +16,13 @@ public class ClusterWorld extends PhantomCluster<World>
 	}
 
 	@Override
-	public void fromBytes(byte[] data) throws UTFDataFormatException
+	public void fromBytes(byte[] data) throws IOException
 	{
 		set(Phantom.getWorld(StringUtil.bytesToUTF(data)));
 	}
 
 	@Override
-	public byte[] toBytes() throws UTFDataFormatException
+	public byte[] toBytes() throws IOException
 	{
 		return StringUtil.utfToBytes(get().getName());
 	}

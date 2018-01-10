@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-import java.io.UTFDataFormatException;
+import java.io.IOException;
 
 import org.bukkit.util.Vector;
 
@@ -15,13 +15,13 @@ public class ClusterVector extends PhantomCluster<Vector>
 	}
 
 	@Override
-	public void fromBytes(byte[] data) throws UTFDataFormatException
+	public void fromBytes(byte[] data) throws IOException
 	{
 		set(StringUtil.vectorFromString(StringUtil.bytesToUTF(data)));
 	}
 
 	@Override
-	public byte[] toBytes() throws UTFDataFormatException
+	public byte[] toBytes() throws IOException
 	{
 		return StringUtil.utfToBytes(StringUtil.vectorToString(get()));
 	}

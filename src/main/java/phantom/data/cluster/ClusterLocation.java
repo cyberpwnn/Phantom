@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-import java.io.UTFDataFormatException;
+import java.io.IOException;
 
 import org.bukkit.Location;
 
@@ -15,13 +15,13 @@ public class ClusterLocation extends PhantomCluster<Location>
 	}
 
 	@Override
-	public void fromBytes(byte[] data) throws UTFDataFormatException
+	public void fromBytes(byte[] data) throws IOException
 	{
 		set(StringUtil.locationFromString(StringUtil.bytesToUTF(data)));
 	}
 
 	@Override
-	public byte[] toBytes() throws UTFDataFormatException
+	public byte[] toBytes() throws IOException
 	{
 		return StringUtil.utfToBytes(StringUtil.locationToString(get()));
 	}

@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-import java.io.UTFDataFormatException;
+import java.io.IOException;
 import java.util.UUID;
 
 import phantom.util.data.StringUtil;
@@ -14,13 +14,13 @@ public class ClusterUUIID extends PhantomCluster<UUID>
 	}
 
 	@Override
-	public void fromBytes(byte[] data) throws UTFDataFormatException
+	public void fromBytes(byte[] data) throws IOException
 	{
 		set(UUID.fromString(StringUtil.bytesToUTF(data)));
 	}
 
 	@Override
-	public byte[] toBytes() throws UTFDataFormatException
+	public byte[] toBytes() throws IOException
 	{
 		return StringUtil.utfToBytes(get().toString());
 	}

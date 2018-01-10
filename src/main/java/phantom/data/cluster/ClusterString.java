@@ -1,6 +1,6 @@
 package phantom.data.cluster;
 
-import java.io.UTFDataFormatException;
+import java.io.IOException;
 
 import phantom.util.data.StringUtil;
 
@@ -13,13 +13,13 @@ public class ClusterString extends PhantomCluster<String>
 	}
 
 	@Override
-	public void fromBytes(byte[] data) throws UTFDataFormatException
+	public void fromBytes(byte[] data) throws IOException
 	{
 		set(StringUtil.bytesToUTF(data));
 	}
 
 	@Override
-	public byte[] toBytes() throws UTFDataFormatException
+	public byte[] toBytes() throws IOException
 	{
 		return StringUtil.utfToBytes(get());
 	}
