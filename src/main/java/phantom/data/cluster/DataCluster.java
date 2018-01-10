@@ -1,9 +1,10 @@
 package phantom.data.cluster;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.phantomapi.Phantom;
-import org.phantomapi.service.ClusterService;
+import org.phantomapi.service.ClusterSVC;
 
 import phantom.data.ports.IDataPort;
 import phantom.dispatch.PD;
@@ -56,7 +57,7 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 	@Override
 	public boolean supports(Class<?> clazz)
 	{
-		return Phantom.getService(ClusterService.class).supports(clazz);
+		return Phantom.getService(ClusterSVC.class).supports(clazz);
 	}
 
 	@Override
@@ -78,8 +79,8 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 		{
 			try
 			{
-				Class<?> aty = Phantom.getService(ClusterService.class).getType(object.getClass()).getDeclaredAnnotation(Cluster.class).type();
-				data.put(key, Phantom.getService(ClusterService.class).getType(object.getClass()).getConstructor(aty).newInstance(aty.cast(object)));
+				Class<?> aty = Phantom.getService(ClusterSVC.class).getType(object.getClass()).getDeclaredAnnotation(Cluster.class).type();
+				data.put(key, Phantom.getService(ClusterSVC.class).getType(object.getClass()).getConstructor(aty).newInstance(aty.cast(object)));
 			}
 
 			catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
@@ -184,7 +185,7 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 	@Override
 	public String getShortcodedKey(String key)
 	{
-		return Phantom.getService(ClusterService.class).getShortcodeFor((Class<? extends ICluster<?>>) getCluster(key).getClass(), false);
+		return Phantom.getService(ClusterSVC.class).getShortcodeFor((Class<? extends ICluster<?>>) getCluster(key).getClass(), false);
 	}
 
 	@Override
@@ -200,13 +201,13 @@ public class DataCluster implements IDataCluster, IGenericTyped, IShortcodeKeyed
 	}
 
 	@Override
-	public <T> void read(IDataPort<T> port, T source)
+	public <T> void read(IDataPort<T> port, T source) throws IOException
 	{
 		add(port.read(source));
 	}
 
 	@Override
-	public <T> T write(IDataPort<T> port)
+	public <T> T write(IDataPort<T> port) throws IOException
 	{
 		return port.write(this);
 	}

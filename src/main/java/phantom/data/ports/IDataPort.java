@@ -1,5 +1,7 @@
 package phantom.data.ports;
 
+import java.io.IOException;
+
 import phantom.data.cluster.DataCluster;
 import phantom.util.metrics.Documented;
 
@@ -20,8 +22,9 @@ public interface IDataPort<T>
 	 * @param data
 	 *            the datacluster
 	 * @return the object representing the dataclusters data
+	 * @throws IOException
 	 */
-	public T write(DataCluster data);
+	public T write(DataCluster data) throws IOException;
 
 	/**
 	 * Read data from the object representing data into a datacluster
@@ -29,6 +32,7 @@ public interface IDataPort<T>
 	 * @param source
 	 *            the source object containing data
 	 * @return the datacluster
+	 * @throws IOException
 	 */
-	public DataCluster read(T source);
+	public DataCluster read(T source) throws IOException;
 }

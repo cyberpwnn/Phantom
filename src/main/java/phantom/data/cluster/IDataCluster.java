@@ -1,5 +1,7 @@
 package phantom.data.cluster;
 
+import java.io.IOException;
+
 import phantom.data.ports.IDataPort;
 import phantom.lang.GList;
 import phantom.util.metrics.Documented;
@@ -111,8 +113,9 @@ public interface IDataCluster
 	 *            the data port
 	 * @param source
 	 *            the source
+	 * @throws IOException
 	 */
-	public <T> void read(IDataPort<T> port, T source);
+	public <T> void read(IDataPort<T> port, T source) throws IOException;
 
 	/**
 	 * Write data to the port from this cluster
@@ -120,8 +123,9 @@ public interface IDataCluster
 	 * @param port
 	 *            the port
 	 * @return the object representing this cluster
+	 * @throws IOException
 	 */
-	public <T> T write(IDataPort<T> port);
+	public <T> T write(IDataPort<T> port) throws IOException;
 
 	/**
 	 * Add the contents of the given data cluster into this cluster

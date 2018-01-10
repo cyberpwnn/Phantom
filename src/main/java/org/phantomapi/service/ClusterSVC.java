@@ -20,7 +20,7 @@ import phantom.util.metrics.Documented;
 @Register
 @Name("SVC Cluster")
 @Singular
-public class ClusterService implements IService
+public class ClusterSVC implements IService
 {
 	private GMap<Class<?>, Class<? extends ICluster<?>>> clusterTypes;
 

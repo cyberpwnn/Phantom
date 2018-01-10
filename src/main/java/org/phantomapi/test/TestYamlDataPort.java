@@ -33,11 +33,11 @@ import phantom.util.metrics.Documented;
  */
 @Documented
 @Singular
-@Name("TEST Yaml")
+@Name("TEST Yaml DATA PORT")
 @UnitTest({"yaml"})
-public class TestYaml extends PhantomCommand implements IUnitTest
+public class TestYamlDataPort extends PhantomCommand implements IUnitTest
 {
-	public TestYaml()
+	public TestYamlDataPort()
 	{
 		super("yaml");
 	}
@@ -84,7 +84,21 @@ public class TestYaml extends PhantomCommand implements IUnitTest
 		}
 
 		TestResult tr = new TestResult("Done Writing cluster. Writing YAML", false);
-		FileConfiguration fc = cc.write(new YamlDataPort());
+		FileConfiguration fc;
+
+		try
+		{
+			fc = cc.write(new YamlDataPort());
+		}
+
+		catch(IOException e1)
+		{
+			Phantom.kick(e1);
+			TestResult t = new TestResult("Failed to write", true);
+			t.setFinisher(true);
+			callbackSet.run(t);
+			return;
+		}
 		String yaml = fc.saveToString();
 
 		for(String i : yaml.split("\n"))

@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.phantomapi.service.ClusterService;
+import org.phantomapi.service.ClusterSVC;
 
 import phantom.data.cluster.ICluster;
 import phantom.dispatch.PD;
@@ -72,7 +72,7 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 			for(Class<?> i : e.getClasses().get("phantom-cluster"))
 			{
 				PD.v("Registered ClusterType: " + i.getSimpleName());
-				Phantom.getService(ClusterService.class).add((Class<? extends ICluster<?>>) i);
+				Phantom.getService(ClusterSVC.class).add((Class<? extends ICluster<?>>) i);
 			}
 		}
 	}

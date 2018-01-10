@@ -20,7 +20,7 @@ import phantom.util.metrics.Documented;
 @Documented
 @Name("SVC Thread Pool")
 @Singular
-public class ThreadPoolService implements IService
+public class ThreadPoolSVC implements IService
 {
 	private ParallelPoolManager pool;
 

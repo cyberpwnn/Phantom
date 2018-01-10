@@ -23,7 +23,7 @@ import phantom.util.metrics.Documented;
 @Documented
 @Name("SVC Phantom Test")
 @Singular
-public class PhantomTestService implements IService
+public class TestSVC implements IService
 {
 	private GList<IUnitTest> tests;
 

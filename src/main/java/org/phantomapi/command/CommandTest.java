@@ -2,8 +2,8 @@ package org.phantomapi.command;
 
 import org.bukkit.command.CommandSender;
 import org.phantomapi.Phantom;
-import org.phantomapi.service.CommandService;
-import org.phantomapi.service.PhantomTestService;
+import org.phantomapi.service.CommandSVC;
+import org.phantomapi.service.TestSVC;
 
 import phantom.command.Command;
 import phantom.command.ICommand;
@@ -46,7 +46,7 @@ public class CommandTest extends PhantomCommand
 	{
 		if(a.length == 0)
 		{
-			for(IUnitTest i : Phantom.getService(PhantomTestService.class).getTests())
+			for(IUnitTest i : Phantom.getService(TestSVC.class).getTests())
 			{
 				ICommand cmdx = (ICommand) i;
 				msg(sender, C.LIGHT_PURPLE + "/pha test " + C.WHITE + cmdx.getCommandName() + C.GRAY + " " + cmdx.getParameterUsage());
@@ -56,9 +56,9 @@ public class CommandTest extends PhantomCommand
 		else
 		{
 			String nm = a[0];
-			String[] args = Phantom.getService(CommandService.class).getArgsFromPars(a);
+			String[] args = Phantom.getService(CommandSVC.class).getArgsFromPars(a);
 
-			for(IUnitTest i : Phantom.getService(PhantomTestService.class).getTests())
+			for(IUnitTest i : Phantom.getService(TestSVC.class).getTests())
 			{
 				ICommand cmdx = (ICommand) i;
 

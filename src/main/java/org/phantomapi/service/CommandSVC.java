@@ -27,7 +27,7 @@ import phantom.util.metrics.Documented;
 @Register
 @Name("SVC Command")
 @Singular
-public class CommandService implements IService
+public class CommandSVC implements IService
 {
 	private GList<ICommand> activeCommands;
 

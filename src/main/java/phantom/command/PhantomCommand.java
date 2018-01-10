@@ -2,7 +2,7 @@ package phantom.command;
 
 import org.bukkit.command.CommandSender;
 import org.phantomapi.Phantom;
-import org.phantomapi.service.CommandService;
+import org.phantomapi.service.CommandSVC;
 
 import phantom.lang.GList;
 import phantom.util.metrics.Documented;
@@ -144,7 +144,7 @@ public abstract class PhantomCommand implements ICommand
 	public boolean fireSubCommand(CommandSender sender, String[] a)
 	{
 		ICommand cmd = getResolvedSubCommand(a[0]);
-		String[] args = Phantom.getService(CommandService.class).getArgsFromPars(a);
+		String[] args = Phantom.getService(CommandSVC.class).getArgsFromPars(a);
 
 		if(cmd == null)
 		{

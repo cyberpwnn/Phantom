@@ -27,7 +27,7 @@ import phantom.util.metrics.JarScanner;
 @Documented
 @Name("SVC Class Anchor")
 @Singular
-public class ClassAnchorService implements IService
+public class ClassAnchorSVC implements IService
 {
 	private GMap<String, GList<Class<?>>> anchors;
 

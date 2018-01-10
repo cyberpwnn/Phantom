@@ -24,7 +24,7 @@ import phantom.util.metrics.Documented;
 @Documented
 @Name("SVC NMS Binder")
 @Singular
-public class NMSBinderService implements IService
+public class NMSBinderSVC implements IService
 {
 	@DeployableService
 	private INMSWrapper wrapper;

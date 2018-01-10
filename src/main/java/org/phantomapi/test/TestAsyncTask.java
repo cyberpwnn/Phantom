@@ -2,7 +2,7 @@ package org.phantomapi.test;
 
 import org.bukkit.command.CommandSender;
 import org.phantomapi.Phantom;
-import org.phantomapi.service.ThreadPoolService;
+import org.phantomapi.service.ThreadPoolSVC;
 
 import phantom.command.PhantomCommand;
 import phantom.lang.Callback;
@@ -78,7 +78,7 @@ public class TestAsyncTask extends PhantomCommand implements IUnitTest
 			};
 		}
 
-		Phantom.getService(ThreadPoolService.class).lock();
+		Phantom.getService(ThreadPoolSVC.class).lock();
 
 		int gg = goal;
 

@@ -10,8 +10,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginLoader;
 import org.phantomapi.core.PhantomProvider;
-import org.phantomapi.service.ClassAnchorService;
-import org.phantomapi.service.CommandService;
+import org.phantomapi.service.ClassAnchorSVC;
+import org.phantomapi.service.CommandSVC;
 
 import phantom.command.ICommand;
 import phantom.dispatch.PD;
@@ -98,7 +98,7 @@ public class Phantom
 	 */
 	public static GList<Class<?>> getAnchors(String tag)
 	{
-		return getService(ClassAnchorService.class).getAnchoredClasses(tag);
+		return getService(ClassAnchorSVC.class).getAnchoredClasses(tag);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Phantom
 	 */
 	public static void crawlJar(File jar)
 	{
-		getService(ClassAnchorService.class).crawl(jar);
+		getService(ClassAnchorSVC.class).crawl(jar);
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class Phantom
 	 */
 	public static void activateCommand(ICommand command)
 	{
-		getService(CommandService.class).activateCommand(command);
+		getService(CommandSVC.class).activateCommand(command);
 	}
 
 	/**
@@ -294,7 +294,7 @@ public class Phantom
 	 */
 	public static void deactivateCommand(ICommand command)
 	{
-		getService(CommandService.class).deactivateCommand(command);
+		getService(CommandSVC.class).deactivateCommand(command);
 	}
 
 	/**

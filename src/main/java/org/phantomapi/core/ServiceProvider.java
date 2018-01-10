@@ -4,12 +4,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import org.phantomapi.Phantom;
-import org.phantomapi.service.ClassAnchorService;
-import org.phantomapi.service.ClusterService;
-import org.phantomapi.service.CommandService;
-import org.phantomapi.service.NMSBinderService;
-import org.phantomapi.service.PhantomTestService;
-import org.phantomapi.service.ThreadPoolService;
+import org.phantomapi.service.ClassAnchorSVC;
+import org.phantomapi.service.ClusterSVC;
+import org.phantomapi.service.CommandSVC;
+import org.phantomapi.service.HiveSVC;
+import org.phantomapi.service.NMSBinderSVC;
+import org.phantomapi.service.TestSVC;
+import org.phantomapi.service.ThreadPoolSVC;
 
 import phantom.dispatch.PD;
 import phantom.lang.GList;
@@ -36,22 +37,25 @@ import phantom.util.metrics.Documented;
 public class ServiceProvider implements IPawn
 {
 	@DeployableService
-	private ThreadPoolService threadPoolSVC;
+	private ThreadPoolSVC threadPoolSVC;
 
 	@DeployableService
-	private ClassAnchorService classAnchorSVC;
+	private ClassAnchorSVC classAnchorSVC;
 
 	@DeployableService
-	private PhantomTestService phantomTestSVC;
+	private TestSVC phantomTestSVC;
 
 	@DeployableService
-	private NMSBinderService nmsBinderSVC;
+	private NMSBinderSVC nmsBinderSVC;
 
 	@DeployableService
-	private CommandService commandSVC;
+	private CommandSVC commandSVC;
 
 	@DeployableService
-	private ClusterService clusterSVC;
+	private ClusterSVC clusterSVC;
+
+	@DeployableService
+	private HiveSVC hiveSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 

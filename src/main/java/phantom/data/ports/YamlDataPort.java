@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.phantomapi.Phantom;
-import org.phantomapi.service.ClusterService;
+import org.phantomapi.service.ClusterSVC;
 
 import phantom.data.cluster.DataCluster;
 import phantom.data.cluster.ICluster;
@@ -19,7 +19,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 	public FileConfiguration write(DataCluster data)
 	{
 		FileConfiguration fc = new YamlConfiguration();
-		ClusterService svc = Phantom.getService(ClusterService.class);
+		ClusterSVC svc = Phantom.getService(ClusterSVC.class);
 
 		for(String i : data.k())
 		{
@@ -88,7 +88,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 	public DataCluster read(FileConfiguration source)
 	{
 		DataCluster cc = new DataCluster();
-		ClusterService svc = Phantom.getService(ClusterService.class);
+		ClusterSVC svc = Phantom.getService(ClusterSVC.class);
 
 		for(String i : source.getKeys(true))
 		{
