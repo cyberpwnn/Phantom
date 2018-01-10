@@ -32,6 +32,8 @@ public class HiveSVC implements IService
 	@Start
 	public void start()
 	{
+		worlds = new GMap<World, HiveWorld>();
+
 		for(World i : Bukkit.getWorlds())
 		{
 			installWorld(i);

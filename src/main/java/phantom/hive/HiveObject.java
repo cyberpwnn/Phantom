@@ -34,7 +34,7 @@ public abstract class HiveObject implements IHive
 	{
 		for(String i : data.k())
 		{
-			File f = new File(i + ".cdc");
+			File f = new File(folder, i + ".cdc");
 
 			try
 			{
@@ -61,6 +61,7 @@ public abstract class HiveObject implements IHive
 					ByteBuffer buf = ByteBuffer.wrap(FS.readFully(i));
 					DataCluster cc = new DataCluster();
 					cc.read(new CompressedDataPort(), buf);
+					data.put(i.getName().replace(".cdc", ""), cc);
 				}
 
 				catch(IOException e)
@@ -71,18 +72,32 @@ public abstract class HiveObject implements IHive
 		}
 	}
 
+	@Override
+	public void drop(String channel)
+	{
+		data.remove(channel);
+
+		for(File i : getDataFolder().listFiles())
+		{
+			if(i.getName().equals(channel + ".cdc"))
+			{
+				i.delete();
+			}
+		}
+	}
+
 	public abstract File getDataFolder();
 
 	@Override
 	public DataCluster pull(String channel)
 	{
-		return data.get(channel) != null ? data.get(channel) : new DataCluster();
+		return data.containsKey(channel) ? data.get(channel).copy() : new DataCluster();
 	}
 
 	@Override
 	public void push(DataCluster cc, String channel)
 	{
-		data.put(channel, cc);
+		data.put(channel, cc.copy());
 		writeEntries(getDataFolder());
 	}
 }

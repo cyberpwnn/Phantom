@@ -29,4 +29,12 @@ public interface IHive
 	 *            the channel to push to
 	 */
 	public void push(DataCluster cc, String channel);
+
+	/**
+	 * Delete data from the channel
+	 *
+	 * @param channel
+	 *            the channel to delete
+	 */
+	public void drop(String channel);
 }

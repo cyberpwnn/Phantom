@@ -13,18 +13,39 @@ import org.phantomapi.service.HiveSVC;
  */
 public class Hive
 {
-	public HiveWorld getHive(World w)
+	/**
+	 * Get a hive world
+	 *
+	 * @param w
+	 *            the world
+	 * @return the hive world
+	 */
+	public static IHive getHive(World w)
 	{
 		return Phantom.getService(HiveSVC.class).getWorld(w);
 	}
 
-	public HiveChunk getHive(Chunk c)
+	/**
+	 * Get the hive chunk
+	 *
+	 * @param c
+	 *            the chunk
+	 * @return the hive chunk
+	 */
+	public static IHive getHive(Chunk c)
 	{
-		return getHive(c.getWorld()).getHiveChunk(c.getX(), c.getZ());
+		return ((HiveWorld) getHive(c.getWorld())).getHiveChunk(c.getX(), c.getZ());
 	}
 
-	public HiveBlock getHive(Block b)
+	/**
+	 * Get the hive block
+	 *
+	 * @param b
+	 *            the block
+	 * @return the hive block
+	 */
+	public static IHive getHive(Block b)
 	{
-		return getHive(b.getChunk()).getBlock(b.getLocation());
+		return ((HiveChunk) getHive(b.getChunk())).getBlock(b.getLocation());
 	}
 }
