@@ -14,6 +14,7 @@ import phantom.data.cluster.Cluster;
 import phantom.data.cluster.DataCluster;
 import phantom.data.ports.YamlDataPort;
 import phantom.lang.Callback;
+import phantom.lang.GList;
 import phantom.math.M;
 import phantom.pawn.Name;
 import phantom.pawn.Singular;
@@ -73,6 +74,7 @@ public class TestYaml extends PhantomCommand implements IUnitTest
 		cc.set("testing.world", Phantom.getWorld("world"));
 		cc.set("testing.location", Phantom.getWorld("world").getSpawnLocation().clone().add(Vector.getRandom().normalize()));
 		cc.set("testing.uuid", UUID.randomUUID());
+		cc.set("testing.stringlist", new GList<String>().qadd("alpha").qadd("bravo").qadd("charlie"));
 
 		callbackSet.run(new TestResult("Wrote all basic types", false));
 

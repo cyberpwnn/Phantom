@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import phantom.lang.GList;
 
-@Cluster(shortcode = "f", type = GList.class)
+@Cluster(shortcode = "sl", type = GList.class)
 public class ClusterStringList extends PhantomCluster<GList<String>>
 {
 	public ClusterStringList(GList<String> value)
