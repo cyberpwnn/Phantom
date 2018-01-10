@@ -1,6 +1,7 @@
 package phantom.data.ports;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,6 +10,7 @@ import org.phantomapi.service.ClusterService;
 
 import phantom.data.cluster.DataCluster;
 import phantom.data.cluster.ICluster;
+import phantom.lang.GList;
 
 public class YamlDataPort implements IDataPort<FileConfiguration>
 {
@@ -67,6 +69,11 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 				fc.set(finalKey, (String) o);
 			}
 
+			else if(type.equals(GList.class))
+			{
+				fc.set(finalKey, (GList<String>) o);
+			}
+
 			else
 			{
 				fc.set(finalKey, data.getCluster(i).asString());
@@ -76,6 +83,7 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 		return fc;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public DataCluster read(FileConfiguration source)
 	{
@@ -142,6 +150,12 @@ public class YamlDataPort implements IDataPort<FileConfiguration>
 			{
 				o = source.getString(finalKey);
 				cc.set(key, o);
+			}
+
+			else if(type.equals(GList.class))
+			{
+				o = source.getStringList(finalKey);
+				cc.set(key, new GList<String>((List<String>) o));
 			}
 
 			else
