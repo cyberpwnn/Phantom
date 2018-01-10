@@ -9,6 +9,7 @@ import org.phantomapi.service.ClusterSVC;
 import org.phantomapi.service.CommandSVC;
 import org.phantomapi.service.HiveSVC;
 import org.phantomapi.service.NMSBinderSVC;
+import org.phantomapi.service.ObjectClusterSVC;
 import org.phantomapi.service.TestSVC;
 import org.phantomapi.service.ThreadPoolSVC;
 
@@ -53,6 +54,9 @@ public class ServiceProvider implements IPawn
 
 	@DeployableService
 	private ClusterSVC clusterSVC;
+
+	@DeployableService
+	private ObjectClusterSVC objectClusterSVC;
 
 	@DeployableService
 	private HiveSVC hiveSVC;

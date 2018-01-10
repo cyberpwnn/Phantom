@@ -6,8 +6,14 @@ org.phantomapi.service
 org.phantomapi.test
 phantom.command
 phantom.data
+phantom.data.cluster
+phantom.data.configurable
+phantom.data.ports
+phantom.data.stream
 phantom.dispatch
 phantom.entity
+phantom.event
+phantom.hive
 phantom.inventory
 phantom.json
 phantom.lang
@@ -23,7 +29,9 @@ phantom.service
 phantom.test
 phantom.text
 phantom.util.array
+phantom.util.data
 phantom.util.exception
+phantom.util.files
 phantom.util.metrics
 phantom.util.plugin
 phantom.world

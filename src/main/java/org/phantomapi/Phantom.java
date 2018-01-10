@@ -4,7 +4,9 @@ import java.io.File;
 import java.lang.reflect.Field;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -12,9 +14,14 @@ import org.bukkit.plugin.PluginLoader;
 import org.phantomapi.core.PhantomProvider;
 import org.phantomapi.service.ClassAnchorSVC;
 import org.phantomapi.service.CommandSVC;
+import org.phantomapi.service.ObjectClusterSVC;
 
 import phantom.command.ICommand;
+import phantom.data.cluster.DataCluster;
+import phantom.data.configurable.IConfigurable;
 import phantom.dispatch.PD;
+import phantom.hive.Hive;
+import phantom.hive.IHive;
 import phantom.lang.GList;
 import phantom.net.Protocol;
 import phantom.pawn.IPawn;
@@ -35,6 +42,68 @@ public class Phantom
 	private static final DMSP dms = new DMSP();
 	private static final PawnSpace pawnSpace = new PawnSpace();
 	private static PhantomPlugin inst = PhantomPlugin.instance();
+
+	/**
+	 * Get a hive world
+	 *
+	 * @param w
+	 *            the world
+	 * @return the hive world
+	 */
+	public static IHive getHive(World w)
+	{
+		return Hive.getHive(w);
+	}
+
+	/**
+	 * Get the hive chunk
+	 *
+	 * @param c
+	 *            the chunk
+	 * @return the hive chunk
+	 */
+	public static IHive getHive(Chunk c)
+	{
+		return Hive.getHive(c);
+	}
+
+	/**
+	 * Get the hive block
+	 *
+	 * @param b
+	 *            the block
+	 * @return the hive block
+	 */
+	public static IHive getHive(Block b)
+	{
+		return Hive.getHive(b);
+	}
+
+	/**
+	 * Convert a configurable object into a data cluster
+	 *
+	 * @param confiruable
+	 *            the data cluster
+	 * @return the data cluster representing the given configurable object
+	 */
+	public static DataCluster toCluster(IConfigurable confiruable)
+	{
+		return getService(ObjectClusterSVC.class).toCluster(confiruable);
+	}
+
+	/**
+	 * Convert a data cluster into a configurable object
+	 *
+	 * @param cc
+	 *            the data cluster
+	 * @param c
+	 *            the configurable object class
+	 * @return an instance of the configurable object representing the datacluster
+	 */
+	public static <T extends IConfigurable> T toConfigurable(DataCluster cc, Class<T> c)
+	{
+		return getService(ObjectClusterSVC.class).toConfigurable(cc, c);
+	}
 
 	/**
 	 * Get the api controller
