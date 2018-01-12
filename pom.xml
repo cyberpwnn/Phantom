@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.phantomapi</groupId>
 	<artifactId>Phantom</artifactId>
-	<version>B7</version>
+	<version>B8</version>
 	<name>Phantom</name>
 	<description>Vroom Vroom</description>
 	<properties>
@@ -13,7 +13,10 @@
 		<phantom.libs>${project.basedir}\lib</phantom.libs>
 		<phantom.libs.nms>${phantom.libs}\nms</phantom.libs.nms>
 		<phantom.repository>file://${project.basedir}\repository</phantom.repository>
-		<phantom.server>C:\Users\cyberpwn\Documents\development\servers\dynamic\plugins</phantom.server>
+		<phantom.server>C:\Users\Annette\Desktop\ugh\plugins</phantom.server>
+		<phantom.repo.spigot>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</phantom.repo.spigot>
+		<phantom.repo.maven>https://repo.maven.apache.org/maven2/</phantom.repo.maven>
+		<phantom.repo.central>https://raw.githubusercontent.com/cyberpwnn/Central/master/</phantom.repo.central>
 	</properties>
 	<build>
 		<resources>
@@ -22,6 +25,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>**/*.yml</include>
+					<include>**/*.json</include>
 					<include>**/*.txt</include>
 				</includes>
 			</resource>
@@ -98,15 +102,15 @@
 	<repositories>
 		<repository>
 			<id>mvn</id>
-			<url>https://repo.maven.apache.org/maven2/</url>
+			<url>${phantom.repo.maven}</url>
 		</repository>
 		<repository>
 			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+			<url>${phantom.repo.spigot}</url>
 		</repository>
 		<repository>
 			<id>central</id>
-			<url>https://raw.githubusercontent.com/cyberpwnn/Central/master/</url>
+			<url>${phantom.repo.central}</url>
 		</repository>
 	</repositories>
 	<dependencies>
