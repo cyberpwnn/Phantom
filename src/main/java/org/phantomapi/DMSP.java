@@ -1,8 +1,10 @@
 package org.phantomapi;
 
 import org.phantomapi.core.PhantomProvider;
+import org.phantomapi.service.EventSVC;
 
 import phantom.dispatch.PD;
+import phantom.event.PhantomStopEvent;
 import phantom.sched.TICK;
 import phantom.sched.Task;
 import phantom.util.metrics.Documented;
@@ -34,6 +36,7 @@ public class DMSP
 	{
 		startTickMethod();
 		Phantom.activate(api);
+		api.getServiceProvider().startService(EventSVC.class);
 		PD.v("DMSp Online");
 	}
 
@@ -42,6 +45,7 @@ public class DMSP
 	 */
 	public void stop()
 	{
+		Phantom.callEvent(new PhantomStopEvent());
 		task.cancel();
 		Phantom.deactivate(api);
 		PD.v("DMSp Offline");
