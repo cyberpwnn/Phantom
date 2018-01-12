@@ -1,10 +1,20 @@
 package org.phantomapi;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.phantomapi.core.PhantomProvider;
+import org.phantomapi.pluginlink.ProtocolLibAdapter;
 import org.phantomapi.service.EventSVC;
+import org.phantomapi.service.PluginLinkSVC;
 
 import phantom.dispatch.PD;
 import phantom.event.PhantomStopEvent;
+import phantom.sched.A;
 import phantom.sched.TICK;
 import phantom.sched.Task;
 import phantom.util.metrics.Documented;
@@ -19,6 +29,7 @@ public class DMSP
 {
 	private Task task;
 	private PhantomProvider api;
+	private String ip;
 
 	/**
 	 * Create a dmsp instance
@@ -35,9 +46,82 @@ public class DMSP
 	public void start()
 	{
 		startTickMethod();
+		activateAPI();
+		checkForPluginLinks();
+		checkIP();
+		PD.v("DMSp Online");
+	}
+
+	private void activateAPI()
+	{
 		Phantom.activate(api);
 		api.getServiceProvider().startService(EventSVC.class);
-		PD.v("DMSp Online");
+	}
+
+	private void checkForPluginLinks()
+	{
+		PD.v("Scanning for plugin link adapters...");
+
+		if(Phantom.getService(PluginLinkSVC.class).isPluginInstalled("ProtocolLib", "4.3.0"))
+		{
+			Phantom.getService(PluginLinkSVC.class).getLink(ProtocolLibAdapter.class);
+		}
+	}
+
+	private void checkIP()
+	{
+		new A()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					URL url = new URL("http://checkip.amazonaws.com/");
+					InputStream is = null;
+					BufferedReader br;
+
+					try
+					{
+						is = url.openStream();
+						br = new BufferedReader(new InputStreamReader(is));
+						ip = br.readLine();
+						PD.v("Online: " + ip);
+					}
+
+					catch(MalformedURLException mue)
+					{
+						mue.printStackTrace();
+					}
+
+					catch(IOException ioe)
+					{
+						ioe.printStackTrace();
+					}
+
+					finally
+					{
+						try
+						{
+							if(is != null)
+							{
+								is.close();
+							}
+						}
+
+						catch(IOException ioe)
+						{
+
+						}
+					}
+				}
+
+				catch(Exception e)
+				{
+
+				}
+			}
+		};
 	}
 
 	/**

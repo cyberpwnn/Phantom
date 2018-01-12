@@ -1,3 +1,4 @@
 name: ${project.name}
 version: ${project.version}
 main: org.phantomapi.PhantomPlugin
+softdepend: [ProtocolLib, FastAsyncWorldEdit, WorldEdit]

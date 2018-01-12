@@ -1,5 +1,7 @@
 package org.phantomapi.service;
 
+import org.phantomapi.Phantom;
+
 import phantom.dispatch.D;
 import phantom.pawn.Name;
 import phantom.pawn.Singular;
@@ -8,6 +10,7 @@ import phantom.pawn.Stop;
 import phantom.pawn.Tick;
 import phantom.sched.A;
 import phantom.sched.ParallelPoolManager;
+import phantom.sched.ParallelThread;
 import phantom.sched.QueueMode;
 import phantom.service.IService;
 import phantom.util.metrics.Documented;
@@ -37,6 +40,12 @@ public class ThreadPoolSVC implements IService
 		};
 
 		pool.start();
+		
+		for(ParallelThread i : pool.getThreads())
+		{
+			Phantom.activate(i);
+			Phantom.claim(this, i);
+		}
 	}
 
 	@Stop

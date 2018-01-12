@@ -11,6 +11,7 @@ import org.phantomapi.service.EventSVC;
 import org.phantomapi.service.HiveSVC;
 import org.phantomapi.service.NMSBinderSVC;
 import org.phantomapi.service.ObjectClusterSVC;
+import org.phantomapi.service.PluginLinkSVC;
 import org.phantomapi.service.TestSVC;
 import org.phantomapi.service.ThreadPoolSVC;
 
@@ -64,6 +65,9 @@ public class ServiceProvider implements IPawn
 
 	@DeployableService
 	private HiveSVC hiveSVC;
+	
+	@DeployableService
+	private PluginLinkSVC pluginLinkSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 

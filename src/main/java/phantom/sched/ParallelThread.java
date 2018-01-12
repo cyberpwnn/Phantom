@@ -3,7 +3,11 @@ package phantom.sched;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ParallelThread extends Thread
+import phantom.pawn.IPawn;
+import phantom.pawn.Name;
+
+@Name("THREAD Worker")
+public class ParallelThread extends Thread implements IPawn
 {
 	private Queue<Execution> queue;
 	private ThreadInformation info;
@@ -13,7 +17,7 @@ public class ParallelThread extends Thread
 		queue = new ConcurrentLinkedQueue<Execution>();
 		info = new ThreadInformation(id);
 		setPriority(MIN_PRIORITY);
-		setName("Surge " + key + " " + id);
+		setName("Phantom " + key + " " + id);
 	}
 
 	@Override

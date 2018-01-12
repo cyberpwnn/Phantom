@@ -112,8 +112,18 @@
 			<id>central</id>
 			<url>${phantom.repo.central}</url>
 		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib-API</artifactId>
+			<version>4.3.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
@@ -162,5 +172,6 @@
 			<systemPath>${phantom.libs.nms}/craftbukkit-1.12.2.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
+
 	</dependencies>
 </project>

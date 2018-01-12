@@ -73,6 +73,16 @@ public class CommandStatus extends PhantomCommand
 			{
 				cx = C.UNDERLINE + "" + C.AQUA;
 			}
+			
+			else if(i.contains("LINK"))
+			{
+				cx = C.UNDERLINE + "" + C.RED;
+			}
+			
+			else if(i.contains("THREAD"))
+			{
+				cx = C.UNDERLINE + "" + C.LIGHT_PURPLE;
+			}
 
 			else if(i.contains("NMS"))
 			{
