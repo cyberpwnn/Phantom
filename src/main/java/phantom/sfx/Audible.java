@@ -1,4 +1,4 @@
-package org.phantomapi.sfx;
+package phantom.sfx;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

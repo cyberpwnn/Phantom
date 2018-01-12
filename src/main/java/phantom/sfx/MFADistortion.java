@@ -1,4 +1,4 @@
-package org.phantomapi.sfx;
+package phantom.sfx;
 
 public class MFADistortion extends AudioDistortion
 {
