@@ -8,7 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.phantomapi.core.PhantomProvider;
-import org.phantomapi.pluginlink.ProtocolLibAdapter;
+import org.phantomapi.pluginadapter.FAWEAdapter;
+import org.phantomapi.pluginadapter.ProtocolLibAdapter;
+import org.phantomapi.pluginadapter.VaultAdapter;
 import org.phantomapi.service.EventSVC;
 import org.phantomapi.service.PluginLinkSVC;
 
@@ -62,9 +64,19 @@ public class DMSP
 	{
 		PD.v("Scanning for plugin link adapters...");
 
-		if(Phantom.getService(PluginLinkSVC.class).isPluginInstalled("ProtocolLib", "4.3.0"))
+		if(Phantom.getService(PluginLinkSVC.class).isPluginInstalled("ProtocolLib"))
 		{
 			Phantom.getService(PluginLinkSVC.class).getLink(ProtocolLibAdapter.class);
+		}
+
+		if(Phantom.getService(PluginLinkSVC.class).isPluginInstalled("FastAsyncWorldEdit"))
+		{
+			Phantom.getService(PluginLinkSVC.class).getLink(FAWEAdapter.class);
+		}
+
+		if(Phantom.getService(PluginLinkSVC.class).isPluginInstalled("Vault"))
+		{
+			Phantom.getService(PluginLinkSVC.class).getLink(VaultAdapter.class);
 		}
 	}
 

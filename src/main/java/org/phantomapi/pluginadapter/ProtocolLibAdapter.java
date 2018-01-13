@@ -1,4 +1,4 @@
-package org.phantomapi.pluginlink;
+package org.phantomapi.pluginadapter;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
