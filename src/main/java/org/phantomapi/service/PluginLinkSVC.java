@@ -13,7 +13,7 @@ import phantom.pawn.Register;
 import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
-import phantom.pluginlink.IPluginLink;
+import phantom.pluginadapter.IPluginLink;
 import phantom.service.IService;
 import phantom.util.metrics.Documented;
 

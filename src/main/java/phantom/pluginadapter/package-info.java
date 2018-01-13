@@ -4,6 +4,6 @@
  * @author cyberpwn
  */
 @Documented
-package phantom.pluginlink;
+package phantom.pluginadapter;
 
 import phantom.util.metrics.Documented;

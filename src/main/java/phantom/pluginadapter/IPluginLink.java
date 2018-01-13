@@ -1,4 +1,4 @@
-package phantom.pluginlink;
+package phantom.pluginadapter;
 
 import phantom.pawn.IPawn;
 

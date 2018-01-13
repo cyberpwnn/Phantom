@@ -5,7 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 
 import phantom.pawn.Name;
 import phantom.pawn.Singular;
-import phantom.pluginlink.PluginLink;
+import phantom.pluginadapter.PluginLink;
 
 @Singular
 @Name("LINK ProtocolLib")
