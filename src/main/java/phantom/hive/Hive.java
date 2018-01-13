@@ -3,6 +3,7 @@ package phantom.hive;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.phantomapi.Phantom;
 import org.phantomapi.service.HiveSVC;
 
@@ -35,6 +36,18 @@ public class Hive
 	public static IHive getHive(Chunk c)
 	{
 		return ((HiveWorld) getHive(c.getWorld())).getHiveChunk(c.getX(), c.getZ());
+	}
+
+	/**
+	 * Get the hive chunk
+	 *
+	 * @param c
+	 *            the chunk
+	 * @return the hive chunk
+	 */
+	public static IHive getHive(Entity c)
+	{
+		return ((HiveWorld) getHive(c.getWorld())).getHiveEntity(c.getWorld(), c.getUniqueId(), c.getEntityId());
 	}
 
 	/**
