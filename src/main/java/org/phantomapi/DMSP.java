@@ -13,6 +13,7 @@ import org.phantomapi.pluginadapter.ProtocolLibAdapter;
 import org.phantomapi.pluginadapter.VaultAdapter;
 import org.phantomapi.service.EventSVC;
 import org.phantomapi.service.PluginLinkSVC;
+import org.phantomapi.service.RecipeSVC;
 
 import phantom.dispatch.PD;
 import phantom.event.PhantomStopEvent;
@@ -58,6 +59,7 @@ public class DMSP
 	{
 		Phantom.activate(api);
 		api.getServiceProvider().startService(EventSVC.class);
+		api.getServiceProvider().startService(RecipeSVC.class);
 	}
 
 	private void checkForPluginLinks()

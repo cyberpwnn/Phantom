@@ -1,7 +1,10 @@
 package org.phantomapi.service;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.ItemStack;
 
 import phantom.lang.GList;
 import phantom.pawn.Name;
@@ -10,6 +13,7 @@ import phantom.pawn.Singular;
 import phantom.pawn.Start;
 import phantom.pawn.Stop;
 import phantom.recipe.IRecipe;
+import phantom.recipe.PhantomShapelessRecipe;
 import phantom.service.IService;
 import phantom.util.metrics.Documented;
 
@@ -30,6 +34,12 @@ public class RecipeSVC implements IService
 	public void start()
 	{
 		recipes = new GList<IRecipe>();
+		ItemStack is = new ItemStack(Material.HOPPER);
+		is.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+		PhantomShapelessRecipe shapeless = new PhantomShapelessRecipe(is);
+		shapeless.addIngredient(Material.STICK);
+		shapeless.addIngredient(Material.SAND);
+		recipes.add(shapeless);
 	}
 
 	@Stop
