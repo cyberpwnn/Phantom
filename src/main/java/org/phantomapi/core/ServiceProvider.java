@@ -7,6 +7,7 @@ import org.phantomapi.Phantom;
 import org.phantomapi.service.ClassAnchorSVC;
 import org.phantomapi.service.ClusterSVC;
 import org.phantomapi.service.CommandSVC;
+import org.phantomapi.service.DeveloperSVC;
 import org.phantomapi.service.EventSVC;
 import org.phantomapi.service.HiveSVC;
 import org.phantomapi.service.NMSBinderSVC;
@@ -72,6 +73,9 @@ public class ServiceProvider implements IPawn
 
 	@DeployableService
 	private PluginLinkSVC pluginLinkSVC;
+
+	@DeployableService
+	private DeveloperSVC developerSVC;
 
 	private GMap<Class<? extends IService>, Field> offeredServices;
 

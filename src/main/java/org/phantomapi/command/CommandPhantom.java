@@ -29,6 +29,7 @@ public class CommandPhantom extends PhantomCommand
 	public void onStart()
 	{
 		activateSubCommand(new CommandTest());
+		activateSubCommand(new CommandKeychain());
 		activateSubCommand(new CommandStatus());
 	}
 
