@@ -1,6 +1,7 @@
 package org.phantomapi.core;
 
 import org.phantomapi.Phantom;
+import org.phantomapi.command.CommandConsole;
 import org.phantomapi.command.CommandPhantom;
 
 import phantom.pawn.IPawn;
@@ -31,6 +32,7 @@ public class PhantomProvider implements IPawn
 	{
 		Phantom.crawlJar(Phantom.getPluginFile());
 		Phantom.activateCommand(new CommandPhantom());
+		Phantom.activateCommand(new CommandConsole());
 	}
 
 	@Stop
