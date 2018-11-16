@@ -6,4 +6,9 @@
   <packaging>pom</packaging>
   <name>Phantom</name>
   <description>Vroom Vroom</description>
+  <modules>
+  	<module>PhantomAPI</module>
+  	<module>PhantomCore</module>
+  	<module>PhantomNMS12</module>
+  </modules>
 </project>
