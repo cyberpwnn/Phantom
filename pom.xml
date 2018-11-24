@@ -1,14 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.volmit</groupId>
-  <artifactId>Phantom</artifactId>
-  <version>X</version>
-  <packaging>pom</packaging>
-  <name>Phantom</name>
-  <description>Vroom Vroom</description>
-  <modules>
-  	<module>PhantomAPI</module>
-  	<module>PhantomCore</module>
-  	<module>PhantomNMS12</module>
-  </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.volmit</groupId>
+	<artifactId>Phantom</artifactId>
+	<version>X</version>
+	<packaging>pom</packaging>
+	<name>Phantom</name>
+	<description>Vroom Vroom</description>
+	<modules>
+		<module>PhantomAPI</module>
+	</modules>
 </project>
