@@ -8,6 +8,6 @@
 	<name>Phantom</name>
 	<description>Vroom Vroom</description>
 	<modules>
-		<module>PhantomAPI</module>
+		<module>PhantomCore</module>
 	</modules>
 </project>
