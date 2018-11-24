@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface Module
 {
-	public String name();
+	public String id();
 	
 	public String version();
 }

@@ -17,12 +17,28 @@ public class Pawn
 	private GList<Method> methodCache;
 	private GList<Field> fieldCache;
 	private GMap<Class<? extends Annotation>, GList<Method>> methodTypeCache;
+	private boolean ticked;
+	private boolean startable;
+	private boolean stoppable;
 
 	public Pawn()
 	{
 		PhantomPlugin.plugin.getPawnManager().insert(this);
+		ticked = !getAllMethods(Tick.class).isEmpty();
+		startable = !getAllMethods(Start.class).isEmpty();
+		stoppable = !getAllMethods(Stop.class).isEmpty();
 	}
 	
+	public String getModuleId()
+	{
+		return getClass().getAnnotation(Module.class).id();
+	}
+	
+	public boolean isModule()
+	{
+		return getClass().isAnnotationPresent(Module.class);
+	}
+
 	public UUID getPawnId()
 	{
 		return id;
@@ -30,6 +46,21 @@ public class Pawn
 
 	public void invoke(Class<? extends Annotation> c)
 	{
+		if(c.equals(Start.class) && !isStartable())
+		{
+			return;
+		}
+		
+		if(c.equals(Tick.class) && !isTicked())
+		{
+			return;
+		}
+		
+		if(c.equals(Stop.class) && !isStoppable())
+		{
+			return;
+		}
+		
 		for(Method i : getAllMethods(c))
 		{
 			i.setAccessible(true);
@@ -43,7 +74,7 @@ public class Pawn
 						i.invoke(this);
 					}
 				}
-				
+
 				else
 				{
 					i.invoke(this);
@@ -172,6 +203,21 @@ public class Pawn
 		methodCache.addAll(methods);
 
 		return methods;
+	}
+
+	public boolean isTicked()
+	{
+		return ticked;
+	}
+
+	public boolean isStartable()
+	{
+		return startable;
+	}
+
+	public boolean isStoppable()
+	{
+		return stoppable;
 	}
 
 	@Override

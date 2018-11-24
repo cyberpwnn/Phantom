@@ -3,14 +3,12 @@ package com.volmit.phantom.plugin;
 import org.bukkit.Bukkit;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GMap;
-import com.volmit.phantom.pawn.PawnWorld;
 import com.volmit.phantom.text.C;
 
 public class Phantom
 {
 	private static GMap<String, Integer> LOG_BUFFER = new GMap<String, Integer>();
 	private static GList<String> LOG_ORDER = new GList<String>();
-	public static final TaskManager TASK_MANAGER = new TaskManager();
 
 	public static boolean isMainThread()
 	{
