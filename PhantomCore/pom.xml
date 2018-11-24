@@ -68,7 +68,7 @@
 							<executable>${project.basedir}/scripts/development.bat</executable>
 							<arguments>
 								<argument>${project.basedir}\target\${project.name}-${project.version}.jar</argument>
-								<argument>${server.path}/plugins/Phantom.jar</argument>
+								<argument>${server}/plugins/Phantom.jar</argument>
 							</arguments>
 						</configuration>
 					</plugin>

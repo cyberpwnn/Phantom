@@ -6,6 +6,12 @@ import com.volmit.phantom.text.C;
 public class D
 {
 	private String tag;
+	public static final D d = new D("Phantom");
+	
+	public D(D d, String e)
+	{
+		this(d.tag + " > " + e);
+	}
 	
 	public D(String t)
 	{
@@ -38,7 +44,7 @@ public class D
 			c = C.AQUA.toString();
 		}
 		
-		Phantom.LOG_BUFFER.add(c + "|" + f.toUpperCase() + "| " + C.LIGHT_PURPLE + tag + C.WHITE + " " + c + msg + c);
+		Phantom.log(c + "|" + f.toUpperCase() + "| " + C.LIGHT_PURPLE + tag + C.WHITE + " " + c + msg + c);
 	}
 	
 	public void l(Object... s)
@@ -59,5 +65,25 @@ public class D
 	public void f(Object... s)
 	{
 		log("FATAL", s);
+	}
+	
+	public static void ll(Object... s)
+	{
+		d.log("INFO", s);
+	}
+	
+	public static void vv(Object... s)
+	{
+		d.log("VERBOSE", s);
+	}
+	
+	public static void ww(Object... s)
+	{
+		d.log("WARN", s);
+	}
+	
+	public static void ff(Object... s)
+	{
+		d.log("FATAL", s);
 	}
 }

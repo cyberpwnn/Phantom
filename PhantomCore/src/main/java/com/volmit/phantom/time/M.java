@@ -3,6 +3,8 @@ package com.volmit.phantom.time;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.volmit.phantom.lang.D;
+import com.volmit.phantom.lang.F;
 
 /**
  * Math
@@ -19,13 +21,15 @@ public class M
 	
 	public static void initTicking()
 	{
+		D d = new D(D.d, "Time");
 		TIME = new File("server.properties").lastModified();
 		TICK = ticksOnline();
+		d.l("Server Uptime: " + F.time(M.ms() - TIME, 0));
 	}
 	
-	public static long interval(int m)
+	public static boolean interval(int m)
 	{
-		return tick() % Math.max(1, m);
+		return tick() % Math.max(1, m) == 0;
 	}
 	
 	public static long tick()
@@ -370,5 +374,10 @@ public class M
 	public static double absoluteZero(double d)
 	{
 		return d < 0 ? 0 : d;
+	}
+
+	public static void uptick()
+	{
+		TICK++;
 	}
 }

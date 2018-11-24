@@ -1,4 +1,4 @@
-name: ${project.name}
+name: Phantom
 version: ${project.version}
 main: ${project.main}
 load: STARTUP
