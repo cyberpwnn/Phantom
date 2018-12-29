@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
 import com.volmit.phantom.json.JSONArray;
 
 /**
@@ -21,7 +22,7 @@ public class GList<T> extends ArrayList<T>
 {
 	private static final long serialVersionUID = 4480457702775755227L;
 	private Class<? extends T> tClass;
-	
+
 	/**
 	 * Create an empty GList
 	 */
@@ -29,18 +30,18 @@ public class GList<T> extends ArrayList<T>
 	{
 		super();
 	}
-	
+
 	public GList(Class<? extends T> t)
 	{
 		this();
 		setTClass(t);
 	}
-	
+
 	public Class<? extends T> getTClass()
 	{
 		return tClass;
 	}
-	
+
 	public void setTClass(Class<? extends T> t)
 	{
 		tClass = t;

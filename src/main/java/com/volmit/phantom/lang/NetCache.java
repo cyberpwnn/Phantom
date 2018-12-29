@@ -1,8 +1,6 @@
 package com.volmit.phantom.lang;
 
-import com.volmit.phantom.lang.GList;
-import com.volmit.phantom.lang.GMap;
-
+@SuppressWarnings("hiding")
 public class NetCache<K, V>
 {
 	private final Resolver<K, V> resolver;

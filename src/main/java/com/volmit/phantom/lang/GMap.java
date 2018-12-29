@@ -4,29 +4,30 @@ package com.volmit.phantom.lang;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("hiding")
 public class GMap<K, V> extends ConcurrentHashMap<K, V>
 {
 	private static final long serialVersionUID = 1527847670799761130L;
 	private Class<? extends K> kClass;
 	private Class<? extends V> vClass;
-	
+
 	public GMap()
 	{
 		super();
 	}
-	
+
 	public GMap(Class<? extends K> k, Class<? extends V> v)
 	{
 		this();
 		setKeyClass(k);
 		setValueClass(v);
 	}
-	
+
 	public void setKeyClass(Class<? extends K> k)
 	{
 		kClass = k;
 	}
-	
+
 	public void setValueClass(Class<? extends V> v)
 	{
 		vClass = v;
