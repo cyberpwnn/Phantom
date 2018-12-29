@@ -1,4 +1,4 @@
-name: ${project.name}
+name: Phantom
 version: ${project.version}
-main: org.phantomapi.PhantomPlugin
-softdepend: [ProtocolLib, FastAsyncWorldEdit, WorldEdit, Vault]
+main: com.volmit.phantom.plugin.PhantomPlugin
+load: STARTUP

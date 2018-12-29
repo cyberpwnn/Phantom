@@ -1,0 +1,20 @@
+{
+  "transformers": [
+    {
+      "versions": [
+        "v1_12_R1"
+      ],
+      "class": "com.volmit.phantom.asm.transformers.AntiSleepTransformer",
+      "includes": [
+        "craftbukkit-main"
+      ]
+    }
+  ],
+  "groups": {
+    "craftbukkit-main": {
+      "classes": [
+        "org.bukkit.craftbukkit.Main",
+      ]
+    }
+  }
+}
