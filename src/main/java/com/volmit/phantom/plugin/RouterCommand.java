@@ -1,5 +1,6 @@
 package com.volmit.phantom.plugin;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
@@ -12,6 +13,7 @@ import org.bukkit.command.CommandSender;
 public class RouterCommand extends org.bukkit.command.Command
 {
 	private CommandExecutor ex;
+	private String usage;
 
 	/**
 	 * The router command routes commands to bukkit executors
@@ -27,6 +29,19 @@ public class RouterCommand extends org.bukkit.command.Command
 		setAliases(realCommand.getNodes());
 
 		this.ex = ex;
+	}
+
+	@Override
+	public Command setUsage(String u)
+	{
+		this.usage = u;
+		return this;
+	}
+
+	@Override
+	public String getUsage()
+	{
+		return usage;
 	}
 
 	@Override

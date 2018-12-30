@@ -11,6 +11,8 @@ public interface IModule
 
 	public File getDataFolder(String... folders);
 
+	public File getModuleFile();
+
 	public StructuredModule getStructure();
 
 	public ModuleInfo getModuleInfo();

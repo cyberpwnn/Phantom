@@ -6,6 +6,7 @@ public class V
 {
 	private Object o;
 	private boolean local;
+	private boolean suppress = false;
 
 	public V(Class<?> c, Object... parameters)
 	{
@@ -17,6 +18,13 @@ public class V
 	{
 		this.o = o;
 		this.local = true;
+	}
+
+	public V(Object o, boolean local, boolean suppress)
+	{
+		this(o);
+		this.local = local;
+		this.suppress = suppress;
 	}
 
 	public V(Object o, boolean local)
@@ -34,7 +42,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -49,7 +60,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -64,7 +78,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -80,7 +97,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -102,7 +122,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -117,7 +140,10 @@ public class V
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+			if(!suppress)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

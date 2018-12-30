@@ -1,5 +1,6 @@
 package com.volmit.phantom.plugin;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -28,24 +29,18 @@ import com.volmit.phantom.text.C;
 public class StructuredModule
 {
 	private Module module;
+	private File fd;
 	private GList<Actionable> actions;
+	private GList<PhantomCommand> commands;
 	private ModuleInfo moduleInfo;
 	private D d;
 
-	public ModuleInfo getInfo()
-	{
-		return moduleInfo;
-	}
-
-	public D getDispatcher()
-	{
-		return d;
-	}
-
-	public StructuredModule(Module module) throws AbstractModuleException
+	public StructuredModule(Module module, File fd) throws AbstractModuleException
 	{
 		this.module = module;
+		commands = new GList<>();
 		actions = new GList<>();
+		this.fd = fd;
 		int t = 0;
 
 		try
@@ -87,7 +82,9 @@ public class StructuredModule
 						continue;
 					}
 
-					module.registerCommand((PhantomCommand) i.getType().getConstructor().newInstance(), i.getAnnotation(Command.class).value());
+					PhantomCommand v = (PhantomCommand) i.getType().getConstructor().newInstance();
+					commands.add(v);
+					module.registerCommand(v, i.getAnnotation(Command.class).value());
 				}
 			}
 
@@ -181,6 +178,46 @@ public class StructuredModule
 		{
 			throw new AbstractModuleException(e.getMessage(), e);
 		}
+	}
+
+	public Module getModule()
+	{
+		return module;
+	}
+
+	public File getFd()
+	{
+		return fd;
+	}
+
+	public GList<Actionable> getActions()
+	{
+		return actions;
+	}
+
+	public GList<PhantomCommand> getCommands()
+	{
+		return commands;
+	}
+
+	public ModuleInfo getModuleInfo()
+	{
+		return moduleInfo;
+	}
+
+	public D getD()
+	{
+		return d;
+	}
+
+	public ModuleInfo getInfo()
+	{
+		return moduleInfo;
+	}
+
+	public D getDispatcher()
+	{
+		return d;
 	}
 
 	public void start()
@@ -399,5 +436,10 @@ public class StructuredModule
 				}
 			}
 		}
+	}
+
+	public File getModuleFile()
+	{
+		return fd;
 	}
 }

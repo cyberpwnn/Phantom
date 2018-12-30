@@ -30,6 +30,7 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 		D.ll("Phantom Online");
+		Phantom.flushLogBuffer();
 		Phantom.taskManager.syncRepeating(() -> tick());
 		Phantom.dumpStartup();
 		Bukkit.getPluginManager().registerEvents(this, this);
@@ -57,13 +58,17 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	public void onDisable()
 	{
 		Phantom.moduleManager.stopModules();
+		Phantom.flushLogBuffer();
+		Phantom.stopAllServices();
+		Phantom.moduleManager.unloadModules();
+		Phantom.flushLogBuffer();
 	}
 
 	public void tick()
 	{
 		M.uptick();
 
-		if(M.interval(20))
+		if(M.interval(15))
 		{
 			Phantom.flushLogBuffer();
 		}

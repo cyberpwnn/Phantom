@@ -1,11 +1,11 @@
-package com.volmit.phantom.lang.io;
+package com.volmit.phantom.lang;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 
-public class MeteredOutputStream extends OutputStream
+public class MeteredInputStream extends InputStream
 {
-	private OutputStream os;
+	private InputStream os;
 	private long written;
 	private long totalWritten;
 	private long since;
@@ -13,7 +13,7 @@ public class MeteredOutputStream extends OutputStream
 	private long interval;
 	private long bps;
 	
-	public MeteredOutputStream(OutputStream os, long interval)
+	public MeteredInputStream(InputStream os, long interval)
 	{
 		this.os = os;
 		written = 0;
@@ -24,23 +24,24 @@ public class MeteredOutputStream extends OutputStream
 		since = System.currentTimeMillis();
 	}
 	
-	public MeteredOutputStream(OutputStream os)
+	public MeteredInputStream(InputStream os)
 	{
 		this(os, 100);
 		auto = false;
 	}
 
 	@Override
-	public void write(int b) throws IOException 
+	public int read() throws IOException 
 	{
-		os.write(b);
 		written++;
 		totalWritten++;
 		
 		if(auto && System.currentTimeMillis() - getSince() > interval)
 		{
-			pollWritten();
+			pollRead();
 		}
+		
+		return os.read();
 	}
 	
 	public long getSince()
@@ -48,18 +49,19 @@ public class MeteredOutputStream extends OutputStream
 		return since;
 	}
 	
-	public long getWritten()
+	public long getRead()
 	{
 		return written;
 	}
 	
-	public long pollWritten()
+	public long pollRead()
 	{
 		long w = written;
 		written = 0;
 		double secondsElapsedSince = (double) (System.currentTimeMillis() - since) / 1000.0;
 		bps = (long) ((double) w / secondsElapsedSince);
 		since = System.currentTimeMillis();
+		
 		return w;
 	}
 
@@ -88,7 +90,7 @@ public class MeteredOutputStream extends OutputStream
 		this.interval = interval;
 	}
 
-	public long getTotalWritten() 
+	public long getTotalRead() 
 	{
 		return totalWritten;
 	}

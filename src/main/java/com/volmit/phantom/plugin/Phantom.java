@@ -134,4 +134,34 @@ public class Phantom
 	{
 		return started;
 	}
+
+	public static void stopAllServices()
+	{
+		for(IService i : runningServices.v())
+		{
+			try
+			{
+				D.as("Phantom > Service Provider").l("Stopping Service " + i.getClass().getSimpleName());
+				i.onStop();
+			}
+
+			catch(Throwable e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		runningServices.clear();
+	}
+
+	public static GList<Class<? extends IService>> getRunningServices()
+	{
+		return runningServices.k();
+	}
+
+	public static void stopService(Class<? extends IService> i)
+	{
+		runningServices.get(i).onStop();
+		runningServices.remove(i);
+	}
 }

@@ -6,11 +6,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.UUID;
 
+import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.F;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GMap;
 import com.volmit.phantom.lang.JarScanner;
 import com.volmit.phantom.lang.Profiler;
+import com.volmit.phantom.util.PluginUtil;
 
 public class ModuleManager
 {
@@ -41,8 +43,6 @@ public class ModuleManager
 
 	private void startModules()
 	{
-		System.out.println(moduleStructure.size() + "");
-
 		for(String i : modules.k())
 		{
 			startModule(modules.get(i));
@@ -59,11 +59,24 @@ public class ModuleManager
 
 	public void startModule(Module module)
 	{
+		Phantom.afterStartup(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				startModuleNow(module);
+			}
+		});
+	}
+
+	public Module startModuleNow(Module module)
+	{
 		Profiler px = new Profiler();
 		px.begin();
 		module.getStructure().start();
 		px.end();
 		module.getStructure().getDispatcher().l("Started in " + F.time(px.getMilliseconds(), 1));
+		return module;
 	}
 
 	public void stopModule(Module module)
@@ -92,7 +105,7 @@ public class ModuleManager
 		startModule(loadModule(f));
 	}
 
-	private Module loadModule(File module) throws Throwable
+	public Module loadModule(File module) throws Throwable
 	{
 		try
 		{
@@ -107,11 +120,35 @@ public class ModuleManager
 		return null;
 	}
 
-	private void unloadModule(Module module) throws IOException
+	public void unloadModule(Module module) throws IOException
+	{
+		unloadModule(module, true);
+	}
+
+	public void unloadModule(Module module, boolean gc) throws IOException
 	{
 		stopModule(module);
 		File f = fileForModule(module);
 		String name = module.getName();
+
+		for(Class<? extends IService> i : Phantom.getRunningServices())
+		{
+			File fx = new File(i.getProtectionDomain().getCodeSource().getLocation().getFile());
+
+			if(fx.equals(f))
+			{
+				D.as("Phantom > Service Provider").w("Stopping Service (owned by " + module.getName() + ") due to unload.");
+				Phantom.stopService(i);
+			}
+		}
+
+		for(PhantomCommand i : module.getStructure().getCommands())
+		{
+			module.unregisterCommand(i);
+		}
+
+		module.getStructure().getCommands().clear();
+		module.getStructure().getActions().clear();
 		modules.remove(name);
 		moduleStructure.remove(module.INSTANCE_ID);
 		ClassLoader c = fileLock.get(f);
@@ -120,7 +157,11 @@ public class ModuleManager
 		fileLockClasses.remove(f);
 		moduleCache.remove(clazz);
 		((URLClassLoader) c).close();
-		System.gc();
+
+		if(gc)
+		{
+			System.gc();
+		}
 	}
 
 	private File fileForModule(Module module)
@@ -138,10 +179,21 @@ public class ModuleManager
 
 	private Module loadModule(Class<?> i) throws Throwable
 	{
+		File xf = null;
+
+		for(File f : fileLockClasses.k())
+		{
+			if(fileLockClasses.get(f).equals(i))
+			{
+				xf = f;
+				break;
+			}
+		}
+
 		Profiler p = new Profiler();
 		p.begin();
 		Module m = (Module) i.getConstructor().newInstance();
-		StructuredModule s = new StructuredModule(m);
+		StructuredModule s = new StructuredModule(m, xf);
 		moduleStructure.put(m.INSTANCE_ID, s);
 		modules.put(s.getInfo().name(), m);
 		p.end();
@@ -151,8 +203,14 @@ public class ModuleManager
 
 	private void loadModules()
 	{
+
 		for(Class<?> i : moduleCache)
 		{
+			if(i.equals(Module.class))
+			{
+				continue;
+			}
+
 			try
 			{
 				loadModule(i);
@@ -167,6 +225,16 @@ public class ModuleManager
 
 	public void searchForModules()
 	{
+		try
+		{
+			scanJar(PluginUtil.getPluginFile(PhantomPlugin.plugin));
+		}
+
+		catch(IOException e1)
+		{
+			e1.printStackTrace();
+		}
+
 		for(File i : moduleFolder.listFiles())
 		{
 			if(i.isFile() && i.getName().endsWith(".jar"))
@@ -184,11 +252,10 @@ public class ModuleManager
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private Class<?> scanJar(File f) throws IOException
 	{
 		Class<?> cx = null;
-		ClassLoader cl = new URLClassLoader(new URL[] {f.toURL()}, getClass().getClassLoader());
+		ClassLoader cl = new URLClassLoader(new URL[] {f.toURI().toURL()}, getClass().getClassLoader());
 		JarScanner js = new JarScanner(f, cl);
 		js.scan();
 
@@ -215,5 +282,49 @@ public class ModuleManager
 	public File getDataFolder(Module phantomModule)
 	{
 		return new File(moduleFolder, phantomModule.getName());
+	}
+
+	public File getDataFolder()
+	{
+		moduleFolder.mkdirs();
+		return moduleFolder;
+	}
+
+	public GList<Module> getModules()
+	{
+		return modules.v();
+	}
+
+	public void unloadModules()
+	{
+		for(Module i : getModules())
+		{
+			if(i.getModuleFile() == null)
+			{
+				D.as("Module Manager").w("Cannot identify module " + i.getClass().getSimpleName() + " file origin. Not unloading.");
+				continue;
+			}
+
+			if(!i.getModuleFile().equals(PluginUtil.getPluginFile(PhantomPlugin.plugin)))
+			{
+				try
+				{
+					unloadModule(i);
+				}
+
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		System.gc();
+		modules.clear();
+		moduleCache.clear();
+		fileLock.clear();
+		fileLockClasses.clear();
+		moduleStructure.clear();
+		Phantom.flushLogBuffer();
 	}
 }

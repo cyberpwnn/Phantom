@@ -1,4 +1,4 @@
-package com.volmit.phantom.lang.io;
+package com.volmit.phantom.lang;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,14 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-
-import com.volmit.phantom.lang.ChronoLatch;
-import com.volmit.phantom.lang.GList;
-import com.volmit.phantom.lang.SimpleCallback;
 
 public class VIO
 {
@@ -335,6 +332,34 @@ public class VIO
 		}
 
 		return e;
+	}
+
+	public static String downloadToString(String url)
+	{
+		try
+		{
+			URL uu = new URL(url);
+			String l = "";
+			String c = "";
+			InputStream in = uu.openStream();
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+
+			while((c = r.readLine()) != null)
+			{
+				l += c + "\n";
+			}
+
+			in.close();
+
+			return l;
+		}
+
+		catch(Throwable e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public static void writeAll(File f, Object c) throws IOException

@@ -1,4 +1,4 @@
-package com.volmit.phantom.lang.io;
+package com.volmit.phantom.lang;
 
 import java.io.IOException;
 import java.io.OutputStream;

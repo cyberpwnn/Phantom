@@ -12,6 +12,7 @@ public abstract class PhantomCommand implements ICommand
 {
 	private GList<String> nodes;
 	private String node;
+	private Module owner;
 
 	/**
 	 * Override this with a super constructor as most commands shouldnt change these
@@ -26,6 +27,16 @@ public abstract class PhantomCommand implements ICommand
 	{
 		this.node = node;
 		this.nodes = new GList<String>(nodes);
+	}
+
+	public Module getOwner()
+	{
+		return owner;
+	}
+
+	public void setOwner(Module owner)
+	{
+		this.owner = owner;
 	}
 
 	@Override

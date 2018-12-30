@@ -44,7 +44,7 @@ public class VirtualCommand
 				{
 					Command cc = i.getAnnotation(Command.class);
 					ICommand cmd = (ICommand) i.getType().getConstructor().newInstance();
-					new V(command).set(i.getName(), cmd);
+					new V(command, true, true).set(i.getName(), cmd);
 					children.put(cmd.getAllNodes(), new VirtualCommand(module, cmd, cc.value().trim().isEmpty() ? tag : module.getTag(cc.value().trim())));
 				}
 
