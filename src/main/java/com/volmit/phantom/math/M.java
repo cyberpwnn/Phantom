@@ -1,6 +1,5 @@
 package com.volmit.phantom.math;
 
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,6 +17,11 @@ public class M
 	public static double clip(double value, double min, double max)
 	{
 		return Math.min(max, Math.max(min, value));
+	}
+
+	public static int iclip(double value, double min, double max)
+	{
+		return (int) clip(value, min, max);
 	}
 
 	/**

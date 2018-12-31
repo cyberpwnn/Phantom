@@ -1,6 +1,10 @@
 package com.volmit.phantom.plugin;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+
 import com.volmit.phantom.lang.GList;
+import com.volmit.phantom.plugin.Scaffold.Command;
 
 /**
  * Represents a pawn command
@@ -61,5 +65,29 @@ public abstract class PhantomCommand implements ICommand
 	public void addNode(String node)
 	{
 		getNodes().add(node);
+	}
+
+	public GList<PhantomCommand> getChildren()
+	{
+		GList<PhantomCommand> p = new GList<>();
+
+		for(Field i : getClass().getDeclaredFields())
+		{
+			if(i.isAnnotationPresent(Command.class))
+			{
+				try
+				{
+					i.setAccessible(true);
+					p.add((PhantomCommand) i.getType().getConstructor().newInstance());
+				}
+
+				catch(IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return p;
 	}
 }

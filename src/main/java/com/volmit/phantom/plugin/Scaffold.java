@@ -35,6 +35,13 @@ public class Scaffold
 	}
 
 	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface Config
+	{
+		String value();
+	}
+
+	@Retention(RUNTIME)
 	@Target(METHOD)
 	public @interface Test
 	{
@@ -51,6 +58,13 @@ public class Scaffold
 	@Retention(RUNTIME)
 	@Target(METHOD)
 	public @interface PlayerTest
+	{
+
+	}
+
+	@Retention(RUNTIME)
+	@Target(FIELD)
+	public @interface Permission
 	{
 
 	}

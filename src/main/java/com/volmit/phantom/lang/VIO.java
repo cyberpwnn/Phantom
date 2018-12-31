@@ -9,11 +9,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import org.nustaq.serialization.FSTConfiguration;
+
+import com.volmit.phantom.json.JSONObject;
 
 public class VIO
 {
@@ -332,6 +338,19 @@ public class VIO
 		}
 
 		return e;
+	}
+
+	public static JSONObject objectToJSON(Object p)
+	{
+		FSTConfiguration conf = FSTConfiguration.createJsonConfiguration();
+		return new JSONObject(conf.asJsonString(p));
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Serializable> T jsonToObject(JSONObject o, Class<? extends T> c)
+	{
+		FSTConfiguration conf = FSTConfiguration.createJsonConfiguration();
+		return (T) conf.asObject(o.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	public static String downloadToString(String url)
