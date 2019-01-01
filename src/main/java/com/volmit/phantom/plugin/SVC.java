@@ -11,4 +11,9 @@ public class SVC
 	{
 		get(serviceClass);
 	}
+
+	public static boolean isRunning(Class<? extends IService> c)
+	{
+		return Phantom.getRunningServices().contains(c);
+	}
 }

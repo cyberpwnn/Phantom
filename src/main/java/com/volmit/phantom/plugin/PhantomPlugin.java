@@ -19,21 +19,22 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	{
 		super();
 		plugin = this;
-		D.ll("Starting Phantom");
-		M.initTicking();
-		Phantom.taskManager = new TaskManager(this);
-		Phantom.moduleManager = new ModuleManager();
-		Phantom.moduleManager.start();
 	}
 
 	@Override
 	public void onEnable()
 	{
-		D.ll("Phantom Online");
+		D.ll("Starting Phantom");
+		M.initTicking();
+		Phantom.suckerpunch();
+		Phantom.taskManager = new TaskManager(this);
+		Phantom.moduleManager = new ModuleManager();
+		Phantom.moduleManager.start();
 		Phantom.flushLogBuffer();
 		Phantom.taskManager.syncRepeating(() -> tick());
 		Phantom.dumpStartup();
 		Bukkit.getPluginManager().registerEvents(this, this);
+		D.ll("Phantom Online");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

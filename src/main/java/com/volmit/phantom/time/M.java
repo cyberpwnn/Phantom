@@ -3,6 +3,7 @@ package com.volmit.phantom.time;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.F;
 
@@ -18,7 +19,12 @@ public class M
 	private static final float[] sin = new float[modulus];
 	private static long TICK = 0;
 	private static long TIME = -1;
-	
+
+	public static int iclip(double value, double min, double max)
+	{
+		return (int) clip(value, min, max);
+	}
+
 	public static void initTicking()
 	{
 		D d = new D(D.d, "Time");
@@ -26,32 +32,32 @@ public class M
 		TICK = ticksOnline();
 		d.l("Server Uptime: " + F.time(M.ms() - TIME, 0));
 	}
-	
+
 	public static boolean interval(int m)
 	{
 		return tick() % Math.max(1, m) == 0;
 	}
-	
+
 	public static long tick()
 	{
 		return TICK;
 	}
-	
+
 	public static long ticksOnline()
 	{
 		return timeOnline() / 50;
 	}
-	
+
 	public static long timeStarted()
 	{
 		return TIME;
 	}
-	
+
 	public static long timeOnline()
 	{
 		return ms() - TIME;
 	}
-	
+
 	public static double clip(double value, double min, double max)
 	{
 		return Math.min(max, Math.max(min, value));

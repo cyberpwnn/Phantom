@@ -94,15 +94,9 @@ public class StructuredModule implements Serializable
 
 				else if(i.isAnnotationPresent(Permission.class))
 				{
-					if(!stat)
-					{
-						d.w("Cannot set a non static permission refrence: " + i.getName());
-						continue;
-					}
-
 					PhantomPermission px = (PhantomPermission) i.getType().getConstructor().newInstance();
 					permissions.add(px);
-					i.set(null, px);
+					i.set(stat ? null : module, px);
 				}
 
 				else if(i.isAnnotationPresent(Config.class))
@@ -228,7 +222,7 @@ public class StructuredModule implements Serializable
 
 		try
 		{
-			VIO.writeAll(new File(Phantom.getModuleManager().getDataFolder(), getInfo().name() + ".json"), computeMetadata().toString(4));
+			VIO.writeAll(new File(Phantom.getModuleManager().getDataFolder(), getInfo().name() + ".json"), computeMetadata().toString(2));
 		}
 
 		catch(Throwable e)
@@ -467,14 +461,9 @@ public class StructuredModule implements Serializable
 		{
 			if(i.isAnnotationPresent(Permission.class))
 			{
-				if(!Modifier.isStatic(i.getModifiers()))
-				{
-					continue;
-				}
-
 				try
 				{
-					PhantomPermission x = (PhantomPermission) i.get(null);
+					PhantomPermission x = (PhantomPermission) i.get(Modifier.isStatic(i.getModifiers()) ? null : this);
 					g.add(toPermission(x));
 					g.addAll(computePermissions(x));
 				}

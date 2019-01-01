@@ -8,6 +8,7 @@ import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GMap;
 import com.volmit.phantom.lang.V;
 import com.volmit.phantom.plugin.Scaffold.Command;
+import com.volmit.phantom.text.C;
 
 /**
  * Represents a virtual command. A chain of iterative processing through
@@ -83,6 +84,11 @@ public class VirtualCommand
 
 		if(chain.isEmpty())
 		{
+			if(!checkPermissions(sender, command))
+			{
+				return true;
+			}
+
 			return command.handle(vs, new String[0]);
 		}
 
@@ -105,6 +111,33 @@ public class VirtualCommand
 			}
 		}
 
+		if(!checkPermissions(sender, command))
+		{
+			return true;
+		}
+
 		return command.handle(vs, chain.toArray(new String[chain.size()]));
+	}
+
+	private boolean checkPermissions(CommandSender sender, ICommand command2)
+	{
+		boolean failed = false;
+
+		for(String i : command.getRequiredPermissions())
+		{
+			if(!sender.hasPermission(i))
+			{
+				failed = true;
+				new R().sync(() -> sender.sendMessage("- " + C.WHITE + i)).start();
+			}
+		}
+
+		if(failed)
+		{
+			sender.sendMessage("Insufficient Permissions");
+			return false;
+		}
+
+		return true;
 	}
 }

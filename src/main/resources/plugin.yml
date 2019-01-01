@@ -1,4 +1,5 @@
 name: Phantom
 version: ${project.version}
 main: com.volmit.phantom.plugin.PhantomPlugin
+depend: [ProtocolLib]
 load: STARTUP

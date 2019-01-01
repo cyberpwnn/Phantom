@@ -203,6 +203,24 @@ public class VIO
 		f.delete();
 	}
 
+	public static void deleteOnExit(File f)
+	{
+		if(f == null || !f.exists())
+		{
+			return;
+		}
+
+		if(f.isDirectory())
+		{
+			for(File i : f.listFiles())
+			{
+				deleteOnExit(i);
+			}
+		}
+
+		f.deleteOnExit();
+	}
+
 	public static long size(File file)
 	{
 		long s = 0;

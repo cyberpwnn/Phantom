@@ -1,6 +1,7 @@
 package com.volmit.phantom.plugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.GList;
@@ -163,5 +164,15 @@ public class Phantom
 	{
 		runningServices.get(i).onStop();
 		runningServices.remove(i);
+	}
+
+	public static World getDefaultWorld()
+	{
+		return Bukkit.getWorld("world");
+	}
+
+	public static void suckerpunch()
+	{
+		runningServices.clear();
 	}
 }

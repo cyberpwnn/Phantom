@@ -20,6 +20,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.volmit.phantom.lang.FinalInteger;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GMap;
@@ -32,6 +34,7 @@ import com.volmit.phantom.nms.TinyProtocol;
 import com.volmit.phantom.plugin.PhantomPlugin;
 import com.volmit.phantom.plugin.SR;
 import com.volmit.phantom.plugin.SimpleService;
+import com.volmit.phantom.protocol.WrapperPlayServerEntityMetadata;
 import com.volmit.phantom.text.C;
 import com.volmit.phantom.time.M;
 import com.volmit.phantom.util.MaterialBlock;
@@ -772,6 +775,12 @@ public class NMSSVC extends SimpleService
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	public void sendBlockChange(Player observer, Location location, MaterialBlock materialBlock)
+	{
+		observer.sendBlockChange(location, materialBlock.getMaterial(), materialBlock.getData());
+	}
+
 	public void sendRemoveGlowingColorMetaPlayer(Player p, UUID glowing, String name)
 	{
 		String c = teamCache.get(p.getUniqueId() + "-" + glowing);
@@ -782,6 +791,26 @@ public class NMSSVC extends SimpleService
 			removeFromTeam(p, c, name);
 			removeTeam(p, c);
 		}
+	}
+
+	public void sendGravity(Player p, int eid, boolean hasGravity)
+	{
+		WrapperPlayServerEntityMetadata w = new WrapperPlayServerEntityMetadata();
+		GList<WrappedWatchableObject> watch = new GList<WrappedWatchableObject>();
+		watch.add(new WrappedWatchableObject(new WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class)), (boolean) (!hasGravity)));
+		w.setEntityID(eid);
+		w.setMetadata(watch);
+		w.sendPacket(p);
+	}
+
+	public void sendGlowing(Player p, int eid, boolean glowing)
+	{
+		WrapperPlayServerEntityMetadata w = new WrapperPlayServerEntityMetadata();
+		GList<WrappedWatchableObject> watch = new GList<WrappedWatchableObject>();
+		watch.add(new WrappedWatchableObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) (glowing ? 0x40 : 0)));
+		w.setEntityID(eid);
+		w.setMetadata(watch);
+		w.sendPacket(p);
 	}
 
 	public void sendGlowingColorMeta(Player p, Entity glowing, C color)
@@ -819,7 +848,6 @@ public class NMSSVC extends SimpleService
 
 			addTeam(p, c, c, color.toString(), C.RESET.toString(), color);
 			updateTeam(p, c, c, color.toString(), C.RESET.toString(), color);
-
 			addToTeam(p, c, euid.toString());
 		}
 	}

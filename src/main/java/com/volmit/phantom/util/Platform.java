@@ -2,7 +2,7 @@ package com.volmit.phantom.util;
 
 import java.io.File;
 
-import com.volmit.phantom.math.M;
+import com.volmit.phantom.time.M;
 
 /**
  * Server platform tools

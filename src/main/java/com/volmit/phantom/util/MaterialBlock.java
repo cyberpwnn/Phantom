@@ -1,6 +1,7 @@
 package com.volmit.phantom.util;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 /**
  * Material blocks
@@ -44,6 +45,12 @@ public class MaterialBlock
 	{
 		material = Material.AIR;
 		data = 0;
+	}
+
+	public MaterialBlock(Block block)
+	{
+		material = block.getType();
+		data = block.getData();
 	}
 
 	public Material getMaterial()

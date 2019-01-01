@@ -15,6 +15,7 @@ import com.volmit.phantom.plugin.Scaffold.Command;
 public abstract class PhantomCommand implements ICommand
 {
 	private GList<String> nodes;
+	private GList<String> requiredPermissions;
 	private String node;
 	private Module owner;
 
@@ -31,6 +32,17 @@ public abstract class PhantomCommand implements ICommand
 	{
 		this.node = node;
 		this.nodes = new GList<String>(nodes);
+		requiredPermissions = new GList<>();
+	}
+
+	protected void requiresPermission(PhantomPermission node)
+	{
+		requiresPermission(node.toString());
+	}
+
+	protected void requiresPermission(String node)
+	{
+		requiredPermissions.add(node);
 	}
 
 	public Module getOwner()
@@ -89,5 +101,11 @@ public abstract class PhantomCommand implements ICommand
 		}
 
 		return p;
+	}
+
+	@Override
+	public GList<String> getRequiredPermissions()
+	{
+		return requiredPermissions;
 	}
 }

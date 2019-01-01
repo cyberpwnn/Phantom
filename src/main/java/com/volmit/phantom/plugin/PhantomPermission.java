@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
-import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.plugin.Scaffold.Permission;
 
@@ -18,17 +17,11 @@ public abstract class PhantomPermission
 		{
 			if(i.isAnnotationPresent(Permission.class))
 			{
-				if(!Modifier.isStatic(i.getModifiers()))
-				{
-					D.as("Permission").w("Cannot set a non static permission refrence: " + i.getName());
-					continue;
-				}
-
 				try
 				{
 					PhantomPermission px = (PhantomPermission) i.getType().getConstructor().newInstance();
 					px.setParent(this);
-					i.set(null, px);
+					i.set(Modifier.isStatic(i.getModifiers()) ? null : this, px);
 				}
 
 				catch(IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e)
@@ -47,14 +40,9 @@ public abstract class PhantomPermission
 		{
 			if(i.isAnnotationPresent(Permission.class))
 			{
-				if(!Modifier.isStatic(i.getModifiers()))
-				{
-					continue;
-				}
-
 				try
 				{
-					p.add((PhantomPermission) i.get(null));
+					p.add((PhantomPermission) i.get(Modifier.isStatic(i.getModifiers()) ? null : this));
 				}
 
 				catch(IllegalArgumentException | IllegalAccessException | SecurityException e)
