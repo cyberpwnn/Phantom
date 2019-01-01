@@ -60,8 +60,8 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	{
 		Phantom.moduleManager.stopModules();
 		Phantom.flushLogBuffer();
-		Phantom.stopAllServices();
 		Phantom.moduleManager.unloadModules();
+		Phantom.stopAllServices();
 		Phantom.flushLogBuffer();
 	}
 

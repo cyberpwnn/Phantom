@@ -2,6 +2,7 @@ package com.volmit.phantom.rift;
 
 import java.io.File;
 
+import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,6 +23,16 @@ public interface Rift
 	public boolean isLockingTime();
 
 	public long getLockedTime();
+
+	public Rift setForceLoadX(int x);
+
+	public Rift setForceLoadZ(int z);
+
+	public int getForceLoadX();
+
+	public int getForceLoadZ();
+
+	public boolean shouldKeepLoaded(Chunk c);
 
 	public Rift setLockTime(long time);
 
@@ -48,6 +59,10 @@ public interface Rift
 	public Rift unload();
 
 	public Rift save();
+
+	public Rift saveConfiguration();
+
+	public Rift slowlyPreload();
 
 	public Rift colapse();
 

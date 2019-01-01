@@ -15,8 +15,10 @@ import org.bukkit.WorldCreator;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 
 import com.volmit.phantom.json.JSONException;
@@ -29,6 +31,7 @@ import com.volmit.phantom.plugin.AR;
 import com.volmit.phantom.plugin.Phantom;
 import com.volmit.phantom.plugin.PhantomPlugin;
 import com.volmit.phantom.plugin.R;
+import com.volmit.phantom.plugin.S;
 import com.volmit.phantom.plugin.SVC;
 import com.volmit.phantom.plugin.Scaffold.Async;
 import com.volmit.phantom.services.RiftSVC;
@@ -47,6 +50,8 @@ public class PhantomRift implements Rift, Listener
 	private Difficulty difficulty;
 	private GMap<String, String> rules = new GMap<>();
 	private long seed;
+	private int lx;
+	private int lz;
 	private int physicsDelay;
 	private int secondsUnload;
 	private double entityThrottle;
@@ -71,6 +76,7 @@ public class PhantomRift implements Rift, Listener
 	private boolean allowBosses;
 	private long lastTickOccupied;
 	private long lockTime;
+	private boolean colapsing;
 
 	public PhantomRift(String name) throws RiftException
 	{
@@ -103,6 +109,8 @@ public class PhantomRift implements Rift, Listener
 		setPhysicsThrottle(5);
 		setDifficulty(Difficulty.PEACEFUL);
 		setLockTime(-1);
+		setForceLoadX(0);
+		setForceLoadZ(0);
 		setRule("announceAdvancements", "false");
 		setRule("commandBlocksEnabled", "false");
 		setRule("commandBlockOutput", "false");
@@ -155,6 +163,8 @@ public class PhantomRift implements Rift, Listener
 	@SuppressWarnings("unchecked")
 	private void fromJSON(JSONObject j) throws ClassNotFoundException, JSONException
 	{
+		lx = j.getInt("force-load-x");
+		lz = j.getInt("force-load-z");
 		lockTime = j.getLong("lock-time");
 		allowBosses = j.getBoolean("allow-bosses");
 		randomLight = j.getBoolean("random-light-updates");
@@ -192,6 +202,8 @@ public class PhantomRift implements Rift, Listener
 	{
 		JSONObject j = new JSONObject();
 
+		j.put("force-load-x", lx);
+		j.put("force-load-z", lz);
 		j.put("rules", ruleObject());
 		j.put("allow-bosses", allowBosses);
 		j.put("lock-time", lockTime);
@@ -248,6 +260,16 @@ public class PhantomRift implements Rift, Listener
 		}
 
 		return j;
+	}
+
+	@EventHandler
+	public void on(ChunkUnloadEvent e)
+	{
+		if(shouldKeepLoaded(e.getChunk()))
+		{
+			e.setCancelled(true);
+			e.getChunk().load();
+		}
 	}
 
 	@Async
@@ -309,6 +331,13 @@ public class PhantomRift implements Rift, Listener
 				}
 			}
 		}
+	}
+
+	@Override
+	public Rift saveConfiguration()
+	{
+		writeJSON();
+		return this;
 	}
 
 	@Override
@@ -457,11 +486,49 @@ public class PhantomRift implements Rift, Listener
 			{
 				e.printStackTrace();
 			}
+
+			slowlyPreload();
 		}
 
 		catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
 		{
 			e1.printStackTrace();
+		}
+
+		return this;
+	}
+
+	@Override
+	public Rift slowlyPreload()
+	{
+		if(lx == 0 || lz == 0)
+		{
+			return this;
+		}
+
+		int i = 0;
+
+		for(int x = -lx; x <= lx; x++)
+		{
+			for(int z = -lx; z <= lx; z++)
+			{
+				int xx = x;
+				int zz = z;
+
+				new S(i / 8)
+				{
+					@Override
+					public void run()
+					{
+						if(isLoaded())
+						{
+							getWorld().loadChunk(xx, zz);
+						}
+					}
+				};
+
+				i++;
+			}
 		}
 
 		return this;
@@ -502,6 +569,7 @@ public class PhantomRift implements Rift, Listener
 		Bukkit.unloadWorld(getWorld(), !isTemporary());
 		world = null;
 		engine = null;
+		colapsing = false;
 		return this;
 	}
 
@@ -513,6 +581,8 @@ public class PhantomRift implements Rift, Listener
 		{
 			return this;
 		}
+
+		colapsing = true;
 
 		for(Player i : getWorld().getPlayers())
 		{
@@ -971,5 +1041,52 @@ public class PhantomRift implements Rift, Listener
 	{
 		lockTime = time;
 		return this;
+	}
+
+	@Override
+	public Rift setForceLoadX(int x)
+	{
+		lx = x;
+		return this;
+	}
+
+	@Override
+	public Rift setForceLoadZ(int z)
+	{
+		lz = z;
+		return this;
+	}
+
+	@Override
+	public int getForceLoadX()
+	{
+		return lx;
+	}
+
+	@Override
+	public int getForceLoadZ()
+	{
+		return lz;
+	}
+
+	@Override
+	public boolean shouldKeepLoaded(Chunk c)
+	{
+		if(colapsing)
+		{
+			return false;
+		}
+
+		if(lx == 0 || lz == 0)
+		{
+			return false;
+		}
+
+		if(Math.abs(c.getX()) <= lx && Math.abs(c.getZ()) <= lz)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

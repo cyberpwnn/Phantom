@@ -37,6 +37,7 @@ import com.volmit.phantom.plugin.Scaffold.Start;
 import com.volmit.phantom.plugin.Scaffold.Stop;
 import com.volmit.phantom.plugin.Scaffold.Test;
 import com.volmit.phantom.plugin.Scaffold.Tick;
+import com.volmit.phantom.services.ConfigSVC;
 import com.volmit.phantom.text.C;
 
 public class StructuredModule implements Serializable
@@ -238,12 +239,26 @@ public class StructuredModule implements Serializable
 			try
 			{
 				loadConfig(i);
+				SVC.get(ConfigSVC.class).registerConfigForHotload(module.getDataFile(i + ".yml"), module);
 			}
 
 			catch(IOException | InvalidConfigurationException e)
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void configModified(String name)
+	{
+		try
+		{
+			loadConfig(name.replaceAll(".yml", ""));
+		}
+
+		catch(IOException | InvalidConfigurationException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -401,14 +416,22 @@ public class StructuredModule implements Serializable
 	{
 		JSONArray o = new JSONArray();
 
-		for(Class<? extends IService> i : Phantom.getRunningServices())
+		try
 		{
-			File fx = new File(i.getProtectionDomain().getCodeSource().getLocation().getFile());
-
-			if(getModuleFile() == null || (getModuleFile() != null && fx.equals(module.getModuleFile())))
+			for(Class<? extends IService> i : Phantom.getRunningServices())
 			{
-				o.put(i.toString());
+				File fx = new File(i.getProtectionDomain().getCodeSource().getLocation().getFile());
+
+				if(getModuleFile() == null || (getModuleFile() != null && fx.equals(module.getModuleFile())))
+				{
+					o.put(i.toString());
+				}
 			}
+		}
+
+		catch(Throwable e)
+		{
+
 		}
 
 		return o;
@@ -720,7 +743,13 @@ public class StructuredModule implements Serializable
 
 	public void stop()
 	{
+		if(module == null)
+		{
+			d.w("Module is null!");
+		}
+
 		HandlerList.unregisterAll(module);
+		SVC.get(ConfigSVC.class).unregisterConfigs(module);
 
 		for(Actionable i : actions)
 		{

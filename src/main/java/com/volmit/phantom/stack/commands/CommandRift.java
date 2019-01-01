@@ -26,6 +26,9 @@ public class CommandRift extends PhantomCommand
 	@Command
 	public CommandRiftOpen open;
 
+	@Command
+	public CommandRiftSCM scm;
+
 	public CommandRift()
 	{
 		super("rift", "rifts", "rft");

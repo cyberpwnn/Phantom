@@ -27,7 +27,16 @@ public class Phantom
 			{
 				D.as("Phantom > Service Provider").l("Starting Service: " + serviceClass.getSimpleName());
 				IService s = serviceClass.getConstructor().newInstance();
-				s.onStart();
+				try
+				{
+					s.onStart();
+				}
+
+				catch(Throwable e)
+				{
+					D.as("Service Provider").w(s.getClass().getSimpleName() + " may have failed to properly start!");
+				}
+
 				runningServices.put(serviceClass, s);
 			}
 		}

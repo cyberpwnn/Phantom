@@ -64,6 +64,10 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
+      <id>fawe-repo</id>
+      <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
+    </repository>
+    <repository>
       <id>volmit</id>
       <url>http://nexus.volmit.com/content/repositories/volmit</url>
     </repository>
@@ -77,6 +81,12 @@
     </repository>
   </repositories>
   <dependencies>
+    <dependency>
+      <groupId>org.cyberpwn</groupId>
+      <artifactId>ClassTweaker</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
@@ -116,18 +126,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.cyberpwn</groupId>
-      <artifactId>ClassTweaker</artifactId>
-      <version>1.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.16.20</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib-API</artifactId>
       <version>4.3.0</version>
@@ -144,9 +142,21 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
       <version>2.8.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>fawe-api</artifactId>
+      <version>latest</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -155,6 +165,13 @@
       <version>1.12.2</version>
       <scope>system</scope>
       <systemPath>${libs}/spigot-1.12.2.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.sk89q</groupId>
+      <artifactId>worldedit</artifactId>
+      <version>6.1.7</version>
+      <scope>system</scope>
+      <systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>
