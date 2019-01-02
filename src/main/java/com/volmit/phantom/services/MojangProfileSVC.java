@@ -1,0 +1,104 @@
+package com.volmit.phantom.services;
+
+import java.util.UUID;
+
+import com.volmit.phantom.json.JSONArray;
+import com.volmit.phantom.json.JSONObject;
+import com.volmit.phantom.lang.GList;
+import com.volmit.phantom.lang.VIO;
+import com.volmit.phantom.plugin.SVC;
+import com.volmit.phantom.plugin.SimpleService;
+import com.volmit.phantom.util.CacheMap;
+
+public class MojangProfileSVC extends SimpleService
+{
+	private static final CacheMap<String, UUID> NAME_UUID_CACHE = new CacheMap<String, UUID>(128);
+	private static final CacheMap<UUID, String> UUID_NAME_CACHE = new CacheMap<UUID, String>(128);
+	private static final CacheMap<UUID, GList<String>> UUID_NAMES_CACHE = new CacheMap<UUID, GList<String>>(128);
+	private static final String PROFILE_USERNAME = "https://api.mojang.com/users/profiles/minecraft/";
+	private static final String PROFILE_NAMES = "https://api.mojang.com/user/profiles/";
+
+	@Override
+	public void onStart()
+	{
+
+	}
+
+	@Override
+	public void onStop()
+	{
+
+	}
+
+	public String getOnlineNameFor(UUID uuid)
+	{
+		getOnlineNamesFor(uuid);
+
+		return UUID_NAME_CACHE.get(uuid);
+	}
+
+	public GList<String> getOnlineNamesFor(UUID uuid)
+	{
+		if(UUID_NAMES_CACHE.has(uuid))
+		{
+			return UUID_NAMES_CACHE.get(uuid);
+		}
+
+		GList<String> vx = new GList<String>();
+
+		try
+		{
+			JSONArray j = new JSONArray(VIO.downloadToString(PROFILE_NAMES + uuid.toString().replaceAll("-", "") + "/names"));
+
+			for(int i = 0; i < j.length(); i++)
+			{
+				JSONObject v = j.getJSONObject(i);
+
+				if(!v.has("changedToAt"))
+				{
+					UUID_NAME_CACHE.put(uuid, v.getString("name"));
+				}
+
+				vx.add(v.getString("name"));
+			}
+
+			UUID_NAMES_CACHE.put(uuid, vx.copy());
+		}
+
+		catch(Throwable e)
+		{
+			e.printStackTrace();
+		}
+
+		return vx;
+	}
+
+	public UUID getOnlineUUID(String name)
+	{
+		if(NAME_UUID_CACHE.has(name))
+		{
+			return NAME_UUID_CACHE.get(name);
+		}
+
+		try
+		{
+			JSONObject j = new JSONObject(VIO.downloadToString(PROFILE_USERNAME + name));
+			UUID s = SVC.get(IdentificationSVC.class).withoutDashes(j.getString("id"));
+
+			if(s != null)
+			{
+				NAME_UUID_CACHE.put(name, s);
+				UUID_NAME_CACHE.put(s, j.getString("name"));
+			}
+
+			return s;
+		}
+
+		catch(Throwable e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+}

@@ -1,6 +1,10 @@
 package com.volmit.phantom.plugin;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+
 import com.volmit.phantom.lang.GList;
+import com.volmit.phantom.plugin.Scaffold.Command;
 
 /**
  * Represents a pawn command
@@ -11,7 +15,9 @@ import com.volmit.phantom.lang.GList;
 public abstract class PhantomCommand implements ICommand
 {
 	private GList<String> nodes;
+	private GList<String> requiredPermissions;
 	private String node;
+	private Module owner;
 
 	/**
 	 * Override this with a super constructor as most commands shouldnt change these
@@ -26,6 +32,27 @@ public abstract class PhantomCommand implements ICommand
 	{
 		this.node = node;
 		this.nodes = new GList<String>(nodes);
+		requiredPermissions = new GList<>();
+	}
+
+	protected void requiresPermission(PhantomPermission node)
+	{
+		requiresPermission(node.toString());
+	}
+
+	protected void requiresPermission(String node)
+	{
+		requiredPermissions.add(node);
+	}
+
+	public Module getOwner()
+	{
+		return owner;
+	}
+
+	public void setOwner(Module owner)
+	{
+		this.owner = owner;
 	}
 
 	@Override
@@ -50,5 +77,35 @@ public abstract class PhantomCommand implements ICommand
 	public void addNode(String node)
 	{
 		getNodes().add(node);
+	}
+
+	public GList<PhantomCommand> getChildren()
+	{
+		GList<PhantomCommand> p = new GList<>();
+
+		for(Field i : getClass().getDeclaredFields())
+		{
+			if(i.isAnnotationPresent(Command.class))
+			{
+				try
+				{
+					i.setAccessible(true);
+					p.add((PhantomCommand) i.getType().getConstructor().newInstance());
+				}
+
+				catch(IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return p;
+	}
+
+	@Override
+	public GList<String> getRequiredPermissions()
+	{
+		return requiredPermissions;
 	}
 }

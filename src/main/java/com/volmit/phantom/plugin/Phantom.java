@@ -1,6 +1,7 @@
 package com.volmit.phantom.plugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.GList;
@@ -26,7 +27,16 @@ public class Phantom
 			{
 				D.as("Phantom > Service Provider").l("Starting Service: " + serviceClass.getSimpleName());
 				IService s = serviceClass.getConstructor().newInstance();
-				s.onStart();
+				try
+				{
+					s.onStart();
+				}
+
+				catch(Throwable e)
+				{
+					D.as("Service Provider").w(s.getClass().getSimpleName() + " may have failed to properly start!");
+				}
+
 				runningServices.put(serviceClass, s);
 			}
 		}
@@ -133,5 +143,45 @@ public class Phantom
 	public static boolean started()
 	{
 		return started;
+	}
+
+	public static void stopAllServices()
+	{
+		for(IService i : runningServices.v())
+		{
+			try
+			{
+				D.as("Phantom > Service Provider").l("Stopping Service " + i.getClass().getSimpleName());
+				i.onStop();
+			}
+
+			catch(Throwable e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		runningServices.clear();
+	}
+
+	public static GList<Class<? extends IService>> getRunningServices()
+	{
+		return runningServices.k();
+	}
+
+	public static void stopService(Class<? extends IService> i)
+	{
+		runningServices.get(i).onStop();
+		runningServices.remove(i);
+	}
+
+	public static World getDefaultWorld()
+	{
+		return Bukkit.getWorld("world");
+	}
+
+	public static void suckerpunch()
+	{
+		runningServices.clear();
 	}
 }

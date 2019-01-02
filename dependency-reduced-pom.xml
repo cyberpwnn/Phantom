@@ -4,7 +4,7 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>head</version>
+  <version>3.1.27${build}</version>
   <build>
     <resources>
       <resource>
@@ -38,37 +38,118 @@
           </relocations>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2</version>
-        <executions>
-          <execution>
-            <id>runbatchfile</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>${project.basedir}/scripts/dev.bat</executable>
-          <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>runbatchfile</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>${project.basedir}/scripts/release.bat</executable>
+              <arguments>
+                <argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
+                <argument>${project.basedir}\releases\${project.version}\Phantom-${project.version}.jar</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>development</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>runbatchfile</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.jar</arguments>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.jar</arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <repositories>
     <repository>
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
+      <id>fawe-repo</id>
+      <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
+    </repository>
+    <repository>
       <id>volmit</id>
       <url>http://nexus.volmit.com/content/repositories/volmit</url>
     </repository>
+    <repository>
+      <id>dmulloy2-repo</id>
+      <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+    </repository>
+    <repository>
+      <id>placeholderapi</id>
+      <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
   </repositories>
   <dependencies>
+    <dependency>
+      <groupId>org.cyberpwn</groupId>
+      <artifactId>ClassTweaker</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
@@ -108,9 +189,31 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.cyberpwn</groupId>
-      <artifactId>ClassTweaker</artifactId>
-      <version>1.2</version>
+      <groupId>com.comphenix.protocol</groupId>
+      <artifactId>ProtocolLib-API</artifactId>
+      <version>4.3.0</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>cglib-nodep</artifactId>
+          <groupId>cglib</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>BukkitExecutors</artifactId>
+          <groupId>com.comphenix.executors</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.8.7</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -119,6 +222,20 @@
       <version>1.12.2</version>
       <scope>system</scope>
       <systemPath>${libs}/spigot-1.12.2.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.sk89q</groupId>
+      <artifactId>worldedit</artifactId>
+      <version>6.1.7</version>
+      <scope>system</scope>
+      <systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>fawe</artifactId>
+      <version>18.04.27</version>
+      <scope>system</scope>
+      <systemPath>${libs}/Fawe.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>

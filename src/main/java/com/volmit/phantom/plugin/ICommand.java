@@ -10,6 +10,8 @@ import com.volmit.phantom.lang.GList;
  */
 public interface ICommand
 {
+	public GList<String> getRequiredPermissions();
+
 	/**
 	 * Get the name of this command (node)
 	 *

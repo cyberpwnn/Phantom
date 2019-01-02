@@ -1,10 +1,13 @@
 package com.volmit.phantom.lang;
 
+import java.io.Serializable;
+
 import com.volmit.phantom.plugin.Phantom;
 import com.volmit.phantom.text.C;
 
-public class D
+public class D implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String tag;
 	public static final D d = new D("Phantom");
 	private static final GMap<String, D> dm = new GMap<>();

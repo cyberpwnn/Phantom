@@ -1,6 +1,8 @@
 package com.volmit.phantom.plugin;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -9,6 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -158,19 +161,43 @@ public class Module implements IModule, Listener, CommandExecutor
 
 	protected void registerCommand(PhantomCommand cmd, String t)
 	{
-		d().l("Registering Command: " + C.AQUA + "/" + cmd.getNode() + C.DARK_AQUA + " (" + cmd.getNodes().toString(", ") + ")");
 		commands.put(cmd.getAllNodes(), new VirtualCommand(this, cmd, t.trim().isEmpty() ? getTag() : getTag(t.trim())));
-
 		PluginCommand cc = PhantomPlugin.plugin.getCommand(cmd.getNode().toLowerCase());
 
 		if(cc != null)
 		{
 			cc.setExecutor(this);
+			cc.setUsage(getName() + ":" + getClass().toString());
 		}
 
 		else
 		{
-			((CommandMap) new V(Bukkit.getServer()).get("commandMap")).register("", new RouterCommand(cmd, this));
+			RouterCommand r = new RouterCommand(cmd, this);
+			r.setUsage(getName() + ":" + getClass().toString());
+			((CommandMap) new V(Bukkit.getServer()).get("commandMap")).register("", r);
+		}
+	}
+
+	protected void unregisterCommand(PhantomCommand cmd)
+	{
+		SimpleCommandMap m = new V(Bukkit.getServer()).get("commandMap");
+		Map<String, Command> k = new V(m).get("knownCommands");
+
+		for(Iterator<Map.Entry<String, Command>> it = k.entrySet().iterator(); it.hasNext();)
+		{
+			Map.Entry<String, Command> entry = it.next();
+			if(entry.getValue() instanceof Command)
+			{
+				Command c = (Command) entry.getValue();
+				String u = c.getUsage();
+
+				if(u != null && u.equals(getName() + ":" + getClass().toString()))
+				{
+					D.as("Module Manager").l("Unregistering Command: " + c.getName());
+					c.unregister(m);
+					it.remove();
+				}
+			}
 		}
 	}
 
@@ -249,5 +276,11 @@ public class Module implements IModule, Listener, CommandExecutor
 	public String getTag(String sub)
 	{
 		return C.DARK_GRAY + "[" + C.BOLD + getColor() + getName() + C.RESET + C.DARK_GRAY + " - " + C.ITALIC + C.WHITE + sub + C.RESET + C.GRAY + "]" + C.GRAY + ": ";
+	}
+
+	@Override
+	public File getModuleFile()
+	{
+		return getStructure().getModuleFile();
 	}
 }
