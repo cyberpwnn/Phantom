@@ -1,8 +1,8 @@
 package com.volmit.phantom.ux;
 
 /**
- * Element Event
- * 
+ * Element Event.
+ *
  * @author cyberpwn
  *
  */

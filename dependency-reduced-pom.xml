@@ -53,11 +53,13 @@
                   <goal>create</goal>
                 </goals>
                 <configuration>
+                  <doUpdate>true</doUpdate>
                   <shortRevisionLength>5</shortRevisionLength>
                 </configuration>
               </execution>
             </executions>
             <configuration>
+              <doUpdate>true</doUpdate>
               <shortRevisionLength>5</shortRevisionLength>
             </configuration>
           </plugin>
