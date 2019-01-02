@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
-public class FlatGenertor extends ChunkGenerator
+public class FlatGenerator extends ChunkGenerator
 {
 	@SuppressWarnings("deprecation")
 	@Override

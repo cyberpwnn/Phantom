@@ -14,7 +14,7 @@ import com.volmit.phantom.lang.D;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.VIO;
 import com.volmit.phantom.plugin.SimpleService;
-import com.volmit.phantom.rift.FlatGenertor;
+import com.volmit.phantom.rift.FlatGenerator;
 import com.volmit.phantom.rift.PhantomRift;
 import com.volmit.phantom.rift.Rift;
 import com.volmit.phantom.rift.RiftException;
@@ -222,7 +222,7 @@ public class RiftSVC extends SimpleService
 					.setDifficulty(Difficulty.PEACEFUL)
 					.setForcedGameMode(GameMode.CREATIVE)
 					.setEnvironment(Environment.THE_END)
-					.setGenerator(FlatGenertor.class)
+					.setGenerator(FlatGenerator.class)
 					.setMaxTNTUpdatesPerTick(1)
 					.setAllowBosses(false)
 					.setEntityTickLimit(0.001)
