@@ -21,6 +21,11 @@ import com.volmit.phantom.util.Cuboid;
 @SuppressWarnings("deprecation")
 public class WorldEditor
 {
+	public World getAsyncWorld(World world)
+	{
+		return SVC.get(WorldEditSVC.class).getAsyncWorld(world);
+	}
+
 	public static boolean hasSelection(Player player)
 	{
 		return SVC.get(WorldEditSVC.class).hasSelection(player);

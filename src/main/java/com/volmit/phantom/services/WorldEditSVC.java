@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.boydti.fawe.FaweAPI;
+import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.boydti.fawe.object.FawePlayer;
 import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.util.EditSessionBuilder;
@@ -145,5 +146,10 @@ public class WorldEditSVC extends SimpleService
 		}
 
 		return d;
+	}
+
+	public World getAsyncWorld(World world)
+	{
+		return AsyncWorld.wrap(world);
 	}
 }
