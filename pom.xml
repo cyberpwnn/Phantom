@@ -23,7 +23,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
-				<build>.${buildnumber}-${scmBranch}</build>
+				<build>.${buildNumber}</build>
 			</properties>
 			<build>
 				<plugins>
@@ -41,7 +41,7 @@
 						</executions>
 						<configuration>
 							<doUpdate>true</doUpdate>
-							<shortRevisionLength>5</shortRevisionLength>
+							<shortRevisionLength>12</shortRevisionLength>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -61,7 +61,7 @@
 							<executable>${project.basedir}/scripts/release.bat</executable>
 							<arguments>
 								<argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
-								<argument>${project.basedir}\releases\${project.version}\Phantom-${project.version}.jar</argument>
+								<argument>${project.basedir}\release\${project.version}\Phantom-${project.version}.jar</argument>
 							</arguments>
 						</configuration>
 					</plugin>

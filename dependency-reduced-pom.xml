@@ -54,13 +54,13 @@
                 </goals>
                 <configuration>
                   <doUpdate>true</doUpdate>
-                  <shortRevisionLength>5</shortRevisionLength>
+                  <shortRevisionLength>12</shortRevisionLength>
                 </configuration>
               </execution>
             </executions>
             <configuration>
               <doUpdate>true</doUpdate>
-              <shortRevisionLength>5</shortRevisionLength>
+              <shortRevisionLength>12</shortRevisionLength>
             </configuration>
           </plugin>
           <plugin>
@@ -77,8 +77,8 @@
                 <configuration>
                   <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
                   <arguments>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildnumber}-${scmBranch}\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildNumber}.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildNumber}\Phantom-3.1.27.${buildNumber}.jar</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -86,8 +86,8 @@
             <configuration>
               <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
               <arguments>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildnumber}-${scmBranch}\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildNumber}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildNumber}\Phantom-3.1.27.${buildNumber}.jar</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -132,7 +132,7 @@
         </plugins>
       </build>
       <properties>
-        <build>.${buildnumber}-${scmBranch}</build>
+        <build>.${buildNumber}</build>
       </properties>
     </profile>
     <profile>
