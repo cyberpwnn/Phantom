@@ -11,6 +11,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javadoc.opts>-Xdoclint:none</javadoc.opts>
 		<libs>${project.basedir}/lib</libs>
 	</properties>
 	<scm>
@@ -22,7 +23,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
-				<build>.${buildNumber}</build>
+				<build>.${buildnumber}-${scmBranch}</build>
 			</properties>
 			<build>
 				<plugins>
@@ -39,9 +40,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<doCheck>true</doCheck>
-							<doUpdate>true</doUpdate>
-							<shortRevisionLength>7</shortRevisionLength>
+							<shortRevisionLength>5</shortRevisionLength>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -88,6 +87,13 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<additionalJOptions>
+								<additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-${project.name}</additionalJOption>
+								<additionalparam>${javadoc.opts}</additionalparam>
+							</additionalJOptions>
+							<stylesheetfile>${project.basedir}\stylesheet.css</stylesheetfile>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

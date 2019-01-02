@@ -1,5 +1,11 @@
 package com.volmit.phantom.ux;
 
+/**
+ * Element Event
+ * 
+ * @author cyberpwn
+ *
+ */
 public enum ElementEvent
 {
 	LEFT,

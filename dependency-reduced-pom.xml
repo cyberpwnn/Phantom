@@ -5,6 +5,11 @@
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
   <version>3.1.27${build}</version>
+  <scm>
+    <connection>scm:git:git://github.com/PhantomAPI/Phantom.git</connection>
+    <developerConnection>scm:git:git@github.com:PhantomAPI/Phantom.git</developerConnection>
+    <url>https://github.com/PhantomAPI/Phantom</url>
+  </scm>
   <build>
     <resources>
       <resource>
@@ -29,14 +34,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <relocations>
-            <relocation>
-              <pattern>com.volmit.volume</pattern>
-              <shadedPattern>com.volmit.skyprime.volume</shadedPattern>
-            </relocation>
-          </relocations>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -45,6 +42,25 @@
       <id>release</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>buildnumber-maven-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <phase>validate</phase>
+                <goals>
+                  <goal>create</goal>
+                </goals>
+                <configuration>
+                  <shortRevisionLength>5</shortRevisionLength>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <shortRevisionLength>5</shortRevisionLength>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -56,18 +72,26 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
+                  <arguments>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildnumber}-${scmBranch}\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>${project.basedir}/scripts/release.bat</executable>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
               <arguments>
-                <argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
-                <argument>${project.basedir}\releases\${project.version}\Phantom-${project.version}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\releases\3.1.27.${buildnumber}-${scmBranch}\Phantom-3.1.27.${buildnumber}-${scmBranch}.jar</argument>
               </arguments>
             </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -79,17 +103,35 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
                 </goals>
+                <configuration>
+                  <additionalJOptions>
+                    <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                  </additionalJOptions>
+                  <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
+                </configuration>
               </execution>
             </executions>
+            <configuration>
+              <additionalJOptions>
+                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
+                <additionalparam>-Xdoclint:none</additionalparam>
+              </additionalJOptions>
+              <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
+            </configuration>
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <build>.${buildnumber}-${scmBranch}</build>
+      </properties>
     </profile>
     <profile>
       <id>development</id>
@@ -106,15 +148,11 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.jar</arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.27.jar</arguments>
+              <executable>${project.basedir}/scripts/dev.bat</executable>
+              <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -144,12 +182,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.cyberpwn</groupId>
-      <artifactId>ClassTweaker</artifactId>
-      <version>1.2</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
@@ -186,6 +218,12 @@
       <groupId>org.bukkit.craftbukkit</groupId>
       <artifactId>craftbukkit12</artifactId>
       <version>1.12.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cyberpwn</groupId>
+      <artifactId>ClassTweaker</artifactId>
+      <version>1.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -246,6 +284,7 @@
   </distributionManagement>
   <properties>
     <libs>${project.basedir}/lib</libs>
+    <javadoc.opts>-Xdoclint:none</javadoc.opts>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
