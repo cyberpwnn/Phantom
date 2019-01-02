@@ -221,15 +221,22 @@ public class StructuredModule implements Serializable
 			throw new AbstractModuleException(e.getMessage(), e);
 		}
 
-		try
+		new S(200)
 		{
-			VIO.writeAll(new File(Phantom.getModuleManager().getDataFolder(), getInfo().name() + ".json"), computeMetadata().toString(2));
-		}
+			@Override
+			public void run()
+			{
+				try
+				{
+					VIO.writeAll(new File(new File(Phantom.getModuleManager().getDataFolder(), getInfo().name()), "structure.json"), computeMetadata().toString(2));
+				}
 
-		catch(Throwable e)
-		{
-			e.printStackTrace();
-		}
+				catch(Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
 	}
 
 	private void loadConfigs()
@@ -336,6 +343,22 @@ public class StructuredModule implements Serializable
 		o.put("permissions", computeMetadataPermissions());
 		o.put("services", computeMetadataServices());
 		o.put("tests", computeMetadataTests());
+		o.put("configs", computeMetadataConfigs());
+
+		return o;
+	}
+
+	private JSONArray computeMetadataConfigs()
+	{
+		JSONArray o = new JSONArray();
+
+		for(String i : configurations.k())
+		{
+			JSONObject v = new JSONObject();
+			v.put("path", "modules/" + getInfo().name() + "/" + i + ".yml");
+			v.put("anchor", configurations.get(i).getClass().getCanonicalName());
+			o.put(v);
+		}
 
 		return o;
 	}
@@ -365,6 +388,7 @@ public class StructuredModule implements Serializable
 		}
 
 		o.put("children", ja);
+		o.put("required-permissions", c.getRequiredPermissions().toJSONStringArray());
 
 		return o;
 	}

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.object.FawePlayer;
+import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
@@ -92,32 +93,31 @@ public class WorldEditor
 		}
 	}
 
-	public static void streamClipboardAnvil(Rift rift, Player p) throws FileNotFoundException, IOException, DataException
+	public static Cuboid streamClipboardAnvil(Rift rift, Player p) throws Throwable
 	{
-		try
-		{
-			World tworld = rift.getWorld();
-			EditSession csession = getEditSession(p.getWorld());
-			EditSession session = getEditSession(tworld);
-			Region r = FawePlayer.wrap(p).getSelection();
-			Vector dimensions = new Vector(r.getWidth(), r.getHeight(), r.getLength());
-			ForwardExtentCopy fc = new ForwardExtentCopy(csession, r, session, new Vector(0, 100, 0));
-			fc.setSourceMask(new ExistingBlockMask(csession));
-			Operations.completeLegacy(fc);
-			Vector to = new Vector(0, 20, 0);
-			session.flushQueue();
-			rift.setForceLoadX((int) (dimensions.getX() / 16D) + 1);
-			rift.setForceLoadZ((int) (dimensions.getZ() / 16D) + 1);
-			rift.setSpawn(new Location(rift.getWorld(), to.getX(), to.getY(), to.getZ()));
-			rift.setTemporary(true);
-			rift.saveConfiguration();
-			rift.slowlyPreload();
-		}
+		World tworld = rift.getWorld();
+		EditSession csession = getEditSession(p.getWorld());
+		EditSession session = getEditSession(tworld);
+		session.setFastMode(true);
+		csession.setFastMode(true);
+		FaweQueue q = FaweAPI.createQueue(tworld.getName(), true);
+		Region r = FawePlayer.wrap(p).getSelection();
+		Region rx = r.clone();
+		Vector dimensions = new Vector(r.getWidth(), r.getHeight(), r.getLength());
+		ForwardExtentCopy fc = new ForwardExtentCopy(csession, r, new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ()), q, new Vector(0, p.getLocation().getY(), 0));
+		fc.setSourceMask(new ExistingBlockMask(csession));
+		Operations.completeBlindly(fc);
+		session.flushQueue();
+		rx.shift(new Vector(-p.getLocation().getX(), 0, -p.getLocation().getZ()));
+		rift.setForceLoadX((int) (dimensions.getX() / 16D) + 1);
+		rift.setForceLoadZ((int) (dimensions.getZ() / 16D) + 1);
+		rift.setTemporary(true);
+		rift.saveConfiguration();
+		rift.slowlyPreload();
+		q.flush(10000);
+		FaweAPI.fixLighting(tworld.getName(), rx);
 
-		catch(MaxChangedBlocksException e)
-		{
-			e.printStackTrace();
-		}
+		return new Cuboid(getLocation(rift.getWorld(), rx.getMaximumPoint()), getLocation(rift.getWorld(), rx.getMinimumPoint()));
 	}
 
 	private static int generateChunks(World tworld, Vector dimensions)

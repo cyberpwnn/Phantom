@@ -127,6 +127,11 @@ public class VectorMath
 		return to.subtract(from).toVector().normalize();
 	}
 
+	public static Vector directionNoNormal(Location from, Location to)
+	{
+		return to.subtract(from).toVector();
+	}
+
 	/**
 	 * Get the vector direction from the yaw and pitch
 	 *
@@ -152,6 +157,13 @@ public class VectorMath
 	{
 		v.setX(-v.getX());
 		v.setY(-v.getY());
+		v.setZ(-v.getZ());
+		return v;
+	}
+
+	public static Vector reverseXZ(Vector v)
+	{
+		v.setX(-v.getX());
 		v.setZ(-v.getZ());
 		return v;
 	}

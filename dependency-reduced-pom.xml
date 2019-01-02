@@ -154,12 +154,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.boydti</groupId>
-      <artifactId>fawe-api</artifactId>
-      <version>latest</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>spigot.org</groupId>
       <artifactId>spigot-1.12.2</artifactId>
       <version>1.12.2</version>
@@ -172,6 +166,13 @@
       <version>6.1.7</version>
       <scope>system</scope>
       <systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>fawe</artifactId>
+      <version>18.04.27</version>
+      <scope>system</scope>
+      <systemPath>${libs}/Fawe.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>
