@@ -228,6 +228,7 @@ public class StructuredModule implements Serializable
 			{
 				try
 				{
+					new File(Phantom.getModuleManager().getDataFolder(), getInfo().name()).mkdirs();
 					VIO.writeAll(new File(new File(Phantom.getModuleManager().getDataFolder(), getInfo().name()), "structure.json"), computeMetadata().toString(2));
 				}
 

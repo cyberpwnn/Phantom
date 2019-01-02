@@ -21,7 +21,7 @@ import com.volmit.phantom.util.Cuboid;
 @SuppressWarnings("deprecation")
 public class WorldEditor
 {
-	public World getAsyncWorld(World world)
+	public static World getAsyncWorld(World world)
 	{
 		return SVC.get(WorldEditSVC.class).getAsyncWorld(world);
 	}
