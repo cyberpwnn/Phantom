@@ -21,7 +21,7 @@ public class FlatGenerator extends ChunkGenerator
 			{
 				setBlock(result, i, 0, j, (short) Material.BEDROCK.getId());
 
-				if(i == 0 || j == 0)
+				if(x % 2 == 0 ^ z % 2 == 0)
 				{
 					setBlock(result, i, 1, j, (short) Material.PURPUR_BLOCK.getId());
 				}
@@ -29,11 +29,6 @@ public class FlatGenerator extends ChunkGenerator
 				else
 				{
 					setBlock(result, i, 1, j, (short) Material.END_BRICKS.getId());
-				}
-
-				if(i == 0 && j == 0)
-				{
-					setBlock(result, i, 2, j, (short) Material.END_ROD.getId());
 				}
 			}
 		}

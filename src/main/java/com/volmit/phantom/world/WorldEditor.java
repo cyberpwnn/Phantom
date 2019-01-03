@@ -46,6 +46,22 @@ public class WorldEditor
 		return SVC.get(WorldEditSVC.class).getEditSession(world);
 	}
 
+	public static boolean saveSchematic(File file, Cuboid c)
+	{
+		try
+		{
+			SVC.get(WorldEditSVC.class).saveSchematic(file, c);
+		}
+
+		catch(IOException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
 	public static void pasteSchematic(File file, EditSession session, Location to) throws MaxChangedBlocksException, DataException, IOException
 	{
 		SVC.get(WorldEditSVC.class).pasteSchematic(file, session, to);

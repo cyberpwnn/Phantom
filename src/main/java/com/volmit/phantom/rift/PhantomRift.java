@@ -77,10 +77,22 @@ public class PhantomRift implements Rift, Listener
 	private long lastTickOccupied;
 	private long lockTime;
 	private boolean colapsing;
+	private double worldBorderSize;
+	private double worldBorderCenterX;
+	private double worldBorderCenterZ;
+	private int worldBorderAnimationTime;
+	private int worldBorderWarningDistance;
+	private int worldBorderWarningTime;
+	private boolean worldBorderEnabled;
 
 	public PhantomRift(String name) throws RiftException
 	{
 		setName(name);
+		setWorldBorderAnimationTime(1);
+		setWorldBorderCenter(0, 0);
+		setWorldBorderSize(1024);
+		setWorldBorderWarningDistance(10);
+		setWorldBorderWarningTime(10);
 		setAllowBosses(false);
 		setRandomLightUpdates(false);
 		setPlayerTrackingRange(256);
@@ -112,13 +124,11 @@ public class PhantomRift implements Rift, Listener
 		setForceLoadX(0);
 		setForceLoadZ(0);
 		setRule("announceAdvancements", "false");
-		setRule("commandBlocksEnabled", "false");
-		setRule("commandBlockOutput", "false");
 		setRule("disableElytraMovementCheck", "true");
-		setRule("maxEntityCramming", "1");
+		setRule("maxEntityCramming", "2");
 		setRule("mobGriefing", "false");
 		setRule("pvp", "false");
-		setRule("randomTickSpeed", "true");
+		setRule("randomTickSpeed", "0");
 		handleConfig();
 	}
 
@@ -195,6 +205,7 @@ public class PhantomRift implements Rift, Listener
 		difficulty = j.getString("difficulty").equals("NULL") ? null : Difficulty.valueOf(j.getString("difficulty"));
 		seed = j.getLong("seed");
 		rules = parseRules(j.getJSONObject("rules"));
+		wbFromJSON(j.getJSONObject("world-border"));
 	}
 
 	@Override
@@ -233,7 +244,33 @@ public class PhantomRift implements Rift, Listener
 		j.put("environment", environment.name());
 		j.put("gamemode", forced == null ? "NULL" : forced.name());
 		j.put("difficulty", difficulty == null ? "NULL" : difficulty.name());
+		j.put("world-border", wbToJSON());
 		j.put("seed", seed);
+
+		return j;
+	}
+
+	private void wbFromJSON(JSONObject j)
+	{
+		setWorldBorderAnimationTime(j.getInt("animation-time"));
+		setWorldBorderWarningTime(j.getInt("warning-time"));
+		setWorldBorderWarningDistance(j.getInt("warning-distance"));
+		setWorldBorderCenter(j.getDouble("center-x"), j.getDouble("center-z"));
+		setWorldBorderSize(j.getDouble("size"));
+		setWorldBorderEnabled(j.getBoolean("enabled"));
+	}
+
+	private JSONObject wbToJSON()
+	{
+		JSONObject j = new JSONObject();
+
+		j.put("animation-time", getWorldBorderAnimationTime());
+		j.put("warning-time", getWorldBorderWarningTime());
+		j.put("warning-distance", getWorldBorderWarningDistance());
+		j.put("center-x", getWorldBorderX());
+		j.put("center-z", getWorldBorderZ());
+		j.put("size", getWorldBorderSize());
+		j.put("enabled", isWorldBorderEnabled());
 
 		return j;
 	}
@@ -322,12 +359,27 @@ public class PhantomRift implements Rift, Listener
 				{
 					if(lastTickOccupied <= M.tick())
 					{
+						if(M.interval(20))
+						{
+							D.as("Rift " + getName()).w("Closing Rift in " + (getTicksWhenEmpty() - (M.tick() - lastTickOccupied)) + " Ticks");
+						}
+
 						if(M.tick() - lastTickOccupied > getTicksWhenEmpty())
 						{
 							new R().sync(() -> unload()).start();
 							lastTickOccupied = M.tick() + 2;
 						}
 					}
+				}
+
+				if(isWorldBorderEnabled())
+				{
+					getWorld().getWorldBorder().setCenter(getWorldBorderX(), getWorldBorderZ());
+					getWorld().getWorldBorder().setWarningTime(getWorldBorderWarningTime());
+					getWorld().getWorldBorder().setWarningDistance(getWorldBorderWarningDistance());
+					getWorld().getWorldBorder().setSize(getWorldBorderSize());
+					getWorld().getWorldBorder().setDamageBuffer(4);
+					getWorld().getWorldBorder().setDamageAmount(0.35);
 				}
 			}
 		}
@@ -564,7 +616,7 @@ public class PhantomRift implements Rift, Listener
 			e.printStackTrace();
 		}
 
-		HandlerList.unregisterAll();
+		HandlerList.unregisterAll(this);
 		colapse();
 		Bukkit.unloadWorld(getWorld(), !isTemporary());
 		world = null;
@@ -1088,5 +1140,90 @@ public class PhantomRift implements Rift, Listener
 		}
 
 		return false;
+	}
+
+	@Override
+	public Rift setWorldBorderSize(double size)
+	{
+		worldBorderSize = size;
+		return this;
+	}
+
+	@Override
+	public double getWorldBorderSize()
+	{
+		return worldBorderSize;
+	}
+
+	@Override
+	public Rift setWorldBorderCenter(double x, double z)
+	{
+		worldBorderCenterX = x;
+		worldBorderCenterZ = z;
+		return this;
+	}
+
+	@Override
+	public double getWorldBorderX()
+	{
+		return worldBorderCenterX;
+	}
+
+	@Override
+	public double getWorldBorderZ()
+	{
+		return worldBorderCenterZ;
+	}
+
+	@Override
+	public Rift setWorldBorderAnimationTime(int seconds)
+	{
+		worldBorderAnimationTime = seconds;
+		return this;
+	}
+
+	@Override
+	public double getWorldBorderAnimationTime()
+	{
+		return worldBorderAnimationTime;
+	}
+
+	@Override
+	public Rift setWorldBorderWarningDistance(int blocks)
+	{
+		worldBorderWarningDistance = blocks;
+		return this;
+	}
+
+	@Override
+	public int getWorldBorderWarningDistance()
+	{
+		return worldBorderWarningDistance;
+	}
+
+	@Override
+	public Rift setWorldBorderWarningTime(int seconds)
+	{
+		worldBorderWarningTime = seconds;
+		return this;
+	}
+
+	@Override
+	public int getWorldBorderWarningTime()
+	{
+		return worldBorderWarningTime;
+	}
+
+	@Override
+	public Rift setWorldBorderEnabled(boolean t)
+	{
+		worldBorderEnabled = t;
+		return this;
+	}
+
+	@Override
+	public boolean isWorldBorderEnabled()
+	{
+		return worldBorderEnabled;
 	}
 }

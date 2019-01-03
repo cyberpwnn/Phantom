@@ -177,7 +177,23 @@ public class Phantom
 
 	public static World getDefaultWorld()
 	{
-		return Bukkit.getWorld("world");
+		World w = Bukkit.getWorld("world");
+
+		if(w == null)
+		{
+			for(World i : Bukkit.getWorlds())
+			{
+				if(i.getName().contains("/"))
+				{
+					continue;
+				}
+
+				w = i;
+				break;
+			}
+		}
+
+		return w;
 	}
 
 	public static void suckerpunch()

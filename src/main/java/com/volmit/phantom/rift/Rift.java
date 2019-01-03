@@ -189,4 +189,30 @@ public interface Rift
 	public Rift setUnloadWhenEmpty(int seconds);
 
 	public int getTicksWhenEmpty();
+
+	public Rift setWorldBorderSize(double size);
+
+	public double getWorldBorderSize();
+
+	public Rift setWorldBorderCenter(double x, double z);
+
+	public double getWorldBorderX();
+
+	public double getWorldBorderZ();
+
+	public Rift setWorldBorderAnimationTime(int seconds);
+
+	public double getWorldBorderAnimationTime();
+
+	public Rift setWorldBorderWarningDistance(int blocks);
+
+	public int getWorldBorderWarningDistance();
+
+	public Rift setWorldBorderWarningTime(int seconds);
+
+	public int getWorldBorderWarningTime();
+
+	public Rift setWorldBorderEnabled(boolean t);
+
+	public boolean isWorldBorderEnabled();
 }

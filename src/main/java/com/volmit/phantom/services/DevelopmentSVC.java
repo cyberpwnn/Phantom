@@ -104,7 +104,7 @@ public class DevelopmentSVC extends SimpleService
 
 		catch(Throwable e)
 		{
-			e.printStackTrace();
+
 		}
 	}
 

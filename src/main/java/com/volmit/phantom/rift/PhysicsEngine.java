@@ -22,7 +22,7 @@ public class PhysicsEngine
 
 	public void inject() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException
 	{
-		throttle = new PhysicsThrottle(rift.getWorld());
+		throttle = new PhysicsThrottle(rift);
 		tEntity = new SpecializedTickLimiter(rift.getEntityTickLimit());
 		tTile = new SpecializedTickLimiter(rift.getTileTickLimit());
 		throttle.setDelay(rift.getPhysicsThrottle());
@@ -76,6 +76,7 @@ public class PhysicsEngine
 	{
 		if(rift.isLoaded())
 		{
+			throttle.tick();
 			throttle.setDelay(rift.getPhysicsThrottle());
 			tEntity.setrMaxTime(rift.getEntityTickLimit());
 			tTile.setrMaxTime(rift.getTileTickLimit());

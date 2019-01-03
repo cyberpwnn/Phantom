@@ -13,15 +13,19 @@ import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.boydti.fawe.object.FawePlayer;
 import com.boydti.fawe.object.FaweQueue;
+import com.boydti.fawe.object.schematic.Schematic;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.function.mask.ExistingBlockMask;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.volmit.phantom.lang.F;
@@ -151,5 +155,14 @@ public class WorldEditSVC extends SimpleService
 	public World getAsyncWorld(World world)
 	{
 		return AsyncWorld.wrap(world);
+	}
+
+	public void saveSchematic(File file, Cuboid c) throws IOException
+	{
+		Vector bot = new Vector(c.getLowerX(), c.getLowerY(), c.getLowerZ());
+		Vector top = new Vector(c.getUpperX(), c.getUpperY(), c.getUpperZ());
+		CuboidRegion region = new CuboidRegion(new BukkitWorld(c.getWorld()), bot, top);
+		Schematic schem = new Schematic(region);
+		schem.save(file, ClipboardFormat.SCHEMATIC);
 	}
 }

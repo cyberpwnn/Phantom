@@ -232,7 +232,7 @@ public class RiftSVC extends SimpleService
 					.setHopperTransferAmount(200)
 					.setHopperTransferAmount(64)
 					.setRandomLightUpdates(false)
-					.setUnloadWhenEmpty(10)
+					.setUnloadWhenEmpty(15)
 					.setRule("doMobSpawning", "false")
 					.setRule("doEntityDrops", "false")
 					.setRule("doFireTick", "false")
@@ -240,6 +240,9 @@ public class RiftSVC extends SimpleService
 					.setRule("doTileDrops", "false")
 					.setRule("doWeatherCycle", "false")
 					.setRule("doDaylightCycle", "false")
+					.setWorldBorderEnabled(true)
+					.setWorldBorderCenter(0, 0)
+					.setWorldBorderSize(256)
 					.load();
 			//@done
 		}

@@ -2,6 +2,7 @@ package com.volmit.phantom.rift;
 
 import java.util.Iterator;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.util.HashTreeSet;
@@ -15,6 +16,7 @@ import net.minecraft.server.v1_12_R1.WorldServer;
 
 public class PhysicsThrottle
 {
+	private Rift rift;
 	private World world;
 	private int delay;
 	private int reschedule;
@@ -22,9 +24,10 @@ public class PhysicsThrottle
 	private GList<NextTickListEntry> delayedOrder;
 	private HashTreeSet<NextTickListEntry> t;
 
-	public PhysicsThrottle(World world)
+	public PhysicsThrottle(Rift rift)
 	{
-		this.world = world;
+		this.world = rift.getWorld();
+		this.rift = rift;
 		delay = 0;
 		reschedule = 0;
 		delayedEntries = new GMap<>();
@@ -72,8 +75,18 @@ public class PhysicsThrottle
 			{
 				NextTickListEntry e = it.next();
 				it.remove();
-				delayedEntries.put(e, delay);
-				delayedOrder.add(e);
+
+				if(rift.isWorldBorderEnabled() && world.getWorldBorder().isInside(new Location(world, e.a.getX(), e.a.getY(), e.a.getZ())))
+				{
+					delayedEntries.put(e, delay);
+					delayedOrder.add(e);
+				}
+
+				else
+				{
+					delayedEntries.put(e, delay);
+					delayedOrder.add(e);
+				}
 			}
 		}
 
