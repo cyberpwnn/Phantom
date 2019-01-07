@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -41,6 +42,7 @@ import com.volmit.phantom.util.MaterialBlock;
 import com.volmit.phantom.util.Players;
 import com.volmit.phantom.util.Protocol;
 import com.volmit.phantom.util.ProtocolRange;
+import com.volmit.phantom.util.RecordType;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.server.v1_12_R1.BlockPosition;
@@ -130,6 +132,16 @@ public class NMSSVC extends SimpleService
 		new V(m).set("k", 70);
 		new V(m).set("l", bid);
 		sendPacket(m, player);
+	}
+
+	public void playRecord(Player p, Location l, RecordType type)
+	{
+		p.playEffect(l, Effect.RECORD_PLAY, type.material());
+	}
+
+	public void stopRecord(Player p)
+	{
+		p.playEffect(p.getLocation(), Effect.RECORD_PLAY, null);
 	}
 
 	public void displayScoreboard(Player p, int slot, String id)

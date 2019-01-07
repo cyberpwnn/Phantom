@@ -26,6 +26,7 @@ import com.volmit.phantom.services.DevelopmentSVC;
 import com.volmit.phantom.services.RiftSVC;
 import com.volmit.phantom.stack.commands.CommandModules;
 import com.volmit.phantom.stack.commands.CommandPhantom;
+import com.volmit.phantom.stack.commands.CommandPlotPaste;
 import com.volmit.phantom.stack.commands.CommandRift;
 import com.volmit.phantom.stack.commands.CommandServices;
 import com.volmit.phantom.stack.permissions.PermissionPhantom;
@@ -51,6 +52,9 @@ public class PhantomModule extends Module
 
 	@Command
 	public CommandPhantom phantom;
+
+	@Command
+	public CommandPlotPaste plotpaste;
 
 	@Command("Rift")
 	public CommandRift rfit;

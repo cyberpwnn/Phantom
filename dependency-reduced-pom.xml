@@ -48,26 +48,18 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
-                  <arguments>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</argument>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.1.29\Phantom-3.1.29.jar</argument>
-                  </arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
+              <executable>${project.basedir}/scripts/release.bat</executable>
               <arguments>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</argument>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.1.29\Phantom-3.1.29.jar</argument>
+                <argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
+                <argument>${project.basedir}\release\${project.version}\Phantom-${project.version}.jar</argument>
               </arguments>
             </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -79,28 +71,20 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
                 </goals>
-                <configuration>
-                  <additionalJOptions>
-                    <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
-                    <additionalparam>-Xdoclint:none</additionalparam>
-                  </additionalJOptions>
-                  <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
-                </configuration>
               </execution>
             </executions>
             <configuration>
               <additionalJOptions>
-                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
-                <additionalparam>-Xdoclint:none</additionalparam>
+                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-${project.name}</additionalJOption>
+                <additionalparam>${javadoc.opts}</additionalparam>
               </additionalJOptions>
-              <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
+              <stylesheetfile>${project.basedir}\stylesheet.css</stylesheetfile>
             </configuration>
           </plugin>
         </plugins>
@@ -121,11 +105,15 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</arguments>
+                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>${project.basedir}/scripts/dev.bat</executable>
-              <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -160,6 +148,10 @@
     <repository>
       <id>sk89q</id>
       <url>http://maven.sk89q.com/repo/</url>
+    </repository>
+    <repository>
+      <id>viaversion-repo</id>
+      <url>https://repo.viaversion.com</url>
     </repository>
   </repositories>
   <dependencies>
@@ -298,6 +290,20 @@
           <groupId>com.google.code.gson</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>spigot.vv</groupId>
+      <artifactId>vv-1.12.2</artifactId>
+      <version>1.12.2</version>
+      <scope>system</scope>
+      <systemPath>${libs}/ViaVersion-1.6.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>spigot.vvb</groupId>
+      <artifactId>vvr-1.12.2</artifactId>
+      <version>1.12.2</version>
+      <scope>system</scope>
+      <systemPath>${libs}/ViaRewind-1.3.13.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>spigot.org</groupId>

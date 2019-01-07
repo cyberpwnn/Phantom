@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 
 import com.volmit.phantom.json.JSONArray;
+import com.volmit.phantom.time.M;
 
 /**
  * GLists are Arraylists with special enhancements
@@ -772,15 +773,14 @@ public class GList<T> extends ArrayList<T>
 	 */
 	public T popRandom()
 	{
-		GList<T> tx = shuffleCopy();
-
-		if(tx.isEmpty())
+		if(isEmpty())
 		{
 			return null;
 		}
 
-		T t = tx.get(0);
-		remove(t);
+		int r = M.rand(0, size() - 1);
+		T t = get(r);
+		remove(r);
 		return t;
 	}
 

@@ -16,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.material.MaterialData;
+import org.bukkit.util.Vector;
 
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GListAdapter;
@@ -436,6 +437,33 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 	public Cuboid shift(CuboidDirection dir, int amount)
 	{
 		return expand(dir, amount).expand(dir.opposite(), -amount);
+	}
+
+	public void shiftNoCopy(CuboidDirection dir, int amount)
+	{
+		switch(dir)
+		{
+			case North:
+				set(getLowerNE().clone().add(-amount, 0, 0), getUpperSW().clone().add(-amount, 0, 0));
+				return;
+			case South:
+				set(getLowerNE().clone().add(amount, 0, 0), getUpperSW().clone().add(amount, 0, 0));
+				return;
+			case East:
+				set(getLowerNE().clone().add(0, 0, -amount), getUpperSW().clone().add(0, 0, -amount));
+				return;
+			case West:
+				set(getLowerNE().clone().add(0, 0, amount), getUpperSW().clone().add(0, 0, amount));
+				return;
+			case Down:
+				set(getLowerNE().clone().add(0, -amount, 0), getUpperSW().clone().add(0, -amount, 0));
+				return;
+			case Up:
+				set(getLowerNE().clone().add(0, amount, 0), getUpperSW().clone().add(0, amount, 0));
+				return;
+			default:
+				throw new IllegalArgumentException("invalid direction " + dir);
+		}
 	}
 
 	/**
@@ -907,6 +935,13 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 					return Unknown;
 			}
 		}
+	}
+
+	public void shiftXZ(Vector vv)
+	{
+		Vector v = vv.clone();
+		v.setY(0);
+		set(getLowerNE().clone().add(v), getUpperSW().clone().add(v));
 	}
 
 }

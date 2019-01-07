@@ -656,4 +656,17 @@ public enum Protocol
 	{
 		return version;
 	}
+
+	public static Protocol getProtocolVersion(int playerVersion)
+	{
+		for(Protocol i : Protocol.values())
+		{
+			if(i.getMetaVersion() == playerVersion)
+			{
+				return i;
+			}
+		}
+
+		return Protocol.UNKNOWN;
+	}
 }

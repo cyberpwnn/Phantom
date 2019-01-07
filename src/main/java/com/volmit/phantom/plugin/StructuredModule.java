@@ -111,6 +111,7 @@ public class StructuredModule implements Serializable
 					Config c = i.getAnnotation(Config.class);
 					Object config = i.getType().getConstructor().newInstance();
 					configurations.put(c.value(), config);
+					i.set(null, config);
 				}
 
 				else if(i.isAnnotationPresent(Command.class))
@@ -247,6 +248,7 @@ public class StructuredModule implements Serializable
 			try
 			{
 				loadConfig(i);
+
 				SVC.get(ConfigSVC.class).registerConfigForHotload(module.getDataFile(i + ".yml"), module);
 			}
 
@@ -298,9 +300,9 @@ public class StructuredModule implements Serializable
 
 		for(Field i : configurations.get(s).getClass().getDeclaredFields())
 		{
-			if(Modifier.isStatic(i.getModifiers()) && !Modifier.isFinal(i.getModifiers()))
+			if(!Modifier.isStatic(i.getModifiers()) && !Modifier.isFinal(i.getModifiers()))
 			{
-				fc.set(i.getName().toLowerCase().replaceAll("_", "."), new V(configurations.get(s)).get(i.getName()));
+				fc.set(i.getName().toLowerCase().replaceAll("_", "."), (Object) new V(configurations.get(s)).get(i.getName()));
 			}
 		}
 
