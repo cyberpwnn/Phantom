@@ -4,7 +4,7 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>3.1.30</version>
+  <version>3.1.31</version>
   <build>
     <resources>
       <resource>
@@ -107,13 +107,13 @@
                 </goals>
                 <configuration>
                   <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.30.jar</arguments>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.31.jar</arguments>
                 </configuration>
               </execution>
             </executions>
             <configuration>
               <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.30.jar</arguments>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.31.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -292,39 +292,34 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.boydti</groupId>
+      <groupId>fawe</groupId>
       <artifactId>fawe</artifactId>
-      <version>18.04.27</version>
-      <scope>system</scope>
-      <systemPath>${libs}/Fawe.jar</systemPath>
+      <version>1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>spigot.vv</groupId>
-      <artifactId>vv-1.12.2</artifactId>
-      <version>1.12.2</version>
-      <scope>system</scope>
-      <systemPath>${libs}/ViaVersion-1.6.0.jar</systemPath>
+      <groupId>vv</groupId>
+      <artifactId>vv</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>spigot.vvb</groupId>
-      <artifactId>vvr-1.12.2</artifactId>
-      <version>1.12.2</version>
-      <scope>system</scope>
-      <systemPath>${libs}/ViaRewind-1.3.13.jar</systemPath>
+      <groupId>vr</groupId>
+      <artifactId>vr</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>spigot.org</groupId>
-      <artifactId>spigot-1.12.2</artifactId>
-      <version>1.12.2</version>
-      <scope>system</scope>
-      <systemPath>${libs}/spigot-1.12.2.jar</systemPath>
+      <groupId>s</groupId>
+      <artifactId>s</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.sk89q</groupId>
-      <artifactId>worldedit</artifactId>
-      <version>6.1.7</version>
-      <scope>system</scope>
-      <systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
+      <groupId>we</groupId>
+      <artifactId>we</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <distributionManagement>
