@@ -28,12 +28,12 @@ public class ColoredParticleEffect implements VisualEffect
 
 		if(alpha)
 		{
-			ParticleEffect.SPELL_MOB_AMBIENT.display(oc, l, 40);
+			ParticleEffect.SPELL_MOB_AMBIENT.display(oc, l, 256);
 		}
 
 		else
 		{
-			ParticleEffect.SPELL_MOB.display(oc, l, 40);
+			ParticleEffect.SPELL_MOB.display(oc, l, 256);
 		}
 	}
 
