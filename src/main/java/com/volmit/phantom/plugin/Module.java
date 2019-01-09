@@ -283,4 +283,9 @@ public class Module implements IModule, Listener, CommandExecutor
 	{
 		return getStructure().getModuleFile();
 	}
+
+	public boolean isNative()
+	{
+		return false;
+	}
 }

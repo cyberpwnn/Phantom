@@ -164,6 +164,11 @@ public class Phantom
 		runningServices.clear();
 	}
 
+	public static int getRunningServices(Module i)
+	{
+		return moduleManager.getRunningServices(i);
+	}
+
 	public static GList<Class<? extends IService>> getRunningServices()
 	{
 		return runningServices.k();
@@ -171,7 +176,16 @@ public class Phantom
 
 	public static void stopService(Class<? extends IService> i)
 	{
-		runningServices.get(i).onStop();
+		try
+		{
+			runningServices.get(i).onStop();
+		}
+
+		catch(Throwable e)
+		{
+
+		}
+
 		runningServices.remove(i);
 	}
 

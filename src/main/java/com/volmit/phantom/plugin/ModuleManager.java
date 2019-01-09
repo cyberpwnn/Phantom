@@ -3,7 +3,6 @@ package com.volmit.phantom.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.UUID;
 
 import com.volmit.phantom.lang.D;
@@ -21,6 +20,7 @@ public class ModuleManager
 	private GList<Class<?>> moduleCache;
 	private GMap<String, Module> modules;
 	private GMap<UUID, StructuredModule> moduleStructure;
+	private GMap<File, GList<Class<?>>> moduleClasses;
 	private File moduleFolder;
 
 	public ModuleManager()
@@ -30,6 +30,7 @@ public class ModuleManager
 		fileLock = new GMap<>();
 		fileLockClasses = new GMap<>();
 		moduleCache = new GList<>();
+		moduleClasses = new GMap<>();
 		moduleFolder = new File("modules");
 		moduleFolder.mkdirs();
 	}
@@ -85,7 +86,21 @@ public class ModuleManager
 		px.begin();
 		module.getStructure().stop();
 		px.end();
+		stopModuleServices(module);
 		module.getStructure().getDispatcher().l("Stopped in " + F.time(px.getMilliseconds(), 1));
+	}
+
+	private void stopModuleServices(Module module)
+	{
+		for(Class<? extends IService> i : Phantom.getRunningServices())
+		{
+			Module m = getModuleFromJarClass(i);
+			if(m != null && m.getName().equals(module.getName()))
+			{
+				D.as("Service Manager").l("Stopping Service: " + m.getName() + "/" + i.getSimpleName());
+				Phantom.stopService(i);
+			}
+		}
 	}
 
 	public void reloadModule(Module module)
@@ -125,6 +140,36 @@ public class ModuleManager
 		unloadModule(module, true);
 	}
 
+	public Module getModuleFromJarClass(Class<?> c)
+	{
+		for(File i : moduleClasses.k())
+		{
+			for(Class<?> j : moduleClasses.get(i))
+			{
+				try
+				{
+					if(j.toString().equals(c.toString()) || j.toString().contains(c.toString()) || c.toString().contains(j.toString()))
+					{
+						for(Module k : getModules())
+						{
+							if(k.getModuleFile() != null && k.getModuleFile().equals(i))
+							{
+								return k;
+							}
+						}
+					}
+				}
+
+				catch(Throwable e)
+				{
+
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public void unloadModule(Module module, boolean gc) throws IOException
 	{
 		stopModule(module);
@@ -156,7 +201,7 @@ public class ModuleManager
 		fileLock.remove(f);
 		fileLockClasses.remove(f);
 		moduleCache.remove(clazz);
-		((URLClassLoader) c).close();
+		((ModuleClassLoader) c).close();
 
 		if(gc)
 		{
@@ -203,7 +248,6 @@ public class ModuleManager
 
 	private void loadModules()
 	{
-
 		for(Class<?> i : moduleCache)
 		{
 			if(i.equals(Module.class))
@@ -255,7 +299,7 @@ public class ModuleManager
 	private Class<?> scanJar(File f) throws IOException
 	{
 		Class<?> cx = null;
-		ClassLoader cl = new URLClassLoader(new URL[] {f.toURI().toURL()}, getClass().getClassLoader());
+		ClassLoader cl = new ModuleClassLoader(f, new URL[] {f.toURI().toURL()}, getClass().getClassLoader());
 		JarScanner js = new JarScanner(f, cl);
 		js.scan();
 
@@ -269,7 +313,16 @@ public class ModuleManager
 			}
 		}
 
-		fileLock.put(f, cl);
+		if(cx != null)
+		{
+			fileLock.put(f, cl);
+			moduleClasses.put(f, new GList<>());
+
+			for(Class<?> i : js.getClasses())
+			{
+				moduleClasses.get(f).add(i);
+			}
+		}
 
 		return cx;
 	}
@@ -326,5 +379,32 @@ public class ModuleManager
 		fileLockClasses.clear();
 		moduleStructure.clear();
 		Phantom.flushLogBuffer();
+	}
+
+	public int getLoadedClassCount(Module i)
+	{
+		if(i.getModuleFile() != null)
+		{
+			return moduleClasses.get(i.getModuleFile()).size();
+		}
+
+		return -1;
+	}
+
+	public int getRunningServices(Module mod)
+	{
+		int mx = 0;
+
+		for(Class<? extends IService> i : Phantom.getRunningServices())
+		{
+			Module m = getModuleFromJarClass(i);
+
+			if(m != null && m.getName().equals(mod.getName()))
+			{
+				mx++;
+			}
+		}
+
+		return mx;
 	}
 }

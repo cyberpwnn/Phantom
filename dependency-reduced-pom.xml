@@ -4,7 +4,7 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>3.1.29</version>
+  <version>3.1.30</version>
   <build>
     <resources>
       <resource>
@@ -107,13 +107,13 @@
                 </goals>
                 <configuration>
                   <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</arguments>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.30.jar</arguments>
                 </configuration>
               </execution>
             </executions>
             <configuration>
               <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.29.jar</arguments>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.30.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -292,6 +292,13 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>fawe</artifactId>
+      <version>18.04.27</version>
+      <scope>system</scope>
+      <systemPath>${libs}/Fawe.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>spigot.vv</groupId>
       <artifactId>vv-1.12.2</artifactId>
       <version>1.12.2</version>
@@ -318,13 +325,6 @@
       <version>6.1.7</version>
       <scope>system</scope>
       <systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>com.boydti</groupId>
-      <artifactId>fawe</artifactId>
-      <version>18.04.27</version>
-      <scope>system</scope>
-      <systemPath>${libs}/Fawe.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>

@@ -9,6 +9,7 @@ import com.volmit.phantom.plugin.PhantomSender;
 import com.volmit.phantom.plugin.SVC;
 import com.volmit.phantom.services.PlotSquaredSVC;
 
+@SuppressWarnings("deprecation")
 public class CommandPlotPaste extends PhantomCommand
 {
 	public CommandPlotPaste()

@@ -18,7 +18,6 @@ public class CommandRiftConstruct extends PhantomCommand
 	public boolean handle(PhantomSender sender, String[] args)
 	{
 		SVC.get(RiftSVC.class).openTemporaryRift(sender.getName()).load().send(sender.player());
-
 		return true;
 	}
 }

@@ -22,7 +22,6 @@ import com.volmit.phantom.lang.F;
 import com.volmit.phantom.lang.GList;
 import com.volmit.phantom.lang.GMap;
 import com.volmit.phantom.lang.Profiler;
-import com.volmit.phantom.lang.V;
 import com.volmit.phantom.lang.VIO;
 import com.volmit.phantom.plugin.Actionable.ActionType;
 import com.volmit.phantom.plugin.Scaffold.Async;
@@ -252,7 +251,7 @@ public class StructuredModule implements Serializable
 				SVC.get(ConfigSVC.class).registerConfigForHotload(module.getDataFile(i + ".yml"), module);
 			}
 
-			catch(IOException | InvalidConfigurationException e)
+			catch(IOException | InvalidConfigurationException | IllegalArgumentException | IllegalAccessException e)
 			{
 				e.printStackTrace();
 			}
@@ -266,13 +265,13 @@ public class StructuredModule implements Serializable
 			loadConfig(name.replaceAll(".yml", ""));
 		}
 
-		catch(IOException | InvalidConfigurationException e)
+		catch(IOException | InvalidConfigurationException | IllegalArgumentException | IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	private void loadConfig(String c) throws IOException, InvalidConfigurationException
+	private void loadConfig(String c) throws IOException, InvalidConfigurationException, IllegalArgumentException, IllegalAccessException
 	{
 		File f = module.getDataFile(c + ".yml");
 		f.getParentFile().mkdirs();
@@ -287,14 +286,14 @@ public class StructuredModule implements Serializable
 		saveConfig(c);
 	}
 
-	private void saveConfig(String c) throws IOException
+	private void saveConfig(String c) throws IOException, IllegalArgumentException, IllegalAccessException
 	{
 		File f = module.getDataFile(c + ".yml");
 		f.getParentFile().mkdirs();
 		peelConfig(c).save(f);
 	}
 
-	private FileConfiguration peelConfig(String s)
+	private FileConfiguration peelConfig(String s) throws IllegalArgumentException, IllegalAccessException
 	{
 		FileConfiguration fc = new YamlConfiguration();
 
@@ -302,7 +301,9 @@ public class StructuredModule implements Serializable
 		{
 			if(!Modifier.isStatic(i.getModifiers()) && !Modifier.isFinal(i.getModifiers()))
 			{
-				fc.set(i.getName().toLowerCase().replaceAll("_", "."), (Object) new V(configurations.get(s)).get(i.getName()));
+				i.setAccessible(true);
+
+				fc.set(i.getName().toLowerCase().replaceAll("_", "."), i.get(configurations.get(s)));
 			}
 		}
 
@@ -319,7 +320,8 @@ public class StructuredModule implements Serializable
 			{
 				try
 				{
-					new V(configurations.get(s)).set(i.getName(), fc.get(sv));
+					i.setAccessible(true);
+					i.set(configurations.get(s), fc.get(sv));
 				}
 
 				catch(Throwable e)

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.volmit</groupId>
 	<artifactId>Phantom</artifactId>
-	<version>3.1.29</version>
+	<version>3.1.30</version>
 	<name>Phantom</name>
 	<properties>
 		<build></build>
@@ -205,41 +205,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>spigot.vv</groupId>
-			<artifactId>vv-1.12.2</artifactId>
-			<scope>system</scope>
-			<systemPath>${libs}/ViaVersion-1.6.0.jar</systemPath>
-			<version>1.12.2</version>
-		</dependency>
-		<dependency>
-			<groupId>spigot.vvb</groupId>
-			<artifactId>vvr-1.12.2</artifactId>
-			<scope>system</scope>
-			<systemPath>${libs}/ViaRewind-1.3.13.jar</systemPath>
-			<version>1.12.2</version>
-		</dependency>
-		<dependency>
-			<groupId>spigot.org</groupId>
-			<artifactId>spigot-1.12.2</artifactId>
-			<scope>system</scope>
-			<systemPath>${libs}/spigot-1.12.2.jar</systemPath>
-			<version>1.12.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldedit</artifactId>
-			<scope>system</scope>
-			<systemPath>${libs}/WorldEdit-6.1.7.jar</systemPath>
-			<version>6.1.7</version>
-		</dependency>
-		<dependency>
-			<groupId>com.boydti</groupId>
-			<artifactId>fawe</artifactId>
-			<scope>system</scope>
-			<systemPath>${libs}/Fawe.jar</systemPath>
-			<version>18.04.27</version>
-		</dependency>
-		<dependency>
 			<groupId>de.ruedigermoeller</groupId>
 			<artifactId>fst</artifactId>
 			<version>2.56</version>
@@ -254,6 +219,36 @@
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-core</artifactId>
 			<version>6.1.3-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>fawe</groupId>
+			<artifactId>fawe</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>vv</groupId>
+			<artifactId>vv</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>vr</groupId>
+			<artifactId>vr</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>s</groupId>
+			<artifactId>s</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>we</groupId>
+			<artifactId>we</artifactId>
+			<version>1</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

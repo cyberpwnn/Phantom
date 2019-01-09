@@ -41,7 +41,7 @@ import com.volmit.phantom.ux.impl.UIElement;
 import com.volmit.phantom.ux.impl.UIPaneDecorator;
 import com.volmit.phantom.ux.impl.UIWindow;
 
-@ModuleInfo(name = "Phantom", version = "HEAD", author = "cyberpwn", color = C.LIGHT_PURPLE)
+@ModuleInfo(name = "Phantom", version = "3.1.30", author = "cyberpwn", color = C.LIGHT_PURPLE)
 public class PhantomModule extends Module
 {
 	@Instance
@@ -185,5 +185,11 @@ public class PhantomModule extends Module
 		}
 
 		w.open();
+	}
+
+	@Override
+	public boolean isNative()
+	{
+		return true;
 	}
 }
