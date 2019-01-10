@@ -1,4 +1,4 @@
 name: Phantom
 version: ${project.version}
 main: com.volmit.phantom.plugin.PhantomPlugin
-softdepend: [ProtocolLib, FastAsyncWorldEdit, WorldEdit, PlaceholderAPI, DeluxeChat]
+load: STARTUP
