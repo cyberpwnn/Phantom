@@ -3,11 +3,11 @@ package com.volmit.phantom.lib.service;
 import org.bukkit.entity.Player;
 
 import com.volmit.phantom.api.protocol.Protocol;
-import com.volmit.phantom.imp.plugin.SimpleService;
+import com.volmit.phantom.api.service.IService;
 
 import us.myles.ViaVersion.api.Via;
 
-public class ViaVersionSVC extends SimpleService
+public class ViaVersionSVC implements IService
 {
 	@SuppressWarnings("unchecked")
 	public Protocol getVersion(Player p)

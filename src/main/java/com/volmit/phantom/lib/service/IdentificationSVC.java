@@ -2,9 +2,9 @@ package com.volmit.phantom.lib.service;
 
 import java.util.UUID;
 
-import com.volmit.phantom.imp.plugin.SimpleService;
+import com.volmit.phantom.api.service.IService;
 
-public class IdentificationSVC extends SimpleService
+public class IdentificationSVC implements IService
 {
 	@Override
 	public void onStart()

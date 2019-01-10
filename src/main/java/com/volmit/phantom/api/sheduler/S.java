@@ -1,18 +1,16 @@
 package com.volmit.phantom.api.sheduler;
 
-import com.volmit.phantom.imp.plugin.TaskManager;
+import com.volmit.phantom.api.job.J;
 
 public abstract class S implements Runnable
 {
-	public static TaskManager m;
-
 	public S()
 	{
-		m.sync(this);
+		J.s(this);
 	}
 
-	public S(long delay)
+	public S(int delay)
 	{
-		m.sync(delay, this);
+		J.s(this, delay);
 	}
 }

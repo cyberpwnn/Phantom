@@ -18,6 +18,7 @@ public class M
 	private static final int modulus = 360 * precision;
 	private static final float[] sin = new float[modulus];
 	private static long TICK = 0;
+	private static long ATICK = 0;
 	private static long TIME = -1;
 
 	public static int iclip(double value, double min, double max)
@@ -38,9 +39,19 @@ public class M
 		return tick() % Math.max(1, m) == 0;
 	}
 
+	public static boolean intervalAsync(int m)
+	{
+		return tickAsync() % Math.max(1, m) == 0;
+	}
+
 	public static long tick()
 	{
 		return TICK;
+	}
+
+	public static long tickAsync()
+	{
+		return ATICK;
 	}
 
 	public static long ticksOnline()
@@ -385,5 +396,10 @@ public class M
 	public static void uptick()
 	{
 		TICK++;
+	}
+
+	public static void uptickAsync()
+	{
+		ATICK++;
 	}
 }

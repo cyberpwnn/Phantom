@@ -21,7 +21,7 @@ import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.lang.GSet;
 import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.sheduler.S;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
+import com.volmit.phantom.main.PhantomPlugin;
 
 public class UIWindow implements Window, Listener
 {

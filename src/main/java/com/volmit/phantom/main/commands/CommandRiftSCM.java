@@ -12,7 +12,7 @@ import com.volmit.phantom.api.lang.F;
 import com.volmit.phantom.api.lang.Profiler;
 import com.volmit.phantom.api.rift.Rift;
 import com.volmit.phantom.api.service.SVC;
-import com.volmit.phantom.imp.plugin.PhantomCommand;
+import com.volmit.phantom.imp.command.PhantomCommand;
 import com.volmit.phantom.imp.rift.RiftException;
 import com.volmit.phantom.lib.service.RiftSVC;
 import com.volmit.phantom.main.PhantomModule;

@@ -18,16 +18,16 @@ import com.volmit.phantom.api.lang.FinalInteger;
 import com.volmit.phantom.api.lang.GBiset;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GSet;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.api.sheduler.A;
 import com.volmit.phantom.api.sheduler.S;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.util.world.Cuboid;
-import com.volmit.phantom.util.world.Direction;
 import com.volmit.phantom.util.world.Cuboid.CuboidDirection;
+import com.volmit.phantom.util.world.Direction;
 
 @SuppressWarnings("deprecation")
-public class PlotSquaredSVC extends SimpleService
+public class PlotSquaredSVC implements IService
 {
 	@Override
 	public void onStart()

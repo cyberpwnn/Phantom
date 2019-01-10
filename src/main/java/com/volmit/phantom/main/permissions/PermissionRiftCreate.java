@@ -1,6 +1,6 @@
 package com.volmit.phantom.main.permissions;
 
-import com.volmit.phantom.imp.plugin.PhantomPermission;
+import com.volmit.phantom.api.command.PhantomPermission;
 
 public class PermissionRiftCreate extends PhantomPermission
 {

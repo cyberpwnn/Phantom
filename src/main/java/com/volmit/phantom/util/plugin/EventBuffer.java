@@ -14,7 +14,7 @@ import org.bukkit.plugin.EventExecutor;
 
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
+import com.volmit.phantom.main.PhantomPlugin;
 
 /**
  * Collects events into a buffer and uses consumers to execute them in bursts

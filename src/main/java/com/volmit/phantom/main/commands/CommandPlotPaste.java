@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.sk89q.worldedit.data.DataException;
 import com.volmit.phantom.api.command.PhantomSender;
 import com.volmit.phantom.api.service.SVC;
-import com.volmit.phantom.imp.plugin.PhantomCommand;
+import com.volmit.phantom.imp.command.PhantomCommand;
 import com.volmit.phantom.lib.service.PlotSquaredSVC;
 
 @SuppressWarnings("deprecation")

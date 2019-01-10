@@ -1,4 +1,4 @@
-package com.volmit.phantom.imp.plugin;
+package com.volmit.phantom.main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,10 +11,6 @@ import com.volmit.phantom.util.text.C;
 
 public class Phantom
 {
-	protected static TaskManager taskManager;
-	protected static ModuleManager moduleManager;
-	private static boolean started = false;
-	private static final GList<Runnable> startupDump = new GList<Runnable>();
 	private static final GMap<String, Integer> LOG_BUFFER = new GMap<String, Integer>();
 	private static final GList<String> LOG_ORDER = new GList<String>();
 	private static final GMap<Class<? extends IService>, IService> runningServices = new GMap<Class<? extends IService>, IService>();
@@ -50,16 +46,6 @@ public class Phantom
 		return (T) runningServices.get(serviceClass);
 	}
 
-	public static TaskManager getTaskManager()
-	{
-		return taskManager;
-	}
-
-	public static ModuleManager getModuleManager()
-	{
-		return moduleManager;
-	}
-
 	public static GMap<String, Integer> getLOG_BUFFER()
 	{
 		return LOG_BUFFER;
@@ -73,42 +59,6 @@ public class Phantom
 	public static boolean isMainThread()
 	{
 		return Bukkit.isPrimaryThread();
-	}
-
-	public static void dumpStartup()
-	{
-		if(!started)
-		{
-			started = true;
-
-			for(Runnable i : startupDump)
-			{
-				try
-				{
-					i.run();
-				}
-
-				catch(Throwable e)
-				{
-					e.printStackTrace();
-				}
-			}
-
-			startupDump.clear();
-		}
-	}
-
-	public static void afterStartup(Runnable r)
-	{
-		if(started)
-		{
-			r.run();
-		}
-
-		else
-		{
-			startupDump.add(r);
-		}
 	}
 
 	public static void flushLogBuffer()
@@ -141,11 +91,6 @@ public class Phantom
 		}
 	}
 
-	public static boolean started()
-	{
-		return started;
-	}
-
 	public static void stopAllServices()
 	{
 		for(IService i : runningServices.v())
@@ -163,11 +108,6 @@ public class Phantom
 		}
 
 		runningServices.clear();
-	}
-
-	public static int getRunningServices(Module i)
-	{
-		return moduleManager.getRunningServices(i);
 	}
 
 	public static GList<Class<? extends IService>> getRunningServices()

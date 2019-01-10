@@ -3,10 +3,10 @@ package com.volmit.phantom.main.commands;
 import com.volmit.phantom.api.command.PhantomSender;
 import com.volmit.phantom.api.lang.F;
 import com.volmit.phantom.api.service.SVC;
+import com.volmit.phantom.imp.command.PhantomCommand;
 import com.volmit.phantom.imp.plugin.Module;
-import com.volmit.phantom.imp.plugin.Phantom;
-import com.volmit.phantom.imp.plugin.PhantomCommand;
 import com.volmit.phantom.lib.service.ModuleSVC;
+import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.main.PhantomModule;
 import com.volmit.phantom.util.text.C;
 

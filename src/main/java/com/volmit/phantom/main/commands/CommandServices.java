@@ -2,8 +2,8 @@ package com.volmit.phantom.main.commands;
 
 import com.volmit.phantom.api.command.PhantomSender;
 import com.volmit.phantom.api.service.IService;
-import com.volmit.phantom.imp.plugin.Phantom;
-import com.volmit.phantom.imp.plugin.PhantomCommand;
+import com.volmit.phantom.imp.command.PhantomCommand;
+import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.main.PhantomModule;
 import com.volmit.phantom.util.text.C;
 

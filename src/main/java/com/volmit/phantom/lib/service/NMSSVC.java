@@ -31,14 +31,14 @@ import com.volmit.phantom.api.lang.V;
 import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.protocol.Protocol;
 import com.volmit.phantom.api.protocol.ProtocolRange;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.sheduler.SR;
 import com.volmit.phantom.imp.nms.AbstractChunk;
 import com.volmit.phantom.imp.nms.ChunkSendQueue;
 import com.volmit.phantom.imp.nms.IPacketHandler;
 import com.volmit.phantom.imp.nms.TinyProtocol;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.imp.protocol.WrapperPlayServerEntityMetadata;
+import com.volmit.phantom.main.PhantomPlugin;
 import com.volmit.phantom.util.sfx.RecordType;
 import com.volmit.phantom.util.text.C;
 import com.volmit.phantom.util.world.MaterialBlock;
@@ -77,7 +77,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutUnloadChunk;
 import net.minecraft.server.v1_12_R1.PathEntity;
 import net.minecraft.server.v1_12_R1.TileEntity;
 
-public class NMSSVC extends SimpleService
+public class NMSSVC implements IService
 {
 	public static int INTERVAL = 1;
 	public static int VOLUME = 24;

@@ -2,7 +2,7 @@ package com.volmit.phantom.api.lang;
 
 import java.io.Serializable;
 
-import com.volmit.phantom.imp.plugin.Phantom;
+import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.util.text.C;
 
 public class D implements Serializable

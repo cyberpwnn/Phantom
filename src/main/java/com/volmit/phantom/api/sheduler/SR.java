@@ -1,10 +1,9 @@
 package com.volmit.phantom.api.sheduler;
 
-import com.volmit.phantom.imp.plugin.TaskManager;
+import com.volmit.phantom.api.job.J;
 
 public abstract class SR implements Runnable
 {
-	public static TaskManager m;
 	private int id = 0;
 
 	public SR()
@@ -14,17 +13,12 @@ public abstract class SR implements Runnable
 
 	public SR(int interval)
 	{
-		this(interval, 0);
-	}
-
-	public SR(int interval, int delay)
-	{
-		id = m.syncRepeating(delay, interval, this);
+		id = J.sr(this, interval);
 	}
 
 	public void cancel()
 	{
-		m.cancel(id);
+		J.csr(id);
 	}
 
 	public int getId()

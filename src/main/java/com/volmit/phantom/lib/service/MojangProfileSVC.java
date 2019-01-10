@@ -6,11 +6,11 @@ import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.VIO;
 import com.volmit.phantom.api.lang.json.JSONArray;
 import com.volmit.phantom.api.lang.json.JSONObject;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.util.plugin.CacheMap;
 
-public class MojangProfileSVC extends SimpleService
+public class MojangProfileSVC implements IService
 {
 	private static final CacheMap<String, UUID> NAME_UUID_CACHE = new CacheMap<String, UUID>(128);
 	private static final CacheMap<UUID, String> UUID_NAME_CACHE = new CacheMap<UUID, String>(128);

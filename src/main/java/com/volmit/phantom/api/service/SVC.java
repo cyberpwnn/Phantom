@@ -1,6 +1,6 @@
 package com.volmit.phantom.api.service;
 
-import com.volmit.phantom.imp.plugin.Phantom;
+import com.volmit.phantom.main.Phantom;
 
 public class SVC
 {

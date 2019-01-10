@@ -1,11 +1,11 @@
-package com.volmit.phantom.imp.plugin;
+package com.volmit.phantom.api.command;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import com.volmit.phantom.api.lang.GList;
-import com.volmit.phantom.imp.plugin.Scaffold.Permission;
+import com.volmit.phantom.api.module.Permission;
 
 public abstract class PhantomPermission
 {

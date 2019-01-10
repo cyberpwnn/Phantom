@@ -9,9 +9,9 @@ import java.security.NoSuchAlgorithmException;
 
 import com.volmit.phantom.api.lang.VIO;
 import com.volmit.phantom.api.lang.VoidOutputStream;
-import com.volmit.phantom.imp.plugin.SimpleService;
+import com.volmit.phantom.api.service.IService;
 
-public class CryptoSVC extends SimpleService
+public class CryptoSVC implements IService
 {
 	@Override
 	public void onStart()

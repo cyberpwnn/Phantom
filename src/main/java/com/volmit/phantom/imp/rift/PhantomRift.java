@@ -33,12 +33,12 @@ import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.api.sheduler.AR;
 import com.volmit.phantom.api.sheduler.S;
 import com.volmit.phantom.imp.generator.VoidGenerator;
-import com.volmit.phantom.imp.plugin.Phantom;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
 import com.volmit.phantom.imp.plugin.R;
 import com.volmit.phantom.imp.plugin.Scaffold.Async;
 import com.volmit.phantom.lib.service.RiftSVC;
+import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.main.PhantomModule;
+import com.volmit.phantom.main.PhantomPlugin;
 
 public class PhantomRift implements Rift, Listener
 {

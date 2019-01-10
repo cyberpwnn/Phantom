@@ -7,14 +7,13 @@ import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.F;
 import com.volmit.phantom.api.lang.Profiler;
 import com.volmit.phantom.api.math.M;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.api.sheduler.AR;
 import com.volmit.phantom.api.sheduler.S;
-import com.volmit.phantom.imp.plugin.Module;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.util.text.C;
 
-public class DevelopmentSVC extends SimpleService
+public class DevelopmentSVC implements IService
 {
 	private AR ar;
 	private File moduleFolder;

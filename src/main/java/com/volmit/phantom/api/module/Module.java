@@ -6,13 +6,13 @@ import java.lang.reflect.Modifier;
 import org.bukkit.event.Listener;
 
 import com.volmit.phantom.api.command.ICommand;
+import com.volmit.phantom.api.command.PhantomPermission;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.registry.Registry;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.imp.module.AnnotationSeeker;
 import com.volmit.phantom.imp.module.SeekableObject;
-import com.volmit.phantom.imp.plugin.Phantom;
-import com.volmit.phantom.imp.plugin.PhantomPermission;
+import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.util.text.C;
 
 public class Module extends SeekableObject implements IModule, Listener

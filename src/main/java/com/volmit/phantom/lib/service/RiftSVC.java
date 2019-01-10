@@ -14,12 +14,12 @@ import com.volmit.phantom.api.lang.VIO;
 import com.volmit.phantom.api.lang.json.JSONException;
 import com.volmit.phantom.api.lang.json.JSONObject;
 import com.volmit.phantom.api.rift.Rift;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.imp.generator.FlatGenerator;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.imp.rift.PhantomRift;
 import com.volmit.phantom.imp.rift.RiftException;
 
-public class RiftSVC extends SimpleService
+public class RiftSVC implements IService
 {
 	private static final GList<Rift> rifts = new GList<>();
 	private static final GList<String> usedNames = new GList<>();

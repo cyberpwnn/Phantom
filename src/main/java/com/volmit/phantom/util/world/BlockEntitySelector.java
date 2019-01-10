@@ -12,7 +12,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.volmit.phantom.api.sheduler.SR;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
+import com.volmit.phantom.main.PhantomPlugin;
 import com.volmit.phantom.util.text.C;
 import com.volmit.phantom.util.vfx.GlowKit;
 

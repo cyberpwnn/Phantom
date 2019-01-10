@@ -25,7 +25,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
 
 import com.volmit.phantom.api.lang.GList;
-import com.volmit.phantom.imp.plugin.PhantomPlugin;
+import com.volmit.phantom.main.PhantomPlugin;
 import com.volmit.phantom.util.text.C;
 
 /*

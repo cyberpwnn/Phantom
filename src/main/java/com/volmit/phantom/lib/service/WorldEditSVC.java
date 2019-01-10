@@ -30,14 +30,14 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.volmit.phantom.api.command.PhantomSender;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.rift.Rift;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.sheduler.A;
 import com.volmit.phantom.api.sheduler.S;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.util.world.Cuboid;
 import com.volmit.phantom.util.world.Cuboid.CuboidDirection;
 
 @SuppressWarnings("deprecation")
-public class WorldEditSVC extends SimpleService
+public class WorldEditSVC implements IService
 {
 	private GMap<File, Schematic> schematicCache;
 	private GMap<File, Vector> schematicOffsetCache;

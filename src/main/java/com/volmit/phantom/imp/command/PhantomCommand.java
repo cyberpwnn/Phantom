@@ -1,10 +1,12 @@
-package com.volmit.phantom.imp.plugin;
+package com.volmit.phantom.imp.command;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import com.volmit.phantom.api.command.ICommand;
+import com.volmit.phantom.api.command.PhantomPermission;
 import com.volmit.phantom.api.lang.GList;
+import com.volmit.phantom.imp.plugin.Scaffold;
 import com.volmit.phantom.imp.plugin.Scaffold.Command;
 
 /**

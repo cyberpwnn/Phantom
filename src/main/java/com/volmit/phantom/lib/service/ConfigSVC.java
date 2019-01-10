@@ -4,12 +4,11 @@ import java.io.File;
 
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GMap;
+import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.sheduler.AR;
-import com.volmit.phantom.imp.plugin.Module;
-import com.volmit.phantom.imp.plugin.SimpleService;
 import com.volmit.phantom.util.text.C;
 
-public class ConfigSVC extends SimpleService
+public class ConfigSVC implements IService
 {
 	private GMap<File, Module> moduleConfigs;
 	private GMap<File, Long> modified;

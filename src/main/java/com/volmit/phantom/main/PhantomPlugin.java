@@ -1,4 +1,4 @@
-package com.volmit.phantom.imp.plugin;
+package com.volmit.phantom.main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -10,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.math.M;
+import com.volmit.phantom.imp.plugin.ModuleManager;
+import com.volmit.phantom.imp.plugin.TaskManager;
 
 public class PhantomPlugin extends JavaPlugin implements Listener
 {
