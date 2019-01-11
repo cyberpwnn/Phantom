@@ -13,7 +13,6 @@ import org.bukkit.generator.ChunkGenerator;
 
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.json.JSONObject;
-import com.volmit.phantom.imp.rift.PhysicsEngine;
 
 public interface Rift
 {

@@ -8,16 +8,16 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 
+import com.volmit.phantom.api.generator.FlatGenerator;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.VIO;
 import com.volmit.phantom.api.lang.json.JSONException;
 import com.volmit.phantom.api.lang.json.JSONObject;
+import com.volmit.phantom.api.rift.PhantomRift;
 import com.volmit.phantom.api.rift.Rift;
+import com.volmit.phantom.api.rift.RiftException;
 import com.volmit.phantom.api.service.IService;
-import com.volmit.phantom.imp.generator.FlatGenerator;
-import com.volmit.phantom.imp.rift.PhantomRift;
-import com.volmit.phantom.imp.rift.RiftException;
 
 public class RiftSVC implements IService
 {

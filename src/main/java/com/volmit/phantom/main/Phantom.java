@@ -8,8 +8,8 @@ import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.math.M;
+import com.volmit.phantom.api.module.ModuleManager;
 import com.volmit.phantom.api.service.IService;
-import com.volmit.phantom.imp.module.ModuleManager;
 import com.volmit.phantom.util.text.C;
 
 public class Phantom
