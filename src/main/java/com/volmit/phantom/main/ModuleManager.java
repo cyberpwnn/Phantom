@@ -20,6 +20,8 @@ import com.volmit.phantom.api.lang.JarScanner;
 import com.volmit.phantom.api.module.Module;
 import com.volmit.phantom.api.module.ModuleDescription;
 import com.volmit.phantom.api.module.ModuleOperation;
+import com.volmit.phantom.api.service.IService;
+import com.volmit.phantom.api.service.SVC;
 
 public class ModuleManager
 {
@@ -68,6 +70,7 @@ public class ModuleManager
 				try
 				{
 					module.executeModuleOperation(ModuleOperation.STOP);
+					stopModuleServices(module);
 				}
 
 				catch(Throwable e)
@@ -107,6 +110,17 @@ public class ModuleManager
 		});
 	}
 
+	private void stopModuleServices(Module module)
+	{
+		for(Class<? extends IService> i : module.getRegisteredServices())
+		{
+			if(SVC.isRunning(i))
+			{
+				Phantom.stopService(i);
+			}
+		}
+	}
+
 	public void loadModule(File file)
 	{
 		J.asa(() ->
@@ -129,6 +143,16 @@ public class ModuleManager
 				String pom = findPom(mclass.getSimpleName(), js);
 				assertNotNull("Could not find module pom, module class name should match pom artifactId and Name", pom);
 				ModuleDescription desc = buildDescription(pom);
+				if(m.getClass().isAnnotationPresent(com.volmit.phantom.api.module.Color.class))
+				{
+					desc.setColor(m.getClass().getAnnotation(com.volmit.phantom.api.module.Color.class).value());
+
+					if(!desc.getColor().isColor())
+					{
+						throw new RuntimeException("Color tag cannot be a format type!");
+					}
+				}
+
 				assertNotNull("Could not read pom file.", desc);
 				Field fd = Module.class.getDeclaredField("description");
 				Field ff = Module.class.getDeclaredField("moduleFile");
@@ -235,8 +259,10 @@ public class ModuleManager
 
 	public void unloadModules()
 	{
-		// TODO Auto-generated method stub
-
+		for(File i : fileModules.k())
+		{
+			unloadModule(fileModules.get(i), () -> D.ll("Unloaded Module " + i.getName()));
+		}
 	}
 
 	public GSet<Class<?>> getClasses(Module module)

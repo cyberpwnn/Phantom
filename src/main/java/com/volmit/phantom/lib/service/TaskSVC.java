@@ -32,13 +32,26 @@ public class TaskSVC implements IService, Runnable
 		delayTasks = new GMap<>();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(PhantomPlugin.plugin, this, 0, 0);
 
-		//@builder
-		ex = new ThrottledExecutor<Runnable>((r) -> tasks.add(r))
-				.async(false)
-				.interval(0)
-				.queue(new PhantomQueue<Runnable>())
-				.start();
-		//@done
+		ex = new ThrottledExecutor<Runnable>()
+		{
+			@Override
+			public void execute(Runnable t)
+			{
+				try
+				{
+					t.run();
+				}
+
+				catch(Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+		ex.async(false);
+		ex.interval(0);
+		ex.queue(new PhantomQueue<Runnable>());
+		ex.start();
 	}
 
 	@Override

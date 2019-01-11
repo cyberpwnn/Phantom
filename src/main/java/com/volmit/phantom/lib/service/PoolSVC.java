@@ -56,7 +56,26 @@ public class PoolSVC extends Thread implements IService, Runnable
 		}, true);
 
 		start();
-		ex = new ThrottledExecutor<Runnable>((r) -> tasks.add(r)).async(true).interval(0).queue(new PhantomQueue<Runnable>()).start();
+		ex = new ThrottledExecutor<Runnable>()
+		{
+			@Override
+			public void execute(Runnable t)
+			{
+				try
+				{
+					t.run();
+				}
+
+				catch(Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+		ex.async(true);
+		ex.interval(0);
+		ex.queue(new PhantomQueue<Runnable>());
+		ex.start();
 	}
 
 	@Override

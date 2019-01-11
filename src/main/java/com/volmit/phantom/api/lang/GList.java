@@ -796,4 +796,14 @@ public class GList<T> extends ArrayList<T>
 			add(t);
 		}
 	}
+
+	public GList<T> removeFirst()
+	{
+		if(!isEmpty())
+		{
+			remove(0);
+		}
+
+		return this;
+	}
 }

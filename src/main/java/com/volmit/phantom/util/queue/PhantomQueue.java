@@ -26,22 +26,18 @@ public class PhantomQueue<T> implements Queue<T>
 	}
 
 	@Override
-	public void queue(@SuppressWarnings("unchecked") T... t)
+	public void queue(T t)
 	{
-		if(t.length == 1)
-		{
-			queue.add(t[0]);
-			return;
-		}
-
 		queue.add(t);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void queue(GList<T> t)
 	{
-		queue((T[]) t.toArray());
+		for(T i : t)
+		{
+			queue(i);
+		}
 	}
 
 	@Override

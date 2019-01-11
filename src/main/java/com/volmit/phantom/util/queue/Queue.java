@@ -4,7 +4,7 @@ import com.volmit.phantom.api.lang.GList;
 
 public interface Queue<T>
 {
-	public void queue(@SuppressWarnings("unchecked") T... t);
+	public void queue(T t);
 
 	public void queue(GList<T> t);
 

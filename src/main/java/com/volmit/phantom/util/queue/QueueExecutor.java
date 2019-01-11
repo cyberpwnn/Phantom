@@ -2,17 +2,17 @@ package com.volmit.phantom.util.queue;
 
 public interface QueueExecutor<T>
 {
-	public QueueExecutor<T> queue(Queue<T> t);
+	public void queue(Queue<T> t);
 
 	public Queue<T> getQueue();
 
-	public QueueExecutor<T> start();
+	public void start();
 
-	public QueueExecutor<T> stop();
+	public void stop();
 
-	public QueueExecutor<T> update();
+	public void doUpdate();
 
-	public QueueExecutor<T> async(boolean async);
+	public void async(boolean async);
 
-	public QueueExecutor<T> interval(int ticks);
+	public void interval(int ticks);
 }

@@ -41,6 +41,11 @@ public class ModuleDescription
 
 	public C getColor()
 	{
+		if(color == null)
+		{
+			return C.WHITE;
+		}
+
 		return color;
 	}
 

@@ -1,29 +1,23 @@
 package com.volmit.phantom.util.queue;
 
-import org.bukkit.util.Consumer;
-
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.sheduler.AR;
 import com.volmit.phantom.api.sheduler.CancellableTask;
 import com.volmit.phantom.api.sheduler.SR;
 
-public class PhantomExecutor<T> implements QueueExecutor<T>
+public abstract class PhantomExecutor<T> implements QueueExecutor<T>
 {
 	private boolean async;
 	private int ticks;
 	private Queue<T> q;
 	private CancellableTask task;
-	private final Consumer<T> consumer;
 
-	public PhantomExecutor(Consumer<T> consumer)
-	{
-		this.consumer = consumer;
-	}
+	public abstract void execute(T t);
 
 	@Override
-	public PhantomExecutor<T> queue(Queue<T> t)
+	public void queue(Queue<T> t)
 	{
 		this.q = t;
-		return this;
 	}
 
 	@Override
@@ -33,29 +27,38 @@ public class PhantomExecutor<T> implements QueueExecutor<T>
 	}
 
 	@Override
-	public PhantomExecutor<T> start()
+	public void start()
 	{
-		task = async ? new AR(ticks)
+		J.ass(() ->
 		{
-			@Override
-			public void run()
+			if(async)
 			{
-				update();
+				task = new AR(ticks)
+				{
+					@Override
+					public void run()
+					{
+						doUpdate();
+					}
+				};
 			}
-		} : new SR(ticks)
-		{
-			@Override
-			public void run()
-			{
-				update();
-			}
-		};
 
-		return this;
+			else
+			{
+				task = new SR(ticks)
+				{
+					@Override
+					public void run()
+					{
+						doUpdate();
+					}
+				};
+			}
+		});
 	}
 
 	@Override
-	public PhantomExecutor<T> stop()
+	public void stop()
 	{
 		try
 		{
@@ -66,37 +69,26 @@ public class PhantomExecutor<T> implements QueueExecutor<T>
 		{
 
 		}
-
-		return this;
 	}
 
 	@Override
-	public PhantomExecutor<T> update()
+	public void doUpdate()
 	{
 		while(q.hasNext())
 		{
-			getConsumer().accept(q.next());
+			execute(q.next());
 		}
-
-		return this;
 	}
 
 	@Override
-	public PhantomExecutor<T> async(boolean async)
+	public void async(boolean async)
 	{
 		this.async = async;
-		return this;
 	}
 
 	@Override
-	public PhantomExecutor<T> interval(int ticks)
+	public void interval(int ticks)
 	{
 		this.ticks = ticks;
-		return this;
-	}
-
-	public Consumer<T> getConsumer()
-	{
-		return consumer;
 	}
 }

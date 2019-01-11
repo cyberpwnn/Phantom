@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.util.text.C;
 
-public class D implements Serializable
+public class D implements Serializable, Logged
 {
 	private static final long serialVersionUID = 1L;
 	private String tag;
@@ -66,6 +66,7 @@ public class D implements Serializable
 		return dm.get(tag);
 	}
 
+	@Override
 	public void l(Object... s)
 	{
 		log("INFO", s);
@@ -76,11 +77,13 @@ public class D implements Serializable
 		log("VERBOSE", s);
 	}
 
+	@Override
 	public void w(Object... s)
 	{
 		log("WARN", s);
 	}
 
+	@Override
 	public void f(Object... s)
 	{
 		log("FATAL", s);
