@@ -23,6 +23,7 @@ import com.volmit.phantom.api.module.ModuleDescription;
 import com.volmit.phantom.api.module.ModuleOperation;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
+import com.volmit.phantom.api.sheduler.S;
 import com.volmit.phantom.lib.service.DevelopmentSVC;
 import com.volmit.phantom.main.Phantom;
 import com.volmit.phantom.main.PhantomModule;
@@ -183,12 +184,19 @@ public class ModuleManager
 				fd.set(m, desc);
 				ff.set(m, file);
 				m.executeModuleOperation(ModuleOperation.REGISTER_INSTANCES);
-				m.executeModuleOperation(ModuleOperation.REGISTER_PERMISSIONS);
-				m.executeModuleOperation(ModuleOperation.REGISTER_COMMANDS);
-				m.executeModuleOperation(ModuleOperation.REGISTER_CONFIGS);
-				m.executeModuleOperation(ModuleOperation.REGISTER_SERVICES);
-				J.s(() -> m.executeModuleOperation(ModuleOperation.START));
-				D.ll("Started Module: " + m.getName());
+				new S()
+				{
+					@Override
+					public void run()
+					{
+						m.executeModuleOperation(ModuleOperation.REGISTER_PERMISSIONS);
+						m.executeModuleOperation(ModuleOperation.REGISTER_COMMANDS);
+						m.executeModuleOperation(ModuleOperation.REGISTER_CONFIGS);
+						m.executeModuleOperation(ModuleOperation.REGISTER_SERVICES);
+						J.s(() -> m.executeModuleOperation(ModuleOperation.START));
+						D.ll("Started Module: " + m.getName());
+					}
+				};
 			}
 
 			catch(Throwable e)

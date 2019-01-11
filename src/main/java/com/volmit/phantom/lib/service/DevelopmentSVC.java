@@ -109,13 +109,25 @@ public class DevelopmentSVC extends AsyncTickService
 
 						px.end();
 						busy = false;
-						File jf = jj;
+						File jf = jj == null ? new File(moduleFolder, i.getName()) : jj;
 
-						if(jf != null)
+						if(!jf.exists() && i.exists())
 						{
-							J.a(() -> Phantom.getModuleManager().loadModule(jf));
-							J.a(() -> w("Hotloaded Module " + i.getName() + " in " + F.time(px.getMillis(), 1)), 20);
+							try
+							{
+								Files.copy(i, jf);
+							}
+
+							catch(IOException e)
+							{
+								e.printStackTrace();
+							}
+
+							i.delete();
 						}
+
+						J.a(() -> Phantom.getModuleManager().loadModule(jf));
+						J.a(() -> w("Hotloaded Module " + i.getName() + " in " + F.time(px.getMillis(), 1)), 20);
 					});
 				}
 			}
@@ -123,7 +135,7 @@ public class DevelopmentSVC extends AsyncTickService
 
 		catch(Throwable e)
 		{
-
+			e.printStackTrace();
 		}
 	}
 

@@ -32,6 +32,8 @@ import com.volmit.phantom.api.registry.ConfigRegistry;
 import com.volmit.phantom.api.registry.ModuleRegistry;
 import com.volmit.phantom.api.registry.Registry;
 import com.volmit.phantom.api.service.IService;
+import com.volmit.phantom.api.sheduler.LA;
+import com.volmit.phantom.api.sheduler.S;
 import com.volmit.phantom.imp.command.PhantomCommand;
 import com.volmit.phantom.imp.command.RouterCommand;
 import com.volmit.phantom.imp.command.VirtualCommand;
@@ -80,7 +82,7 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 					return setAll(seekerInstance, Module.this);
 				case REGISTER_PERMISSIONS:
 					Object o = setEach(seekerPermission, (f) -> setPermission(f));
-					registerAllPermissions();
+					J.ass(() -> registerAllPermissions());
 					return o;
 				case START:
 					Object ox = invokeAll(seekerStart);
@@ -110,54 +112,68 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 
 	private void writeStructure()
 	{
-		try
+		FileConfiguration fc = new YamlConfiguration();
+		fc.set("properties.name", getName());
+		fc.set("properties.authors", getAuthors());
+		fc.set("properties.color", getColor().name());
+		fc.set("properties.version", getVersion());
+		fc.set("properties.module", getClass().getCanonicalName());
+		fc.set("properties.executable", isNative() ? "NATIVE" : getModuleFile().getPath());
+
+		new S()
 		{
-			FileConfiguration fc = new YamlConfiguration();
-			fc.set("properties.name", getName());
-			fc.set("properties.authors", getAuthors());
-			fc.set("properties.color", getColor().name());
-			fc.set("properties.version", getVersion());
-			fc.set("properties.module", getClass().getCanonicalName());
-			fc.set("properties.executable", isNative() ? "NATIVE" : getModuleFile().getPath());
-
-			for(org.bukkit.permissions.Permission i : computePermissions())
+			@Override
+			public void run()
 			{
-				fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".default", i.getDefault().name());
-				fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".description", i.getDescription());
-
-				for(String j : i.getChildren().keySet())
+				for(org.bukkit.permissions.Permission i : computePermissions())
 				{
-					fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".children." + j.replaceAll("\\.", "/d/"), i.getChildren().get(j));
+					fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".default", i.getDefault().name());
+					fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".description", i.getDescription());
+
+					for(String j : i.getChildren().keySet())
+					{
+						fc.set("permissions." + i.getName().replaceAll("\\.", "/d/") + ".children." + j.replaceAll("\\.", "/d/"), i.getChildren().get(j));
+					}
 				}
+
+				new LA()
+				{
+					@Override
+					public void run()
+					{
+						for(GList<String> i : commands.k())
+						{
+							fc.set("commands." + i.get(0) + ".aliases", i.copy().removeFirst());
+						}
+
+						for(Class<? extends IService> i : getRegisteredServices())
+						{
+							fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".executable", i.getCanonicalName());
+							fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".type", i.getSuperclass().getCanonicalName());
+							fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".name", i.getSimpleName().replaceAll("SVC", " Service"));
+							fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".canonical", getClass().getPackage().getName() + ":" + i.getCanonicalName());
+						}
+
+						for(File i : configRegistry.getRegistered())
+						{
+							fc.set("configurations." + i.getName().replaceAll(".yml", "") + ".path", i.getPath());
+							fc.set("configurations." + i.getName().replaceAll(".yml", "") + ".hotloaded", true);
+						}
+
+						try
+						{
+							VIO.writeAll(getDataFile("structure.yml"), fc.saveToString().replaceAll("\\Q/d/\\E", "."));
+						}
+
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+						l("Wrote Structure");
+					}
+				};
 			}
-
-			for(GList<String> i : commands.k())
-			{
-				fc.set("commands." + i.get(0) + ".aliases", i.copy().removeFirst());
-			}
-
-			for(Class<? extends IService> i : getRegisteredServices())
-			{
-				fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".executable", i.getCanonicalName());
-				fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".type", i.getSuperclass().getCanonicalName());
-				fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".name", i.getSimpleName().replaceAll("SVC", " Service"));
-				fc.set("services." + i.getSimpleName().replaceAll("SVC", "") + ".canonical", getClass().getPackage().getName() + ":" + i.getCanonicalName());
-			}
-
-			for(File i : configRegistry.getRegistered())
-			{
-				fc.set("configurations." + i.getName().replaceAll(".yml", "") + ".path", i.getPath());
-				fc.set("configurations." + i.getName().replaceAll(".yml", "") + ".hotloaded", true);
-			}
-
-			VIO.writeAll(getDataFile("structure.yml"), fc.saveToString().replaceAll("\\Q/d/\\E", "."));
-			l("Wrote Structure");
-		}
-
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		};
 	}
 
 	@Override

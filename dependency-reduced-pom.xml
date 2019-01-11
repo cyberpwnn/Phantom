@@ -4,7 +4,7 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>3.2.13</version>
+  <version>3.2.14</version>
   <developers>
     <developer>
       <name>cyberpwn</name>
@@ -56,8 +56,8 @@
                 <configuration>
                   <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
                   <arguments>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.13.jar</argument>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.13\Phantom-3.2.13.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.14.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.14\Phantom-3.2.14.jar</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -65,8 +65,8 @@
             <configuration>
               <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
               <arguments>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.13.jar</argument>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.13\Phantom-3.2.13.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.14.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.14\Phantom-3.2.14.jar</argument>
               </arguments>
             </configuration>
           </plugin>
