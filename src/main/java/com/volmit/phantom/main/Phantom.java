@@ -170,6 +170,6 @@ public class Phantom
 
 	public static void suckerpunch()
 	{
-		J.sr(() -> flushLogBuffer(), 27);
+		J.ass(() -> J.sr(() -> flushLogBuffer(), 27));
 	}
 }
