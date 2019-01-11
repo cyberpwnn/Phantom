@@ -39,4 +39,6 @@ public interface IModule extends Logged
 	public String getTag(String sub);
 
 	public ModuleDescription getDescription();
+
+	public boolean isNative();
 }

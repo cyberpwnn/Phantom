@@ -118,7 +118,7 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 			fc.set("properties.color", getColor().name());
 			fc.set("properties.version", getVersion());
 			fc.set("properties.module", getClass().getCanonicalName());
-			fc.set("properties.executable", getModuleFile().getPath());
+			fc.set("properties.executable", isNative() ? "NATIVE" : getModuleFile().getPath());
 
 			for(org.bukkit.permissions.Permission i : computePermissions())
 			{
@@ -263,6 +263,21 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 	}
 
 	@Override
+	public void forceBindService(Class<? extends IService> svc)
+	{
+		if(!serviceRegistry.getRegistered().contains(svc))
+		{
+			serviceRegistry.register(svc);
+		}
+	}
+
+	@Override
+	public boolean isNative()
+	{
+		return false;
+	}
+
+	@Override
 	public File getDataFolder(String... folders)
 	{
 		if(folders.length == 0)
@@ -389,6 +404,11 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 	@SuppressWarnings("unchecked")
 	private void registerServices()
 	{
+		if(isNative())
+		{
+			return;
+		}
+
 		for(Class<?> i : getModuleClasses(IService.class))
 		{
 			serviceRegistry.register((Class<? extends IService>) i);
@@ -531,15 +551,6 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 					it.remove();
 				}
 			}
-		}
-	}
-
-	@Override
-	public void forceBindService(Class<? extends IService> svc)
-	{
-		if(!serviceRegistry.getRegistered().contains(svc))
-		{
-			serviceRegistry.register(svc);
 		}
 	}
 }

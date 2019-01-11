@@ -21,6 +21,11 @@ public class ModuleDescription
 
 	public String getAuthors()
 	{
+		if(authors == null)
+		{
+			return "Anonymous";
+		}
+
 		return authors;
 	}
 

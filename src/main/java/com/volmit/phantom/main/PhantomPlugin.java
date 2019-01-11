@@ -1,10 +1,6 @@
 package com.volmit.phantom.main;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.volmit.phantom.api.job.J;
@@ -29,24 +25,6 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 		J.executeAfterStartupQueue();
 		Phantom.suckerpunch();
 		D.ll("Phantom Online");
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(PlayerCommandPreprocessEvent e)
-	{
-		if(e.getMessage().equalsIgnoreCase("/tests") && e.getPlayer().isOp())
-		{
-			e.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void on(ServerCommandEvent e)
-	{
-		if(e.getCommand().equalsIgnoreCase("tests"))
-		{
-			e.setCancelled(true);
-		}
 	}
 
 	@Override

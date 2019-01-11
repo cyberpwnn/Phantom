@@ -1,4 +1,4 @@
-package com.volmit.phantom.main;
+package com.volmit.phantom.imp.module;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 
 import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.D;
+import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.lang.GSet;
 import com.volmit.phantom.api.lang.JarScanner;
@@ -23,6 +24,8 @@ import com.volmit.phantom.api.module.ModuleOperation;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.lib.service.DevelopmentSVC;
+import com.volmit.phantom.main.Phantom;
+import com.volmit.phantom.main.PhantomModule;
 
 public class ModuleManager
 {
@@ -49,6 +52,16 @@ public class ModuleManager
 
 		J.asa(() ->
 		{
+			try
+			{
+				PhantomModule.create();
+			}
+
+			catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+
 			for(File i : moduleFolder.listFiles())
 			{
 				if(i.isFile() && i.getName().endsWith(".jar"))
@@ -273,6 +286,17 @@ public class ModuleManager
 		{
 			unloadModule(fileModules.get(i), () -> D.ll("Unloaded Module " + i.getName()));
 		}
+
+		try
+		{
+			PhantomModule.mod.executeModuleOperation(ModuleOperation.STOP);
+			PhantomModule.mod.executeModuleOperation(ModuleOperation.UNREGISTER_ALL);
+		}
+
+		catch(Throwable e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public GSet<Class<?>> getClasses(Module module)
@@ -288,5 +312,10 @@ public class ModuleManager
 	public boolean hasModule(File i)
 	{
 		return fileModules.containsKey(i);
+	}
+
+	public GList<Module> getModules()
+	{
+		return fileModules.v().qadd(PhantomModule.mod);
 	}
 }

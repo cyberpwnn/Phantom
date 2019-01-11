@@ -4,7 +4,7 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>3.2.12</version>
+  <version>3.2.13</version>
   <developers>
     <developer>
       <name>cyberpwn</name>
@@ -53,18 +53,26 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
+                  <arguments>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.13.jar</argument>
+                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.13\Phantom-3.2.13.jar</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>${project.basedir}/scripts/release.bat</executable>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
               <arguments>
-                <argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
-                <argument>${project.basedir}\release\${project.version}\Phantom-${project.version}.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.13.jar</argument>
+                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.13\Phantom-3.2.13.jar</argument>
               </arguments>
             </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -76,20 +84,28 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
                 </goals>
+                <configuration>
+                  <additionalJOptions>
+                    <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                  </additionalJOptions>
+                  <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
+                </configuration>
               </execution>
             </executions>
             <configuration>
               <additionalJOptions>
-                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-${project.name}</additionalJOption>
-                <additionalparam>${javadoc.opts}</additionalparam>
+                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
+                <additionalparam>-Xdoclint:none</additionalparam>
               </additionalJOptions>
-              <stylesheetfile>${project.basedir}\stylesheet.css</stylesheetfile>
+              <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
             </configuration>
           </plugin>
         </plugins>
@@ -110,15 +126,11 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.12.jar</arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.12.jar</arguments>
+              <executable>${project.basedir}/scripts/dev.bat</executable>
+              <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
