@@ -71,7 +71,6 @@ public class PoolSVC extends Thread implements IService, Runnable
 
 			catch(InterruptedException e)
 			{
-				e.printStackTrace();
 				break;
 			}
 
