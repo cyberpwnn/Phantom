@@ -238,4 +238,9 @@ public class ModuleManager
 		// TODO Auto-generated method stub
 
 	}
+
+	public GSet<Class<?>> getClasses(Module module)
+	{
+		return classes.get(module.getModuleFile());
+	}
 }

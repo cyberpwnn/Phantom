@@ -3,24 +3,39 @@ package com.volmit.phantom.api.module;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.PermissionDefault;
 
-import com.volmit.phantom.api.command.ICommand;
 import com.volmit.phantom.api.command.PhantomPermission;
 import com.volmit.phantom.api.config.Configurator;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
+import com.volmit.phantom.api.lang.GMap;
+import com.volmit.phantom.api.lang.GSet;
+import com.volmit.phantom.api.lang.V;
 import com.volmit.phantom.api.registry.ConfigRegistry;
+import com.volmit.phantom.api.registry.ModuleRegistry;
 import com.volmit.phantom.api.registry.Registry;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.imp.command.PhantomCommand;
+import com.volmit.phantom.imp.command.RouterCommand;
+import com.volmit.phantom.imp.command.VirtualCommand;
 import com.volmit.phantom.imp.module.AnnotationSeeker;
 import com.volmit.phantom.imp.module.SeekableObject;
 import com.volmit.phantom.main.Phantom;
+import com.volmit.phantom.main.PhantomPlugin;
 import com.volmit.phantom.util.text.C;
 
-public class Module extends SeekableObject implements IModule, Listener
+public class Module extends SeekableObject implements IModule, Listener, CommandExecutor
 {
 	private D d;
 	private File moduleFile;
@@ -33,14 +48,13 @@ public class Module extends SeekableObject implements IModule, Listener
 	private AnnotationSeeker seekerCommand;
 	private AnnotationSeeker seekerPermission;
 	private Registry<Class<? extends IService>> serviceRegistry;
-	private Registry<ICommand> commandRegistry;
-	private Registry<PhantomPermission> permissionRegistry;
 	private ConfigRegistry configRegistry;
+	private GMap<GList<String>, VirtualCommand> commands;
 
 	public Module()
 	{
-		constructSeekers();
 		constructRegistries();
+		constructSeekers();
 	}
 
 	public Object executeModuleOperation(ModuleOperation op, Object... params)
@@ -56,7 +70,9 @@ public class Module extends SeekableObject implements IModule, Listener
 				case REGISTER_INSTANCES:
 					return setAll(seekerInstance, Module.this);
 				case REGISTER_PERMISSIONS:
-					return setEach(seekerPermission, (f) -> setPermission(f));
+					Object o = setEach(seekerPermission, (f) -> setPermission(f));
+					registerAllPermissions();
+					return o;
 				case START:
 					return invokeAll(seekerStart);
 				case STOP:
@@ -64,11 +80,12 @@ public class Module extends SeekableObject implements IModule, Listener
 				case TEST:
 					return invokeSingle(seekerTest, (String) params[0], params[1]);
 				case UNREGISTER_ALL:
-					serviceRegistry.unregisterAll();
-					commandRegistry.unregisterAll();
-					permissionRegistry.unregisterAll();
+					unregisterCommands();
+					unregisterPermissions();
 					configRegistry.unregisterAll();
+					serviceRegistry.unregisterAll();
 				case REGISTER_SERVICES:
+					registerServices();
 			}
 		}
 
@@ -80,11 +97,123 @@ public class Module extends SeekableObject implements IModule, Listener
 		return null;
 	}
 
+	public GSet<Class<?>> getModuleClasses()
+	{
+		return Phantom.getModuleManager().getClasses(this);
+	}
+
+	public GSet<Class<?>> getModuleClasses(Class<?> c)
+	{
+		GSet<Class<?>> cc = new GSet<Class<?>>();
+
+		for(Class<?> i : getModuleClasses())
+		{
+			if(c.isAssignableFrom(i))
+			{
+				cc.add(i);
+			}
+		}
+
+		return cc;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void registerServices()
+	{
+		for(Class<?> i : getModuleClasses(IService.class))
+		{
+			serviceRegistry.register((Class<? extends IService>) i);
+		}
+	}
+
+	private void unregisterCommands()
+	{
+		for(Field i : seekerCommand.seekFields(getClass()))
+		{
+			try
+			{
+				unregisterCommand((PhantomCommand) i.get(this));
+			}
+
+			catch(Throwable e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void registerCommand(PhantomCommand cmd, String t)
+	{
+		commands.put(cmd.getAllNodes(), new VirtualCommand(this, cmd, t.trim().isEmpty() ? getTag() : getTag(t.trim())));
+		PluginCommand cc = PhantomPlugin.plugin.getCommand(cmd.getNode().toLowerCase());
+
+		if(cc != null)
+		{
+			cc.setExecutor(this);
+			cc.setUsage(getName() + ":" + getClass().toString());
+		}
+
+		else
+		{
+			RouterCommand r = new RouterCommand(cmd, this);
+			r.setUsage(getName() + ":" + getClass().toString());
+			((CommandMap) new V(Bukkit.getServer()).get("commandMap")).register("", r);
+		}
+	}
+
+	public void unregisterCommand(PhantomCommand cmd)
+	{
+		SimpleCommandMap m = new V(Bukkit.getServer()).get("commandMap");
+		Map<String, Command> k = new V(m).get("knownCommands");
+
+		for(Iterator<Map.Entry<String, Command>> it = k.entrySet().iterator(); it.hasNext();)
+		{
+			Map.Entry<String, Command> entry = it.next();
+			if(entry.getValue() instanceof Command)
+			{
+				org.bukkit.command.Command c = (org.bukkit.command.Command) entry.getValue();
+				String u = c.getUsage();
+
+				if(u != null && u.equals(getName() + ":" + getClass().toString()))
+				{
+					D.as("Module Manager").l("Unregistering Command: " + c.getName());
+					c.unregister(m);
+					it.remove();
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args)
+	{
+		GList<String> chain = new GList<String>().qadd(args);
+
+		for(GList<String> i : commands.k())
+		{
+			for(String j : i)
+			{
+				if(j.equalsIgnoreCase(label))
+				{
+					VirtualCommand cmd = commands.get(i);
+
+					if(cmd.hit(sender, chain.copy()))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private Object setPermission(Field f)
 	{
 		try
 		{
 			PhantomPermission o = (PhantomPermission) f.getType().getConstructor().newInstance();
+
 			return o;
 		}
 
@@ -102,6 +231,7 @@ public class Module extends SeekableObject implements IModule, Listener
 		{
 			PhantomCommand o = (PhantomCommand) f.getType().getConstructor().newInstance();
 			o.setCategory(f.getAnnotation(Command.class).value());
+			registerCommand(o, getTag(f.getAnnotation(Command.class).value()));
 			return o;
 		}
 
@@ -143,7 +273,9 @@ public class Module extends SeekableObject implements IModule, Listener
 
 	private void constructRegistries()
 	{
+		commands = new GMap<>();
 		configRegistry = new ConfigRegistry();
+		serviceRegistry = new ModuleRegistry<Class<? extends IService>>();
 	}
 
 	private void constructSeekers()
@@ -256,9 +388,75 @@ public class Module extends SeekableObject implements IModule, Listener
 		return description;
 	}
 
-	public void configModified(String name)
+	private void registerAllPermissions()
 	{
-		// TODO Auto-generated method stub
+		for(org.bukkit.permissions.Permission i : computePermissions())
+		{
+			try
+			{
+				Bukkit.getPluginManager().addPermission(i);
+			}
 
+			catch(Throwable e)
+			{
+
+			}
+		}
+	}
+
+	private void unregisterPermissions()
+	{
+		for(org.bukkit.permissions.Permission i : computePermissions())
+		{
+			Bukkit.getPluginManager().removePermission(i);
+		}
+	}
+
+	private GList<org.bukkit.permissions.Permission> computePermissions()
+	{
+		GList<org.bukkit.permissions.Permission> g = new GList<>();
+		for(Field i : seekerPermission.seekFields(getClass()))
+		{
+			try
+			{
+				PhantomPermission x = (PhantomPermission) i.get(Modifier.isStatic(i.getModifiers()) ? null : this);
+				g.add(toPermission(x));
+				g.addAll(computePermissions(x));
+			}
+
+			catch(IllegalArgumentException | IllegalAccessException | SecurityException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return g.removeDuplicates();
+	}
+
+	private GList<org.bukkit.permissions.Permission> computePermissions(PhantomPermission p)
+	{
+		GList<org.bukkit.permissions.Permission> g = new GList<>();
+
+		for(PhantomPermission i : p.getChildren())
+		{
+			g.add(toPermission(i));
+			g.addAll(computePermissions(i));
+		}
+
+		return g;
+	}
+
+	private org.bukkit.permissions.Permission toPermission(PhantomPermission p)
+	{
+		org.bukkit.permissions.Permission perm = new org.bukkit.permissions.Permission(p.getFullNode() + (p.hasParent() ? "" : ".*"));
+		perm.setDescription(p.getDescription() == null ? "" : p.getDescription());
+		perm.setDefault(p.isDefault() ? PermissionDefault.TRUE : PermissionDefault.OP);
+
+		for(PhantomPermission i : p.getChildren())
+		{
+			perm.getChildren().put(i.getFullNode(), true);
+		}
+
+		return perm;
 	}
 }
