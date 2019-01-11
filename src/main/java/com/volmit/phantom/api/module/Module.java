@@ -41,27 +41,35 @@ public class Module extends SeekableObject implements IModule, Listener
 
 	public Object executeModuleOperation(ModuleOperation op, Object... params)
 	{
-		switch(op)
+		try
 		{
-			case REGISTER_COMMANDS:
-				return setEach(seekerCommand, (f) -> setCommand(f));
-			case REGISTER_CONFIGS:
-				return setEach(seekerConfig, (f) -> setConfig(f));
-			case REGISTER_INSTANCES:
-				return setAll(seekerInstance, Module.this);
-			case REGISTER_PERMISSIONS:
-				return setEach(seekerPermission, (f) -> setPermission(f));
-			case START:
-				return invokeAll(seekerStart);
-			case STOP:
-				return invokeAll(seekerStop);
-			case TEST:
-				return invokeSingle(seekerTest, (String) params[0], params[1]);
-			case UNREGISTER_ALL:
-				serviceRegistry.unregisterAll();
-				commandRegistry.unregisterAll();
-				permissionRegistry.unregisterAll();
-			case REGISTER_SERVICES:
+			switch(op)
+			{
+				case REGISTER_COMMANDS:
+					return setEach(seekerCommand, (f) -> setCommand(f));
+				case REGISTER_CONFIGS:
+					return setEach(seekerConfig, (f) -> setConfig(f));
+				case REGISTER_INSTANCES:
+					return setAll(seekerInstance, Module.this);
+				case REGISTER_PERMISSIONS:
+					return setEach(seekerPermission, (f) -> setPermission(f));
+				case START:
+					return invokeAll(seekerStart);
+				case STOP:
+					return invokeAll(seekerStop);
+				case TEST:
+					return invokeSingle(seekerTest, (String) params[0], params[1]);
+				case UNREGISTER_ALL:
+					serviceRegistry.unregisterAll();
+					commandRegistry.unregisterAll();
+					permissionRegistry.unregisterAll();
+				case REGISTER_SERVICES:
+			}
+		}
+
+		catch(Throwable e)
+		{
+			e.printStackTrace();
 		}
 
 		return null;
@@ -71,8 +79,7 @@ public class Module extends SeekableObject implements IModule, Listener
 	{
 		try
 		{
-			Object o = f.getType().getConstructor().newInstance();
-			// TODO set perm
+			PhantomPermission o = (PhantomPermission) f.getType().getConstructor().newInstance();
 			return o;
 		}
 
@@ -127,7 +134,7 @@ public class Module extends SeekableObject implements IModule, Listener
 		seekerInstance = new AnnotationSeeker(Instance.class, (m) -> Modifier.isStatic(m) && !Modifier.isPrivate(m));
 		seekerConfig = new AnnotationSeeker(Config.class, (m) -> Modifier.isStatic(m));
 		seekerCommand = new AnnotationSeeker(Command.class, (m) -> !Modifier.isStatic(m));
-		seekerPermission = new AnnotationSeeker(Command.class, (m) -> !Modifier.isStatic(m));
+		seekerPermission = new AnnotationSeeker(Permission.class, (m) -> Modifier.isPublic(m));
 	}
 
 	@Override
