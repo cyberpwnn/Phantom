@@ -13,11 +13,11 @@ import com.volmit.phantom.util.text.C;
 
 public class Phantom
 {
-	private static final ModuleManager moduleManager = new ModuleManager();
 	private static final GMap<String, Integer> LOG_BUFFER = new GMap<String, Integer>();
 	private static final GList<String> LOG_ORDER = new GList<String>();
 	private static final GMap<Class<? extends IService>, IService> runningServices = new GMap<Class<? extends IService>, IService>();
 	private static int lp = 0;
+	private static final ModuleManager moduleManager = new ModuleManager();
 
 	public static String tag()
 	{

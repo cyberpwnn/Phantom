@@ -22,6 +22,7 @@ import com.volmit.phantom.api.module.ModuleDescription;
 import com.volmit.phantom.api.module.ModuleOperation;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.service.SVC;
+import com.volmit.phantom.lib.service.DevelopmentSVC;
 
 public class ModuleManager
 {
@@ -37,6 +38,14 @@ public class ModuleManager
 		classes = new GMap<>();
 		fileModules = new GMap<>();
 		moduleFolder.mkdirs();
+
+		File inject = new File(moduleFolder, "inject");
+
+		if(inject.exists() && inject.isDirectory())
+		{
+			D.ll("Found inject folder. Starting Developer SVC");
+			SVC.start(DevelopmentSVC.class);
+		}
 
 		J.asa(() ->
 		{
@@ -164,6 +173,7 @@ public class ModuleManager
 				m.executeModuleOperation(ModuleOperation.REGISTER_PERMISSIONS);
 				m.executeModuleOperation(ModuleOperation.REGISTER_COMMANDS);
 				m.executeModuleOperation(ModuleOperation.REGISTER_CONFIGS);
+				m.executeModuleOperation(ModuleOperation.REGISTER_SERVICES);
 				J.s(() -> m.executeModuleOperation(ModuleOperation.START));
 				D.ll("Started Module: " + m.getName());
 			}
@@ -268,5 +278,15 @@ public class ModuleManager
 	public GSet<Class<?>> getClasses(Module module)
 	{
 		return classes.get(module.getModuleFile());
+	}
+
+	public Module getModule(File i)
+	{
+		return fileModules.get(i);
+	}
+
+	public boolean hasModule(File i)
+	{
+		return fileModules.containsKey(i);
 	}
 }

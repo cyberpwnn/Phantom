@@ -533,4 +533,13 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 			}
 		}
 	}
+
+	@Override
+	public void forceBindService(Class<? extends IService> svc)
+	{
+		if(!serviceRegistry.getRegistered().contains(svc))
+		{
+			serviceRegistry.register(svc);
+		}
+	}
 }

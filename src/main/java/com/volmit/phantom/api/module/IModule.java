@@ -22,6 +22,8 @@ public interface IModule extends Logged
 
 	public File getDataFolder(String... folders);
 
+	public void forceBindService(Class<? extends IService> svc);
+
 	public File getModuleFile();
 
 	public String getName();
