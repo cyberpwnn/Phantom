@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.volmit.phantom.api.command.ICommand;
 import com.volmit.phantom.api.command.PhantomPermission;
+import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.module.Command;
 import com.volmit.phantom.api.module.Module;
@@ -44,11 +45,23 @@ public abstract class PhantomCommand implements ICommand
 
 	protected void requiresPermission(PhantomPermission node)
 	{
+		if(node == null)
+		{
+			D.ff("Null permission bind at " + getClass().getSimpleName());
+			return;
+		}
+
 		requiresPermission(node.toString());
 	}
 
 	protected void requiresPermission(String node)
 	{
+		if(node == null)
+		{
+			D.ff("Null permission bind at " + getClass().getSimpleName());
+			return;
+		}
+
 		requiredPermissions.add(node);
 	}
 
