@@ -16,7 +16,7 @@ public interface IModule
 
 	public String getVersion();
 
-	public String getAuthor();
+	public String getAuthors();
 
 	public C getColor();
 

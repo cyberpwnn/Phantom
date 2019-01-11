@@ -1,6 +1,5 @@
 package com.volmit.phantom.main;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -8,10 +7,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.math.M;
-import com.volmit.phantom.imp.plugin.ModuleManager;
-import com.volmit.phantom.imp.plugin.TaskManager;
 
 public class PhantomPlugin extends JavaPlugin implements Listener
 {
@@ -29,14 +27,8 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 		D.ll("Starting Phantom");
 		M.initTicking();
 		Phantom.suckerpunch();
-		Phantom.taskManager = new TaskManager(this);
-		Phantom.moduleManager = new ModuleManager();
-		Phantom.moduleManager.start();
-		Phantom.flushLogBuffer();
-		Phantom.taskManager.syncRepeating(() -> tick());
-		Phantom.dumpStartup();
-		Bukkit.getPluginManager().registerEvents(this, this);
 		D.ll("Phantom Online");
+		J.executeAfterStartupQueue();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -60,9 +52,8 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	@Override
 	public void onDisable()
 	{
-		Phantom.moduleManager.stopModules();
+		Phantom.getModuleManager().unloadModules();
 		Phantom.flushLogBuffer();
-		Phantom.moduleManager.unloadModules();
 		Phantom.stopAllServices();
 		Phantom.flushLogBuffer();
 	}

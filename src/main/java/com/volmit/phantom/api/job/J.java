@@ -7,8 +7,8 @@ import com.volmit.phantom.lib.service.TaskSVC;
 
 public class J
 {
-	private static final GList<Runnable> afterStartup = new GList<>();
-	private static final GList<Runnable> afterStartupAsync = new GList<>();
+	private static GList<Runnable> afterStartup = new GList<>();
+	private static GList<Runnable> afterStartupAsync = new GList<>();
 	private static boolean started = false;
 
 	public static void executeAfterStartupQueue()
@@ -31,7 +31,7 @@ public class J
 		}
 
 		afterStartup = null;
-		aft
+		afterStartupAsync = null;
 	}
 
 	public static void ass(Runnable r)

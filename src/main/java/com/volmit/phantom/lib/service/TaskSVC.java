@@ -2,6 +2,7 @@ package com.volmit.phantom.lib.service;
 
 import org.bukkit.Bukkit;
 
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.math.M;
@@ -26,7 +27,7 @@ public class TaskSVC implements IService, Runnable
 		intervals = new GMap<>();
 		repeats = new GMap<>();
 		delayTasks = new GMap<>();
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(PhantomPlugin.plugin, this, 0, 0);
+		J.ass(() -> Bukkit.getScheduler().scheduleSyncRepeatingTask(PhantomPlugin.plugin, this, 0, 0));
 	}
 
 	@Override

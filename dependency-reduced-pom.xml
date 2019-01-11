@@ -4,7 +4,12 @@
   <groupId>com.volmit</groupId>
   <artifactId>Phantom</artifactId>
   <name>Phantom</name>
-  <version>3.1.31</version>
+  <version>3.2.12</version>
+  <developers>
+    <developer>
+      <name>cyberpwn</name>
+    </developer>
+  </developers>
   <build>
     <resources>
       <resource>
@@ -107,13 +112,13 @@
                 </goals>
                 <configuration>
                   <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.31.jar</arguments>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.12.jar</arguments>
                 </configuration>
               </execution>
             </executions>
             <configuration>
               <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.1.31.jar</arguments>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.12.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -329,6 +334,7 @@
     </repository>
   </distributionManagement>
   <properties>
+    <color>LIGHT_PURPLE</color>
     <libs>${project.basedir}/lib</libs>
     <javadoc.opts>-Xdoclint:none</javadoc.opts>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

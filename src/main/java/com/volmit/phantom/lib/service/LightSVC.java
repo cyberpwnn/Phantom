@@ -11,7 +11,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.volmit.phantom.api.lang.F;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.math.M;
-import com.volmit.phantom.imp.plugin.AsyncTickService;
+import com.volmit.phantom.api.service.AsyncTickService;
 import com.volmit.phantom.util.world.Cuboid;
 
 public class LightSVC extends AsyncTickService

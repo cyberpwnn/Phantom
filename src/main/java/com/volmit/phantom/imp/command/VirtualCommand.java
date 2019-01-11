@@ -6,12 +6,12 @@ import org.bukkit.command.CommandSender;
 
 import com.volmit.phantom.api.command.ICommand;
 import com.volmit.phantom.api.command.PhantomSender;
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.lang.V;
-import com.volmit.phantom.imp.plugin.Module;
-import com.volmit.phantom.imp.plugin.R;
-import com.volmit.phantom.imp.plugin.Scaffold.Command;
+import com.volmit.phantom.api.module.Command;
+import com.volmit.phantom.api.module.Module;
 import com.volmit.phantom.util.text.C;
 
 /**
@@ -132,7 +132,7 @@ public class VirtualCommand
 			if(!sender.hasPermission(i))
 			{
 				failed = true;
-				new R().sync(() -> sender.sendMessage("- " + C.WHITE + i)).start();
+				J.s(() -> sender.sendMessage("- " + C.WHITE + i));
 			}
 		}
 

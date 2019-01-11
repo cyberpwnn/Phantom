@@ -3,6 +3,7 @@ package com.volmit.phantom.main;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
@@ -11,9 +12,25 @@ import com.volmit.phantom.util.text.C;
 
 public class Phantom
 {
+	private static final ModuleManager moduleManager = new ModuleManager();
 	private static final GMap<String, Integer> LOG_BUFFER = new GMap<String, Integer>();
 	private static final GList<String> LOG_ORDER = new GList<String>();
 	private static final GMap<Class<? extends IService>, IService> runningServices = new GMap<Class<? extends IService>, IService>();
+
+	public static String tag()
+	{
+		return C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Phantom" + C.DARK_GRAY + "]" + C.GRAY + ": ";
+	}
+
+	public static String tag(String c)
+	{
+		return C.DARK_GRAY + "[" + C.LIGHT_PURPLE + "Phantom" + C.DARK_GRAY + " - " + C.GRAY + c + C.DARK_GRAY + "]" + C.GRAY + ": ";
+	}
+
+	public static ModuleManager getModuleManager()
+	{
+		return moduleManager;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T extends IService> T getService(Class<? extends T> serviceClass)
@@ -153,6 +170,6 @@ public class Phantom
 
 	public static void suckerpunch()
 	{
-		runningServices.clear();
+		J.sr(() -> flushLogBuffer(), 27);
 	}
 }

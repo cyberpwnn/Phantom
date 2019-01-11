@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import com.volmit.phantom.api.command.ICommand;
 import com.volmit.phantom.api.command.PhantomPermission;
 import com.volmit.phantom.api.lang.GList;
-import com.volmit.phantom.imp.plugin.Scaffold;
-import com.volmit.phantom.imp.plugin.Scaffold.Command;
+import com.volmit.phantom.api.module.Command;
+import com.volmit.phantom.api.module.Module;
 
 /**
  * Represents a pawn command
@@ -17,10 +17,12 @@ import com.volmit.phantom.imp.plugin.Scaffold.Command;
  */
 public abstract class PhantomCommand implements ICommand
 {
+	private GList<PhantomCommand> children;
 	private GList<String> nodes;
 	private GList<String> requiredPermissions;
 	private String node;
 	private Module owner;
+	private String category;
 
 	/**
 	 * Override this with a super constructor as most commands shouldnt change these
@@ -33,9 +35,11 @@ public abstract class PhantomCommand implements ICommand
 	 */
 	public PhantomCommand(String node, String... nodes)
 	{
+		category = "";
 		this.node = node;
 		this.nodes = new GList<String>(nodes);
 		requiredPermissions = new GList<>();
+		children = buildChildren();
 	}
 
 	protected void requiresPermission(PhantomPermission node)
@@ -84,6 +88,11 @@ public abstract class PhantomCommand implements ICommand
 
 	public GList<PhantomCommand> getChildren()
 	{
+		return children;
+	}
+
+	private GList<PhantomCommand> buildChildren()
+	{
 		GList<PhantomCommand> p = new GList<>();
 
 		for(Field i : getClass().getDeclaredFields())
@@ -93,7 +102,20 @@ public abstract class PhantomCommand implements ICommand
 				try
 				{
 					i.setAccessible(true);
-					p.add((PhantomCommand) i.getType().getConstructor().newInstance());
+					PhantomCommand pc = (PhantomCommand) i.getType().getConstructor().newInstance();
+					Command c = i.getAnnotation(Command.class);
+
+					if(!c.value().trim().isEmpty())
+					{
+						pc.setCategory(c.value().trim());
+					}
+
+					else
+					{
+						pc.setCategory(getCategory());
+					}
+
+					p.add(pc);
 				}
 
 				catch(IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e)
@@ -110,5 +132,15 @@ public abstract class PhantomCommand implements ICommand
 	public GList<String> getRequiredPermissions()
 	{
 		return requiredPermissions;
+	}
+
+	public String getCategory()
+	{
+		return category;
+	}
+
+	public void setCategory(String category)
+	{
+		this.category = category;
 	}
 }

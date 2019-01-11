@@ -5,7 +5,7 @@ import com.volmit.phantom.util.text.C;
 public class ModuleDescription
 {
 	private String name;
-	private String author;
+	private String authors;
 	private String version;
 	private C color;
 
@@ -19,14 +19,14 @@ public class ModuleDescription
 		this.name = name;
 	}
 
-	public String getAuthor()
+	public String getAuthors()
 	{
-		return author;
+		return authors;
 	}
 
-	public void setAuthor(String author)
+	public void setAuthors(String authors)
 	{
-		this.author = author;
+		this.authors = authors;
 	}
 
 	public String getVersion()

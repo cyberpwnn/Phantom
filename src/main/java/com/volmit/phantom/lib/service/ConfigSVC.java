@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GMap;
+import com.volmit.phantom.api.module.Module;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.api.sheduler.AR;
 import com.volmit.phantom.util.text.C;
@@ -45,7 +46,7 @@ public class ConfigSVC implements IService
 	private void hotloadConfig(File i)
 	{
 		Module mod = moduleConfigs.get(i);
-		mod.getStructure().configModified(i.getName());
+		mod.configModified(i.getName());
 	}
 
 	@Override

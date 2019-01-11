@@ -11,6 +11,7 @@ public class JarScanner
 	private final GSet<Class<?>> classes;
 	private final File jar;
 	private final ClassLoader cl;
+	private final GMap<String, String> poms;
 
 	/**
 	 * Create a scanner
@@ -21,6 +22,7 @@ public class JarScanner
 	public JarScanner(File jar, ClassLoader cl)
 	{
 		this.jar = jar;
+		this.poms = new GMap<>();
 		this.classes = new GSet<Class<?>>();
 		this.cl = cl;
 	}
@@ -56,12 +58,56 @@ public class JarScanner
 
 				catch(Throwable e)
 				{
+					try
+					{
+						Class<?> clazz = Class.forName(c, true, getClass().getClassLoader());
+						classes.add(clazz);
+					}
 
+					catch(Throwable exz)
+					{
+
+					}
 				}
 			}
 		}
 
 		zip.close();
+	}
+
+	public void scanForPomProperties() throws IOException
+	{
+		poms.clear();
+		FileInputStream fin = new FileInputStream(jar);
+		ZipInputStream zip = new ZipInputStream(fin);
+
+		for(ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry())
+		{
+			if(!entry.isDirectory() && entry.getName().endsWith("pom.properties"))
+			{
+				String[] path = entry.getName().split("\\Q/\\E");
+				String name = path[path.length - 2];
+				VIO.readEntry(jar, entry.getName(), (input) ->
+				{
+					try
+					{
+						poms.put(name, VIO.readAll(input));
+					}
+
+					catch(IOException e)
+					{
+						e.printStackTrace();
+					}
+				});
+			}
+		}
+
+		zip.close();
+	}
+
+	public GMap<String, String> getPoms()
+	{
+		return poms;
 	}
 
 	/**

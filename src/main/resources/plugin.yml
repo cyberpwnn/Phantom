@@ -1,4 +1,4 @@
 name: Phantom
 version: ${project.version}
-main: com.volmit.phantom.plugin.PhantomPlugin
+main: com.volmit.phantom.main.PhantomPlugin
 load: STARTUP

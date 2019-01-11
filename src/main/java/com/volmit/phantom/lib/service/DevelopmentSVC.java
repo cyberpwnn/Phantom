@@ -2,16 +2,9 @@ package com.volmit.phantom.lib.service;
 
 import java.io.File;
 
-import com.google.common.io.Files;
-import com.volmit.phantom.api.lang.D;
-import com.volmit.phantom.api.lang.F;
-import com.volmit.phantom.api.lang.Profiler;
-import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.service.IService;
-import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.api.sheduler.AR;
-import com.volmit.phantom.api.sheduler.S;
-import com.volmit.phantom.util.text.C;
+import com.volmit.phantom.main.Phantom;
 
 public class DevelopmentSVC implements IService
 {
@@ -22,8 +15,9 @@ public class DevelopmentSVC implements IService
 	@Override
 	public void onStart()
 	{
-		moduleFolder = SVC.get(ModuleSVC.class).getModuleFolder();
+		moduleFolder = Phantom.getModuleManager().getModuleFolder();
 		moduleHotloadFolder = new File(moduleFolder, "inject");
+		moduleHotloadFolder.mkdirs();
 		new AR(5)
 		{
 			@Override
@@ -38,67 +32,7 @@ public class DevelopmentSVC implements IService
 	{
 		try
 		{
-			for(File i : moduleHotloadFolder.listFiles())
-			{
-				for(File j : moduleFolder.listFiles())
-				{
-					if(i.getName().equals(j.getName()))
-					{
-						Module mod = null;
 
-						for(Module k : SVC.get(ModuleSVC.class).getLoadedModules())
-						{
-							if(k.getModuleFile() != null && k.getModuleFile().equals(j))
-							{
-								mod = k;
-								break;
-							}
-						}
-
-						if(mod != null)
-						{
-							Module md = mod;
-
-							new S()
-							{
-								@Override
-								public void run()
-								{
-									SVC.get(ModuleSVC.class).unloadModule(md);
-								}
-							};
-						}
-					}
-				}
-
-				new S()
-				{
-					@Override
-					public void run()
-					{
-						try
-						{
-							long lm = M.ms() - i.lastModified();
-							Profiler o = new Profiler();
-							o.begin();
-							File ff = new File(moduleFolder, i.getName());
-							Files.copy(i, ff);
-							i.delete();
-							D.as("Module Reconstructor").l("Injecting Module Changes for " + ff.getName());
-							Module nm = SVC.get(ModuleSVC.class).loadModule(ff);
-							o.end();
-							D.as("Module Reconstructor").l("Reconstructed " + nm.getColor() + nm.getName() + C.WHITE + " in " + F.time(o.getMilliseconds() + lm, 1));
-						}
-
-						catch(Throwable e)
-						{
-							e.printStackTrace();
-						}
-					}
-				};
-
-				break;
-			}
 		}
 
 		catch(Throwable e)

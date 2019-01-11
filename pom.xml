@@ -6,6 +6,11 @@
 	<artifactId>Phantom</artifactId>
 	<version>3.2.12</version>
 	<name>Phantom</name>
+	<developers>
+		<developer>
+			<name>cyberpwn</name>
+		</developer>
+	</developers>
 	<properties>
 		<color>LIGHT_PURPLE</color>
 		<build></build>

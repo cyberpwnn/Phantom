@@ -21,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 
+import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
@@ -33,11 +34,8 @@ import com.volmit.phantom.api.service.SVC;
 import com.volmit.phantom.api.sheduler.AR;
 import com.volmit.phantom.api.sheduler.S;
 import com.volmit.phantom.imp.generator.VoidGenerator;
-import com.volmit.phantom.imp.plugin.R;
-import com.volmit.phantom.imp.plugin.Scaffold.Async;
 import com.volmit.phantom.lib.service.RiftSVC;
 import com.volmit.phantom.main.Phantom;
-import com.volmit.phantom.main.PhantomModule;
 import com.volmit.phantom.main.PhantomPlugin;
 
 public class PhantomRift implements Rift, Listener
@@ -311,7 +309,6 @@ public class PhantomRift implements Rift, Listener
 		}
 	}
 
-	@Async
 	public void tick()
 	{
 		if(isLoaded())
@@ -331,8 +328,8 @@ public class PhantomRift implements Rift, Listener
 					{
 						if(!i.getGameMode().equals(getForcedGameMode()))
 						{
-							i.sendMessage(PhantomModule.instance.getTag("Rift") + " This rift is forcing the gamemode " + getForcedGameMode().name().toLowerCase());
-							new R().sync(() -> i.setGameMode(getForcedGameMode())).start();
+							i.sendMessage(Phantom.tag("Rift") + " This rift is forcing the gamemode " + getForcedGameMode().name().toLowerCase());
+							J.s(() -> i.setGameMode(getForcedGameMode()));
 						}
 					}
 
@@ -343,18 +340,18 @@ public class PhantomRift implements Rift, Listener
 				{
 					for(EnderDragon i : getWorld().getEntitiesByClass(EnderDragon.class))
 					{
-						new R().sync(() -> i.remove()).start();
+						J.s(() -> i.remove());
 					}
 
 					for(Wither i : getWorld().getEntitiesByClass(Wither.class))
 					{
-						new R().sync(() -> i.remove()).start();
+						J.s(() -> i.remove());
 					}
 				}
 
 				if(!getWorld().getDifficulty().equals(getDifficulty()))
 				{
-					new R().sync(() -> getWorld().setDifficulty(getDifficulty())).start();
+					J.s(() -> getWorld().setDifficulty(getDifficulty()));
 				}
 
 				if(getTicksWhenEmpty() >= 0)
@@ -368,7 +365,7 @@ public class PhantomRift implements Rift, Listener
 
 						if(M.tick() - lastTickOccupied > getTicksWhenEmpty())
 						{
-							new R().sync(() -> unload()).start();
+							J.s(() -> unload());
 							lastTickOccupied = M.tick() + 2;
 						}
 					}
@@ -475,7 +472,7 @@ public class PhantomRift implements Rift, Listener
 
 		for(Player i : playersInRift)
 		{
-			i.sendMessage(PhantomModule.instance.getTag("Rift") + " The rift has been re-opened. Teleporting Back.");
+			i.sendMessage(Phantom.tag("Rift") + " The rift has been re-opened. Teleporting Back.");
 			i.teleport(getWorld().getSpawnLocation());
 		}
 
@@ -641,7 +638,7 @@ public class PhantomRift implements Rift, Listener
 		for(Player i : getWorld().getPlayers())
 		{
 			i.teleport(Phantom.getDefaultWorld().getSpawnLocation());
-			i.sendMessage(PhantomModule.instance.getTag("Rift") + " This Rift is colapsing! You were teleported out.");
+			i.sendMessage(Phantom.tag("Rift") + " This Rift is colapsing! You were teleported out.");
 		}
 
 		for(Chunk i : getWorld().getLoadedChunks())
