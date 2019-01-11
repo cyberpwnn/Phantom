@@ -8,8 +8,10 @@ import org.bukkit.event.Listener;
 
 import com.volmit.phantom.api.command.ICommand;
 import com.volmit.phantom.api.command.PhantomPermission;
+import com.volmit.phantom.api.config.Configurator;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
+import com.volmit.phantom.api.registry.ConfigRegistry;
 import com.volmit.phantom.api.registry.Registry;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.imp.command.PhantomCommand;
@@ -33,10 +35,12 @@ public class Module extends SeekableObject implements IModule, Listener
 	private Registry<Class<? extends IService>> serviceRegistry;
 	private Registry<ICommand> commandRegistry;
 	private Registry<PhantomPermission> permissionRegistry;
+	private ConfigRegistry configRegistry;
 
 	public Module()
 	{
 		constructSeekers();
+		constructRegistries();
 	}
 
 	public Object executeModuleOperation(ModuleOperation op, Object... params)
@@ -63,6 +67,7 @@ public class Module extends SeekableObject implements IModule, Listener
 					serviceRegistry.unregisterAll();
 					commandRegistry.unregisterAll();
 					permissionRegistry.unregisterAll();
+					configRegistry.unregisterAll();
 				case REGISTER_SERVICES:
 			}
 		}
@@ -114,7 +119,17 @@ public class Module extends SeekableObject implements IModule, Listener
 		{
 			Object o = f.getType().getConstructor().newInstance();
 			String name = f.getAnnotation(Config.class).value();
-			// TODO load/gen/stick/peel
+			File file = getDataFile(name.replaceAll(".yml", "").toLowerCase() + ".yml");
+			if(Configurator.load(o, file))
+			{
+				configRegistry.register(file, () -> Configurator.load(o, file));
+			}
+
+			else
+			{
+				f("Failed to load configuration: " + file.getName());
+			}
+
 			return o;
 		}
 
@@ -124,6 +139,11 @@ public class Module extends SeekableObject implements IModule, Listener
 		}
 
 		return null;
+	}
+
+	private void constructRegistries()
+	{
+		configRegistry = new ConfigRegistry();
 	}
 
 	private void constructSeekers()

@@ -4,7 +4,7 @@ import com.volmit.phantom.api.lang.GList;
 
 public class ModuleRegistry<T> implements Registry<T>
 {
-	private final GList<T> registries;
+	protected final GList<T> registries;
 
 	public ModuleRegistry()
 	{
@@ -24,7 +24,7 @@ public class ModuleRegistry<T> implements Registry<T>
 	}
 
 	@Override
-	public GList<T> getRegistered(T t)
+	public GList<T> getRegistered()
 	{
 		return registries.copy();
 	}
@@ -32,6 +32,9 @@ public class ModuleRegistry<T> implements Registry<T>
 	@Override
 	public void unregisterAll()
 	{
-		registries.clear();
+		for(T i : getRegistered())
+		{
+			unregister(i);
+		}
 	}
 }

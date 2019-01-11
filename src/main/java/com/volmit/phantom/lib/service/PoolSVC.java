@@ -11,16 +11,20 @@ import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.util.plugin.Alphabet;
+import com.volmit.phantom.util.queue.PhantomQueue;
+import com.volmit.phantom.util.queue.QueueExecutor;
+import com.volmit.phantom.util.queue.ThrottledExecutor;
 
 public class PoolSVC extends Thread implements IService, Runnable
 {
 	private int idx;
 	private GMap<Integer, Integer> intervals;
 	private GMap<Integer, Runnable> repeats;
-	private GMap<Runnable, Integer> delayTasks;
+	private GMap<Runnable, Long> delayTasks;
 	private GList<Runnable> tasks;
 	private GList<Runnable> nextTasks;
 	private ExecutorService executorService;
+	private QueueExecutor<Runnable> ex;
 
 	@Override
 	public void onStart()
@@ -50,7 +54,9 @@ public class PoolSVC extends Thread implements IService, Runnable
 				e.printStackTrace();
 			}
 		}, true);
+
 		start();
+		ex = new ThrottledExecutor<Runnable>((r) -> tasks.add(r)).async(true).interval(0).queue(new PhantomQueue<Runnable>()).start();
 	}
 
 	@Override
@@ -131,6 +137,11 @@ public class PoolSVC extends Thread implements IService, Runnable
 		}
 	}
 
+	public void queueLazy(Runnable r)
+	{
+		ex.getQueue().queue(r);
+	}
+
 	public void queue(Runnable r)
 	{
 		nextTasks.add(r);
@@ -166,7 +177,7 @@ public class PoolSVC extends Thread implements IService, Runnable
 			@Override
 			public void run()
 			{
-				delayTasks.put(r, delay);
+				delayTasks.put(r, M.tickAsync() + delay);
 			}
 		});
 	}

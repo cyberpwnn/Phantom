@@ -7,6 +7,7 @@ import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.D;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
+import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.util.text.C;
 
@@ -16,6 +17,7 @@ public class Phantom
 	private static final GMap<String, Integer> LOG_BUFFER = new GMap<String, Integer>();
 	private static final GList<String> LOG_ORDER = new GList<String>();
 	private static final GMap<Class<? extends IService>, IService> runningServices = new GMap<Class<? extends IService>, IService>();
+	private static int lp = 0;
 
 	public static String tag()
 	{
@@ -39,19 +41,18 @@ public class Phantom
 		{
 			if(!runningServices.containsKey(serviceClass))
 			{
-				D.as("Phantom > Service Provider").l("Starting Service: " + serviceClass.getSimpleName());
 				IService s = serviceClass.getConstructor().newInstance();
+				runningServices.put(serviceClass, s);
 				try
 				{
 					s.onStart();
+					D.as("Phantom > Service Provider").l("Started Service: " + serviceClass.getSimpleName());
 				}
 
 				catch(Throwable e)
 				{
 					D.as("Service Provider").w(s.getClass().getSimpleName() + " may have failed to properly start!");
 				}
-
-				runningServices.put(serviceClass, s);
 			}
 		}
 
@@ -80,6 +81,11 @@ public class Phantom
 
 	public static void flushLogBuffer()
 	{
+		if(!M.interval(Math.max(1, Math.min(58, lp))))
+		{
+			return;
+		}
+
 		if(!isMainThread())
 		{
 			throw new RuntimeException("Logs can only be flushed on the main thread.");
@@ -92,10 +98,13 @@ public class Phantom
 
 		LOG_BUFFER.clear();
 		LOG_ORDER.clear();
+		lp /= 1.25;
 	}
 
 	public static void log(String string)
 	{
+		lp++;
+
 		if(!LOG_BUFFER.containsKey(string))
 		{
 			LOG_BUFFER.put(string, 0);
@@ -170,6 +179,6 @@ public class Phantom
 
 	public static void suckerpunch()
 	{
-		J.ass(() -> J.sr(() -> flushLogBuffer(), 27));
+		J.ass(() -> J.sr(() -> flushLogBuffer(), 0));
 	}
 }

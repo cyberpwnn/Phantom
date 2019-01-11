@@ -2,7 +2,7 @@ package com.volmit.phantom.api.sheduler;
 
 import com.volmit.phantom.api.job.J;
 
-public abstract class AR implements Runnable
+public abstract class AR implements Runnable, CancellableTask
 {
 	private int id = 0;
 
@@ -16,6 +16,7 @@ public abstract class AR implements Runnable
 		id = J.ar(this, interval);
 	}
 
+	@Override
 	public void cancel()
 	{
 		J.car(id);

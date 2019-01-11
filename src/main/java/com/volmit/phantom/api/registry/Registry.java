@@ -8,7 +8,7 @@ public interface Registry<T>
 
 	public boolean unregister(T t);
 
-	public GList<T> getRegistered(T t);
+	public GList<T> getRegistered();
 
 	public void unregisterAll();
 }

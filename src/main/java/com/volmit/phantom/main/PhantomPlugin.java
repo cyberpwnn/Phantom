@@ -26,9 +26,9 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 	{
 		D.ll("Starting Phantom");
 		M.initTicking();
+		J.executeAfterStartupQueue();
 		Phantom.suckerpunch();
 		D.ll("Phantom Online");
-		J.executeAfterStartupQueue();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -56,15 +56,5 @@ public class PhantomPlugin extends JavaPlugin implements Listener
 		Phantom.flushLogBuffer();
 		Phantom.stopAllServices();
 		Phantom.flushLogBuffer();
-	}
-
-	public void tick()
-	{
-		M.uptick();
-
-		if(M.interval(15))
-		{
-			Phantom.flushLogBuffer();
-		}
 	}
 }

@@ -32,6 +32,11 @@ public class GList<T> extends ArrayList<T>
 		super();
 	}
 
+	public GList(int alloc)
+	{
+		super(alloc);
+	}
+
 	public GList(Class<? extends T> t)
 	{
 		this();

@@ -2,21 +2,24 @@ package com.volmit.phantom.lib.service;
 
 import org.bukkit.Bukkit;
 
-import com.volmit.phantom.api.job.J;
 import com.volmit.phantom.api.lang.GList;
 import com.volmit.phantom.api.lang.GMap;
 import com.volmit.phantom.api.math.M;
 import com.volmit.phantom.api.service.IService;
 import com.volmit.phantom.main.PhantomPlugin;
+import com.volmit.phantom.util.queue.PhantomQueue;
+import com.volmit.phantom.util.queue.QueueExecutor;
+import com.volmit.phantom.util.queue.ThrottledExecutor;
 
 public class TaskSVC implements IService, Runnable
 {
 	private int idx;
 	private GMap<Integer, Integer> intervals;
 	private GMap<Integer, Runnable> repeats;
-	private GMap<Runnable, Integer> delayTasks;
+	private GMap<Runnable, Long> delayTasks;
 	private GList<Runnable> tasks;
 	private GList<Runnable> nextTasks;
+	private QueueExecutor<Runnable> ex;
 
 	@Override
 	public void onStart()
@@ -27,7 +30,15 @@ public class TaskSVC implements IService, Runnable
 		intervals = new GMap<>();
 		repeats = new GMap<>();
 		delayTasks = new GMap<>();
-		J.ass(() -> Bukkit.getScheduler().scheduleSyncRepeatingTask(PhantomPlugin.plugin, this, 0, 0));
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(PhantomPlugin.plugin, this, 0, 0);
+
+		//@builder
+		ex = new ThrottledExecutor<Runnable>((r) -> tasks.add(r))
+				.async(false)
+				.interval(0)
+				.queue(new PhantomQueue<Runnable>())
+				.start();
+		//@done
 	}
 
 	@Override
@@ -83,6 +94,11 @@ public class TaskSVC implements IService, Runnable
 		}
 	}
 
+	public void queueLazy(Runnable r)
+	{
+		ex.getQueue().queue(r);
+	}
+
 	public void queue(Runnable r)
 	{
 		nextTasks.add(r);
@@ -118,7 +134,7 @@ public class TaskSVC implements IService, Runnable
 			@Override
 			public void run()
 			{
-				delayTasks.put(r, delay);
+				delayTasks.put(r, M.tick() + delay);
 			}
 		});
 	}
