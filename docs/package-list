@@ -1,5 +1,6 @@
 com.volmit.phantom.api.command
 com.volmit.phantom.api.config
+com.volmit.phantom.api.generator
 com.volmit.phantom.api.inventory
 com.volmit.phantom.api.job
 com.volmit.phantom.api.lang
@@ -12,17 +13,11 @@ com.volmit.phantom.api.registry
 com.volmit.phantom.api.rift
 com.volmit.phantom.api.service
 com.volmit.phantom.api.sheduler
-com.volmit.phantom.imp.command
-com.volmit.phantom.imp.generator
-com.volmit.phantom.imp.inventory
-com.volmit.phantom.imp.module
-com.volmit.phantom.imp.nms
-com.volmit.phantom.imp.protocol
-com.volmit.phantom.imp.rift
 com.volmit.phantom.lib.service
 com.volmit.phantom.main
 com.volmit.phantom.main.commands
 com.volmit.phantom.main.permissions
+com.volmit.phantom.util.nms
 com.volmit.phantom.util.plugin
 com.volmit.phantom.util.profiling
 com.volmit.phantom.util.queue
