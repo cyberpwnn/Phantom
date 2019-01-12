@@ -6,8 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.volmit.phantom.util.sfx.Audible;
-
 /**
  * A GSound can play a sound
  *
@@ -98,11 +96,6 @@ public class GSound implements Audible
 		this.pitch = 1f;
 	}
 
-	public void prePlay()
-	{
-
-	}
-
 	/**
 	 * Play the sound to just one player. No one else can hear it
 	 *
@@ -114,8 +107,6 @@ public class GSound implements Audible
 	@Override
 	public void play(Player p, Location l)
 	{
-		prePlay();
-
 		if(iSound != null)
 		{
 			p.playSound(l, iSound, volume, pitch);
@@ -159,8 +150,6 @@ public class GSound implements Audible
 	@Override
 	public void play(Location l)
 	{
-		prePlay();
-
 		if(iSound != null)
 		{
 			l.getWorld().playSound(l, iSound, volume, pitch);
@@ -185,8 +174,6 @@ public class GSound implements Audible
 	@Override
 	public void play(Player p, Vector v)
 	{
-		prePlay();
-
 		Location l = p.getLocation().clone().add(v);
 
 		if(iSound != null)

@@ -650,8 +650,6 @@ public class PluginUtil
 		// Windows
 		// refuses to unlock jar files that were previously loaded into the JVM.
 		System.gc();
-
-		return;
 	}
 
 }
