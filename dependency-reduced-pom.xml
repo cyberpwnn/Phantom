@@ -53,26 +53,18 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
-                  <arguments>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</argument>
-                    <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.15\Phantom-3.2.15.jar</argument>
-                  </arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/release.bat</executable>
+              <executable>${project.basedir}/scripts/release.bat</executable>
               <arguments>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</argument>
-                <argument>C:\Users\cyberpwn\Documents\development\workspace\Phantom\release\3.2.15\Phantom-3.2.15.jar</argument>
+                <argument>${project.basedir}\target\Phantom-${project.version}.jar</argument>
+                <argument>${project.basedir}\release\${project.version}\Phantom-${project.version}.jar</argument>
               </arguments>
             </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -84,28 +76,20 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
                 </goals>
-                <configuration>
-                  <additionalJOptions>
-                    <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
-                    <additionalparam>-Xdoclint:none</additionalparam>
-                  </additionalJOptions>
-                  <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
-                </configuration>
               </execution>
             </executions>
             <configuration>
               <additionalJOptions>
-                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-Phantom</additionalJOption>
-                <additionalparam>-Xdoclint:none</additionalparam>
+                <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin-${project.name}</additionalJOption>
+                <additionalparam>${javadoc.opts}</additionalparam>
               </additionalJOptions>
-              <stylesheetfile>C:\Users\cyberpwn\Documents\development\workspace\Phantom\stylesheet.css</stylesheetfile>
+              <stylesheetfile>${project.basedir}\stylesheet.css</stylesheetfile>
             </configuration>
           </plugin>
         </plugins>
@@ -126,11 +110,15 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</arguments>
+                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>${project.basedir}/scripts/dev.bat</executable>
-              <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
+              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
+              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -337,6 +325,34 @@
       <artifactId>we</artifactId>
       <version>1</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-api</artifactId>
+      <version>1.12-SNAPSHOT</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>bungeecord-config</artifactId>
+          <groupId>net.md-5</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bungeecord-event</artifactId>
+          <groupId>net.md-5</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bungeecord-protocol</artifactId>
+          <groupId>net.md-5</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bungeecord-chat</artifactId>
+          <groupId>net.md-5</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <distributionManagement>

@@ -402,4 +402,14 @@ public class M
 	{
 		ATICK++;
 	}
+
+	public static long epochDays()
+	{
+		return epochDays(M.ms());
+	}
+
+	private static long epochDays(long ms)
+	{
+		return ms / 1000 / 60 / 60 / 24;
+	}
 }

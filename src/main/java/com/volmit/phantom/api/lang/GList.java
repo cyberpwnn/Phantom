@@ -749,9 +749,10 @@ public class GList<T> extends ArrayList<T>
 	/**
 	 * Remove the last element
 	 */
-	public void removeLast()
+	public GList<T> removeLast()
 	{
 		remove(last());
+		return this;
 	}
 
 	/**
@@ -805,5 +806,29 @@ public class GList<T> extends ArrayList<T>
 		}
 
 		return this;
+	}
+
+	public static GList<String> asStringList(List<?> oo)
+	{
+		GList<String> s = new GList<String>();
+
+		for(Object i : oo)
+		{
+			s.add(i.toString());
+		}
+
+		return s;
+	}
+
+	public static GList<String> fromJSONAny(JSONArray oo)
+	{
+		GList<String> s = new GList<String>();
+
+		for(int i = 0; i < oo.length(); i++)
+		{
+			s.add(oo.get(i).toString());
+		}
+
+		return s;
 	}
 }

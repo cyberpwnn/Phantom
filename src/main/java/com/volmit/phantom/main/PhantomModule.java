@@ -12,6 +12,7 @@ import com.volmit.phantom.api.module.ModuleOperation;
 import com.volmit.phantom.api.module.Permission;
 import com.volmit.phantom.api.sheduler.A;
 import com.volmit.phantom.api.sheduler.S;
+import com.volmit.phantom.main.commands.CommandFission;
 import com.volmit.phantom.main.commands.CommandModules;
 import com.volmit.phantom.main.commands.CommandServices;
 import com.volmit.phantom.main.permissions.PermissionPhantom;
@@ -24,6 +25,9 @@ public class PhantomModule extends Module
 
 	@Command("Services")
 	public CommandServices services;
+
+	@Command("Fission")
+	public CommandFission fission;
 
 	@Permission
 	public static PermissionPhantom perm;

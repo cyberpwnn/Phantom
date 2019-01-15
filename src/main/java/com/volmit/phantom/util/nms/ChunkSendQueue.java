@@ -84,7 +84,6 @@ public class ChunkSendQueue
 								@Override
 								public void run()
 								{
-									SVC.get(NMSSVC.class).relight(i);
 									SVC.get(NMSSVC.class).sendChunkMap(new AbstractChunk(i), i);
 								}
 							};

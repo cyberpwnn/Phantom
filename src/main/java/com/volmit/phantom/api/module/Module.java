@@ -487,9 +487,9 @@ public class Module extends SeekableObject implements IModule, Listener, Command
 			Object o = f.getType().getConstructor().newInstance();
 			String name = f.getAnnotation(Config.class).value();
 			File file = getDataFile(name.replaceAll(".yml", "").toLowerCase() + ".yml");
-			if(Configurator.load(o, file))
+			if(Configurator.DEFAULT.load(o, file))
 			{
-				configRegistry.register(file, () -> Configurator.load(o, file));
+				configRegistry.register(file, () -> Configurator.DEFAULT.load(o, file));
 			}
 
 			else

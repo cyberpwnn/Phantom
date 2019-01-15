@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.volmit.phantom.api.lang.D;
+import com.volmit.phantom.api.config.wrappers.WrappedBukkitFileConfiguration;
+import com.volmit.phantom.api.config.wrappers.WrappedJSONConfiguration;
 import com.volmit.phantom.util.plugin.Documented;
+import com.volmit.phantom.util.profiling.Platform;
 
 /**
  * Tools for reading and writing files to file configurations, and objects to
@@ -23,6 +22,17 @@ import com.volmit.phantom.util.plugin.Documented;
 @Documented
 public class Configurator
 {
+	public static final Configurator JSON = new Configurator(WrappedJSONConfiguration.class);
+	public static final Configurator BUKKIT = Platform.isBukkit() ? new Configurator(WrappedBukkitFileConfiguration.class) : null;
+	public static Configurator DEFAULT = BUKKIT != null ? BUKKIT : JSON;
+
+	private final Class<? extends ConfigWrapper> cfg;
+
+	public Configurator(Class<? extends ConfigWrapper> yamlConfigurationClass)
+	{
+		cfg = yamlConfigurationClass;
+	}
+
 	/**
 	 * Peels the object's data into a "default" file configuration, then reads the
 	 * file's config data layered over the existing default file configuration. The
@@ -37,23 +47,21 @@ public class Configurator
 	 * @return returns true if the operation was successful. Otherwise false is
 	 *         returned and an exception is printed.
 	 */
-	public static boolean load(Object object, File file)
+	public boolean load(Object object, File file)
 	{
 		try
 		{
 			file.getParentFile().mkdirs();
-			FileConfiguration fc = peel(object);
+			ConfigWrapper fc = peel(object);
 
 			if(!file.exists())
 			{
 				fc.save(file);
-				D.ll("Generated default config: " + file.getPath());
 			}
 
 			fc.load(file);
 			stick(fc, object);
 			write(object, file);
-			D.ll("Loaded config: " + file.getPath());
 			return true;
 		}
 
@@ -79,7 +87,7 @@ public class Configurator
 	 * @throws IllegalAccessException
 	 *             shouldnt happen
 	 */
-	public static void write(Object object, File file) throws IOException, IllegalArgumentException, IllegalAccessException
+	public void write(Object object, File file) throws Throwable
 	{
 		peel(object).save(file);
 	}
@@ -103,10 +111,10 @@ public class Configurator
 	 * @throws IllegalAccessException
 	 *             shouldnt happen (probably)
 	 */
-	public static void read(Object object, File file) throws FileNotFoundException, IOException, InvalidConfigurationException, IllegalArgumentException, IllegalAccessException
+	public void read(Object object, File file) throws Exception
 	{
 		file.getParentFile().mkdirs();
-		FileConfiguration fc = new YamlConfiguration();
+		ConfigWrapper fc = cfg.getConstructor().newInstance();
 		fc.load(file);
 		stick(fc, object);
 	}
@@ -125,7 +133,7 @@ public class Configurator
 	 *             really shouldnt happen
 	 */
 	@SuppressWarnings("unchecked")
-	public static void stick(FileConfiguration fc, Object object) throws IllegalArgumentException, IllegalAccessException
+	public void stick(ConfigWrapper fc, Object object) throws Exception
 	{
 		boolean explicit = false;
 		boolean stat = object instanceof Class<?>;
@@ -171,7 +179,6 @@ public class Configurator
 
 				else
 				{
-					D.ww("Cannot stick configuration field " + i.getName() + " (not static) on a STATIC CLASS. We have no refrence to " + c.getCanonicalName());
 					throw new IllegalArgumentException();
 				}
 			}
@@ -195,11 +202,19 @@ public class Configurator
 	 *             shoudlnt happen unless you are doing dumb shit.
 	 * @throws IllegalAccessException
 	 *             shouldnt happen
+	 * @throws SecurityException
+	 *             yeah...
+	 * @throws NoSuchMethodException
+	 *             ....
+	 * @throws InvocationTargetException
+	 *             .....
+	 * @throws InstantiationException
+	 *             .............
 	 */
 	@SuppressWarnings("unchecked")
-	public static FileConfiguration peel(Object object) throws IllegalArgumentException, IllegalAccessException
+	public ConfigWrapper peel(Object object) throws Exception
 	{
-		FileConfiguration fc = new YamlConfiguration();
+		ConfigWrapper fc = cfg.getConstructor().newInstance();
 		boolean explicit = false;
 		boolean stat = object.getClass().getCanonicalName().equals(Class.class.getCanonicalName());
 		Class<?> c = stat ? (Class<? extends Object>) object : object.getClass();
@@ -244,7 +259,6 @@ public class Configurator
 
 				else
 				{
-					D.ww("Cannot peel configuration field " + i.getName() + " (not static) on a STATIC CLASS. We have no refrence to " + c.getCanonicalName());
 					throw new IllegalArgumentException();
 				}
 			}

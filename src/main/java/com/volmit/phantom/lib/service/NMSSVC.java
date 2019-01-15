@@ -526,7 +526,7 @@ public class NMSSVC implements IService
 
 			if(c.isContinuous())
 			{
-				// sendChunkUnload(c.getX(), c.getZ(), p);
+				sendChunkUnload(c.getX(), c.getZ(), p);
 			}
 
 			sendPacket(m, p);
@@ -791,6 +791,18 @@ public class NMSSVC implements IService
 	public void sendBlockChange(Player observer, Location location, MaterialBlock materialBlock)
 	{
 		observer.sendBlockChange(location, materialBlock.getMaterial(), materialBlock.getData());
+	}
+
+	@SuppressWarnings("deprecation")
+	public void sendBlockChange(Location location, MaterialBlock materialBlock)
+	{
+		for(Player i : location.getWorld().getPlayers())
+		{
+			if(canSee(i, location.getChunk()))
+			{
+				i.sendBlockChange(location, materialBlock.getMaterial(), materialBlock.getData());
+			}
+		}
 	}
 
 	public void sendRemoveGlowingColorMetaPlayer(Player p, UUID glowing, String name)
