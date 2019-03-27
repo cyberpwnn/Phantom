@@ -32,7 +32,7 @@ public class CommandFission extends PhantomCommand
 			public void run()
 			{
 				Block b = sender.player().getLocation().getBlock();
-				SSphere cc = new SSphere(b.getX(), b.getY(), b.getZ(), true, 1000);
+				SSphere cc = new SSphere(b.getX(), b.getY(), b.getZ(), true, 10000);
 				Profiler px = new Profiler();
 				px.begin();
 				FissionQueue q = SVC.get(FissionSVC.class).set(cc, b.getWorld(), new MaterialBlock(Material.STONE));

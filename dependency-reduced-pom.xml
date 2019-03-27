@@ -110,15 +110,11 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <configuration>
-                  <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-                  <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</arguments>
-                </configuration>
               </execution>
             </executions>
             <configuration>
-              <executable>C:\Users\cyberpwn\Documents\development\workspace\Phantom/scripts/dev.bat</executable>
-              <arguments>C:\Users\cyberpwn\Documents\development\workspace\Phantom\target\Phantom-3.2.15.jar</arguments>
+              <executable>${project.basedir}/scripts/dev.bat</executable>
+              <arguments>${project.basedir}\target\Phantom-${project.version}.jar</arguments>
             </configuration>
           </plugin>
         </plugins>

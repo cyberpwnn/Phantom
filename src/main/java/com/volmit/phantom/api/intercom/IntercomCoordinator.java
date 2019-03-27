@@ -2,6 +2,8 @@ package com.volmit.phantom.api.intercom;
 
 import java.io.Serializable;
 
+import com.volmit.phantom.api.lang.GList;
+
 public interface IntercomCoordinator
 {
 	public IntercomCoordinator addMonitor(CoordinatorMonitor monitor);
@@ -15,4 +17,6 @@ public interface IntercomCoordinator
 	public boolean hasChannel(String s);
 
 	public void shutdown();
+
+	public GList<CoordinatedIntercom> getChannels();
 }

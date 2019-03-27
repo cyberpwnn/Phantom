@@ -14,7 +14,7 @@ import com.volmit.phantom.util.concurrent.ExecutorUtil;
 public class ServerIntercom extends Thread implements IntercomCoordinator
 {
 	private final String accessToken;
-	private final GList<ServerIntercomChannel> channels;
+	private final GList<CoordinatedIntercom> channels;
 	private final ServerSocket socket;
 	private ExecutorService svc;
 	final GList<CoordinatorMonitor> monitors;
@@ -52,9 +52,9 @@ public class ServerIntercom extends Thread implements IntercomCoordinator
 	@Override
 	public CoordinatedIntercom getChannel(String server)
 	{
-		for(ServerIntercomChannel i : channels)
+		for(CoordinatedIntercom i : channels)
 		{
-			if(i.getServerId().equals(server))
+			if(i.getServerName().equals(server))
 			{
 				return i;
 			}
@@ -159,7 +159,7 @@ public class ServerIntercom extends Thread implements IntercomCoordinator
 			{
 				Thread.sleep(5);
 
-				for(ServerIntercomChannel i : channels.copy())
+				for(CoordinatedIntercom i : channels.copy())
 				{
 					if(i.isDead() || i.hasWorkToDo())
 					{
@@ -225,5 +225,11 @@ public class ServerIntercom extends Thread implements IntercomCoordinator
 	{
 		monitors.remove(monitor);
 		return this;
+	}
+
+	@Override
+	public GList<CoordinatedIntercom> getChannels()
+	{
+		return channels.copy();
 	}
 }

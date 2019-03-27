@@ -92,17 +92,25 @@ public class Phantom
 			throw new RuntimeException("Logs can only be flushed on the main thread.");
 		}
 
-		synchronized(LOG_ORDER)
+		try
 		{
-			for(String i : LOG_ORDER)
+			synchronized(LOG_ORDER)
 			{
-				Bukkit.getConsoleSender().sendMessage(LOG_BUFFER.get(i) == 0 ? i : i + (C.GOLD + " +" + LOG_BUFFER.get(i)));
+				for(String i : LOG_ORDER)
+				{
+					Bukkit.getConsoleSender().sendMessage(LOG_BUFFER.get(i) == 0 ? i : i + (C.GOLD + " +" + LOG_BUFFER.get(i)));
+				}
 			}
+
+			LOG_BUFFER.clear();
+			LOG_ORDER.clear();
+			lp /= 1.25;
 		}
 
-		LOG_BUFFER.clear();
-		LOG_ORDER.clear();
-		lp /= 1.25;
+		catch(Throwable e)
+		{
+
+		}
 	}
 
 	public static void log(String string)

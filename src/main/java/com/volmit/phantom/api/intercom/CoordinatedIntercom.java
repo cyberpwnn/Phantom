@@ -15,4 +15,10 @@ public interface CoordinatedIntercom
 	public <T extends Serializable> T sendNow(Serializable s, long ms);
 
 	public void disconnect();
+
+	public boolean isDead();
+
+	public boolean hasWorkToDo();
+
+	public void doWork();
 }
